@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="JavaScript 中的 ES6 Proxy场景 就算只是扮演，也会成为真实的自我的一部分。对人类的精神来说，真实和虚假其实并没有明显的界限。入戏太深不是一件好事，但对于你来说并不成立，因为戏中的你才是真正符合你的身份的你。如今的你是真实的，就算一开始你只是在模仿着这种形象，现在的你也已经成为了这种形象。无论如何，你也不可能再回到过去了。  Proxy 代理，在 JavaScript 似乎很陌生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 中的 ES6 Proxy">
+<meta property="og:url" content="https://fangtianq.github.io/2019/06/14/others/rxliuliBlog/JavaScript/JavaScript-%E4%B8%AD%E7%9A%84-ES6-Proxy/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 中的 ES6 Proxy场景 就算只是扮演，也会成为真实的自我的一部分。对人类的精神来说，真实和虚假其实并没有明显的界限。入戏太深不是一件好事，但对于你来说并不成立，因为戏中的你才是真正符合你的身份的你。如今的你是真实的，就算一开始你只是在模仿着这种形象，现在的你也已经成为了这种形象。无论如何，你也不可能再回到过去了。  Proxy 代理，在 JavaScript 似乎很陌生">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-14T05:19:35.000Z">
+<meta property="article:modified_time" content="2019-06-15T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/06/14/others/rxliuliBlog/JavaScript/JavaScript-%E4%B8%AD%E7%9A%84-ES6-Proxy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript 中的 ES6 Proxy | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/06/14/others/rxliuliBlog/JavaScript/JavaScript-%E4%B8%AD%E7%9A%84-ES6-Proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          JavaScript 中的 ES6 Proxy
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-14 13:19:35" itemprop="dateCreated datePublished" datetime="2019-06-14T13:19:35+08:00">2019-06-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-06-16 00:00:00" itemprop="dateModified" datetime="2019-06-16T00:00:00+08:00">2019-06-16</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/06/14/others/rxliuliBlog/JavaScript/JavaScript-%E4%B8%AD%E7%9A%84-ES6-Proxy/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/06/14/others/rxliuliBlog/JavaScript/JavaScript-%E4%B8%AD%E7%9A%84-ES6-Proxy/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-中的-ES6-Proxy"><a href="#JavaScript-中的-ES6-Proxy" class="headerlink" title="JavaScript 中的 ES6 Proxy"></a>JavaScript 中的 ES6 Proxy</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><blockquote>
+<p>就算只是扮演，也会成为真实的自我的一部分。对人类的精神来说，真实和虚假其实并没有明显的界限。入戏太深不是一件好事，但对于你来说并不成立，因为戏中的你才是真正符合你的身份的你。如今的你是真实的，就算一开始你只是在模仿着这种形象，现在的你也已经成为了这种形象。无论如何，你也不可能再回到过去了。</p>
+</blockquote>
+<p><code>Proxy</code> 代理，在 JavaScript 似乎很陌生，却又在生活中无处不在。或许有人在学习 ES6 的时候有所涉猎，但却并未真正了解它的使用场景，平时在写业务代码时也不会用到这个特性。</p>
+<p>相比于文绉绉的定义内容，想必我们更希望了解它的使用场景，使其在真正的生产环境发挥强大的作用，而不仅仅是作为一个新的特性 – <strong>然后，实际中完全没有用到！</strong></p>
+<ul>
+<li>为函数添加特定的功能</li>
+<li>代理对象的访问</li>
+<li>作为胶水桥接不同结构的对象</li>
+<li>监视对象的变化</li>
+<li>还有更多。。。</li>
+</ul>
+<p>如果你还没有了解过 <code>Proxy</code> 特性，可以先去 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy" target="_blank" rel="noopener">MDN Proxy</a> 上查看基本概念及使用。</p>
+<h2 id="为函数添加特定的功能"><a href="#为函数添加特定的功能" class="headerlink" title="为函数添加特定的功能"></a>为函数添加特定的功能</h2><p>下面是一个为异步函数自动添加超时功能的高阶函数，我们来看一下它有什么问题</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为异步函数添加自动超时功能</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>timeout 超时时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>action 异步函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns </span>包装后的异步函数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncTimeout</span>(<span class="params">timeout, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.race([</span><br><span class="line">      <span class="built_in">Reflect</span>.apply(action, <span class="keyword">this</span>, args),</span><br><span class="line">      wait(timeout).then(<span class="built_in">Promise</span>.reject),</span><br><span class="line">    ])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>一般而言</strong>，上面的代码足以胜任，但问题就在这里，不一般的情况 – 函数上面包含<strong>自定义属性</strong>呢？<br>众所周知，JavaScript 中的函数是一等公民，即函数可以被传递，被返回，以及，被添加属性！</p>
+<p>例如下面这个简单的函数 <code>get</code>，其上有着 <code>_name</code> 这个属性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">get</span> = async i =&gt; i</span><br><span class="line"><span class="keyword">get</span>._name = '<span class="keyword">get</span>'</span><br></pre></td></tr></table></figure>
+
+<p>一旦使用上面的 <code>asyncTimeout</code> 函数包裹之后，问题便会出现，返回的函数中 <code>_name</code> 属性不见了。这是当然的，毕竟实际上返回的是一个匿名函数。那么，如何才能让返回的函数能够拥有传入函数参数上的所有自定义属性呢？<br>一种方式是复制参数函数上的所有属性，但这点实现起来其实并不容易，真的不容易，不信你可以看看 Lodash 的 clone 函数。那么，有没有一种更简单的方式呢？答案就是 <code>Proxy</code>，它可以代理对象的指定操作，除此之外，其他的一切都指向原对象。<br>下面是 <code>Proxy</code> 实现的 <code>asyncTimeout</code> 函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为异步函数添加自动超时功能</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>timeout 超时时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>action 异步函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns </span>包装后的异步函数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncTimeout</span>(<span class="params">timeout, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(action, &#123;</span><br><span class="line">    apply(_, _this, args) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.race([</span><br><span class="line">        <span class="built_in">Reflect</span>.apply(_, _this, args),</span><br><span class="line">        wait(timeout).then(<span class="built_in">Promise</span>.reject),</span><br><span class="line">      ])</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试一下，是可以正常调用与访问其上的属性的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">await</span> <span class="keyword">get</span>(1))</span><br><span class="line">  console.log(<span class="keyword">get</span>._name)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>好了，这便是吾辈最常用的一种方式了 – <strong>封装高阶函数，为函数添加某些功能</strong>。</p>
+<h2 id="代理对象的访问"><a href="#代理对象的访问" class="headerlink" title="代理对象的访问"></a>代理对象的访问</h2><p>下面是一段代码，用以在页面上展示从后台获取的数据，如果字段没有值则默认展示 <code>&#39;&#39;</code></p>
+<p>模拟一个获取列表的异步请求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">list</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 此处仅为构造列表</span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(&#123; id, name, age, sex, address &#125; = &#123;&#125;) &#123;</span><br><span class="line">      <span class="keyword">this</span>.id = id</span><br><span class="line">      <span class="keyword">this</span>.name = name</span><br><span class="line">      <span class="keyword">this</span>.age = age</span><br><span class="line">      <span class="keyword">this</span>.sex = sex</span><br><span class="line">      <span class="keyword">this</span>.address = address</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> [</span><br><span class="line">    <span class="keyword">new</span> Person(&#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">'琉璃'</span> &#125;),</span><br><span class="line">    <span class="keyword">new</span> Person(&#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">age</span>: <span class="number">17</span> &#125;),</span><br><span class="line">    <span class="keyword">new</span> Person(&#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">sex</span>: <span class="literal">false</span> &#125;),</span><br><span class="line">    <span class="keyword">new</span> Person(&#123; <span class="attr">id</span>: <span class="number">4</span>, <span class="attr">address</span>: <span class="string">'幻想乡'</span> &#125;),</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>尝试直接通过解构为属性赋予默认值，并在默认值实现这个功能</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 为所有为赋值属性都赋予默认值 ''</span></span><br><span class="line">  <span class="keyword">const</span> persons = (<span class="keyword">await</span> list()).map(</span><br><span class="line">    (&#123; id = <span class="string">''</span>, name = <span class="string">''</span>, age = <span class="string">''</span>, sex = <span class="string">''</span>, address = <span class="string">''</span> &#125;) =&gt; (&#123;</span><br><span class="line">      id,</span><br><span class="line">      name,</span><br><span class="line">      age,</span><br><span class="line">      sex,</span><br><span class="line">      address,</span><br><span class="line">    &#125;),</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(persons)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>下面让我们写得更通用一些</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">warp</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> result = obj</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> k <span class="keyword">of</span> <span class="built_in">Reflect</span>.ownKeys(obj)) &#123;</span><br><span class="line">    <span class="keyword">const</span> v = <span class="built_in">Reflect</span>.get(obj, k)</span><br><span class="line">    result[k] = v === <span class="literal">undefined</span> ? <span class="string">''</span> : v</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 为所有为赋值属性都赋予默认值 ''</span></span><br><span class="line">  <span class="keyword">const</span> persons = (<span class="keyword">await</span> list()).map(warp)</span><br><span class="line">  <span class="built_in">console</span>.log(persons)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>暂且先看一下这里的 <code>warp</code> 函数有什么问题？</p>
+<hr>
+<p>这里是答案的分割线</p>
+<hr>
+<ul>
+<li>所有属性需要预定义，不能运行时决定</li>
+<li>没有指向原对象，后续的修改会造成麻烦</li>
+</ul>
+<p>吾辈先解释一下这两个问题</p>
+<ol>
+<li>所有属性需要预定义，不能运行时决定<br>如果调用了 <code>list[0].a</code> 会发生什么呢？是的，依旧会是 <code>undefined</code>，因为 <code>Reflect.ownKeys</code> 也不能找到没有定义的属性（<code>真*undefined</code>），因此导致访问未定义的属性仍然会是 <code>undefined</code> 而非期望的默认值。</li>
+<li>没有指向原对象，后续的修改会造成麻烦<br>如果我们此时修改对象的一个属性，那么会影响到原本的属性么？不会，因为 <code>warp</code> 返回的对象已经是全新的了，和原对象没有什么联系。所以，当你修改时当然不会影响到原对象。<br>Pass: 我们当然可以直接修改原对象，但这很明显不太符合我们的期望：显示时展示默认值 <code>&#39;&#39;</code> – 这并不意味着我们愿意在其他操作时需要 <code>&#39;&#39;</code>，否则我们还要再转换一遍。（例如发送编辑后的数据到后台）</li>
+</ol>
+<p>这个时候 <code>Proxy</code> 也可以派上用场，使用 <code>Proxy</code> 实现 <code>warp</code> 函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">warp</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> result = <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, &#123;</span><br><span class="line">    <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">      <span class="keyword">const</span> v = <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">      <span class="keyword">if</span> (v !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，上面的那两个问题都解决了！</p>
+<blockquote>
+<p>注: 知名的 GitHub 库 <a href="https://github.com/immerjs/immer" target="_blank" rel="noopener">immer</a> 就使用了该特性实现了不可变状态树。</p>
+</blockquote>
+<h2 id="作为胶水桥接不同结构的对象"><a href="#作为胶水桥接不同结构的对象" class="headerlink" title="作为胶水桥接不同结构的对象"></a>作为胶水桥接不同结构的对象</h2><p>通过上面的例子我们可以知道，即便是未定义的属性，<code>Proxy</code> 也能进行代理。这意味着，我们可以通过 <code>Proxy</code> 抹平相似对象之间结构的差异，以相同的方式处理类似的对象。</p>
+<blockquote>
+<p>Pass: 不同公司的项目中的同一个实体的结构不一定完全相同，但基本上类似，只是字段名不同罢了。所以使用 <code>Proxy</code> 实现胶水桥接不同结构的对象方便我们在不同公司使用我们的工具库！<br>嘛，开个玩笑，其实在同一个公司中不同的实体也会有类似的结构，也会需要相同的操作，最常见的应该是树结构数据。例如下面的菜单实体和系统权限实体就很相似，也需要相同的操作 – <strong>树 &lt;=&gt; 列表 相互转换</strong>。</p>
+</blockquote>
+<p>思考一下如何在同一个函数中处理这两种树节点结构</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 系统菜单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SysMenu</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>id 菜单 id</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>name 显示的名称</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>parent 父级菜单 id</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(id, name, parent) &#123;</span><br><span class="line">    <span class="keyword">this</span>.id = id</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.parent = parent</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 系统权限</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SysPermission</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>uid 系统唯一 uuid</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>label 显示的菜单名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>parentId 父级权限 uid</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(uid, label, parentId) &#123;</span><br><span class="line">    <span class="keyword">this</span>.uid = uid</span><br><span class="line">    <span class="keyword">this</span>.label = label</span><br><span class="line">    <span class="keyword">this</span>.parentId = parentId</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面让我们使用 <code>Proxy</code> 来抹平访问它们之间的差异</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sysMenuProxy = &#123; <span class="attr">parentId</span>: <span class="string">'parent'</span> &#125;</span><br><span class="line"><span class="keyword">const</span> sysMenu = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">new</span> SysMenu(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>), &#123;</span><br><span class="line">  <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Reflect</span>.has(sysMenuProxy, k)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, <span class="built_in">Reflect</span>.get(sysMenuProxy, k))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(sysMenu.id, sysMenu.name, sysMenu.parentId) <span class="comment">// 1 'rx' 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sysPermissionProxy = &#123; <span class="attr">id</span>: <span class="string">'uid'</span>, <span class="attr">name</span>: <span class="string">'label'</span> &#125;</span><br><span class="line"><span class="keyword">const</span> sysPermission = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">new</span> SysPermission(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>), &#123;</span><br><span class="line">  <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Reflect</span>.has(sysPermissionProxy, k)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, <span class="built_in">Reflect</span>.get(sysPermissionProxy, k))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(sysPermission.id, sysPermission.name, sysPermission.parentId) <span class="comment">// 1 'rx' 0</span></span><br></pre></td></tr></table></figure>
+
+<p>看起来似乎有点繁琐，让我们封装一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 桥接对象不存在的字段</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>map 代理的字段映射 Map</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Function&#125;</span> </span>转换一个对象为代理对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bridge</span>(<span class="params">map</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 为对象添加代理的函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>obj 任何对象</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;Proxy&#125;</span> </span>代理后的对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, &#123;</span><br><span class="line">      <span class="keyword">get</span>(target, k) &#123;</span><br><span class="line">        <span class="comment">// 如果遇到被代理的属性则返回真实的属性</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Reflect</span>.has(map, k)) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, <span class="built_in">Reflect</span>.get(map, k))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, k)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="keyword">set</span>(target, k, v) &#123;</span><br><span class="line">        <span class="comment">// 如果遇到被代理的属性则设置真实的属性</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Reflect</span>.has(map, k)) &#123;</span><br><span class="line">          <span class="built_in">Reflect</span>.set(target, <span class="built_in">Reflect</span>.get(map, k), v)</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">Reflect</span>.set(target, k, v)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们可以用更简单的方式来做代理了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sysMenu = bridge(&#123;</span><br><span class="line">  parentId: <span class="string">'parent'</span>,</span><br><span class="line">&#125;)(<span class="keyword">new</span> SysMenu(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sysMenu.id, sysMenu.name, sysMenu.parentId) <span class="comment">// 1 'rx' 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sysPermission = bridge(&#123;</span><br><span class="line">  id: <span class="string">'uid'</span>,</span><br><span class="line">  name: <span class="string">'label'</span>,</span><br><span class="line">&#125;)(<span class="keyword">new</span> SysPermission(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sysPermission.id, sysPermission.name, sysPermission.parentId) <span class="comment">// 1 'rx' 0</span></span><br></pre></td></tr></table></figure>
+
+<p>如果想看 JavaScirpt 如何处理树结构数据话，可以参考吾辈的 <a href="https://blog.rxliuli.com/p/bb943156/" target="_blank" rel="noopener">JavaScript 处理树数据结构</a></p>
+<h2 id="监视对象的变化"><a href="#监视对象的变化" class="headerlink" title="监视对象的变化"></a>监视对象的变化</h2><p>接下来，我们想想，平时是否有需要监视对象的变化，然后进行某些处理呢？</p>
+<p>例如监视用户复选框选中项列表的变化并更新对应的需要发送到后台的 <code>id</code> 拼接字符串。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模拟页面的复选框列表</span></span><br><span class="line"><span class="keyword">const</span> hobbyMap = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line">  .set(<span class="number">1</span>, <span class="string">'小说'</span>)</span><br><span class="line">  .set(<span class="number">2</span>, <span class="string">'动画'</span>)</span><br><span class="line">  .set(<span class="number">3</span>, <span class="string">'电影'</span>)</span><br><span class="line">  .set(<span class="number">4</span>, <span class="string">'游戏'</span>)</span><br><span class="line"><span class="keyword">const</span> user = &#123;</span><br><span class="line">  id: <span class="number">1</span>,</span><br><span class="line">  <span class="comment">// 保存兴趣 id 的列表</span></span><br><span class="line">  hobbySet: <span class="keyword">new</span> <span class="built_in">Set</span>(),</span><br><span class="line">  <span class="comment">// 发送到后台的兴趣 id 拼接后的字符串，以都好进行分割</span></span><br><span class="line">  hobby: <span class="string">''</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">  user.hobbySet.has(id) ? user.hobbySet.delete(id) : user.hobbySet.add(id)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟两次点击</span></span><br><span class="line">onClick(<span class="number">1</span>)</span><br><span class="line">onClick(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(user.hobby) <span class="comment">// ''</span></span><br></pre></td></tr></table></figure>
+
+<p>下面使用 <code>Proxy</code> 来完成 <code>hobbySet</code> 属性改变后 <code>hobby</code> 自动更新的操作</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 深度监听指定对象属性的变化</span></span><br><span class="line"><span class="comment"> * 注：指定对象不能是原始类型，即不可变类型，而且对象本身的引用不能改变，最好使用 const 进行声明</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>object 需要监视的对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>callback 当代理对象发生改变时的回调函数，回调函数有三个参数，分别是对象，修改的 key，修改的 v</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns </span>返回源对象的一个代理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">watchObject</span>(<span class="params">object, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> handler = &#123;</span><br><span class="line">    <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 注意: 这里很关键，它为对象的字段也添加了代理</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(v, <span class="built_in">Reflect</span>.get(_, k))</span><br><span class="line">      &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>(_, k, v) &#123;</span><br><span class="line">      callback(_, k, v)</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Reflect</span>.set(_, k, v)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(object, handler)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟页面的复选框列表</span></span><br><span class="line"><span class="keyword">const</span> hobbyMap = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line">  .set(<span class="number">1</span>, <span class="string">'小说'</span>)</span><br><span class="line">  .set(<span class="number">2</span>, <span class="string">'动画'</span>)</span><br><span class="line">  .set(<span class="number">3</span>, <span class="string">'电影'</span>)</span><br><span class="line">  .set(<span class="number">4</span>, <span class="string">'游戏'</span>)</span><br><span class="line"><span class="keyword">const</span> user = &#123;</span><br><span class="line">  id: <span class="number">1</span>,</span><br><span class="line">  <span class="comment">// 保存兴趣 id 的列表</span></span><br><span class="line">  hobbySet: <span class="keyword">new</span> <span class="built_in">Set</span>(),</span><br><span class="line">  <span class="comment">// 发送到后台的兴趣 id 拼接后的字符串，以都好进行分割</span></span><br><span class="line">  hobby: <span class="string">''</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> proxy = watchObject(user, (_, k, v) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (k === <span class="string">'hobbySet'</span>) &#123;</span><br><span class="line">    _.hobby = [..._.hobbySet].join(<span class="string">','</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onClick</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">  proxy.hobbySet = proxy.hobbySet.has(id)</span><br><span class="line">    ? proxy.hobbySet.delete(id)</span><br><span class="line">    : proxy.hobbySet.add(id)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 模拟两次点击</span></span><br><span class="line">onClick(<span class="number">1</span>)</span><br><span class="line">onClick(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在，user.hobby 的值将会自动更新</span></span><br><span class="line"><span class="built_in">console</span>.log(user.hobby) <span class="comment">// 1,2</span></span><br></pre></td></tr></table></figure>
+
+<p>当然，这里实现的 <code>watchObject</code> 函数还非常非常非常简陋，如果有需要可以进行更深度/强大的监听，可以尝试自行实现一下啦！</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>说完了这些 <code>Proxy</code> 的使用场景，下面稍微来说一下它的缺点</p>
+<ul>
+<li><p>运行环境必须要 ES6 支持<br>这是一个不大不小的问题，现代的浏览器基本上都支持 ES6，但如果泥萌公司技术栈非常老旧的话（例如支持 IE6），还是安心吃土吧 #笑 #这种公司不离职等着老死</p>
+</li>
+<li><p>不能直接代理一些需要 this 的对象<br>这个问题就比较麻烦了，任何需要 this 的对象，代理之后的行为可能会发生变化。例如 <code>Set</code> 对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">new</span> <span class="built_in">Set</span>([]), &#123;&#125;)</span><br><span class="line">proxy.add(<span class="number">1</span>) <span class="comment">// Method Set.prototype.add called on incompatible receiver [object Object]</span></span><br></pre></td></tr></table></figure>
+
+<p>是不是很奇怪，解决方案是把所有的 <code>get</code> 操作属性值为 <code>function</code> 的函数都手动绑定 <code>this</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">new</span> <span class="built_in">Set</span>([]), &#123;</span><br><span class="line">  <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">    <span class="keyword">const</span> v = <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">    <span class="comment">// 遇到 Function 都手动绑定一下 this</span></span><br><span class="line">    <span class="keyword">if</span> (v <span class="keyword">instanceof</span> <span class="built_in">Function</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> v.bind(_)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> v</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line">proxy.add(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>Proxy</code> 是个很强大的特性，能够让我们实现一些曾经难以实现的功能（所以这就是你不支持 ES5 的理由？#打），就连 Vue3+ 都开始使用 <code>Proxy</code> 实现了，你还有什么理由在乎上古时期的 IE 而不用呢？（ｖ＾＿＾）ｖ</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/12/others/rxliuliBlog/JavaScript/JavaScript-%E5%BC%82%E6%AD%A5%E6%97%B6%E5%BA%8F%E9%97%AE%E9%A2%98/" rel="prev" title="JavaScript 异步时序问题">
+      <i class="fa fa-chevron-left"></i> JavaScript 异步时序问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/06/20/others/rxliuliBlog/Essay/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E6%97%A0%E6%B3%95%E7%BB%B4%E6%8A%A4%E7%9A%84%E4%BB%A3%E7%A0%81/" rel="next" title="如何编写无法维护的代码">
+      如何编写无法维护的代码 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-中的-ES6-Proxy"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 中的 ES6 Proxy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为函数添加特定的功能"><span class="nav-number">1.2.</span> <span class="nav-text">为函数添加特定的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理对象的访问"><span class="nav-number">1.3.</span> <span class="nav-text">代理对象的访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作为胶水桥接不同结构的对象"><span class="nav-number">1.4.</span> <span class="nav-text">作为胶水桥接不同结构的对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监视对象的变化"><span class="nav-number">1.5.</span> <span class="nav-text">监视对象的变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">1.6.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

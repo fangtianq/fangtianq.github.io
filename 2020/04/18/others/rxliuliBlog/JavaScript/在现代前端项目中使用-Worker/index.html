@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="场景由于需要在 Browser 进行大量的（音频转解码）计算，所以吾辈开始尝试使用 webworker 分离 CPU 密集型的计算操作，最终找到了 comlink 这个库，但之前在 vue 中使用时发生了错误，目前看起来已经得到了解决，所以在此记录一下。 调研方案 web-worker-proxy：结合了 proxy&#x2F;promise&#x2F;webworker 的强大工具库，但如何在 ts 中使用却是个问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在现代前端项目中使用 Worker">
+<meta property="og:url" content="https://fangtianq.github.io/2020/04/18/others/rxliuliBlog/JavaScript/%E5%9C%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-Worker/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="场景由于需要在 Browser 进行大量的（音频转解码）计算，所以吾辈开始尝试使用 webworker 分离 CPU 密集型的计算操作，最终找到了 comlink 这个库，但之前在 vue 中使用时发生了错误，目前看起来已经得到了解决，所以在此记录一下。 调研方案 web-worker-proxy：结合了 proxy&#x2F;promise&#x2F;webworker 的强大工具库，但如何在 ts 中使用却是个问">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-18T14:19:57.000Z">
+<meta property="article:modified_time" content="2020-04-18T14:19:57.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="TypeScript">
+<meta property="article:tag" content="WebWorker">
+<meta property="article:tag" content="Webpack">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/04/18/others/rxliuliBlog/JavaScript/%E5%9C%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-Worker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>在现代前端项目中使用 Worker | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/04/18/others/rxliuliBlog/JavaScript/%E5%9C%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-Worker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          在现代前端项目中使用 Worker
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-18 22:19:57" itemprop="dateCreated datePublished" datetime="2020-04-18T22:19:57+08:00">2020-04-18</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2020/04/18/others/rxliuliBlog/JavaScript/%E5%9C%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-Worker/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/18/others/rxliuliBlog/JavaScript/%E5%9C%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-Worker/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>由于需要在 Browser 进行大量的（音频转解码）计算，所以吾辈开始尝试使用 webworker 分离 CPU 密集型的计算操作，最终找到了 comlink 这个库，但之前在 vue 中使用时发生了错误，目前看起来已经得到了解决，所以在此记录一下。</p>
+<h2 id="调研方案"><a href="#调研方案" class="headerlink" title="调研方案"></a>调研方案</h2><ul>
+<li><a href="https://github.com/satya164/web-worker-proxy" target="_blank" rel="noopener">web-worker-proxy</a>：结合了 proxy/promise/webworker 的强大工具库，但如何在 ts 中使用却是个问题</li>
+<li><a href="https://github.com/miozzz/sandbox/tree/master/orc" target="_blank" rel="noopener">Orc.js</a>：一个简单的 worker 封装</li>
+<li><a href="https://github.com/israelss/vue-worker" target="_blank" rel="noopener">VueWorker</a>：结合 vue 的 worker 封装，无法理解，难道真的会有人在 vue 组件中进行大量计算么？</li>
+<li>comlink：Chrome 的一个基于 proxy/promise/webworker 的封装库</li>
+<li><a href="https://github.com/GoogleChromeLabs/worker-plugin" target="_blank" rel="noopener">worker-plugin</a>：和上面的同属 chrome 实验室的一个 webpack 插件</li>
+</ul>
+<p>最后决定使用 comlink 结合 worker-plugin 实现简单的 worker 使用。</p>
+<h2 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h2><blockquote>
+<p>在 GitHub 上有 <a href="https://github.com/rxliuli/example/tree/master/react_worker_example" target="_blank" rel="noopener">可运行示例 demo</a><br>相关问题：<a href="https://segmentfault.com/q/1010000022359546" target="_blank" rel="noopener">comlink-loader 工作不正常</a></p>
+</blockquote>
+<h3 id="添加相关依赖"><a href="#添加相关依赖" class="headerlink" title="添加相关依赖"></a>添加相关依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add comlink</span><br><span class="line">yarn add -D worker-plugin</span><br></pre></td></tr></table></figure>
+
+<h3 id="在-webpack-配置中添加插件"><a href="#在-webpack-配置中添加插件" class="headerlink" title="在 webpack 配置中添加插件"></a>在 webpack 配置中添加插件</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  plugins: [<span class="keyword">new</span> WorkerPlugin()]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里一般不需要特殊参数配置，如果需要，可以参考：<a href="https://github.com/GoogleChromeLabs/worker-plugin" target="_blank" rel="noopener">worker-plugin</a></p>
+</blockquote>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><h3 id="基本示例"><a href="#基本示例" class="headerlink" title="基本示例"></a>基本示例</h3><p>添加一个简单的 <em>hello.worker.ts</em></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; expose &#125; <span class="keyword">from</span> <span class="string">'comlink'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  counter: <span class="number">0</span>,</span><br><span class="line">  inc() &#123;</span><br><span class="line">    <span class="keyword">this</span>.counter++</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">expose(obj)</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>main.ts</code> 中使用</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = wrap(<span class="keyword">new</span> Worker(<span class="string">'./hello.worker.ts'</span>, &#123; <span class="keyword">type</span>: <span class="string">'module'</span> &#125;)) <span class="keyword">as</span> <span class="built_in">any</span></span><br><span class="line">alert(<span class="string">`Counter: <span class="subst">$&#123;<span class="keyword">await</span> obj.counter&#125;</span>`</span>)</span><br><span class="line"><span class="keyword">await</span> obj.inc()</span><br><span class="line">alert(<span class="string">`Counter: <span class="subst">$&#123;<span class="keyword">await</span> obj.counter&#125;</span>`</span>)</span><br></pre></td></tr></table></figure>
+
+<p>但这里并不是类型安全的，所以我们可以实现正确的类型。</p>
+<p>添加一个 <em>hello.worker.ts</em> 暴露出来的类型 <code>HelloWorkerType</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> HelloWorkerType &#123;</span><br><span class="line">  counter: <span class="built_in">number</span></span><br><span class="line">  inc(): <span class="built_in">void</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时为了支持在 <em>main.ts</em> 中使用正确的类型，需要使用泛型</p>
+<p><em>main.ts</em> 修改如下</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = wrap&lt;HelloWorkerType&gt;(</span><br><span class="line">  <span class="keyword">new</span> Worker(<span class="string">'./hello.worker.ts'</span>, &#123; <span class="keyword">type</span>: <span class="string">'module'</span> &#125;),</span><br><span class="line">)</span><br><span class="line">alert(<span class="string">`Counter: <span class="subst">$&#123;<span class="keyword">await</span> obj.counter&#125;</span>`</span>)</span><br><span class="line"><span class="keyword">await</span> obj.inc()</span><br><span class="line">alert(<span class="string">`Counter: <span class="subst">$&#123;<span class="keyword">await</span> obj.counter&#125;</span>`</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a>纯函数</h3><p>声明函数的类型 <em>HelloCallback.worker.type.d.ts</em></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ListItem&lt;T <span class="keyword">extends</span> <span class="built_in">any</span>[]&gt; = T <span class="keyword">extends</span> (infer U)[] ? U : never</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">type</span> MapWorkerType = &lt;List <span class="keyword">extends</span> <span class="built_in">any</span>[], U&gt;(</span><br><span class="line">  arr: List,</span><br><span class="line">  cb: <span class="function">(<span class="params">val: ListItem&lt;List&gt;</span>) =&gt;</span> U | <span class="built_in">Promise</span>&lt;U&gt;,</span><br><span class="line">) =&gt; <span class="built_in">Promise</span>&lt;U[]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>声明一个纯函数 <em>HelloCallback.worker.ts</em></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; MapWorkerType &#125; <span class="keyword">from</span> <span class="string">'./HelloCallback.worker.type'</span></span><br><span class="line"><span class="keyword">import</span> &#123; expose &#125; <span class="keyword">from</span> <span class="string">'comlink'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> map: MapWorkerType = <span class="function">(<span class="params">arr, cb</span>) =&gt;</span> <span class="built_in">Promise</span>.all(arr.map(cb))</span><br><span class="line"></span><br><span class="line">expose(map)</span><br></pre></td></tr></table></figure>
+
+<p>注：此处最好使用变量的形式，主要是为了方便将函数类型剥离出去。</p>
+<p>在 <em>main.ts</em> 中使用</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = wrap&lt;MapWorkerType&gt;(</span><br><span class="line">  <span class="keyword">new</span> Worker(<span class="string">'./HelloCallback.worker.ts'</span>, &#123;</span><br><span class="line">    <span class="keyword">type</span>: <span class="string">'module'</span>,</span><br><span class="line">  &#125;),</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> list = <span class="keyword">await</span> map(</span><br><span class="line">  [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">  proxy(<span class="function">(<span class="params">i</span>) =&gt;</span> i * <span class="number">2</span>),</span><br><span class="line">)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'list: '</span>, list)</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-class-的形式"><a href="#使用-class-的形式" class="headerlink" title="使用 class 的形式"></a>使用 class 的形式</h3><p>声明接口 <em>HelloClass.worker.type.d.ts</em></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloClassWorker &#123;</span><br><span class="line">  sum(...args: <span class="built_in">number</span>[]): <span class="built_in">number</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>worker 文件 <em>HelloClass.worker.ts</em></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; HelloClassWorker &#125; <span class="keyword">from</span> <span class="string">'./HelloClass.worker.type'</span></span><br><span class="line"><span class="keyword">import</span> &#123; expose &#125; <span class="keyword">from</span> <span class="string">'comlink'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> HelloClassWorkerImpl <span class="keyword">implements</span> HelloClassWorker &#123;</span><br><span class="line">  sum(...args: <span class="built_in">number</span>[]): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> args.reduce(<span class="function">(<span class="params">res, i</span>) =&gt;</span> res + i, <span class="number">0</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">expose(HelloClassWorkerImpl)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于此处 <code>implements class</code> 的问题，吾辈偶然一试之下没报错也很奇怪，所以找到了相关问题 <a href="https://stackoverflow.com/a/26961710" target="_blank" rel="noopener">Typescript: How to extend two classes?</a>，官方文档也同样说明了这个特性 <a href="https://www.typescriptlang.org/docs/handbook/mixins.html" target="_blank" rel="noopener">Mixins</a>。</p>
+</blockquote>
+<p>在 <em>main.ts</em> 中使用</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> HelloClassWorkerClazz = wrap&lt;<span class="keyword">typeof</span> HelloClassWorker&gt;(</span><br><span class="line">  <span class="keyword">new</span> Worker(<span class="string">'./HelloClass.worker.ts'</span>, &#123;</span><br><span class="line">    <span class="keyword">type</span>: <span class="string">'module'</span>,</span><br><span class="line">  &#125;),</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">await</span> <span class="keyword">new</span> HelloClassWorkerClazz()</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">await</span> instance.sum(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，使用 worker 的基本分三步</p>
+<ol>
+<li>编写需要放在 worker 里内容的类型定义</li>
+<li>根据类型定义实现它</li>
+<li>在主进程的代码中使用它</li>
+</ol>
+<blockquote>
+<p>注：当然，如果是复杂的东西，可以直接在单独的文件中实现，然后声明一个 <em>.worker.ts</em> 暴露出去，不在 <em>.worker.ts</em> 中包含任何</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://blog.logrocket.com/integrating-web-workers-in-a-react-app-with-comlink/" target="_blank" rel="noopener">Integrating web workers in a React app with Comlink</a></li>
+<li><a href="https://lorefnon.tech/2019/03/24/using-comlink-with-typescript-and-worker-loader/" target="_blank" rel="noopener">Using comlink with typescript and worker-loader</a></li>
+<li><a href="https://medium.com/lacolaco-blog/an-issue-around-angular-cli-comlink-workerplugin-585be1c8d087" target="_blank" rel="noopener">An issue around Angular CLI + Comlink + WorkerPlugin</a></li>
+</ul>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 记录</a>
+              <a href="/tags/TypeScript/" rel="tag"><i class="fa fa-tag"></i> TypeScript</a>
+              <a href="/tags/WebWorker/" rel="tag"><i class="fa fa-tag"></i> WebWorker</a>
+              <a href="/tags/Webpack/" rel="tag"><i class="fa fa-tag"></i> Webpack</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/02/others/rxliuliBlog/JavaScript/TypeScript-%E5%87%BD%E6%95%B0%E6%A0%B9%E6%8D%AE%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8F%82%E6%95%B0%E6%8E%A8%E5%AF%BC%E5%90%8E%E9%9D%A2%E5%8F%82%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B/" rel="prev" title="TypeScript 函数根据第一个参数推导后面参数的类型">
+      <i class="fa fa-chevron-left"></i> TypeScript 函数根据第一个参数推导后面参数的类型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/" rel="next" title="JavaScript 禁止用户保存图片">
+      JavaScript 禁止用户保存图片 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调研方案"><span class="nav-number">2.</span> <span class="nav-text">调研方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装与配置"><span class="nav-number">3.</span> <span class="nav-text">安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加相关依赖"><span class="nav-number">3.1.</span> <span class="nav-text">添加相关依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-webpack-配置中添加插件"><span class="nav-number">3.2.</span> <span class="nav-text">在 webpack 配置中添加插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">4.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本示例"><span class="nav-number">4.1.</span> <span class="nav-text">基本示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#纯函数"><span class="nav-number">4.2.</span> <span class="nav-text">纯函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-class-的形式"><span class="nav-number">4.3.</span> <span class="nav-text">使用 class 的形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

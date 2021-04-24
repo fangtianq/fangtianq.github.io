@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用 hexo next 搭建静态博客场景在碎片化学习的时代，没有体系化&#x2F;总结的知识很快会被彻底遗忘，而博客可以帮助我们记忆平时零碎的知识。有人似乎认为想玩博客就必须要域名&#x2F;服务器，这里吾辈不得不说明一下，这个认知是错误的。 对于绝大多数网站来说，静态是无法满足复杂的需求的。然而我们只是想要日常写点博客，分享到网络上的话，却是不需要这些，静态博客也便是足够了。 准备本文假设你是一位开发者并至少对下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 hexo next 搭建静态博客">
+<meta property="og:url" content="https://fangtianq.github.io/2018/12/09/others/rxliuliBlog/Tool/Windows/%E4%BD%BF%E7%94%A8-hexo-next-%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="使用 hexo next 搭建静态博客场景在碎片化学习的时代，没有体系化&#x2F;总结的知识很快会被彻底遗忘，而博客可以帮助我们记忆平时零碎的知识。有人似乎认为想玩博客就必须要域名&#x2F;服务器，这里吾辈不得不说明一下，这个认知是错误的。 对于绝大多数网站来说，静态是无法满足复杂的需求的。然而我们只是想要日常写点博客，分享到网络上的话，却是不需要这些，静态博客也便是足够了。 准备本文假设你是一位开发者并至少对下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20181209170408.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209170553.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209174358.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209175833.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209175541.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209181850.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209182031.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209182900.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209183821.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209184200.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209211213.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209211441.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209211616.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209211803.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209212501.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190110234441.gif">
+<meta property="og:image" content="https://img.rxliuli.com/20190110235636.gif">
+<meta property="og:image" content="https://img.rxliuli.com/20181209212636.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209214854.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209215051.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209215646.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209215853.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181209220703.png">
+<meta property="article:published_time" content="2018-12-09T08:32:42.000Z">
+<meta property="article:modified_time" content="2019-01-09T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20181209170408.png">
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/12/09/others/rxliuliBlog/Tool/Windows/%E4%BD%BF%E7%94%A8-hexo-next-%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用 hexo next 搭建静态博客 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/12/09/others/rxliuliBlog/Tool/Windows/%E4%BD%BF%E7%94%A8-hexo-next-%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          使用 hexo next 搭建静态博客
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-09 16:32:42" itemprop="dateCreated datePublished" datetime="2018-12-09T16:32:42+08:00">2018-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-01-10 00:00:00" itemprop="dateModified" datetime="2019-01-10T00:00:00+08:00">2019-01-10</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2018/12/09/others/rxliuliBlog/Tool/Windows/%E4%BD%BF%E7%94%A8-hexo-next-%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/09/others/rxliuliBlog/Tool/Windows/%E4%BD%BF%E7%94%A8-hexo-next-%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="使用-hexo-next-搭建静态博客"><a href="#使用-hexo-next-搭建静态博客" class="headerlink" title="使用 hexo next 搭建静态博客"></a>使用 hexo next 搭建静态博客</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在碎片化学习的时代，没有体系化/总结的知识很快会被彻底遗忘，而博客可以帮助我们记忆平时零碎的知识。有人似乎认为想玩博客就必须要域名/服务器，这里吾辈不得不说明一下，这个认知是错误的。</p>
+<p>对于绝大多数网站来说，静态是无法满足复杂的需求的。然而我们只是想要日常写点博客，分享到网络上的话，却是不需要这些，静态博客也便是足够了。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>本文假设你是一位开发者并至少对下面打勾的内容有基本了解。</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> <a href="https://git-scm.com/" target="_blank" rel="noopener">git</a>：分布式版本控制工具</li>
+<li><input checked="" disabled="" type="checkbox"> <a href="https://gitlab.com/" target="_blank" rel="noopener">gitlab</a>：私有代码托管平台</li>
+<li><input checked="" disabled="" type="checkbox"> <a href=".">Bash/PowerShell/Cmd</a>：命令行操作</li>
+<li><input checked="" disabled="" type="checkbox"> <a href=".">域名</a>：让别人能记住你的博客</li>
+<li><input disabled="" type="checkbox"> <a href="https://nodejs.org/" target="_blank" rel="noopener">nodejs</a>：JavaScript 运行环境</li>
+<li><input disabled="" type="checkbox"> <a href="https://www.netlify.com/" target="_blank" rel="noopener">netlify</a>：静态网站托管服务</li>
+<li><input disabled="" type="checkbox"> <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a>：文本编辑器（类 IDE）</li>
+</ul>
+<h2 id="使用-npm-全局安装-hexo"><a href="#使用-npm-全局安装-hexo" class="headerlink" title="使用 npm 全局安装 hexo"></a>使用 npm 全局安装 hexo</h2><p>如果你还没有安装 nodejs 的话可以去 <a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">nodejs 官网下载页面</a> 进行下载并安装，具体步骤可以参考 <a href=".">在 Windows 上安装 nodejs</a>。</p>
+<p>全局安装 hexo 命令行工具</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i hexo -g</span><br></pre></td></tr></table></figure>
+
+<p>安装过程</p>
+<p><img src="https://img.rxliuli.com/20181209170408.png" alt="hexo cli 安装过程"></p>
+<p>验证一下</p>
+<p>输入 <code>hexo</code>，应该会得到类似下面的响应</p>
+<p><img src="https://img.rxliuli.com/20181209170553.png" alt="hexo 安装验证"></p>
+<h2 id="初始化-hexo-博客"><a href="#初始化-hexo-博客" class="headerlink" title="初始化 hexo 博客"></a>初始化 hexo 博客</h2><p>创建一个空的文件夹作为 hexo 博客目录，在命令行中进入这个文件夹然后执行初始化命令。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<p><img src="https://img.rxliuli.com/20181209174358.png" alt="hexo init 输出"></p>
+<p>安装完成后文件夹如下</p>
+<p><img src="https://img.rxliuli.com/20181209175833.png" alt="安装后的文件夹"></p>
+<h2 id="本地运行博客"><a href="#本地运行博客" class="headerlink" title="本地运行博客"></a>本地运行博客</h2><p>使用命令运行一个本地的 hexo 博客服务器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>在浏览器打开 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 页面，可以看到 hexo 博客的初始页面<br><img src="https://img.rxliuli.com/20181209175541.png" alt="hexo 博客的初始页面"></p>
+<p>嗯，有点丑，我们可以更换一下主题，本文主要讲解使用 <a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">hexo next</a> 主题。</p>
+<h2 id="安装-next-主题"><a href="#安装-next-主题" class="headerlink" title="安装 next 主题"></a>安装 next 主题</h2><ol>
+<li><p>克隆并安装主题最新版本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启用主题<br>打开根目录下的 <em>\</em>config.yml_ 文件，找到 <code>theme</code> 字段，将之修改为 <code>next</code> 即可<br><img src="https://img.rxliuli.com/20181209181850.png" alt="启用 next 主题"></p>
+</li>
+<li><p>重新打开本地服务器测试一下<br><img src="https://img.rxliuli.com/20181209182031.png" alt="next 主题首页"></p>
+</li>
+</ol>
+<h2 id="将代码托管到-gitlab"><a href="#将代码托管到-gitlab" class="headerlink" title="将代码托管到 gitlab"></a>将代码托管到 gitlab</h2><blockquote>
+<p>肯定有人会问，为什么不用 github？<br>原因很简单：如果你需要使用第三方服务的话肯定需要第三方服务的认证。例如 github 的 token，如果别人想要滥用这个 token 对你的博客做点什么，你却无法阻止，因为 github 托管代码是公开的。</p>
+</blockquote>
+<p>删除掉默认的 <em>landscape</em> 主题和 <em>next</em> 主题的 git 仓库，位置分别是</p>
+<ul>
+<li><em>themes/landscape/</em></li>
+<li><em>themes/next/.git</em></li>
+</ul>
+<p>在本地也初始化一下 git 仓库，然后初始提交全部</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add -A</span><br><span class="line">git commit -a -m <span class="string">"Initial Commit"</span></span><br></pre></td></tr></table></figure>
+
+<p>所以，在 <a href="https://gitlab.com" target="_blank" rel="noopener">gitlab</a> 创建一个私有仓库（最好与本地博客文件夹同名）。<br><img src="https://img.rxliuli.com/20181209182900.png" alt="gitlab 创建私有仓库"></p>
+<p>创建完成后会得到一个 git 远程仓库的地址<br><img src="https://img.rxliuli.com/20181209183821.png" alt="git 远程仓库地址"></p>
+<p>将之设置为本地仓库的远程仓库</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin [这里替换成你的远程仓库地址]</span><br></pre></td></tr></table></figure>
+
+<p>最后，提交一下吧</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>提交完成后回到刚才创建的远程仓库的页面，会看到远程仓库中已经有文件了<br><img src="https://img.rxliuli.com/20181209184200.png" alt="提交完之后"></p>
+<h2 id="托管网站"><a href="#托管网站" class="headerlink" title="托管网站"></a>托管网站</h2><blockquote>
+<p>这里声明一下：之所以不使用 github 作为静态网站托管服务是因为 github 只能托管一个静态网站，老实说这是一件很麻烦的事情。毕竟，一个人并不止一个网站。</p>
+</blockquote>
+<p>具体差别如下：</p>
+<table>
+<thead>
+<tr>
+<th>对比</th>
+<th>GitHub</th>
+<th>Netlify</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>价格</td>
+<td>免费</td>
+<td>免费</td>
+</tr>
+<tr>
+<td>构建限制</td>
+<td>每小时 10 次</td>
+<td>每分钟 3 次</td>
+</tr>
+<tr>
+<td>使用 HTTPS 的自定义域</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>单击 回滚</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>资产优化</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>表格处理</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>部署预览</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>持续部署</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>自定义重写和重定向</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>兼容所有静态站点生成器</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>预呈现</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>拆分测试</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+<tr>
+<td>Lambda 函数集成</td>
+<td>没有</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<h2 id="部署-netlify"><a href="#部署-netlify" class="headerlink" title="部署 netlify"></a>部署 netlify</h2><ol>
+<li><p>首先你需要一个 <a href="https://netlify.com/" target="_blank" rel="noopener">netlify</a> 的账号，只需要邮箱即可注册。</p>
+</li>
+<li><p>登录之后进入你的 <a href="https://app.netlify.com/" target="_blank" rel="noopener">个人首页</a><br><img src="https://img.rxliuli.com/20181209211213.png" alt="个人首页"></p>
+</li>
+<li><p>由于我们的远程仓库使用的是 GitLab，所以我们连接自己的 GitLab 账户<br><img src="https://img.rxliuli.com/20181209211441.png" alt="连接到 GitLab"></p>
+</li>
+<li><p>接下来找到我们的远程仓库<br><img src="https://img.rxliuli.com/20181209211616.png" alt="远程仓库"></p>
+</li>
+<li><p>设定构建命令以及构建目录，没有意外的话 netlify 已经自动识别出这是 hexo 博客了<br><img src="https://img.rxliuli.com/20181209211803.png" alt="设定构建命令"></p>
+</li>
+<li><p>部署站点<br>点击部署之后就会帮你自动部署，部署完成后就可以在线访问你的博客啦<br><img src="https://img.rxliuli.com/20181209212501.png" alt="在线自动部署"></p>
+</li>
+<li><p>自定义域名</p>
+<blockquote>
+<p>如果你还没有自己的域名（本文假定你有），可以直接跳转到步骤 9</p>
+</blockquote>
+<ol>
+<li>点击 <strong>Domain settings</strong> 进入域名设置</li>
+<li>点击 <strong>Add custom domain</strong> 添加自定义的域名</li>
+<li>点击 <strong>Verify =&gt; Yes, add domain</strong> 验证并确认添加</li>
+<li>点击 <strong>Check DNS configuration</strong> 检查 DNS 配置</li>
+<li>查看其中的 CNAME DNS 记录，一会还要用</li>
+</ol>
+<p><img src="https://img.rxliuli.com/20190110234441.gif" alt="Gif 图解"></p>
+</li>
+<li><p>在你的域名 DNS 记录中添加上面的 CNAME 记录</p>
+<ol>
+<li>打开你的 DNS 管理器，这里以 <a href="https://www.cloudflare.com" target="_blank" rel="noopener">cloudflare</a> 为例</li>
+<li>添加一条 CNAME 记录，Name 是我们自定义的二级域名前缀 <a href="https://blog-demo.rxliuli.com/" target="_blank" rel="noopener">blog-demo</a>，Domain name 是 netlify 为我们自动生成的二级域名 <a href="https://confident-joliot-3c1548.netlify.com/" target="_blank" rel="noopener">confident-joliot-3c1548.netlify.com</a>。</li>
+<li>等待 DNS 刷新完成</li>
+</ol>
+<p><img src="https://img.rxliuli.com/20190110235636.gif" alt="Gif 图解"></p>
+<blockquote>
+<p>这里吾辈再推荐一次 <a href="https://www.cloudflare.com" target="_blank" rel="noopener">cloudflare</a>，DNS 刷新时间不会超过 5 分钟，真的是有够快的了！</p>
+</blockquote>
+</li>
+<li><p>访问博客<br><img src="https://img.rxliuli.com/20181209212636.png" alt="访问博客"></p>
+</li>
+</ol>
+<h2 id="修改博客设置"><a href="#修改博客设置" class="headerlink" title="修改博客设置"></a>修改博客设置</h2><p>现在博客基本上部署到线上了，然而有很多地方需要配置，如果需要了解更多的功能可以访问 <a href="https://hexo.io/" target="_blank" rel="noopener">hexo</a> 或 <a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">hexo next 主题</a>，下面只说一些最重要的配置。</p>
+<p>在 <em>\</em>config.yml_ 配置文件中</p>
+<ul>
+<li>title：博客标题</li>
+<li>subtitle：博客子标题</li>
+<li>language：博客显示语言</li>
+<li>author：作者</li>
+</ul>
+<p>配置效果对照图</p>
+<p><img src="https://img.rxliuli.com/20181209214854.png" alt="VSCode"><br><img src="https://img.rxliuli.com/20181209215051.png" alt="浏览器"></p>
+<h2 id="写一个新的文章"><a href="#写一个新的文章" class="headerlink" title="写一个新的文章"></a>写一个新的文章</h2><p>使用 hexo 命令即可创建新的文章（本质上是一个含有 yml 关于文章简介的 markdown 文件）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">"[文章名]"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.rxliuli.com/20181209215646.png" alt="创建新的文章"></p>
+<p>随便写点什么<br><img src="https://img.rxliuli.com/20181209215853.png" alt="编辑 markdown 文件"></p>
+<p>最后使用 git 将之提交到 GitLab 远程仓库，netlify 会监听并帮我们自动部署好一切的，再访问网站可以看到新的篇章了（如果内容很多可能要等一段时间）<br><img src="https://img.rxliuli.com/20181209220703.png" alt="新的篇章"></p>
+<p>这个示例 blog 被吾辈部署到 <a href="https://hexo-next-blog-demo.rxliuli.com/" target="_blank" rel="noopener">https://hexo-next-blog-demo.rxliuli.com/</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后，吾辈推荐看看下面的内容</p>
+<ul>
+<li><a href="https://hexo.io/" target="_blank" rel="noopener">hexo 官网</a></li>
+<li><a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">next 主题官网</a></li>
+<li><a href="https://blog.rxliuli.com/p/5042aac0/" target="_blank" rel="noopener">markdown 语法说明</a></li>
+<li><a href="https://blog.rxliuli.com/p/43851eb5/" target="_blank" rel="noopener">VSCode 搭建 markdown 写作环境</a></li>
+<li><a href="https://blog.rxliuli.com/p/6138bec/" target="_blank" rel="noopener">Markdown 图片粘贴工具 PicGo</a></li>
+</ul>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
+              <a href="/tags/Markdown/" rel="tag"><i class="fa fa-tag"></i> Markdown</a>
+              <a href="/tags/blog/" rel="tag"><i class="fa fa-tag"></i> blog</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/06/others/rxliuliBlog/Tool/VSCode/VSCode-%E5%9C%A8-markdown-%E6%96%87%E6%A1%A3%E4%B8%AD%E5%AD%98%E5%9C%A8%E8%A1%A8%E6%A0%BC%E6%97%B6%E4%B8%8D%E8%83%BD%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%A1%A3/" rel="prev" title="VSCode 在 markdown 文档中存在表格时不能格式化文档">
+      <i class="fa fa-chevron-left"></i> VSCode 在 markdown 文档中存在表格时不能格式化文档
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/10/others/rxliuliBlog/JavaScript/Vue-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%80%91%E5%B8%83%E6%B5%81%E7%BB%84%E4%BB%B6/" rel="next" title="Vue 实现一个简单的瀑布流组件">
+      Vue 实现一个简单的瀑布流组件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-hexo-next-搭建静态博客"><span class="nav-number">1.</span> <span class="nav-text">使用 hexo next 搭建静态博客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-npm-全局安装-hexo"><span class="nav-number">1.3.</span> <span class="nav-text">使用 npm 全局安装 hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化-hexo-博客"><span class="nav-number">1.4.</span> <span class="nav-text">初始化 hexo 博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地运行博客"><span class="nav-number">1.5.</span> <span class="nav-text">本地运行博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-next-主题"><span class="nav-number">1.6.</span> <span class="nav-text">安装 next 主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将代码托管到-gitlab"><span class="nav-number">1.7.</span> <span class="nav-text">将代码托管到 gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#托管网站"><span class="nav-number">1.8.</span> <span class="nav-text">托管网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-netlify"><span class="nav-number">1.9.</span> <span class="nav-text">部署 netlify</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改博客设置"><span class="nav-number">1.10.</span> <span class="nav-text">修改博客设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写一个新的文章"><span class="nav-number">1.11.</span> <span class="nav-text">写一个新的文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.12.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

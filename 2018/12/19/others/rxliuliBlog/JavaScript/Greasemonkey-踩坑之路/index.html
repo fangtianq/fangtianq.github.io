@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Greasemonkey 踩坑之路 Greasemonkey 踩坑之路 场景 window 对象不能和外部交换数据 Greasemonkey API 显示 undefined 内存爆炸 Greasemonkey 加载时机太晚 等待一段时间再调用，例如等个几秒 Greasemonkey 脚本可能就加载了 延迟到 Greasemonkey 脚本加载完成再与之交互 暴露出需要交互的函数等到 Grease">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Greasemonkey 踩坑之路">
+<meta property="og:url" content="https://fangtianq.github.io/2018/12/19/others/rxliuliBlog/JavaScript/Greasemonkey-%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="Greasemonkey 踩坑之路 Greasemonkey 踩坑之路 场景 window 对象不能和外部交换数据 Greasemonkey API 显示 undefined 内存爆炸 Greasemonkey 加载时机太晚 等待一段时间再调用，例如等个几秒 Greasemonkey 脚本可能就加载了 延迟到 Greasemonkey 脚本加载完成再与之交互 暴露出需要交互的函数等到 Grease">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20181219225309.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181219225919.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181220002112.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181220013001.png">
+<meta property="article:published_time" content="2018-12-19T14:40:04.000Z">
+<meta property="article:modified_time" content="2018-12-20T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="Greasemonkey">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20181219225309.png">
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/12/19/others/rxliuliBlog/JavaScript/Greasemonkey-%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Greasemonkey 踩坑之路 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/12/19/others/rxliuliBlog/JavaScript/Greasemonkey-%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          Greasemonkey 踩坑之路
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-19 22:40:04" itemprop="dateCreated datePublished" datetime="2018-12-19T22:40:04+08:00">2018-12-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-12-21 00:00:00" itemprop="dateModified" datetime="2018-12-21T00:00:00+08:00">2018-12-21</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2018/12/19/others/rxliuliBlog/JavaScript/Greasemonkey-%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/19/others/rxliuliBlog/JavaScript/Greasemonkey-%E8%B8%A9%E5%9D%91%E4%B9%8B%E8%B7%AF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Greasemonkey-踩坑之路"><a href="#Greasemonkey-踩坑之路" class="headerlink" title="Greasemonkey 踩坑之路"></a>Greasemonkey 踩坑之路</h1><ul>
+<li><a href="#greasemonkey-踩坑之路">Greasemonkey 踩坑之路</a><ul>
+<li><a href="#场景">场景</a></li>
+<li><a href="#window-对象不能和外部交换数据">window 对象不能和外部交换数据</a></li>
+<li><a href="#greasemonkey-api-显示-undefined">Greasemonkey API 显示 undefined</a></li>
+<li><a href="#内存爆炸">内存爆炸</a></li>
+<li><a href="#greasemonkey-加载时机太晚">Greasemonkey 加载时机太晚</a><ul>
+<li><a href="#等待一段时间再调用例如等个几秒-greasemonkey-脚本可能就加载了">等待一段时间再调用，例如等个几秒 Greasemonkey 脚本可能就加载了</a></li>
+<li><a href="#延迟到-greasemonkey-脚本加载完成再与之交互">延迟到 Greasemonkey 脚本加载完成再与之交互</a></li>
+<li><a href="#暴露出需要交互的函数等到-greasemonkey-加载完成后进行回调">暴露出需要交互的函数等到 Greasemonkey 加载完成后进行回调</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>最近在玩 Greasemonkey 脚本，遇到了各种奇怪的问题，便于此处统一记录一下。</p>
+<h2 id="window-对象不能和外部交换数据"><a href="#window-对象不能和外部交换数据" class="headerlink" title="window 对象不能和外部交换数据"></a>window 对象不能和外部交换数据</h2><p>场景</p>
+<p>在写 Greasemonkey 脚本时遇到的一个奇怪的问题，吾辈想要把某些数据添加到 <code>window</code> 对象上，方便在 DevTool console 中进行测试。然而却由此印发了一个新的问题，即 <code>window</code> 对象不是真正的 <code>window</code> 对象的问题。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ==UserScript==</span></span><br><span class="line"><span class="comment">// @name         Testing</span></span><br><span class="line"><span class="comment">// @namespace    http://tampermonkey.net/</span></span><br><span class="line"><span class="comment">// @version      0.1</span></span><br><span class="line"><span class="comment">// @description  用来测试的 userjs 脚本</span></span><br><span class="line"><span class="comment">// @author       rxliuli</span></span><br><span class="line"><span class="comment">// @include     http://*</span></span><br><span class="line"><span class="comment">// @include			https://*</span></span><br><span class="line"><span class="comment">// @grant        MIT</span></span><br><span class="line"><span class="comment">// ==/UserScript==</span></span><br><span class="line"></span><br><span class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span></span><br><span class="line">  <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">window</span>.rxliuli = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'这里是 rxliuli 编写的 user.js 脚本'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">window</span>.rxliuli()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>控制台正常输出了一句话。然而，当吾辈在 console 中输入 <code>window.rxliuli</code> 的结果却是 <code>undefined</code>。</p>
+<hr>
+<p>解决</p>
+<p>吾辈估计又是 Greasemonkey 自身的问题，所以不得不去翻了 <a href="https://wiki.greasespot.net" target="_blank" rel="noopener">Wiki</a> 上查找，直到看到了 <a href="https://wiki.greasespot.net/Greasemonkey_Manual:Environment" target="_blank" rel="noopener">Greasemonkey Manual:Environment</a>。里面有这么一段话</p>
+<blockquote>
+<p>Depending on the usage, the special Greasemonkey environment may seem perfectly normal, or excessively limiting.<br>The Greasemonkey environment is a vanilla XPCNativeWrapper of the content window, with only certain extra bits added in to emulate a normal environment, or changed. Specifically:</p>
+<ul>
+<li>window is an XPCNativeWrapper of the content window.</li>
+<li>document is the document object of the XPCNativeWrapper window object.</li>
+<li>XPathResult is added so that document.evaluate() works.</li>
+<li>Unless the @unwrap metadata imperative is present in the user script header, the entire script is wrapped inside an anonymous function, to guarantee the script’s identifiers do not collide with identifiers present in the Mozilla JavaScript sandbox. This function wrapper captures any function definitions and var variable declarations made (e.g. var i = 5;) into the function’s local scope. Declarations made without var will however end up on the script’s this object, which in Greasemonkey is the global object, contrary to in the normal browser object model, where the window object fills this function. In effect, after i = 5;, the values of window[‘i’] and window.i remain undefined, whereas this[‘i’] and this.i will be 5. See also: Global object</li>
+<li>In order to access variables on the page, use the unsafeWindow object. To use values defined in a script, simply reference them by their names.</li>
+</ul>
+</blockquote>
+<p>大意是 Greasemonkey 为了安全所以 Greasemonkey 脚本是在沙箱中执行的，并且限制了一些内容。其中就包括了 <code>window</code> 对象并非浏览器的原生对象，而是 <code>XPCNativeWrapper</code>。<br>所以，<code>XPCNativeWrapper</code> 是什么。。。？（一个 Greasemonkey 的坑太多了吧 #吐血）<br>吾辈找到了两篇文章</p>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-TW/docs/XPCNativeWrapper" target="_blank" rel="noopener">XPCNat ive Wrapper</a></li>
+<li><a href="http://kb.mozillazine.org/XPCNativeWrapper" target="_blank" rel="noopener">Use XPCNativeWrapper</a></li>
+</ul>
+<p>看完之后表示只知道 <code>XPCNativeWrapper</code> 是在扩展中用来保护不受信任的对象，并非浏览器客户端本身的 API。</p>
+<p>好吧，说了这么多解决方案是什么呢？</p>
+<p>答案很简单，其实使用 <a href="https://wiki.greasespot.net/UnsafeWindow" target="_blank" rel="noopener">unsafeWindow</a> 对象就能像使用原生的 <code>window</code> 对象行为一致，即便这是不推荐的方法，但有时仍然是必须的！</p>
+<h2 id="Greasemonkey-API-显示-undefined"><a href="#Greasemonkey-API-显示-undefined" class="headerlink" title="Greasemonkey API 显示 undefined"></a>Greasemonkey API 显示 undefined</h2><p>场景</p>
+<p>在 <a href="https://wiki.greasespot.net/Greasemonkey_Manual:API" target="_blank" rel="noopener">Greasemonkey 手册：API</a> 写出的 API 有很多都不能正常使用，吾辈打印下来的结果是</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ==UserScript==</span></span><br><span class="line"><span class="comment">// @name         test</span></span><br><span class="line"><span class="comment">// @namespace    http://tampermonkey.net/</span></span><br><span class="line"><span class="comment">// @version      0.1</span></span><br><span class="line"><span class="comment">// @description  test</span></span><br><span class="line"><span class="comment">// @match        *</span></span><br><span class="line"><span class="comment">// @author       rxliuli</span></span><br><span class="line"><span class="comment">// @grant        MIT</span></span><br><span class="line"><span class="comment">// ==/UserScript==</span></span><br><span class="line"></span><br><span class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(GM)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.info)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.deleteValue)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.getValue)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.listValues)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.setValue)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.getResourceUrl)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.notification)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.openInTab)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.setClipboard)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.setClipboard)</span><br><span class="line">  <span class="built_in">console</span>.log(unsafeWindow)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.rxliuli.com/20181219225309.png" alt="Greasemonkey API 显示 undefined"></p>
+<p>测试环境如下：</p>
+<ul>
+<li>Windows 10 Ltsc</li>
+<li>Chrome 71</li>
+<li>tampermonkey 4.7.44</li>
+</ul>
+<hr>
+<p>解决</p>
+<p>吾辈在翻 <a href="https://github.com/sindresorhus/globals/issues/122" target="_blank" rel="noopener">GitHub Issue</a> 找到了问题所在，原因是这些 API 必须要手动获取准许才行。<br>即使用 <code>// @grant GM.[Function]</code> 来获取需要的 API，所以吾辈的脚本变成了下面这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ==UserScript==</span></span><br><span class="line"><span class="comment">// @name         test</span></span><br><span class="line"><span class="comment">// @namespace    http://tampermonkey.net/</span></span><br><span class="line"><span class="comment">// @version      0.1</span></span><br><span class="line"><span class="comment">// @description  test</span></span><br><span class="line"><span class="comment">// @match        *</span></span><br><span class="line"><span class="comment">// @author       rxliuli</span></span><br><span class="line"><span class="comment">// @grant        MIT</span></span><br><span class="line"><span class="comment">// @grant        GM.deleteValue</span></span><br><span class="line"><span class="comment">// @grant        GM.getValue</span></span><br><span class="line"><span class="comment">// @grant        GM.listValues</span></span><br><span class="line"><span class="comment">// @grant        GM.setValue</span></span><br><span class="line"><span class="comment">// @grant        GM.getResourceUrl</span></span><br><span class="line"><span class="comment">// @grant        GM.notification</span></span><br><span class="line"><span class="comment">// @grant        GM.openInTab</span></span><br><span class="line"><span class="comment">// @grant        GM.setClipboard</span></span><br><span class="line"><span class="comment">// ==/UserScript==</span></span><br><span class="line"></span><br><span class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span></span><br><span class="line">  <span class="built_in">console</span>.log(GM)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.info)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.deleteValue)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.getValue)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.listValues)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.setValue)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.getResourceUrl)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.notification)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.openInTab)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.setClipboard)</span><br><span class="line">  <span class="built_in">console</span>.log(GM.setClipboard)</span><br><span class="line">  <span class="built_in">console</span>.log(unsafeWindow)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>问题解决了，现在，所有的 API 都有值了。</p>
+<p><img src="https://img.rxliuli.com/20181219225919.png" alt="GM API 都有值了"></p>
+<h2 id="内存爆炸"><a href="#内存爆炸" class="headerlink" title="内存爆炸"></a>内存爆炸</h2><p>场景</p>
+<p>使用了 <code>GM.setValue()/GM.getValue()</code> 两个 API，结果内存分分钟爆炸。吾辈安装 Chrome 以来第一次碰到加载网页能把内存耗尽的情况，果然 GM 的限制不是没有道理的呢<br><img src="https://img.rxliuli.com/20181220002112.png" alt="内存爆炸"><br><img src="https://img.rxliuli.com/20181220013001.png" alt="浏览器崩溃"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ==UserScript==</span></span><br><span class="line"><span class="comment">// @name         Testing</span></span><br><span class="line"><span class="comment">// @namespace    http://tampermonkey.net/</span></span><br><span class="line"><span class="comment">// @match        *</span></span><br><span class="line"><span class="comment">// @version      0.1</span></span><br><span class="line"><span class="comment">// @description  用来测试的 userjs 脚本</span></span><br><span class="line"><span class="comment">// @author       rxliuli</span></span><br><span class="line"><span class="comment">// @grant        GM.getValue</span></span><br><span class="line"><span class="comment">// @grant        GM.setValue</span></span><br><span class="line"><span class="comment">// ==/UserScript==</span></span><br><span class="line"></span><br><span class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> domains = &#123;</span><br><span class="line">    domainsName: <span class="string">'domains'</span>,</span><br><span class="line">    <span class="keyword">async</span> list() &#123;</span><br><span class="line">      <span class="keyword">var</span> valueStr = GM.getValue(<span class="keyword">this</span>.domainsName)</span><br><span class="line">      <span class="keyword">if</span> (!valueStr) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(valueStr)</span><br><span class="line">      &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="keyword">var</span> defaultArr = []</span><br><span class="line">        <span class="keyword">await</span> <span class="keyword">this</span>.set(defaultArr)</span><br><span class="line">        <span class="keyword">return</span> defaultArr</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">set</span>(arr) &#123;</span><br><span class="line">      <span class="keyword">await</span> GM.setValue(<span class="keyword">this</span>.domainsName, <span class="built_in">JSON</span>.stringify(arr))</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.list()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">0</span>).fill(<span class="number">0</span>).map(<span class="function">(<span class="params">v, i</span>) =&gt;</span> i)</span><br><span class="line">    <span class="keyword">var</span> result = <span class="keyword">await</span> domains.set(arr)</span><br><span class="line">    <span class="built_in">console</span>.log(result)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  init()</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>解决</p>
+<p>Debug 之后发现是调用 <code>GM.setValue()</code> 没有使用 <code>await</code> 造成的异步请求数量不断积累最终导致网页崩溃。果然 Promise 什么的还是要小心一点好呀<br>当然，不信的话你也可以新建一个 Greasemonkey 脚本尝试一下内存爆炸的感觉咯</p>
+<blockquote>
+<p>递归不是主要问题，吾辈 PC 上的 Chrome 最多到 1.4w+ 次递归就会抛出异常（网页没有崩溃），还没到 1.4w+ 次，所以说递归不是主要问题呀</p>
+</blockquote>
+<h2 id="Greasemonkey-加载时机太晚"><a href="#Greasemonkey-加载时机太晚" class="headerlink" title="Greasemonkey 加载时机太晚"></a>Greasemonkey 加载时机太晚</h2><p>场景</p>
+<p>Greasemonkey 的加载是在页面加载完毕时，类似于 <code>window.onload</code>，所以造成了一个问题：如果想要在网站的 JavaScript 代码中与 Greasemonkey 脚本交互，那么必须要等到 Greasemonkey 加载完成，而加载完成的时机是不确定的。</p>
+<p>吾辈目前想要的解决方案有三种</p>
+<h3 id="等待一段时间再调用，例如等个几秒-Greasemonkey-脚本可能就加载了"><a href="#等待一段时间再调用，例如等个几秒-Greasemonkey-脚本可能就加载了" class="headerlink" title="等待一段时间再调用，例如等个几秒 Greasemonkey 脚本可能就加载了"></a>等待一段时间再调用，例如等个几秒 Greasemonkey 脚本可能就加载了</h3><p>思路</p>
+<p>现在没有人，我等会再来问一次！</p>
+<p>实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wait = <span class="function"><span class="params">ms</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> setTimeout(resolve, ms))</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现和调用最为简单，但无法保证等待之后就一定能获得资源了</span></span><br><span class="line">wait(<span class="number">1000</span>).then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(完成))</span><br></pre></td></tr></table></figure>
+
+<h3 id="延迟到-Greasemonkey-脚本加载完成再与之交互"><a href="#延迟到-Greasemonkey-脚本加载完成再与之交互" class="headerlink" title="延迟到 Greasemonkey 脚本加载完成再与之交互"></a>延迟到 Greasemonkey 脚本加载完成再与之交互</h3><p>思路</p>
+<p>有人吗? 没有的话我等会再来问！</p>
+<p>实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 轮询等待指定资源加载完毕再执行操作</span></span><br><span class="line"><span class="comment"> * 使用 Promises 实现，可以使用 ES7 的 &#123;<span class="doctag">@async</span>&#125;/&#123;<span class="doctag">@await</span>&#125; 调用</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>resourceFn 判断必须的资源是否存在的方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>options 选项</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitResource</span>(<span class="params">resourceFn, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> optionsRes = <span class="built_in">Object</span>.assign(</span><br><span class="line">    &#123;</span><br><span class="line">      interval: <span class="number">1000</span>,</span><br><span class="line">      max: <span class="number">10</span></span><br><span class="line">    &#125;,</span><br><span class="line">    options</span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">var</span> current = <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (resourceFn()) &#123;</span><br><span class="line">        clearInterval(timer)</span><br><span class="line">        resolve()</span><br><span class="line">      &#125;</span><br><span class="line">      current++</span><br><span class="line">      <span class="keyword">if</span> (current &gt;= optionsRes.max) &#123;</span><br><span class="line">        clearInterval(timer)</span><br><span class="line">        reject(<span class="string">'等待超时'</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, optionsRes.interval)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> resourceFn = <span class="function">(<span class="params">i =&gt; (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`第 <span class="subst">$&#123;i++&#125;</span> 次调用`</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;)(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">waitResource(resourceFn, &#123;</span><br><span class="line">  interval: <span class="number">1000</span>,</span><br><span class="line">  max: <span class="number">3</span></span><br><span class="line">&#125;)</span><br><span class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'完成'</span>))</span><br><span class="line">  .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err))</span><br></pre></td></tr></table></figure>
+
+<h3 id="暴露出需要交互的函数等到-Greasemonkey-加载完成后进行回调"><a href="#暴露出需要交互的函数等到-Greasemonkey-加载完成后进行回调" class="headerlink" title="暴露出需要交互的函数等到 Greasemonkey 加载完成后进行回调"></a>暴露出需要交互的函数等到 Greasemonkey 加载完成后进行回调</h3><p>思路</p>
+<p>现在没有人，有人的时候再叫我！</p>
+<p>实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待被调用</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>ms 超时毫秒数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>name 准备被调用的挂载到 window 对象上的方法名</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitingToCall</span>(<span class="params">ms, name = <span class="string">'waiting'</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> timeout = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      reject(<span class="string">'等待超时'</span>)</span><br><span class="line">    &#125;, ms)</span><br><span class="line">    <span class="built_in">window</span>[name] = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      clearTimeout(timeout)</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">waitingToCall(<span class="number">3000</span>, <span class="string">'waiting'</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'完成'</span>))</span><br><span class="line">  .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err))</span><br></pre></td></tr></table></figure>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 记录</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+              <a href="/tags/Greasemonkey/" rel="tag"><i class="fa fa-tag"></i> Greasemonkey</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/11/others/rxliuliBlog/Java/MybatisPlus-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%A8%E5%B1%80%E6%93%8D%E4%BD%9C-exists-%E4%B8%80%E7%9B%B4%E8%BF%94%E5%9B%9E-null/" rel="prev" title="MybatisPlus 自定义全局操作 exists 一直返回 null">
+      <i class="fa fa-chevron-left"></i> MybatisPlus 自定义全局操作 exists 一直返回 null
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/20/others/rxliuliBlog/JavaScript/%E8%A7%A3%E5%86%B3-npm-%E4%B8%8B%E8%BD%BD%E9%80%9F%E5%BA%A6%E8%BF%87%E6%85%A2/" rel="next" title="解决 npm 下载速度过慢">
+      解决 npm 下载速度过慢 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Greasemonkey-踩坑之路"><span class="nav-number">1.</span> <span class="nav-text">Greasemonkey 踩坑之路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#window-对象不能和外部交换数据"><span class="nav-number">1.2.</span> <span class="nav-text">window 对象不能和外部交换数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Greasemonkey-API-显示-undefined"><span class="nav-number">1.3.</span> <span class="nav-text">Greasemonkey API 显示 undefined</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存爆炸"><span class="nav-number">1.4.</span> <span class="nav-text">内存爆炸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Greasemonkey-加载时机太晚"><span class="nav-number">1.5.</span> <span class="nav-text">Greasemonkey 加载时机太晚</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#等待一段时间再调用，例如等个几秒-Greasemonkey-脚本可能就加载了"><span class="nav-number">1.5.1.</span> <span class="nav-text">等待一段时间再调用，例如等个几秒 Greasemonkey 脚本可能就加载了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟到-Greasemonkey-脚本加载完成再与之交互"><span class="nav-number">1.5.2.</span> <span class="nav-text">延迟到 Greasemonkey 脚本加载完成再与之交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暴露出需要交互的函数等到-Greasemonkey-加载完成后进行回调"><span class="nav-number">1.5.3.</span> <span class="nav-text">暴露出需要交互的函数等到 Greasemonkey 加载完成后进行回调</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

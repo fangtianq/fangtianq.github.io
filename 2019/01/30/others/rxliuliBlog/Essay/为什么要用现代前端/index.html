@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="为什么要用现代前端背景前端近两年来发展迅速，随着 nodejs 的广泛使用，大批 npm 的框架&#x2F;库层出不穷，npm 上 JavaScript 库的数量甚至超过了 Maven 中央仓库。然而即便如此，仍然有很多公司固守在传统的前端切 UI，后端通过模板视图填充视图的技术。一方面固然是为了避免新技术踩坑，另一方面，居然有人在 deno 下说出了：求不要更新了，老子学不动了，并引发了大量讨论。  de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么要用现代前端">
+<meta property="og:url" content="https://fangtianq.github.io/2019/01/30/others/rxliuliBlog/Essay/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="为什么要用现代前端背景前端近两年来发展迅速，随着 nodejs 的广泛使用，大批 npm 的框架&#x2F;库层出不穷，npm 上 JavaScript 库的数量甚至超过了 Maven 中央仓库。然而即便如此，仍然有很多公司固守在传统的前端切 UI，后端通过模板视图填充视图的技术。一方面固然是为了避免新技术踩坑，另一方面，居然有人在 deno 下说出了：求不要更新了，老子学不动了，并引发了大量讨论。  de">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-30T00:10:26.000Z">
+<meta property="article:modified_time" content="2019-01-30T00:10:26.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/01/30/others/rxliuliBlog/Essay/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>为什么要用现代前端 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/01/30/others/rxliuliBlog/Essay/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          为什么要用现代前端
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-30 08:10:26" itemprop="dateCreated datePublished" datetime="2019-01-30T08:10:26+08:00">2019-01-30</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/01/30/others/rxliuliBlog/Essay/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/30/others/rxliuliBlog/Essay/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="为什么要用现代前端"><a href="#为什么要用现代前端" class="headerlink" title="为什么要用现代前端"></a>为什么要用现代前端</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前端近两年来发展迅速，随着 <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs</a> 的广泛使用，大批 <a href="https://npmjs.com" target="_blank" rel="noopener">npm</a> 的框架/库层出不穷，npm 上 JavaScript 库的数量甚至超过了 <a href="https://mvnrepository.com/" target="_blank" rel="noopener">Maven 中央仓库</a>。<br>然而即便如此，仍然有很多公司固守在传统的前端切 UI，后端通过模板视图填充视图的技术。一方面固然是为了避免新技术踩坑，另一方面，居然有人在 <a href="https://github.com/denoland/deno" target="_blank" rel="noopener">deno</a> 下说出了：<a href="https://github.com/denoland/deno/issues/25" target="_blank" rel="noopener">求不要更新了，老子学不动了</a>，并引发了大量讨论。</p>
+<blockquote>
+<p>deno 是 nodejs 的作者开发的下一代 JavaScript 运行时。</p>
+</blockquote>
+<h2 id="现代前端"><a href="#现代前端" class="headerlink" title="现代前端"></a>现代前端</h2><p>前端发展史</p>
+<blockquote>
+<ol>
+<li>1996 年，样式表标准 <code>CSS</code> 第一版发布。</li>
+<li>2001 年，微软公司时隔 5 年之后，发布了 IE 浏览器的下一个版本 <code>Internet Explorer 6</code>。这是当时最先进的浏览器，它后来统治了浏览器市场多年。</li>
+<li>2002 年，Mozilla 项目发布了它的浏览器的第一版，后来起名为 <code>Firefox</code>。</li>
+<li>2003 年，苹果公司发布了 <code>Safari</code> 浏览器的第一版。</li>
+<li>2004 年，Google 公司发布了 <code>Gmail</code>，促成了互联网应用程序（<code>Web Application</code>）这个概念的诞生。由于 Gmail 是在 4 月 1 日发布的，很多人起初以为这只是一个玩笑。</li>
+<li>2004 年，<code>WHATWG</code> 组织成立，致力于加速 HTML 语言的标准化进程。</li>
+<li>2005 年，<code>Ajax</code> 方法（Asynchronous JavaScript and XML）正式诞生，Jesse James Garrett 发明了这个词汇。它开始流行的标志是，2 月份发布的 Google Maps 项目大量采用该方法。它几乎成了新一代网站的标准做法，促成了 <code>Web 2.0</code> 时代的来临。</li>
+<li>2006 年，<code>jQuery</code> 函数库诞生，作者为 John Resig。jQuery 为操作网页 <code>DOM</code> 结构提供了非常强大易用的接口，成为了使用最广泛的函数库，并且让 JavaScript 语言的应用难度大大降低，推动了这种语言的流行。</li>
+<li>2008 年，<code>V8</code> 编译器诞生.</li>
+<li>2009 年，<code>Node.js</code> 项目诞生，创始人为 Ryan Dahl，它标志着 JavaScript 可以用于 <code>服务器端编程</code>，从此网站的前端和后端可以使用同一种语言开发。并且，Node.js 可以承受很大的并发流量，使得开发某些互联网大规模的实时应用变得容易。</li>
+<li>2013 年 5 月，Facebook 发布 UI 框架库 <code>React</code>，引入了新的 <code>JSX</code> 语法，使得 UI 层可以用组件开发。</li>
+<li>2015 年 3 月，Facebook 公司发布了 <code>React Native</code> 项目，将 React 框架移植到了手机端，可以用来开发手机 <code>App</code>。它会将 JavaScript 代码转为 <code>iOS</code> 平台的 <code>Objective-C</code> 代码，或者 <code>Android</code> 平台的 <code>Java</code> 代码，从而为 JavaScript 语言开发高性能的原生 App 打开了一条道路。</li>
+<li>2015 年 <code>vuejs</code> 发布 1.0 版本</li>
+<li>2016 年 <code>vuejs2.x</code> 版本发布</li>
+<li>新生事物仍在不断涌现…</li>
+</ol>
+</blockquote>
+<p>上面就是前端的大概发展史，看完之后，不难发现，有一些关键的历史时刻，对前端开发产生了重大影响。例如 IE6 的发布（统治了浏览器市场很多年），JQuery 的诞生，Ajax 的流行。而现在，新的拐点出现了 – nodejs 的流行。现代前端仍然在快速发展中，前后端分离，SSR，PWA 都是近两年才出现的概念。如果没有上车，后面就再难追上了。例如像十年前不使用 Spring 开发的应用，在现代 Java Web 后端的环境中，没有 Spring 简直寸步难行。</p>
+<p>上面说了一些现代前端的历史，那么使用它具体有什么好处呢？</p>
+<h3 id="JavaScript-模块化"><a href="#JavaScript-模块化" class="headerlink" title="JavaScript 模块化"></a>JavaScript 模块化</h3><p>仔细想想，我们的 HTML, CSS 和 JavaScript 是如何结合使用的？</p>
+<p>是的，我们按照规范分离了 HTML, CSS 和 JavaScript，并在 HTML 中使用 <code>&lt;link /&gt;</code> 和 <code>&lt;scirpt&gt;&lt;/script&gt;</code> 标签引入 CSS 和 JavaScript。那么，不同的 JavaScript 之间如何交互呢？我们只能通过暴露顶级变量（<code>window 作用域</code>）来进行交互。<br>是呀，稍有经验的 JavaScript 开发者都会 <strong>抽取函数</strong>，然而一个 JavaScript 中太多的函数仍然容易产生混乱。</p>
+<p>例如下面这段代码，点击不同的按钮，显示不同的面板。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>JavaScript 避免使用 if-else<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"tab"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">data-index</span>=<span class="string">"1"</span> <span class="attr">name</span>=<span class="string">"form-tab-radio"</span> /&gt;</span></span><br><span class="line">          第一个选项卡</span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">data-index</span>=<span class="string">"2"</span> <span class="attr">name</span>=<span class="string">"form-tab-radio"</span> /&gt;</span></span><br><span class="line">          第二个选项卡</span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"radio"</span> <span class="attr">data-index</span>=<span class="string">"3"</span> <span class="attr">name</span>=<span class="string">"form-tab-radio"</span> /&gt;</span></span><br><span class="line">          第三个选项卡</span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"extends-form"</span>&gt;</span><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./js/if-else.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// js/if-else.js</span></span><br><span class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">'#tab input[name="form-tab-radio"]'</span>).forEach(<span class="function"><span class="params">el</span> =&gt;</span> &#123;</span><br><span class="line">  el.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> index = el.dataset.index</span><br><span class="line">    <span class="keyword">const</span> header = el.parentElement.innerText.trim()</span><br><span class="line">    <span class="comment">// 如果为 1 就添加一个文本表单</span></span><br><span class="line">    <span class="keyword">if</span> (index === <span class="string">'1'</span>) &#123;</span><br><span class="line">      <span class="built_in">document</span>.querySelector(<span class="string">'#extends-form'</span>).innerHTML = <span class="string">`</span></span><br><span class="line"><span class="string">            &lt;header&gt;&lt;h2&gt;<span class="subst">$&#123;header&#125;</span>&lt;/h2&gt;&lt;/header&gt;</span></span><br><span class="line"><span class="string">            &lt;div&gt;</span></span><br><span class="line"><span class="string">              &lt;label for="name"&gt;姓名&lt;/label&gt;</span></span><br><span class="line"><span class="string">              &lt;input type="text" name="name" id="name" /&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;div&gt;</span></span><br><span class="line"><span class="string">              &lt;label for="age"&gt;年龄&lt;/label&gt;</span></span><br><span class="line"><span class="string">              &lt;input type="number" name="age" id="age" /&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;div&gt;</span></span><br><span class="line"><span class="string">              &lt;button type="submit"&gt;提交&lt;/button&gt; &lt;button type="reset"&gt;重置&lt;/button&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">          `</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (index === <span class="string">'2'</span>) &#123;</span><br><span class="line">      <span class="built_in">document</span>.querySelector(<span class="string">'#extends-form'</span>).innerHTML = <span class="string">`</span></span><br><span class="line"><span class="string">        &lt;header&gt;&lt;h2&gt;<span class="subst">$&#123;header&#125;</span>&lt;/h2&gt;&lt;/header&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">          &lt;label for="avatar"&gt;头像&lt;/label&gt;</span></span><br><span class="line"><span class="string">          &lt;input type="file" name="avatar" id="avatar" /&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;&lt;img id="avatar-preview" src="" /&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">          &lt;button type="submit"&gt;提交&lt;/button&gt; &lt;button type="reset"&gt;重置&lt;/button&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">      `</span></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">readLocalFile</span>(<span class="params">file</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> fr = <span class="keyword">new</span> FileReader()</span><br><span class="line">          fr.onload = <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">            resolve(event.target.result)</span><br><span class="line">          &#125;</span><br><span class="line">          fr.onerror = <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">            reject(error)</span><br><span class="line">          &#125;</span><br><span class="line">          fr.readAsDataURL(file)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">document</span>.querySelector(<span class="string">'#avatar'</span>).addEventListener(<span class="string">'change'</span>, evnet =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> file = evnet.target.files[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> (!file) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!file.type.includes(<span class="string">'image'</span>)) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        readLocalFile(file).then(<span class="function"><span class="params">link</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">document</span>.querySelector(<span class="string">'#avatar-preview'</span>).src = link</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (index === <span class="string">'3'</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> initData = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).fill(<span class="number">0</span>).map(<span class="function">(<span class="params">v, i</span>) =&gt;</span> <span class="string">`第 <span class="subst">$&#123;i&#125;</span> 项内容`</span>)</span><br><span class="line">      <span class="built_in">document</span>.querySelector(<span class="string">'#extends-form'</span>).innerHTML = <span class="string">`</span></span><br><span class="line"><span class="string">        &lt;header&gt;&lt;h2&gt;<span class="subst">$&#123;header&#125;</span>&lt;/h2&gt;&lt;/header&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">          &lt;label for="search-text"&gt;搜索文本&lt;/label&gt;</span></span><br><span class="line"><span class="string">          &lt;input type="text" name="search-text" id="search-text" /&gt;</span></span><br><span class="line"><span class="string">          &lt;ul id="search-result"&gt;&lt;/ul&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">      `</span></span><br><span class="line">      <span class="built_in">document</span></span><br><span class="line">        .querySelector(<span class="string">'#search-text'</span>)</span><br><span class="line">        .addEventListener(<span class="string">'input'</span>, evnet =&gt; &#123;</span><br><span class="line">          <span class="keyword">const</span> searchText = event.target.value</span><br><span class="line">          <span class="built_in">document</span>.querySelector(<span class="string">'#search-result'</span>).innerHTML = initData</span><br><span class="line">            .filter(<span class="function"><span class="params">v</span> =&gt;</span> v.includes(searchText))</span><br><span class="line">            .map(<span class="function"><span class="params">v</span> =&gt;</span> <span class="string">`&lt;li&gt;<span class="subst">$&#123;v&#125;</span>&lt;/li&gt;`</span>)</span><br><span class="line">            .join()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>使用现代前端的 JavaScript 模块化重构如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// common.js</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 状态机</span></span><br><span class="line"><span class="comment"> * 用于避免使用 if-else 的一种方式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StateMachine</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> getBuilder() &#123;</span><br><span class="line">    <span class="keyword">const</span> clazzMap = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 状态注册器</span></span><br><span class="line"><span class="comment">     * 更好的有限状态机，分离子类与构建的关系，无论子类如何增删该都不影响基类及工厂类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">      <span class="comment">// noinspection JSMethodCanBeStatic</span></span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 注册一个 class，创建子类时调用，用于记录每一个 [状态 =&gt; 子类] 对应</span></span><br><span class="line"><span class="comment">       * <span class="doctag">@param </span>state 作为键的状态</span></span><br><span class="line"><span class="comment">       * <span class="doctag">@param </span>clazz 对应的子类型</span></span><br><span class="line"><span class="comment">       * <span class="doctag">@returns <span class="type">&#123;*&#125;</span> </span>返回 clazz 本身</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      register(state, clazz) &#123;</span><br><span class="line">        clazzMap.set(state, clazz)</span><br><span class="line">        <span class="keyword">return</span> clazz</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// noinspection JSMethodCanBeStatic</span></span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 获取一个标签子类对象</span></span><br><span class="line"><span class="comment">       * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>state 状态索引</span></span><br><span class="line"><span class="comment">       * <span class="doctag">@returns <span class="type">&#123;QuestionType&#125;</span> </span>子类对象</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      getInstance(state) &#123;</span><br><span class="line">        <span class="keyword">const</span> clazz = clazzMap.get(state)</span><br><span class="line">        <span class="keyword">if</span> (!clazz) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//构造函数的参数</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> clazz(...Array.from(<span class="built_in">arguments</span>).slice(<span class="number">1</span>))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> StateMachine</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TabBuilder.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> StateMachine.getBuilder()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tab.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tab</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 基类里面的初始化方法放一些通用的操作</span></span><br><span class="line">  init(header) &#123;</span><br><span class="line">    <span class="keyword">const</span> html = <span class="string">`</span></span><br><span class="line"><span class="string">      &lt;header&gt;&lt;h2&gt;<span class="subst">$&#123;header&#125;</span>&lt;/h2&gt;&lt;/header&gt;</span></span><br><span class="line"><span class="string">      <span class="subst">$&#123;<span class="keyword">this</span>.initHTML()&#125;</span></span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'#extends-form'</span>).innerHTML = html</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 给出一个方法让子类实现，以获得不同的 HTML 内容</span></span><br><span class="line">  initHTML() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Tab</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tab1.js</span></span><br><span class="line"><span class="keyword">import</span> builder <span class="keyword">from</span> <span class="string">'./TabBuilder.js'</span></span><br><span class="line"><span class="keyword">import</span> Tab <span class="keyword">from</span> <span class="string">'./Tab'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Tab1 = builder.register(</span><br><span class="line">  <span class="number">1</span>,</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Tab1</span> <span class="keyword">extends</span> <span class="title">Tab</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 实现 initHTML，获得选项卡对应的 HTML</span></span><br><span class="line">    initHTML() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">          &lt;label for="name"&gt;姓名&lt;/label&gt;</span></span><br><span class="line"><span class="string">          &lt;input type="text" name="name" id="name" /&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">          &lt;label for="age"&gt;年龄&lt;/label&gt;</span></span><br><span class="line"><span class="string">          &lt;input type="number" name="age" id="age" /&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">          &lt;button type="submit"&gt;提交&lt;/button&gt; &lt;button type="reset"&gt;重置&lt;/button&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">      `</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tab2.js</span></span><br><span class="line"><span class="keyword">import</span> builder <span class="keyword">from</span> <span class="string">'./TabBuilder.js'</span></span><br><span class="line"><span class="keyword">import</span> Tab <span class="keyword">from</span> <span class="string">'./Tab'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Tab2 = builder.register(</span><br><span class="line">  <span class="number">2</span>,</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Tab2</span> <span class="keyword">extends</span> <span class="title">Tab</span> </span>&#123;</span><br><span class="line">    initHTML() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">      &lt;div&gt;</span></span><br><span class="line"><span class="string">        &lt;label for="avatar"&gt;头像&lt;/label&gt;</span></span><br><span class="line"><span class="string">        &lt;input type="file" name="avatar" id="avatar" /&gt;</span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">      &lt;div&gt;&lt;img id="avatar-preview" src="" /&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">      &lt;div&gt;</span></span><br><span class="line"><span class="string">        &lt;button type="submit"&gt;提交&lt;/button&gt; &lt;button type="reset"&gt;重置&lt;/button&gt;</span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">      `</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 重写 init 初始化方法，并首先调用基类通用初始化的方法</span></span><br><span class="line">    init(header) &#123;</span><br><span class="line">      <span class="keyword">super</span>.init(header)</span><br><span class="line">      <span class="built_in">document</span>.querySelector(<span class="string">'#avatar'</span>).addEventListener(<span class="string">'change'</span>, evnet =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> file = evnet.target.files[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> (!file) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!file.type.includes(<span class="string">'image'</span>)) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.readLocalFile(file).then(<span class="function"><span class="params">link</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">document</span>.querySelector(<span class="string">'#avatar-preview'</span>).src = link</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 子类独有方法</span></span><br><span class="line">    readLocalFile(file) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> fr = <span class="keyword">new</span> FileReader()</span><br><span class="line">        fr.onload = <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">          resolve(event.target.result)</span><br><span class="line">        &#125;</span><br><span class="line">        fr.onerror = <span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">          reject(error)</span><br><span class="line">        &#125;</span><br><span class="line">        fr.readAsDataURL(file)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tab2.js</span></span><br><span class="line"><span class="keyword">import</span> builder <span class="keyword">from</span> <span class="string">'./TabBuilder.js'</span></span><br><span class="line"><span class="keyword">import</span> Tab <span class="keyword">from</span> <span class="string">'./Tab'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Tab3 = builder.register(</span><br><span class="line">  <span class="number">3</span>,</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Tab3</span> <span class="keyword">extends</span> <span class="title">Tab</span> </span>&#123;</span><br><span class="line">    initHTML() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">      &lt;div&gt;</span></span><br><span class="line"><span class="string">        &lt;label for="search-text"&gt;搜索文本&lt;/label&gt;</span></span><br><span class="line"><span class="string">        &lt;input type="text" name="search-text" id="search-text" /&gt;</span></span><br><span class="line"><span class="string">        &lt;ul id="search-result" /&gt;</span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">    &#125;</span><br><span class="line">    init(header) &#123;</span><br><span class="line">      <span class="keyword">super</span>.init(header)</span><br><span class="line">      <span class="keyword">const</span> initData = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).fill(<span class="number">0</span>).map(<span class="function">(<span class="params">v, i</span>) =&gt;</span> <span class="string">`第 <span class="subst">$&#123;i&#125;</span> 项内容`</span>)</span><br><span class="line">      <span class="built_in">document</span></span><br><span class="line">        .querySelector(<span class="string">'#search-text'</span>)</span><br><span class="line">        .addEventListener(<span class="string">'input'</span>, evnet =&gt; &#123;</span><br><span class="line">          <span class="keyword">const</span> searchText = event.target.value</span><br><span class="line">          <span class="built_in">document</span>.querySelector(<span class="string">'#search-result'</span>).innerHTML = initData</span><br><span class="line">            .filter(<span class="function"><span class="params">v</span> =&gt;</span> v.includes(searchText))</span><br><span class="line">            .map(<span class="function"><span class="params">v</span> =&gt;</span> <span class="string">`&lt;li&gt;<span class="subst">$&#123;v&#125;</span>&lt;/li&gt;`</span>)</span><br><span class="line">            .join()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> builder <span class="keyword">from</span> <span class="string">'./TabBuilder.js'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./Tab1'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./Tab2'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./Tab3'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">'#tab input[name="form-tab-radio"]'</span>).forEach(<span class="function"><span class="params">el</span> =&gt;</span> &#123;</span><br><span class="line">  el.addEventListener(<span class="string">'click'</span>, () =&gt;</span><br><span class="line">    <span class="comment">// 调用方式不变</span></span><br><span class="line">    builder</span><br><span class="line">      .getInstance(<span class="built_in">Number</span>.parseInt(el.dataset.index))</span><br><span class="line">      .init(el.parentElement.innerText.trim())</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>虽然看起来代码/文件变得更多了，然而实际上不同的状态区分更加明显，代码也更容易维护了。</p>
+<h3 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h3><p>如果我们想要让传统前端项目兼容 <code>IE11</code>，那么恐怕不得不使用 <code>JQuery</code> 以及 <code>ES5</code> 以前的语法（ES5 也支持的不完全）。如果想要使用 <code>ES6/ES7/ES8</code> 的话恐怕不仅在 IE11 上无法保证兼容性，既便 Web 标准的前沿实现者 Google Chrome，它的旧版本对新特性的支持恐怕也不算好（Google Chrome 开发团队的实力毋庸置疑，然而如果一个标准是在浏览器发布之后才出现的话，旧版本浏览器却是不可能兼容了）。</p>
+<blockquote>
+<p>附: 最近两年 JavaScript 的标准几乎是一年一个版本，不过都没有再像 <code>ES6</code> 如此激进了</p>
+</blockquote>
+<p>那么，如果使用现代前端就能解决这个问题了么？是的，它现代前端项目基本上都会引入的一个库 – <a href="https://babeljs.io/" target="_blank" rel="noopener">Babel</a>。</p>
+<p>Babel 官网首页用一句话说明了 Babel 的定位</p>
+<blockquote>
+<p>Babel is a JavaScript compiler.<br>Use next generation JavaScript, today.</p>
+</blockquote>
+<p>意为：<br><strong>Babel 是一个 JavaScript 编译器。</strong><br><strong>立刻使用下一代 JavaScript。</strong></p>
+<p>是的，你没听错，Babel 给自身的定义是 JavaScript 编译器。众所周知，JavaScript 是运行在浏览器上（现在也可以运行在 NodeJS）的解释型弱类型的脚本语言，是没有编译器的。而 Babel 就是帮我们将 ES6 之后的 JavaScript 代码编译成 ES5 的代码，以兼容较旧版本的浏览器。</p>
+<p>例如下面的代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(i), <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会被转换成</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  ;(<span class="function"><span class="params">_i</span> =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(_i), <span class="number">0</span>)</span><br><span class="line">    i = _i</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，传统前端不能使用 Babel 了么？答案是可以的，然而因为是在浏览器端编译 JavaScript，所以速度比较慢，具体可以参考吾辈写的 <a href="https://blog.rxliuli.com/p/e73e3322/" target="_blank" rel="noopener">在传统项目中使用 babel 编译 ES6</a>。</p>
+<h3 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h3><blockquote>
+<p><a href="https://zh.wikipedia.org/zh-cn/MVVM" target="_blank" rel="noopener">Wiki</a></p>
+</blockquote>
+<p><code>MVVM</code>（<code>Model–view–viewmodel</code>）是一种软件架构模式。</p>
+<p>MVVM 有助于将图形用户界面的开发与业务逻辑或后端逻辑（数据模型）的开发分离开来，这是通过置标语言或 GUI 代码实现的。MVVM 的视图模型是一个值转换器，这意味着视图模型负责从模型中暴露（转换）数据对象，以便轻松管理和呈现对象。在这方面，视图模型比视图做得更多，并且处理大部分视图的显示逻辑。视图模型可以实现中介者模式，组织对视图所支持的用例集的后端逻辑的访问。</p>
+<p>说人话就是 MVVM 能让我们不再关心 DOM 的更改，专注于操作数据，DOM 会根据数据自动渲染，我们不再需要关心它。</p>
+<p>事实上，我们的不同的代码虽然分离了，但逻辑上却不然，JavaScript 仍然需要操作 DOM 和 Style，而这项工作是非常繁琐而且易错的。<br>曾经我们使用 JQuery 来进行 DOM 交互，同时保证兼容性，以及更好的 Ajax 工具。现在，现代前端的很多框架就是为了解决数据与 DOM 同步的，不管是 <code>React</code> 的 <code>JSX</code>，还是 <code>VueJS</code> 的 <code>单文件组件</code>。</p>
+<p><code>JSX</code>：React 的理念是 既然 JavaScript 能够操作 HTML/CSS，那就把所有的控制权交给 JavaScript 就好了，在 React JSX 中，一切都是 JavaScript，即便是 JSX 的 DSL 也只是一个看起来像 HTML 的 JavaScript 代码而已。像下面的代码，事实上就是 JavaScript，直接写 <code>&lt;div&gt;Hello {this.props.name}&lt;/div&gt;</code> 只是语法糖，背后真正运行的还是 JavaScript。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>Hello &#123;this.props.name&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">HelloMessage</span> <span class="attr">name</span>=<span class="string">"Taylor"</span> /&gt;</span></span>, mountNode)</span><br></pre></td></tr></table></figure>
+
+<p>假如使用 vuejs 的话写起来大概是这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;Hello &#123;name&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#39;HelloWord&#39;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    name: &#123;</span><br><span class="line">      type: String</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> HelloMessage <span class="keyword">from</span> <span class="string">'./HelloMessage'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  components: &#123; HelloMessage &#125;,</span><br><span class="line">  template: <span class="string">'&lt;App/&gt;'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>它们之间的思想有许多共同之处，都推崇组件化开发，把 <code>HTML/CSS/JavaScript</code> 混合起来形成组件（类似于 Java 中将属性和函数封装为类），然后组合成更大的组件，形成组件树，并最终构成 WebApp。吾辈目前推荐先看 VueJS，毕竟是国人开发，中文文档最为完善，在三大前端框架中也属于最简单的一个（ReactJS 是最困难也是生态最好的一个）。</p>
+<h3 id="生态丰富"><a href="#生态丰富" class="headerlink" title="生态丰富"></a>生态丰富</h3><p>NPM 的生态相当丰富，现代前端几乎所有的库都通过 NPM 发布。至今，NPM 上已经有超过 70W+ 的包，在数量上甚至远超了 Maven 中央仓库。正是因为 NPM 发布包相当简单（吾辈都发布了几个），造成了如今无比繁荣的生态（想想 Maven 感觉都是泪。。。）</p>
+<blockquote>
+<p>包管理器对比数据可以参考 <a href="http://www.modulecounts.com/" target="_blank" rel="noopener">http://www.modulecounts.com/</a></p>
+</blockquote>
+<p>使用 NPM 安装和使用包相当简单，使用 <code>npm i [package]</code> 就能直接安装一个包，使用 ES6 <code>import</code> 语法就能在自己的 JavaScript 文件中快速引用一个包。</p>
+<p>下面列出一些常用的 NPM 库</p>
+<ul>
+<li><a href="https://yarnpkg.com/" target="_blank" rel="noopener">yarn</a>: Facebook 家的前端包管理器</li>
+<li><a href="https://babeljs.io/" target="_blank" rel="noopener">babel</a>: 现代前端的 JQuery，解决兼容性</li>
+<li><a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs</a>: 华人开发的前端 MVVM 框架</li>
+<li><a href="http://stylus-lang.com/" target="_blank" rel="noopener">stylus</a>: CSS 预处理器</li>
+<li><a href="https://eslint.org/" target="_blank" rel="noopener">eslint</a>: 前端代码规范检查</li>
+<li><a href="https://webpack.js.org" target="_blank" rel="noopener">webpack</a>: 现代前端必备的打包工具</li>
+<li><a href="https://www.rollupjs.com/" target="_blank" rel="noopener">rollup</a>: JavaScript SDK 打包工具</li>
+<li><a href="https://lodash.com/" target="_blank" rel="noopener">lodashjs</a>: 流行的函数式工具库</li>
+<li><a href="https://www.axios.com/" target="_blank" rel="noopener">axios</a>: 符合 ES6 Promise 风格的 Ajax 库</li>
+<li><a href="https://vuetifyjs.com/" target="_blank" rel="noopener">vuetify</a>: 基于 vuejs 的前端 <code>material</code> 风格的 UI 库</li>
+<li><a href="https://github.com/SheetJS/js-xlsx" target="_blank" rel="noopener">js-xlsx</a>: 前端 Excel 处理工具</li>
+<li><a href="https://www.npmjs.com/package/debug" target="_blank" rel="noopener">debug</a>: debug 日志辅助工具</li>
+<li><a href="https://www.npmjs.com/package/uglify-js" target="_blank" rel="noopener">uglifyjs</a>: JavaScript 压缩工具</li>
+<li><a href="https://www.npmjs.com/package/http-server" target="_blank" rel="noopener">http-server</a>: 静态 http 服务器</li>
+<li><a href="https://hexo.io/" target="_blank" rel="noopener">hexo</a>: 现代前端开发的博客系统</li>
+<li><a href="https://www.highcharts.com/" target="_blank" rel="noopener">highcharts</a>: 丰富强大的图表库</li>
+<li><a href="https://masonry.desandro.com/" target="_blank" rel="noopener">masonry</a>: 无限滚动瀑布流</li>
+<li><a href="https://highlightjs.org/" target="_blank" rel="noopener">highlightjs</a>: 代码高亮</li>
+<li><a href="https://www.npmjs.com/package/rx-util" target="_blank" rel="noopener">rx-util</a>: 写 Greasemonkey 脚本时自定义的工具库</li>
+<li>还有更多。。。</li>
+</ul>
+<h3 id="工程化"><a href="#工程化" class="headerlink" title="工程化"></a>工程化</h3><p>现代前端已经和后端类似，将原本混沌的 HTML/CSS/JavaScript 细分为了许多的内容。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">├── dist <span class="comment">// 打包后的静态文件</span></span><br><span class="line">├── .editorconfig <span class="comment">// 编辑器配置</span></span><br><span class="line">├── .eslintrc.js <span class="comment">// eslint 配置格式</span></span><br><span class="line">├── .git <span class="comment">// git 仓库</span></span><br><span class="line">├── .gitignore <span class="comment">// git 忽略文件</span></span><br><span class="line">├── babel.config.js <span class="comment">// babel 配置</span></span><br><span class="line">├── LICENSE <span class="comment">// 许可证</span></span><br><span class="line">├── node_module <span class="comment">// 项目依赖</span></span><br><span class="line">├── package.json <span class="comment">// npm 定义文件</span></span><br><span class="line">├── public <span class="comment">// 一些公共的资源</span></span><br><span class="line">│   ├── favicon.ico</span><br><span class="line">│   └── index.html</span><br><span class="line">├── README.md <span class="comment">// 项目说明</span></span><br><span class="line">├── src <span class="comment">// 源代码目录</span></span><br><span class="line">│   ├── App.vue <span class="comment">// 根组件</span></span><br><span class="line">│   ├── main.js <span class="comment">// 项目入口</span></span><br><span class="line">│   ├── api <span class="comment">// api 接口，和 views 中的文件夹对应</span></span><br><span class="line">│   ├── components <span class="comment">// 公共的组件</span></span><br><span class="line">│   ├── plugins <span class="comment">// vuejs 插件</span></span><br><span class="line">│   │   └── vuetify.js</span><br><span class="line">│   ├── router <span class="comment">// vuejs 路由管理</span></span><br><span class="line">│   │   └── index.js</span><br><span class="line">│   ├── store <span class="comment">// vuejs 状态管理</span></span><br><span class="line">│   │   └── index.js</span><br><span class="line">│   ├── utils <span class="comment">// 工具函数</span></span><br><span class="line">│   └── views <span class="comment">// 各个页面</span></span><br><span class="line">├── tests</span><br><span class="line">│   └── unit <span class="comment">// 单元测试</span></span><br><span class="line">│       ├── .eslintrc.js</span><br><span class="line">│       └── example.spec.js</span><br><span class="line">├── vue.config.js <span class="comment">// vuejs 的配置</span></span><br><span class="line">└── yarn.lock <span class="comment">// yarn 配置文件</span></span><br></pre></td></tr></table></figure>
+
+<p>当初第一次看到这个目录时真是被吓到了，使用 <code>yarn</code> 一下子 20000 个依赖文件就下载下来了。然而其实这只是将传统前端分的更细一点而已，对后期维护的好处也是不言而喻的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总而言之，现代前端流行之后，前后端分离已然是大势所趋，前端开发如果还仅仅是 <strong>切图仔</strong> 的话，迟早会因为跟不上时代而被淘汰。就吾辈而言，亦希望有更多人入坑现代前端，体会现代前端的强大!</p>
+<blockquote>
+<p>附：吾辈个人而言认为现代前端主要的优势 <a href="#JavaScript-模块化">模块化</a>/<a href="工程化">工程化</a> 和 <a href="#MVVM">MVVM</a>。前者使大型 WebApp 的开发变成可能，后者则改变了数据与 DOM 之间的交互方式。</p>
+</blockquote>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag"><i class="fa fa-tag"></i> 随笔</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/29/others/rxliuliBlog/Essay/%E5%85%B3%E4%BA%8E%E6%8F%90%E9%97%AE%E4%B8%8E%E5%B8%AE%E5%8A%A9/" rel="prev" title="关于提问与帮助">
+      <i class="fa fa-chevron-left"></i> 关于提问与帮助
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/06/others/rxliuliBlog/Tool/Android/Android-%E5%B8%B8%E7%94%A8-App-%E6%B8%85%E5%8D%95/" rel="next" title="Android 常用 App 清单">
+      Android 常用 App 清单 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要用现代前端"><span class="nav-number">1.</span> <span class="nav-text">为什么要用现代前端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#现代前端"><span class="nav-number">1.2.</span> <span class="nav-text">现代前端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript-模块化"><span class="nav-number">1.2.1.</span> <span class="nav-text">JavaScript 模块化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兼容性"><span class="nav-number">1.2.2.</span> <span class="nav-text">兼容性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVVM"><span class="nav-number">1.2.3.</span> <span class="nav-text">MVVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生态丰富"><span class="nav-number">1.2.4.</span> <span class="nav-text">生态丰富</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工程化"><span class="nav-number">1.2.5.</span> <span class="nav-text">工程化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

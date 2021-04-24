@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="JavaScript 自定义限流队列 fetch为什么需要它？有些时候不得不需要限制并发 fetch 的请求数量，避免请求过快导致 IP 封禁 需要做到什么？ 允许限制 fetch 请求同时存在的数量 时间过久便认为是超时了  如何实现？暂停请求 该方法的请求是无序的！   使用 class 定义默认超时设置和请求数量限制的构造函数 在请求前判断当前请求的数量，添加请求等待数量 如果请求数量已满，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 自定义限流队列 fetch">
+<meta property="og:url" content="https://fangtianq.github.io/2019/01/23/others/rxliuliBlog/JavaScript/JavaScript-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E9%98%9F%E5%88%97-fetch/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 自定义限流队列 fetch为什么需要它？有些时候不得不需要限制并发 fetch 的请求数量，避免请求过快导致 IP 封禁 需要做到什么？ 允许限制 fetch 请求同时存在的数量 时间过久便认为是超时了  如何实现？暂停请求 该方法的请求是无序的！   使用 class 定义默认超时设置和请求数量限制的构造函数 在请求前判断当前请求的数量，添加请求等待数量 如果请求数量已满，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-01-23T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/01/23/others/rxliuliBlog/JavaScript/JavaScript-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E9%98%9F%E5%88%97-fetch/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript 自定义限流队列 fetch | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/01/23/others/rxliuliBlog/JavaScript/JavaScript-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E9%98%9F%E5%88%97-fetch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          JavaScript 自定义限流队列 fetch
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-24T00:00:00+08:00">2019-01-24</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/01/23/others/rxliuliBlog/JavaScript/JavaScript-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E9%98%9F%E5%88%97-fetch/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/23/others/rxliuliBlog/JavaScript/JavaScript-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E9%98%9F%E5%88%97-fetch/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-自定义限流队列-fetch"><a href="#JavaScript-自定义限流队列-fetch" class="headerlink" title="JavaScript 自定义限流队列 fetch"></a>JavaScript 自定义限流队列 fetch</h1><h2 id="为什么需要它？"><a href="#为什么需要它？" class="headerlink" title="为什么需要它？"></a>为什么需要它？</h2><p>有些时候不得不需要限制并发 fetch 的请求数量，避免请求过快导致 IP 封禁</p>
+<h2 id="需要做到什么？"><a href="#需要做到什么？" class="headerlink" title="需要做到什么？"></a>需要做到什么？</h2><ul>
+<li>允许限制 fetch 请求同时存在的数量</li>
+<li>时间过久便认为是超时了</li>
+</ul>
+<h2 id="如何实现？"><a href="#如何实现？" class="headerlink" title="如何实现？"></a>如何实现？</h2><h3 id="暂停请求"><a href="#暂停请求" class="headerlink" title="暂停请求"></a>暂停请求</h3><blockquote>
+<p>该方法的请求是无序的！</p>
+</blockquote>
+<ol>
+<li>使用 class 定义默认超时设置和请求数量限制的构造函数</li>
+<li>在请求前判断当前请求的数量，添加请求等待数量<ol>
+<li>如果请求数量已满，则进行等待</li>
+<li>如果请求数量未满，则删除一个请求等待数量</li>
+</ol>
+</li>
+<li>请求完成，删除当前请求数量</li>
+</ol>
+<h3 id="等待队列：循环监听"><a href="#等待队列：循环监听" class="headerlink" title="等待队列：循环监听"></a>等待队列：循环监听</h3><blockquote>
+<p>该方法需要使用回调函数</p>
+</blockquote>
+<ol>
+<li>使用 class 定义默认超时设置和请求数量限制的构造函数</li>
+<li>在请求前将请求 argments 添加到等待队列中</li>
+<li>使用 <code>setInterval</code> 函数持续监听队列和当前执行的请求数<ul>
+<li>发现请求数量没有到达最大值，且等待队列中还有值，那么就执行一次请求</li>
+</ul>
+</li>
+</ol>
+<h3 id="等待队列：触发钩子"><a href="#等待队列：触发钩子" class="headerlink" title="等待队列：触发钩子"></a>等待队列：触发钩子</h3><ol>
+<li>使用 class 定义默认超时设置和请求数量限制的构造函数</li>
+<li>在请求前将请求 argments 添加到等待队列中</li>
+<li>添加完成，等待当前请求数量未满</li>
+<li>尝试启动等待队列（钩子）</li>
+</ol>
+<h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><h3 id="暂停请求实现"><a href="#暂停请求实现" class="headerlink" title="暂停请求实现"></a>暂停请求实现</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>param 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wait</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为 fetch 请求添加超时选项</span></span><br><span class="line"><span class="comment"> * 注：超时选项并非真正意义上的超时即取消请求，请求依旧正常执行完成，但会提前返回 reject 结果</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Promise&#125;</span> </span>fetchPromise fetch 请求的 Promise</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>timeout 超时时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>如果超时就提前返回 reject, 否则正常返回 fetch 结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promiseTimeout</span>(<span class="params">fetchPromise, timeout</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> abortFn = <span class="literal">null</span></span><br><span class="line">  <span class="comment">//这是一个可以被reject的promise</span></span><br><span class="line">  <span class="keyword">var</span> abortPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    abortFn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(<span class="string">'abort promise'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">var</span> abortablePromise = <span class="built_in">Promise</span>.race([fetchPromise, abortPromise])</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    abortFn()</span><br><span class="line">  &#125;, timeout)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> abortablePromise</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 限制并发请求数量的 fetch 封装</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestLimiting</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(&#123; timeout = <span class="number">10000</span>, limit = <span class="number">10</span> &#125;) &#123;</span><br><span class="line">    <span class="keyword">this</span>.timeout = timeout</span><br><span class="line">    <span class="keyword">this</span>.limit = limit</span><br><span class="line">    <span class="keyword">this</span>.execCount = <span class="number">0</span></span><br><span class="line">    <span class="keyword">this</span>.waitCount = <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 执行一个请求</span></span><br><span class="line"><span class="comment">   * 如果到达最大并发限制时就进行等待</span></span><br><span class="line"><span class="comment">   * 注：该方法的请求顺序是无序的，与代码里的顺序无关</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;RequestInfo&#125;</span> </span>url 请求 url 信息</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;RequestInit&#125;</span> </span>init 请求的其他可选项</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>如果超时就提前返回 reject, 否则正常返回 fetch 结果</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> _fetch(url, init) &#123;</span><br><span class="line">    <span class="keyword">this</span>.waitCount++</span><br><span class="line">    <span class="keyword">await</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.execCount &lt; <span class="keyword">this</span>.limit)</span><br><span class="line">    <span class="keyword">this</span>.waitCount--</span><br><span class="line">    <span class="keyword">this</span>.execCount++</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">await</span> promiseTimeout(fetch(url, init), <span class="keyword">this</span>.timeout)</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.execCount--</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用示例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> requestLimiting = <span class="keyword">new</span> RequestLimiting(&#123; <span class="attr">timeout</span>: <span class="number">500</span>, <span class="attr">limit</span>: <span class="number">1</span> &#125;)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).fill(<span class="number">0</span>).forEach(<span class="function"><span class="params">i</span> =&gt;</span></span><br><span class="line">  requestLimiting</span><br><span class="line">    ._fetch(<span class="string">'/'</span>)</span><br><span class="line">    .then(<span class="function"><span class="params">res</span> =&gt;</span> <span class="built_in">console</span>.log(res))</span><br><span class="line">    .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err)),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="等待队列：循环监听实现"><a href="#等待队列：循环监听实现" class="headerlink" title="等待队列：循环监听实现"></a>等待队列：循环监听实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>param 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wait</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为 fetch 请求添加超时选项</span></span><br><span class="line"><span class="comment"> * 注：超时选项并非真正意义上的超时即取消请求，请求依旧正常执行完成，但会提前返回 reject 结果</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Promise&#125;</span> </span>fetchPromise fetch 请求的 Promise</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>timeout 超时时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>如果超时就提前返回 reject, 否则正常返回 fetch 结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promiseTimeout</span>(<span class="params">fetchPromise, timeout</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> abortFn = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//这是一个可以被reject的promise</span></span><br><span class="line">  <span class="keyword">var</span> abortPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    abortFn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(<span class="string">'abort promise'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> abortablePromise = <span class="built_in">Promise</span>.race([fetchPromise, abortPromise])</span><br><span class="line"></span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    abortFn()</span><br><span class="line">  &#125;, timeout)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> abortablePromise</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 限制并发请求数量的 fetch 封装</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestLimiting</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(&#123; timeout = <span class="number">10000</span>, limit = <span class="number">10</span> &#125;) &#123;</span><br><span class="line">    <span class="keyword">this</span>.timeout = timeout</span><br><span class="line">    <span class="keyword">this</span>.limit = limit</span><br><span class="line">    <span class="keyword">this</span>.execCount = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 等待队列</span></span><br><span class="line">    <span class="keyword">this</span>.waitArr = []</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监视 execCount 的值</span></span><br><span class="line">    setInterval(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.execCount &gt;= <span class="keyword">this</span>.limit) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">console</span>.debug(</span><br><span class="line">        <span class="string">`执行 execCount: <span class="subst">$&#123;<span class="keyword">this</span>.execCount&#125;</span>, waitArr length: <span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">          <span class="keyword">this</span>.waitArr.length</span></span></span><br><span class="line"><span class="string"><span class="subst">        &#125;</span>, index: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.waitArr[<span class="number">0</span>])&#125;</span>`</span>,</span><br><span class="line">      )</span><br><span class="line">      <span class="keyword">const</span> args = <span class="keyword">this</span>.waitArr.shift(<span class="number">0</span>)</span><br><span class="line">      <span class="keyword">if</span> (!args) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">this</span>.execCount++</span><br><span class="line">      <span class="keyword">const</span> callback = args[<span class="number">2</span>]</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 如果没有错误就返回 res</span></span><br><span class="line">        callback(&#123; <span class="attr">res</span>: <span class="keyword">await</span> promiseTimeout(fetch(...args), <span class="keyword">this</span>.timeout) &#125;)</span><br><span class="line">      &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="comment">// 否则返回 err</span></span><br><span class="line">        callback(&#123;</span><br><span class="line">          err: err,</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.execCount--</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">100</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 执行一个请求</span></span><br><span class="line"><span class="comment">   * 如果到达最大并发限制时就进行等待</span></span><br><span class="line"><span class="comment">   * 注：该方法的请求顺序是无序的，与代码里的顺序无关</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;RequestInfo&#125;</span> </span>url 请求 url 信息</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;RequestInit&#125;</span> </span>init 请求的其他可选项</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>callback 回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>如果超时就提前返回 reject, 否则正常返回 fetch 结果</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> _fetch(url, init, callback) &#123;</span><br><span class="line">    <span class="keyword">this</span>.waitArr.push(<span class="built_in">arguments</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用示例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> requestLimiting = <span class="keyword">new</span> RequestLimiting(&#123; <span class="attr">timeout</span>: <span class="number">500</span>, <span class="attr">limit</span>: <span class="number">1</span> &#125;)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).fill(<span class="number">0</span>).forEach(<span class="function">(<span class="params">item, i</span>) =&gt;</span></span><br><span class="line">  requestLimiting._fetch(</span><br><span class="line">    <span class="string">'/'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// 这里设置添加时的 index，用于验证是否真的顺序执行了</span></span><br><span class="line">      headers: &#123;</span><br><span class="line">        index: i,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 这里使用了回调函数，参数使用解构得到</span></span><br><span class="line">    (&#123; res, err &#125;) =&gt; &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">`res: <span class="subst">$&#123;res&#125;</span>, err: <span class="subst">$&#123;err&#125;</span>`</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">  ),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="等待队列：触发钩子实现"><a href="#等待队列：触发钩子实现" class="headerlink" title="等待队列：触发钩子实现"></a>等待队列：触发钩子实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>param 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wait</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为 fetch 请求添加超时选项</span></span><br><span class="line"><span class="comment"> * 注：超时选项并非真正意义上的超时即取消请求，请求依旧正常执行完成，但会提前返回 reject 结果</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Promise&#125;</span> </span>fetchPromise fetch 请求的 Promise</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>timeout 超时时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>如果超时就提前返回 reject, 否则正常返回 fetch 结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promiseTimeout</span>(<span class="params">fetchPromise, timeout</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> abortFn = <span class="literal">null</span></span><br><span class="line">  <span class="comment">//这是一个可以被 reject 的 Promise</span></span><br><span class="line">  <span class="keyword">var</span> abortPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    abortFn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(<span class="string">'abort promise'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 有一个 Promise 完成就立刻结束</span></span><br><span class="line">  <span class="keyword">var</span> abortablePromise = <span class="built_in">Promise</span>.race([fetchPromise, abortPromise])</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    abortFn()</span><br><span class="line">  &#125;, timeout)</span><br><span class="line">  <span class="keyword">return</span> abortablePromise</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 限制并发请求数量的 fetch 封装</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestLimiting</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(&#123; timeout = <span class="number">10000</span>, limit = <span class="number">10</span> &#125;) &#123;</span><br><span class="line">    <span class="keyword">this</span>.timeout = timeout</span><br><span class="line">    <span class="keyword">this</span>.limit = limit</span><br><span class="line">    <span class="keyword">this</span>.execCount = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 等待队列</span></span><br><span class="line">    <span class="keyword">this</span>.waitArr = []</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 执行一个请求</span></span><br><span class="line"><span class="comment">   * 如果到达最大并发限制时就进行等待</span></span><br><span class="line"><span class="comment">   * 注：该方法的请求顺序是无序的，与代码里的顺序无关</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;RequestInfo&#125;</span> </span>url 请求 url 信息</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;RequestInit&#125;</span> </span>init 请求的其他可选项</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>如果超时就提前返回 reject, 否则正常返回 fetch 结果</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">async</span> _fetch(url, init) &#123;</span><br><span class="line">    <span class="keyword">const</span> _innerFetch = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(</span><br><span class="line">        <span class="string">`执行 execCount: <span class="subst">$&#123;<span class="keyword">this</span>.execCount&#125;</span>, waitArr length: <span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">          <span class="keyword">this</span>.waitArr.length</span></span></span><br><span class="line"><span class="string"><span class="subst">        &#125;</span>, index: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.waitArr[<span class="number">0</span>])&#125;</span>`</span>,</span><br><span class="line">      )</span><br><span class="line">      <span class="keyword">this</span>.execCount++</span><br><span class="line">      <span class="keyword">const</span> args = <span class="keyword">this</span>.waitArr.shift(<span class="number">0</span>)</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> promiseTimeout(fetch(...args), <span class="keyword">this</span>.timeout)</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.execCount--</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.waitArr.push(<span class="built_in">arguments</span>)</span><br><span class="line">    <span class="keyword">await</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.execCount &lt; <span class="keyword">this</span>.limit)</span><br><span class="line">    <span class="comment">// 尝试启动等待队列</span></span><br><span class="line">    <span class="keyword">return</span> _innerFetch()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用示例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> requestLimiting = <span class="keyword">new</span> RequestLimiting(&#123; <span class="attr">timeout</span>: <span class="number">500</span>, <span class="attr">limit</span>: <span class="number">1</span> &#125;)</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).fill(<span class="number">0</span>).forEach(<span class="function">(<span class="params">item, i</span>) =&gt;</span></span><br><span class="line">  requestLimiting</span><br><span class="line">    ._fetch(<span class="string">'/'</span>, &#123;</span><br><span class="line">      <span class="comment">// 这里设置添加时的 index，用于验证是否真的顺序执行了</span></span><br><span class="line">      headers: &#123;</span><br><span class="line">        index: i,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function"><span class="params">res</span> =&gt;</span> <span class="built_in">console</span>.log(res))</span><br><span class="line">    .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err)),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前而言，最后一种实现是最好的，同时实现了两种规范</p>
+<ul>
+<li>返回 <code>Promise</code>，避免使用回调函数</li>
+<li>请求执行与添加顺序相同</li>
+</ul>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/" rel="prev" title="图床「神器」PicGo v2.0 更新，插件系统终于来了">
+      <i class="fa fa-chevron-left"></i> 图床「神器」PicGo v2.0 更新，插件系统终于来了
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/24/others/rxliuliBlog/JavaScript/%E4%BD%BF%E7%94%A8-rollup-%E6%89%93%E5%8C%85-JavaScript-SDK/" rel="next" title="使用 rollup 打包 JavaScript SDK">
+      使用 rollup 打包 JavaScript SDK <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-自定义限流队列-fetch"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 自定义限流队列 fetch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要它？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么需要它？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需要做到什么？"><span class="nav-number">1.2.</span> <span class="nav-text">需要做到什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何实现？"><span class="nav-number">1.3.</span> <span class="nav-text">如何实现？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#暂停请求"><span class="nav-number">1.3.1.</span> <span class="nav-text">暂停请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#等待队列：循环监听"><span class="nav-number">1.3.2.</span> <span class="nav-text">等待队列：循环监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#等待队列：触发钩子"><span class="nav-number">1.3.3.</span> <span class="nav-text">等待队列：触发钩子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现代码"><span class="nav-number">1.4.</span> <span class="nav-text">实现代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#暂停请求实现"><span class="nav-number">1.4.1.</span> <span class="nav-text">暂停请求实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待队列：循环监听实现"><span class="nav-number">1.5.</span> <span class="nav-text">等待队列：循环监听实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待队列：触发钩子实现"><span class="nav-number">1.6.</span> <span class="nav-text">等待队列：触发钩子实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

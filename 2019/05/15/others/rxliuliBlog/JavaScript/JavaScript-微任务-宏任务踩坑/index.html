@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="JavaScript 微任务&#x2F;宏任务踩坑场景 SegmentFault  在使用 async-await 时，吾辈总是习惯把它们当作同步，终于，现在踩到坑里去了。使用 setTimeout 和 setInterval 实现的基于 Promise 的 wait 函数，然而测试边界情况的时候却发现了一些问题！ 实现代码 12345678910111213141516171819202122&#x2F;** *">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 微任务&#x2F;宏任务踩坑">
+<meta property="og:url" content="https://fangtianq.github.io/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 微任务&#x2F;宏任务踩坑场景 SegmentFault  在使用 async-await 时，吾辈总是习惯把它们当作同步，终于，现在踩到坑里去了。使用 setTimeout 和 setInterval 实现的基于 Promise 的 wait 函数，然而测试边界情况的时候却发现了一些问题！ 实现代码 12345678910111213141516171819202122&#x2F;** *">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-15T01:15:37.000Z">
+<meta property="article:modified_time" content="2019-05-15T01:15:37.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript 微任务/宏任务踩坑 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          JavaScript 微任务/宏任务踩坑
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-15 09:15:37" itemprop="dateCreated datePublished" datetime="2019-05-15T09:15:37+08:00">2019-05-15</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-微任务-宏任务踩坑"><a href="#JavaScript-微任务-宏任务踩坑" class="headerlink" title="JavaScript 微任务/宏任务踩坑"></a>JavaScript 微任务/宏任务踩坑</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><blockquote>
+<p><a href="https://segmentfault.com/q/1010000019181961" target="_blank" rel="noopener">SegmentFault</a></p>
+</blockquote>
+<p>在使用 <code>async-await</code> 时，吾辈总是习惯把它们当作同步，终于，现在踩到坑里去了。<br>使用 <code>setTimeout</code> 和 <code>setInterval</code> 实现的基于 <code>Promise</code> 的 <code>wait</code> 函数，然而测试边界情况的时候却发现了一些问题！</p>
+<p>实现代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * 如果未指定等待条件则立刻执行</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>[param] 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> wait = <span class="function"><span class="params">param</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 标识当前是否有异步函数 add 在运行了</span></span><br><span class="line">  <span class="keyword">let</span> taskIsRun = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> add = <span class="keyword">async</span> (_v, i) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 如果已经有运行的 add 函数，则等待</span></span><br><span class="line">    <span class="keyword">if</span> (taskIsRun) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 判断前: '</span>)</span><br><span class="line">      <span class="keyword">await</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> !taskIsRun</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 判断后: '</span> + taskIsRun)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      taskIsRun = <span class="literal">true</span></span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 执行前: '</span> + taskIsRun)</span><br><span class="line">      <span class="keyword">await</span> wait(<span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 执行后: '</span>)</span><br><span class="line">      taskIsRun = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">  <span class="keyword">await</span> <span class="built_in">Promise</span>.all(</span><br><span class="line">    <span class="built_in">Array</span>(<span class="number">10</span>)</span><br><span class="line">      .fill(<span class="number">0</span>)</span><br><span class="line">      .map(add),</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">Date</span>.now() - start)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>那么，先不要往下看，猜一下最后打印的大概会是多少呢？</p>
+<p>实际执行结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">0 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">1 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">2 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">3 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">4 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">5 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">6 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">7 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">8 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">9 判断前:  ​​​​​at ​​​i + <span class="string">' 判断前: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:29:6​</span><br><span class="line"></span><br><span class="line">0 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">1 判断后: <span class="literal">false</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">1 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">// 这儿的 1 执行前，结果 2 就已经判断通过并准备执行了？？？发生了什么？</span><br><span class="line"></span><br><span class="line">2 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">2 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">3 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">3 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">4 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">4 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">5 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">5 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">6 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">6 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">7 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">7 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">8 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">8 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">9 判断后: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 判断后: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:33:6​</span><br><span class="line"></span><br><span class="line">9 执行前: <span class="literal">true</span> ​​​​​at ​​​i + <span class="string">' 执行前: '</span> + taskIsRun​​​ ​src/module/<span class="keyword">function</span>/wait.js:37:6​</span><br><span class="line"></span><br><span class="line">1 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">2 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">3 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">4 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">5 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">6 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">7 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">8 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">9 执行后:  ​​​​​at ​​​i + <span class="string">' 执行后: '</span>​​​ ​src/module/<span class="keyword">function</span>/wait.js:40:6​</span><br><span class="line"></span><br><span class="line">307 ​​​​​at ​​​Date.now() - start​​​ ​src/module/<span class="keyword">function</span>/wait.js:52:2​</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，很神奇的是 <em>判断后 =&gt; 执行前 =&gt; 判断后…=&gt; 执行后…_，并不是预想中的 _判断后 =&gt; 执行前 =&gt; 执行后…</em> 的循环，所以，到底发生了什么呢？</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>这个问题卡了吾辈两天之久，直到吾辈在 <a href="https://stackoverflow.com/questions/56126223/js-asynchronous-concurrent-locks-are-not-in-effect?noredirect=1#comment98896413_56126223" target="_blank" rel="noopener">StackOverflow</a> 提出的另一个相关的问题被外国友人回答了，瞬间吾辈就想起了 – <strong>async-await 本质上还是异步</strong>。</p>
+<p>是的，为什么会出现 <code>wait</code> 一直在执行而后面的 <code>taskIsRun = true</code> 却并没有执行？因为 JavaScript 中的 <code>async-await</code> 虽然可以写出来很像同步代码的异步代码，但实际上还是异步的，原理还是基于 <code>Promise</code>。</p>
+<p>我们改造一下代码，将之使用原生 <code>Promise</code> 实现一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * 如果未指定等待条件则立刻执行</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>[param] 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> wait = <span class="function"><span class="params">param</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">;<span class="function">(<span class="params">(</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 标识当前是否有异步函数 add 在运行了</span></span><br><span class="line">  <span class="keyword">let</span> taskIsRun = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> add = <span class="function">(<span class="params">_v, i</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 如果已经有运行的 add 函数，则等待</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</span><br><span class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (taskIsRun) &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(i + <span class="string">' 判断前: '</span>)</span><br><span class="line">          <span class="comment">// 关键在于这里，实际上执行完成之后并不会到下一个 then，而是继续另一个 wait 的判断</span></span><br><span class="line">          <span class="keyword">return</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> !taskIsRun).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i + <span class="string">' 判断后: '</span> + taskIsRun)</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        taskIsRun = <span class="literal">true</span></span><br><span class="line">        <span class="built_in">console</span>.log(i + <span class="string">' 执行前: '</span> + taskIsRun)</span><br><span class="line">        <span class="keyword">return</span> wait(<span class="number">100</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(<span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;)</span><br><span class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(i + <span class="string">' 执行后: '</span>)</span><br><span class="line">        taskIsRun = <span class="literal">false</span></span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">  <span class="built_in">Promise</span>.all(</span><br><span class="line">    <span class="built_in">Array</span>(<span class="number">10</span>)</span><br><span class="line">      .fill(<span class="number">0</span>)</span><br><span class="line">      .map(add),</span><br><span class="line">  ).then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">Date</span>.now() - start))</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>这个时候就可以看出来了，判断逻辑是处在一个 <code>then</code> 后继里面的。那么，执行完 <code>console.log(i + &#39; 判断后: &#39; + taskIsRun)</code> 之后，就一定会继续执行下面的 <code>then</code> 函数么？并不，这时候 <code>wait</code> 函数内部实现中的 <code>setInterval</code> 还在运转，实际上 <code>nodejs</code> 并不会优先继续 <code>then</code> 这种 <code>microtask</code>（微任务），而是会继续进行 <code>setInterval</code> 这种 <code>macrotask</code>（宏任务）。这是 nodejs 与浏览器实现不一致的地方，吾辈将这些代码复制到浏览器上，确实可以正常执行并得到预期的结果。</p>
+<blockquote>
+<p><a href="https://juejin.im/entry/58d4df3b5c497d0057eb99ff" target="_blank" rel="noopener">微任务与宏任务参考</a></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (taskIsRun) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i + <span class="string">' 判断前: '</span>)</span><br><span class="line">  <span class="keyword">return</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> !taskIsRun).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i + <span class="string">' 判断后: '</span> + taskIsRun)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当然，nodejs 11 修复了这个问题，参考 <a href="https://github.com/nodejs/node/pull/22842" target="_blank" rel="noopener">https://github.com/nodejs/node/pull/22842</a>。然而目前 NodeJS LTS 为 10，最新版本为 12，这个问题可能还要持续一段时间。</p>
+</blockquote>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>那么，难道吾辈就必须等到 NodeJS LTS 最新版之后才能用 wait 么？或者说，吾辈就必须依赖于浏览器的 <code>microtask/macrotask</code> 么？并不，吾辈对之手动进行了处理即可！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * 如果未指定等待条件则立刻执行</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>[param] 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> wait = <span class="function"><span class="params">param</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 标识当前是否有异步函数 add 在运行了</span></span><br><span class="line">  <span class="keyword">let</span> taskIsRun = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> add = <span class="keyword">async</span> (_v, i) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 如果已经有运行的 add 函数，则等待</span></span><br><span class="line">    <span class="keyword">if</span> (taskIsRun) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 判断前: '</span>)</span><br><span class="line">      <span class="keyword">await</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> result = !taskIsRun</span><br><span class="line">        <span class="comment">// 关键在于这里</span></span><br><span class="line">        <span class="keyword">if</span> (result) &#123;</span><br><span class="line">          taskIsRun = <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 判断后: '</span> + taskIsRun)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      taskIsRun = <span class="literal">true</span></span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 执行前: '</span> + taskIsRun)</span><br><span class="line">      <span class="keyword">await</span> wait(<span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(i + <span class="string">' 执行后: '</span>)</span><br><span class="line">      taskIsRun = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> start = <span class="built_in">Date</span>.now()</span><br><span class="line">  <span class="keyword">await</span> <span class="built_in">Promise</span>.all(</span><br><span class="line">    <span class="built_in">Array</span>(<span class="number">10</span>)</span><br><span class="line">      .fill(<span class="number">0</span>)</span><br><span class="line">      .map(add),</span><br><span class="line">  )</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">Date</span>.now() - start)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>吾辈在 <code>wait</code> 函数中，即 <code>setInterval</code> 循环调用的函数中对 <code>taskIsRun</code> 进行了修改，而不是在 <code>wait</code> 后面，即 <code>then</code> 之后的 <code>microtask</code> 中进行修改，结果便一切如同吾辈所期待的一样了！</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 记录</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/09/others/rxliuliBlog/JavaScript/JavaScript-%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/" rel="prev" title="JavaScript 防抖和节流">
+      <i class="fa fa-chevron-left"></i> JavaScript 防抖和节流
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/22/others/rxliuliBlog/JavaScript/JavaScript-%E5%A4%84%E7%90%86%E6%A0%91%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE/" rel="next" title="JavaScript 处理树数据结构">
+      JavaScript 处理树数据结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-微任务-宏任务踩坑"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 微任务&#x2F;宏任务踩坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">1.2.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">1.3.</span> <span class="nav-text">解决</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

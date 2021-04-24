@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="JavaScript 处理树结构数据场景即便在前端，也有很多时候需要操作 树结构 的情况，最典型的场景莫过于 _无限级分类_。之前吾辈曾经遇到过这种场景，但当时没有多想直接手撕 JavaScript 列表转树了，并没有想到进行封装。后来遇到的场景多了，想到如何封装树结构操作，但考虑到不同场景的树节点结构的不同，就没有继续进行下去了。 直到吾辈开始经常运用了 ES6 Proxy 之后，吾辈想到了新的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 处理树数据结构">
+<meta property="og:url" content="https://fangtianq.github.io/2019/05/22/others/rxliuliBlog/JavaScript/JavaScript-%E5%A4%84%E7%90%86%E6%A0%91%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 处理树结构数据场景即便在前端，也有很多时候需要操作 树结构 的情况，最典型的场景莫过于 _无限级分类_。之前吾辈曾经遇到过这种场景，但当时没有多想直接手撕 JavaScript 列表转树了，并没有想到进行封装。后来遇到的场景多了，想到如何封装树结构操作，但考虑到不同场景的树节点结构的不同，就没有继续进行下去了。 直到吾辈开始经常运用了 ES6 Proxy 之后，吾辈想到了新的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-05-22T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/05/22/others/rxliuliBlog/JavaScript/JavaScript-%E5%A4%84%E7%90%86%E6%A0%91%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript 处理树数据结构 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/05/22/others/rxliuliBlog/JavaScript/JavaScript-%E5%A4%84%E7%90%86%E6%A0%91%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          JavaScript 处理树数据结构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-23 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-23T00:00:00+08:00">2019-05-23</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/05/22/others/rxliuliBlog/JavaScript/JavaScript-%E5%A4%84%E7%90%86%E6%A0%91%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/22/others/rxliuliBlog/JavaScript/JavaScript-%E5%A4%84%E7%90%86%E6%A0%91%E7%BB%93%E6%9E%84%E6%95%B0%E6%8D%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-处理树结构数据"><a href="#JavaScript-处理树结构数据" class="headerlink" title="JavaScript 处理树结构数据"></a>JavaScript 处理树结构数据</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>即便在前端，也有很多时候需要操作 <strong>树结构</strong> 的情况，最典型的场景莫过于 _无限级分类_。之前吾辈曾经遇到过这种场景，但当时没有多想直接手撕 JavaScript 列表转树了，并没有想到进行封装。后来遇到的场景多了，想到如何封装树结构操作，但考虑到不同场景的树节点结构的不同，就没有继续进行下去了。</p>
+<p>直到吾辈开始经常运用了 ES6 <code>Proxy</code> 之后，吾辈想到了新的解决方案！</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ul>
+<li>问: 之前为什么停止封装树结构操作了？</li>
+<li>答: 因为不同的树结构节点可能有不同的结构，例如某个项目的树节点父节点 id 字段是 <code>parent</code>，而另一个项目则是 <code>parentId</code></li>
+<li>问: <code>Proxy</code> 如何解决这个问题呢？</li>
+<li>答: <code>Proxy</code> 可以拦截对象的操作，当访问对象不存在的字段时，<code>Proxy</code> 能将之代理到已经存在的字段上</li>
+<li>问: 这点意味着什么？</li>
+<li>答: 它意味着 <code>Proxy</code> 能够抹平不同的树节点结构之间的差异！</li>
+<li>问: 我还是不太明白 <code>Proxy</code> 怎么用，能举个具体的例子么？</li>
+<li>答: 当然可以，我现在就让你看看 <code>Proxy</code> 的能力</li>
+</ul>
+<p>下面思考一下如何在同一个函数中处理这两种树节点结构</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 系统菜单</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SysMenu</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>id 菜单 id</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>name 显示的名称</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>parent 父级菜单 id</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(id, name, parent) &#123;</span><br><span class="line">    <span class="keyword">this</span>.id = id</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.parent = parent</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 系统权限</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SysPermission</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>uid 系统唯一 uuid</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>label 显示的菜单名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>parentId 父级权限 uid</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(uid, label, parentId) &#123;</span><br><span class="line">    <span class="keyword">this</span>.uid = uid</span><br><span class="line">    <span class="keyword">this</span>.label = label</span><br><span class="line">    <span class="keyword">this</span>.parentId = parentId</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面让我们使用 <code>Proxy</code> 来抹平访问它们之间的差异</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sysMenuMap = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'parentId'</span>, <span class="string">'parent'</span>)</span><br><span class="line"><span class="keyword">const</span> sysMenu = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">new</span> SysMenu(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>), &#123;</span><br><span class="line">  <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sysMenuMap.has(k)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, sysMenuMap.get(k))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(sysMenu.id, sysMenu.name, sysMenu.parentId) <span class="comment">// 1 'rx' 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sysPermissionMap = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'id'</span>, <span class="string">'uid'</span>).set(<span class="string">'name'</span>, <span class="string">'label'</span>)</span><br><span class="line"><span class="keyword">const</span> sysPermission = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">new</span> SysPermission(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>), &#123;</span><br><span class="line">  <span class="keyword">get</span>(_, k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sysPermissionMap.has(k)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, sysPermissionMap.get(k))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(_, k)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(sysPermission.id, sysPermission.name, sysPermission.parentId) <span class="comment">// 1 'rx' 0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="定义桥接函数"><a href="#定义桥接函数" class="headerlink" title="定义桥接函数"></a>定义桥接函数</h2><p>现在，差异确实抹平了，我们可以通过访问相同的属性来获取到不同结构对象的值！然而，每个对象都写一次代理终究有点麻烦，所以我们实现一个通用函数用以包装。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 桥接对象不存在的字段</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>map 代理的字段映射 Map</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Function&#125;</span> </span>转换一个对象为代理对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">bridge</span>(<span class="params">map</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 为对象添加代理的函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>obj 任何对象</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;Proxy&#125;</span> </span>代理后的对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, &#123;</span><br><span class="line">      <span class="keyword">get</span>(target, k) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Reflect</span>.has(map, k)) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, <span class="built_in">Reflect</span>.get(map, k))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, k)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="keyword">set</span>(target, k, v) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Reflect</span>.has(map, k)) &#123;</span><br><span class="line">          <span class="built_in">Reflect</span>.set(target, <span class="built_in">Reflect</span>.get(map, k), v)</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">Reflect</span>.set(target, k, v)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们可以用更简单的方式来做代理了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sysMenu = bridge(&#123;</span><br><span class="line">  parentId: <span class="string">'parent'</span>,</span><br><span class="line">&#125;)(<span class="keyword">new</span> SysMenu(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sysMenu.id, sysMenu.name, sysMenu.parentId) <span class="comment">// 1 'rx' 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sysPermission = bridge(&#123;</span><br><span class="line">  id: <span class="string">'uid'</span>,</span><br><span class="line">  name: <span class="string">'label'</span>,</span><br><span class="line">&#125;)(<span class="keyword">new</span> SysPermission(<span class="number">1</span>, <span class="string">'rx'</span>, <span class="number">0</span>))</span><br><span class="line"><span class="built_in">console</span>.log(sysPermission.id, sysPermission.name, sysPermission.parentId) <span class="comment">// 1 'rx' 0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="定义标准树结构"><a href="#定义标准树结构" class="headerlink" title="定义标准树结构"></a>定义标准树结构</h2><p>想要抹平差异，我们至少还需要一个标准的树结构，告诉别人我们需要什么样的树节点数据结构，以便于在之后处理树节点的函数中统一使用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 基本的 Node 节点结构定义接口</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@interface</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">INode</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>[options] 可选项参数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>[options.id] 树结点的 id 属性名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>[options.parentId] 树结点的父节点 id 属性名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>[options.child] 树结点的子节点数组属性名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>[options.path] 树结点的全路径属性名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Array.&lt;Object&gt;&#125;</span> </span>[options.args] 其他参数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(&#123; id, parentId, child, path, ...args &#125; = &#123;&#125;) &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@field </span>树结点的 id 属性名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">this</span>.id = id</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@field </span>树结点的父节点 id 属性名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">this</span>.parentId = parentId</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@field </span>树结点的子节点数组属性名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">this</span>.child = child</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@field </span>树结点的全路径属性名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">this</span>.path = path</span><br><span class="line">    <span class="built_in">Object</span>.assign(<span class="keyword">this</span>, args)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现列表转树"><a href="#实现列表转树" class="headerlink" title="实现列表转树"></a>实现列表转树</h2><p>列表转树，除了递归之外，也可以使用循环实现，这里便以循环为示例。</p>
+<p>思路</p>
+<ol>
+<li>在外层遍历子节点</li>
+<li>如果是根节点，就添加到根节点中并不在找其父节点。</li>
+<li>否则在内层循环中找该节点的父节点，找到之后将子节点追加到父节点的子节点列表中，然后结束本次内层循环。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将列表转换为树节点</span></span><br><span class="line"><span class="comment"> * 注：该函数默认树的根节点只有一个，如果有多个，则返回一个数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Array.&lt;Object&gt;&#125;</span> </span>list 树节点列表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>[options] 其他选项</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>[options.isRoot] 判断节点是否为根节点。默认根节点的父节点为空</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>[options.bridge=returnItself] 桥接函数，默认返回自身</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Object|Array.&lt;String&gt;&#125;</span> </span>树节点，或是树节点列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">listToTree</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  list,</span></span></span><br><span class="line"><span class="function"><span class="params">  &#123; isRoot = node =&gt; !node.parentId, bridge = returnItself &#125; = &#123;&#125;,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> res = list.reduce(<span class="function">(<span class="params">root, _sub</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isRoot(sub)) &#123;</span><br><span class="line">      root.push(sub)</span><br><span class="line">      <span class="keyword">return</span> root</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> sub = bridge(_sub)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> _parent <span class="keyword">of</span> list) &#123;</span><br><span class="line">      <span class="keyword">const</span> parent = bridge(_parent)</span><br><span class="line">      <span class="keyword">if</span> (sub.parentId === parent.id) &#123;</span><br><span class="line">        parent.child = parent.child || []</span><br><span class="line">        parent.child.push(sub)</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line">  &#125;, [])</span><br><span class="line">  <span class="comment">// 根据顶级节点的数量决定如何返回</span></span><br><span class="line">  <span class="keyword">const</span> len = res.length</span><br><span class="line">  <span class="keyword">if</span> (len === <span class="number">0</span>) <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">  <span class="keyword">if</span> (len === <span class="number">1</span>) <span class="keyword">return</span> res[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="抽取通用的树结构遍历逻辑"><a href="#抽取通用的树结构遍历逻辑" class="headerlink" title="抽取通用的树结构遍历逻辑"></a>抽取通用的树结构遍历逻辑</h2><p>首先，明确一点，树结构的完全遍历是通用的，大致实现基本如下</p>
+<ol>
+<li>遍历顶级树节点</li>
+<li>遍历树节点的子节点列表</li>
+<li>递归调用函数并传入子节点</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 返回第一个参数的函数</span></span><br><span class="line"><span class="comment"> * 注：一般可以当作返回参数自身的函数，如果你只关注第一个参数的话</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>obj 任何对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Object&#125;</span> </span>传入的第一个参数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">returnItself</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 遍历并映射一棵树的每个节点</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>root 树节点</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>[options] 其他选项</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>[options.before=returnItself] 遍历子节点之前的操作。默认返回自身</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>[options.after=returnItself] 遍历子节点之后的操作。默认返回自身</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>[options.paramFn=(node, args) =&gt; []] 递归的参数生成函数。默认返回一个空数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;INode&#125;</span> </span>递归遍历后的树节点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">treeMapping</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  root,</span></span></span><br><span class="line"><span class="function"><span class="params">  &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    before = returnItself,</span></span></span><br><span class="line"><span class="function"><span class="params">    after = returnItself,</span></span></span><br><span class="line">    paramFn = (node, ...args) =&gt; [],</span><br><span class="line">  &#125; = &#123;&#125;,</span><br><span class="line">) &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 遍历一颗完整的树</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;INode&#125;</span> </span>node 要遍历的树节点</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param  <span class="type">&#123;...Object&#125;</span> </span>[args] 每次递归遍历时的参数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">_treeMapping</span>(<span class="params">node, ...args</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 之前的操作</span></span><br><span class="line">    <span class="keyword">let</span> _node = before(node, ...args)</span><br><span class="line">    <span class="keyword">const</span> childs = _node.child</span><br><span class="line">    <span class="keyword">if</span> (arrayValidator.isEmpty(childs)) &#123;</span><br><span class="line">      <span class="keyword">return</span> _node</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 产生一个参数</span></span><br><span class="line">    <span class="keyword">const</span> len = childs.length</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">      childs[i] = _treeMapping(childs[i], ...paramFn(_node, ...args))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 之后的操作</span></span><br><span class="line">    <span class="keyword">return</span> after(_node, ...args)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> _treeMapping(root)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>treeMapping</code> 遍历树并打印</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tree = &#123;</span><br><span class="line">  uid: <span class="number">1</span>,</span><br><span class="line">  childrens: [</span><br><span class="line">    &#123;</span><br><span class="line">      uid: <span class="number">2</span>,</span><br><span class="line">      parent: <span class="number">1</span>,</span><br><span class="line">      childrens: [&#123; <span class="attr">uid</span>: <span class="number">3</span>, <span class="attr">parent</span>: <span class="number">2</span> &#125;, &#123; <span class="attr">uid</span>: <span class="number">4</span>, <span class="attr">parent</span>: <span class="number">2</span> &#125;],</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      uid: <span class="number">5</span>,</span><br><span class="line">      parent: <span class="number">1</span>,</span><br><span class="line">      childrens: [&#123; <span class="attr">uid</span>: <span class="number">6</span>, <span class="attr">parent</span>: <span class="number">5</span> &#125;, &#123; <span class="attr">uid</span>: <span class="number">7</span>, <span class="attr">parent</span>: <span class="number">5</span> &#125;],</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 桥接函数</span></span><br><span class="line"><span class="keyword">const</span> bridge = bridge(&#123;</span><br><span class="line">  id: <span class="string">'uid'</span>,</span><br><span class="line">  parentId: <span class="string">'parent'</span>,</span><br><span class="line">  child: <span class="string">'childrens'</span>,</span><br><span class="line">&#125;)</span><br><span class="line">treeMapping(tree, &#123;</span><br><span class="line">  <span class="comment">// 进行桥接抹平差异</span></span><br><span class="line">  before: bridge,</span><br><span class="line">  <span class="comment">// 之后打印每一个</span></span><br><span class="line">  after(node) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(node)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现树转列表"><a href="#实现树转列表" class="headerlink" title="实现树转列表"></a>实现树转列表</h2><p>当然，我们亦可使用 <code>treeMapping</code> 简单的实现 <code>treeToList</code>，当然，这里考虑了是否计算全路径，毕竟还是要考虑性能的！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将树节点转为树节点列表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>root 树节点</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>[options] 其他选项</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Boolean&#125;</span> </span>[options.calcPath=false] 是否计算节点全路径，默认为 false</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>[options.bridge=returnItself] 桥接函数，默认返回自身</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Array.&lt;Object&gt;&#125;</span> </span>树节点列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">treeToList</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  root,</span></span></span><br><span class="line"><span class="function"><span class="params">  &#123; calcPath = false, bridge = returnItself &#125; = &#123;&#125;,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> res = []</span><br><span class="line">  treeMapping(root, &#123;</span><br><span class="line">    before(_node, parentPath) &#123;</span><br><span class="line">      <span class="keyword">const</span> node = bridge(_node)</span><br><span class="line">      <span class="comment">// 是否计算全路径</span></span><br><span class="line">      <span class="keyword">if</span> (calcPath) &#123;</span><br><span class="line">        node.path = (parentPath ? parentPath + <span class="string">','</span> : <span class="string">''</span>) + node.id</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 此时追加到数组中</span></span><br><span class="line">      res.push(node)</span><br><span class="line">      <span class="keyword">return</span> node</span><br><span class="line">    &#125;,</span><br><span class="line">    paramFn: <span class="function"><span class="params">node</span> =&gt;</span> (calcPath ? [node.path] : []),</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们可以转换任意树结构为列表了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tree = &#123;</span><br><span class="line">  uid: <span class="number">1</span>,</span><br><span class="line">  childrens: [</span><br><span class="line">    &#123;</span><br><span class="line">      uid: <span class="number">2</span>,</span><br><span class="line">      parent: <span class="number">1</span>,</span><br><span class="line">      childrens: [&#123; <span class="attr">uid</span>: <span class="number">3</span>, <span class="attr">parent</span>: <span class="number">2</span> &#125;, &#123; <span class="attr">uid</span>: <span class="number">4</span>, <span class="attr">parent</span>: <span class="number">2</span> &#125;],</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      uid: <span class="number">5</span>,</span><br><span class="line">      parent: <span class="number">1</span>,</span><br><span class="line">      childrens: [&#123; <span class="attr">uid</span>: <span class="number">6</span>, <span class="attr">parent</span>: <span class="number">5</span> &#125;, &#123; <span class="attr">uid</span>: <span class="number">7</span>, <span class="attr">parent</span>: <span class="number">5</span> &#125;],</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> fn = bridge(&#123;</span><br><span class="line">  id: <span class="string">'uid'</span>,</span><br><span class="line">  parentId: <span class="string">'parent'</span>,</span><br><span class="line">  child: <span class="string">'childrens'</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">const</span> list = treeToList(tree, &#123;</span><br><span class="line">  bridge: fn,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(list)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>那么，JavaScript 中处理树结构数据就到这里了。当然，树结构数据还有其他的更多操作尚未实现，例如常见的查询子节点列表，节点过滤，最短路径查找等等。但目前列表与树的转换才是最常用的，而且其他操作基本上也是基于它们做的，所以这里也便点到为止了。</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/" rel="prev" title="JavaScript 微任务/宏任务踩坑">
+      <i class="fa fa-chevron-left"></i> JavaScript 微任务/宏任务踩坑
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/23/others/rxliuliBlog/JavaScript/JavaScript-TypeScript-%E8%BF%81%E7%A7%BB%E4%BD%93%E9%AA%8C/" rel="next" title="JavaScript => TypeScript 迁移体验">
+      JavaScript => TypeScript 迁移体验 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-处理树结构数据"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 处理树结构数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考"><span class="nav-number">1.2.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义桥接函数"><span class="nav-number">1.3.</span> <span class="nav-text">定义桥接函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义标准树结构"><span class="nav-number">1.4.</span> <span class="nav-text">定义标准树结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现列表转树"><span class="nav-number">1.5.</span> <span class="nav-text">实现列表转树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽取通用的树结构遍历逻辑"><span class="nav-number">1.6.</span> <span class="nav-text">抽取通用的树结构遍历逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现树转列表"><span class="nav-number">1.7.</span> <span class="nav-text">实现树转列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.8.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

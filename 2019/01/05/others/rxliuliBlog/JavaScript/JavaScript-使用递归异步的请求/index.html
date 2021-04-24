@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="JavaScript 使用递归异步的请求场景之前写了个 user.js 脚本来抓取百度网盘的文件元信息列表，用来进行二级查看和分析,脚本放到了 GreasyFork。最开始为了简化代码直接使用了 async&#x2F;await 单线程进行异步请求，导致请求的速度十分不理想！关键代码如下 123456789101112131415161718192021222324252627282930313233343">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 使用递归异步的请求">
+<meta property="og:url" content="https://fangtianq.github.io/2019/01/05/others/rxliuliBlog/JavaScript/JavaScript-%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E5%BC%82%E6%AD%A5%E7%9A%84%E8%AF%B7%E6%B1%82/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 使用递归异步的请求场景之前写了个 user.js 脚本来抓取百度网盘的文件元信息列表，用来进行二级查看和分析,脚本放到了 GreasyFork。最开始为了简化代码直接使用了 async&#x2F;await 单线程进行异步请求，导致请求的速度十分不理想！关键代码如下 123456789101112131415161718192021222324252627282930313233343">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-01-05T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/01/05/others/rxliuliBlog/JavaScript/JavaScript-%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E5%BC%82%E6%AD%A5%E7%9A%84%E8%AF%B7%E6%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript 使用递归异步的请求 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/01/05/others/rxliuliBlog/JavaScript/JavaScript-%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E5%BC%82%E6%AD%A5%E7%9A%84%E8%AF%B7%E6%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          JavaScript 使用递归异步的请求
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-06 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-06T00:00:00+08:00">2019-01-06</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/01/05/others/rxliuliBlog/JavaScript/JavaScript-%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E5%BC%82%E6%AD%A5%E7%9A%84%E8%AF%B7%E6%B1%82/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/05/others/rxliuliBlog/JavaScript/JavaScript-%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E5%BC%82%E6%AD%A5%E7%9A%84%E8%AF%B7%E6%B1%82/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-使用递归异步的请求"><a href="#JavaScript-使用递归异步的请求" class="headerlink" title="JavaScript 使用递归异步的请求"></a>JavaScript 使用递归异步的请求</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>之前写了个 <code>user.js</code> 脚本来抓取百度网盘的文件元信息列表，用来进行二级查看和分析,脚本放到了 <a href="https://greasyfork.org/zh-CN/scripts/375701" target="_blank" rel="noopener">GreasyFork</a>。最开始为了简化代码直接使用了 <code>async/await</code> 单线程进行异步请求，导致请求的速度十分不理想！<br>关键代码如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 文件数据信息类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>path 全路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>parent 父级路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>name 文件名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>size 大小(b)</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>isdir 是否为文件</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> <span class="type">&#123;origin&#125;</span> </span>百度云文件信息的源对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(path, parent, name, size, isdir, origin) &#123;</span><br><span class="line">    <span class="keyword">this</span>.path = path</span><br><span class="line">    <span class="keyword">this</span>.parent = parent</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.size = size</span><br><span class="line">    <span class="keyword">this</span>.isdir = isdir</span><br><span class="line">    <span class="keyword">this</span>.orgin = origin</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取指定文件夹下的一级文件/文件夹列表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>path 绝对路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>文件/文件夹列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getDir</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> baseUrl = <span class="string">'https://pan.baidu.com/api/list?'</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> res = <span class="keyword">await</span> fetch(<span class="string">`<span class="subst">$&#123;baseUrl&#125;</span>dir=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(path)&#125;</span>`</span>)</span><br><span class="line">    <span class="keyword">var</span> json = <span class="keyword">await</span> res.json()</span><br><span class="line">    <span class="keyword">return</span> json.list</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`读取文件夹 <span class="subst">$&#123;path&#125;</span> 发生了错误：`</span>, err)</span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将数组异步压平一层</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Array&#125;</span> </span>arr 数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>fn 映射方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">asyncFlatMap</span>(<span class="params">arr, fn</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> res = []</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> i <span class="keyword">in</span> arr) &#123;</span><br><span class="line">    res.push(...(<span class="keyword">await</span> fn(arr[i])))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 递归获取到所有的子级文件/文件夹</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>path 指定获取的文件夹路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Array&#125;</span> </span>指定文件夹下所有的文件/文件夹列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">syncList</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fileList = <span class="keyword">await</span> getDir(path)</span><br><span class="line">  <span class="keyword">return</span> asyncFlatMap(fileList, <span class="keyword">async</span> file =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> res = <span class="keyword">new</span> File(</span><br><span class="line">      file.path,</span><br><span class="line">      path,</span><br><span class="line">      file.server_filename,</span><br><span class="line">      file.size,</span><br><span class="line">      file.isdir,</span><br><span class="line">      file,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">if</span> (res.isdir !== <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> [res]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [res].concat(<span class="keyword">await</span> syncList(res.path))</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，使用的方式是 <code>递归 + 单异步</code>，这就导致了脚本的效率不高，使用体验很差！</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>吾辈想要使用多异步模式，需要解决的问题有二：</p>
+<ul>
+<li>如何知道现在有多个异步在执行并且在数量过多时等待</li>
+<li>如何知道所有的请求都执行完成了然后结束</li>
+</ul>
+<p>解决思路</p>
+<ol>
+<li>判断并限定异步的数量<ol>
+<li>添加记录正在执行的异步请求的计数器 <code>execQueue</code></li>
+<li>每次请求前先检查 <code>execQueue</code> 是否到达限定值<ul>
+<li>如果没有，<code>execQueue + 1</code></li>
+<li>如果有，等待 <code>execQueue</code> 减小</li>
+</ul>
+</li>
+<li>执行请求，请求结束 <code>execQueue - 1</code></li>
+</ol>
+</li>
+<li>判断所有请求都执行完成<ol>
+<li>添加记录正在等待的异步请求的计数器 <code>waitQueue</code></li>
+<li>在判断 <code>execQueue</code> 是否到达限定值之前 <code>waitQueue + 1</code></li>
+<li>在判断 <code>execQueue</code> 是否到达限定值之后（等待之后） <code>waitQueue - 1</code></li>
+<li>请求结束后判断 <code>waitQueue</code> 和 <code>waitQueue</code> 是否均为 <code>0</code><ul>
+<li>是：返回结果</li>
+<li>否：什么都不做</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>具体实现如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 文件数据信息类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 构造函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>path 全路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>parent 父级路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>name 文件名</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>size 大小(b)</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>isdir 是否为文件</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;String&#125;</span> <span class="type">&#123;origin&#125;</span> </span>百度云文件信息的源对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(path, parent, name, size, isdir, origin) &#123;</span><br><span class="line">    <span class="keyword">this</span>.path = path</span><br><span class="line">    <span class="keyword">this</span>.parent = parent</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.size = size</span><br><span class="line">    <span class="keyword">this</span>.isdir = isdir</span><br><span class="line">    <span class="keyword">this</span>.orgin = origin</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 等待指定的时间/等待指定表达式成立</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number|Function&#125;</span> </span>param 等待时间/等待条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>Promise 对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wait</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'number'</span>) &#123;</span><br><span class="line">      setTimeout(resolve, param)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> param === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (param()) &#123;</span><br><span class="line">          clearInterval(timer)</span><br><span class="line">          resolve()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;, <span class="number">100</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取指定文件夹下的一级文件/文件夹列表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>path 绝对路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>文件/文件夹列表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">getDir</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> baseUrl = <span class="string">'https://pan.baidu.com/api/list?'</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> res = <span class="keyword">await</span> fetch(<span class="string">`<span class="subst">$&#123;baseUrl&#125;</span>dir=<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span>(path)&#125;</span>`</span>)</span><br><span class="line">    <span class="keyword">var</span> json = <span class="keyword">await</span> res.json()</span><br><span class="line">    <span class="keyword">return</span> json.list</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`读取文件夹 <span class="subst">$&#123;path&#125;</span> 发生了错误：`</span>, err)</span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 递归获取所有文件/文件夹</span></span><br><span class="line"><span class="comment"> * 测试获取 34228 条数据</span></span><br><span class="line"><span class="comment"> * - 100 线程：156518ms</span></span><br><span class="line"><span class="comment"> * - 5   线程：220500ms</span></span><br><span class="line"><span class="comment"> * - 1   线程：超过 20min</span></span><br><span class="line"><span class="comment"> * 实现：</span></span><br><span class="line"><span class="comment"> * 1. 请求文件夹下的所有文件/文件夹</span></span><br><span class="line"><span class="comment"> * 2. 如果是文件则直接添加到结果数组中</span></span><br><span class="line"><span class="comment"> * 3. 如果是文件夹则递归调用当前方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;String&#125;</span> </span>[path] 指定文件夹，默认为根路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>[limit] 指定限定异步数量，默认为 5</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Promise&#125;</span> </span>异步对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">asyncList</span>(<span class="params">path = <span class="string">'/'</span>, limit = <span class="number">5</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> count = <span class="number">1</span></span><br><span class="line">    <span class="keyword">var</span> execCount = <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> waitQueue = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 结果数组</span></span><br><span class="line">    <span class="keyword">var</span> result = []</span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">children</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">      waitQueue++</span><br><span class="line">      <span class="keyword">await</span> wait(<span class="function"><span class="params">()</span> =&gt;</span> execCount &lt; limit)</span><br><span class="line">      waitQueue--</span><br><span class="line">      execCount++</span><br><span class="line">      getDir(path).then(<span class="function"><span class="params">fileList</span> =&gt;</span> &#123;</span><br><span class="line">        fileList.forEach(<span class="function"><span class="params">file</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">var</span> res = <span class="keyword">new</span> File(</span><br><span class="line">            file.path,</span><br><span class="line">            path,</span><br><span class="line">            file.server_filename,</span><br><span class="line">            file.size,</span><br><span class="line">            file.isdir,</span><br><span class="line">            file,</span><br><span class="line">          )</span><br><span class="line">          result.push(res)</span><br><span class="line">          <span class="keyword">if</span> (res.isdir === <span class="number">1</span>) &#123;</span><br><span class="line">            children(res.path)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">if</span> (--execCount === <span class="number">0</span> &amp;&amp; waitQueue === <span class="number">0</span>) &#123;</span><br><span class="line">          resolve(result)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    children(path)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>吾辈使用 <code>timing</code> 函数测试了一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试函数的执行时间</span></span><br><span class="line"><span class="comment"> * 注：如果函数返回 Promise，则该函数也会返回 Promise，否则直接返回执行时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>需要测试的函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns <span class="type">&#123;Number|Promise&#125;</span> </span>执行的毫秒数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timing</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> begin = performance.now()</span><br><span class="line">  <span class="keyword">var</span> result = fn()</span><br><span class="line">  <span class="keyword">if</span> (!(result <span class="keyword">instanceof</span> <span class="built_in">Promise</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> performance.now() - begin</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result.then(<span class="function"><span class="params">()</span> =&gt;</span> performance.now() - begin)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请求了 <code>2028</code> 次，两个函数的性能比较如下（单位是毫秒）</p>
+<ul>
+<li><code>asyncList</code>：109858.80000004545</li>
+<li><code>syncList</code>：451904.3000000529</li>
+</ul>
+<p>差距近 4.5 倍，几乎等同于默认的异步倍数了，看起来优化还是很值得呢！</p>
+<blockquote>
+<p>附：其实 <code>asyncList</code> 如果使用单异步的话效率反而更低，因为要做一些额外的判断导致单次请求更慢，但因为多个异步请求同时执行的缘故因此缺点被弥补了</p>
+</blockquote>
+<hr>
+<p>那么，关于 JavaScript 使用递归异步的请求就到这里啦</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 记录</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/04/others/rxliuliBlog/JavaScript/%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E4%BA%86-Form-%E8%A1%A8%E5%8D%95/" rel="prev" title="点击按钮自动提交了 Form 表单">
+      <i class="fa fa-chevron-left"></i> 点击按钮自动提交了 Form 表单
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/08/others/rxliuliBlog/JavaScript/JavaScript-%E5%96%84%E7%94%A8%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/" rel="next" title="JavaScript 善用解构赋值">
+      JavaScript 善用解构赋值 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-使用递归异步的请求"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 使用递归异步的请求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">1.2.</span> <span class="nav-text">解决</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

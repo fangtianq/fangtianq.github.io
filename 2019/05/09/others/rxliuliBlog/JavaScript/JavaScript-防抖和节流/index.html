@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="JavaScript 防抖和节流场景网络上已经存在了大量的有关 防抖 和 节流 的文章，为何吾辈还要再写一篇呢？事实上，防抖和节流，吾辈在使用中发现了一些奇怪的问题，并经过了数次的修改，这里主要分享一下吾辈遇到的问题以及是如何解决的。 为什么要用防抖和节流？因为某些函数触发&#x2F;调用的频率过快，吾辈需要手动去限制其执行的频率。例如常见的监听滚动条的事件，如果没有防抖处理的话，并且，每次函数执行花费的时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 防抖和节流">
+<meta property="og:url" content="https://fangtianq.github.io/2019/05/09/others/rxliuliBlog/JavaScript/JavaScript-%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 防抖和节流场景网络上已经存在了大量的有关 防抖 和 节流 的文章，为何吾辈还要再写一篇呢？事实上，防抖和节流，吾辈在使用中发现了一些奇怪的问题，并经过了数次的修改，这里主要分享一下吾辈遇到的问题以及是如何解决的。 为什么要用防抖和节流？因为某些函数触发&#x2F;调用的频率过快，吾辈需要手动去限制其执行的频率。例如常见的监听滚动条的事件，如果没有防抖处理的话，并且，每次函数执行花费的时">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-09T03:29:51.000Z">
+<meta property="article:modified_time" content="2019-05-14T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/05/09/others/rxliuliBlog/JavaScript/JavaScript-%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaScript 防抖和节流 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/05/09/others/rxliuliBlog/JavaScript/JavaScript-%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          JavaScript 防抖和节流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-09 11:29:51" itemprop="dateCreated datePublished" datetime="2019-05-09T11:29:51+08:00">2019-05-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-05-15 00:00:00" itemprop="dateModified" datetime="2019-05-15T00:00:00+08:00">2019-05-15</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2019/05/09/others/rxliuliBlog/JavaScript/JavaScript-%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/09/others/rxliuliBlog/JavaScript/JavaScript-%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-防抖和节流"><a href="#JavaScript-防抖和节流" class="headerlink" title="JavaScript 防抖和节流"></a>JavaScript 防抖和节流</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>网络上已经存在了大量的有关 <strong>防抖</strong> 和 <strong>节流</strong> 的文章，为何吾辈还要再写一篇呢？事实上，防抖和节流，吾辈在使用中发现了一些奇怪的问题，并经过了数次的修改，这里主要分享一下吾辈遇到的问题以及是如何解决的。</p>
+<h3 id="为什么要用防抖和节流？"><a href="#为什么要用防抖和节流？" class="headerlink" title="为什么要用防抖和节流？"></a>为什么要用防抖和节流？</h3><p>因为某些函数触发/调用的频率过快，吾辈需要手动去限制其执行的频率。例如常见的监听滚动条的事件，如果没有防抖处理的话，并且，每次函数执行花费的时间超过了触发的间隔时间的话 – 页面就会卡顿。</p>
+<h2 id="演进"><a href="#演进" class="headerlink" title="演进"></a>演进</h2><h3 id="初始实现"><a href="#初始实现" class="headerlink" title="初始实现"></a>初始实现</h3><p>我们先实现一个简单的去抖函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">delay, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> tId</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (tId) clearTimeout(tId)</span><br><span class="line">    tId = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      action(...args)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 Promise 简单封装 setTimeout，下同</span></span><br><span class="line"><span class="keyword">const</span> wait = <span class="function"><span class="params">ms</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> setTimeout(resolve, ms))</span><br><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> num = <span class="number">0</span></span><br><span class="line">  <span class="keyword">const</span> add = <span class="function"><span class="params">()</span> =&gt;</span> ++num</span><br><span class="line"></span><br><span class="line">  add()</span><br><span class="line">  add()</span><br><span class="line">  <span class="built_in">console</span>.log(num) <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> fn = debounce(<span class="number">10</span>, add)</span><br><span class="line">  fn()</span><br><span class="line">  fn()</span><br><span class="line">  <span class="built_in">console</span>.log(num) <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">await</span> wait(<span class="number">20</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(num) <span class="comment">// 3</span></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>好了，看来基本的效果是实现了的。包装过的函数 <code>fn</code> 调用了两次，却并没有立刻执行，而是等待时间间隔过去之后才最终执行了一次。</p>
+<h3 id="this-怎么办？"><a href="#this-怎么办？" class="headerlink" title="this 怎么办？"></a>this 怎么办？</h3><p>然而，上面的实现有一个致命的问题，没有处理 <code>this</code>！当你用在原生的事件处理时或许还不觉得，然而，当你使用了 ES6 <code>class</code> 这类对 <code>this</code> 敏感的代码时，就一定会遇到 <code>this</code> 带来的问题。</p>
+<p>例如下面使用 <code>class</code> 来声明一个计数器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.i = <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">  add() &#123;</span><br><span class="line">    <span class="keyword">this</span>.i++</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可能想在 <code>constructor</code> 中添加新的属性 <code>fn</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">this</span>.fn = debounce(<span class="number">10</span>, <span class="keyword">this</span>.add)</span><br><span class="line">  &#125;</span><br><span class="line">  add() &#123;</span><br><span class="line">    <span class="keyword">this</span>.i++</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但很遗憾，这里的 <code>this</code> 绑定是有问题的，执行以下代码试试看</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> counter = <span class="keyword">new</span> Counter()</span><br><span class="line">counter.fn() <span class="comment">// Cannot read property 'i' of undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>会抛出异常 <code>Cannot read property &#39;i&#39; of undefined</code>，究其原因就是 <code>this</code> 没有绑定，我们可以手动绑定 this <code>.bind(this)</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">this</span>.fn = debounce(<span class="number">10</span>, <span class="keyword">this</span>.add.bind(<span class="keyword">this</span>))</span><br><span class="line">  &#125;</span><br><span class="line">  add() &#123;</span><br><span class="line">    <span class="keyword">this</span>.i++</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但更好的方式是修改 <code>debounce</code>，使其能够自动绑定 <code>this</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">delay, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> tId</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (tId) clearTimeout(tId)</span><br><span class="line">    tId = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      action.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，代码将如同预期的运行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">      <span class="keyword">this</span>.i = <span class="number">0</span></span><br><span class="line">      <span class="keyword">this</span>.fn = debounce(<span class="number">10</span>, <span class="keyword">this</span>.add)</span><br><span class="line">    &#125;</span><br><span class="line">    add() &#123;</span><br><span class="line">      <span class="keyword">this</span>.i++</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> counter = <span class="keyword">new</span> Counter()</span><br><span class="line">  counter.add()</span><br><span class="line">  counter.add()</span><br><span class="line">  <span class="built_in">console</span>.log(counter.i) <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">  counter.fn()</span><br><span class="line">  counter.fn()</span><br><span class="line">  <span class="built_in">console</span>.log(counter.i) <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">await</span> wait(<span class="number">20</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(counter.i) <span class="comment">// 3</span></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h3 id="返回值呢？"><a href="#返回值呢？" class="headerlink" title="返回值呢？"></a>返回值呢？</h3><p>不知道你有没有发现，现在使用 <code>debounce</code> 包装的函数都没有返回值，是完全只有副作用的函数。然而，吾辈还是遇到了需要返回值的场景。<br>例如：<em>输入停止后，使用 Ajax 请求后台数据判断是否已存在相同的数据。</em></p>
+<p>修改 <code>debounce</code> 成会缓存上一次执行结果并且有初始结果参数的实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">delay, action, init = undefined</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> flag</span><br><span class="line">  <span class="keyword">let</span> result = init</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) clearTimeout(flag)</span><br><span class="line">    flag = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      result = action.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    &#125;, delay)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用代码变成了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">      <span class="keyword">this</span>.i = <span class="number">0</span></span><br><span class="line">      <span class="keyword">this</span>.fn = debounce(<span class="number">10</span>, <span class="keyword">this</span>.add, <span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    add() &#123;</span><br><span class="line">      <span class="keyword">return</span> ++<span class="keyword">this</span>.i</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> counter = <span class="keyword">new</span> Counter()</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(counter.add()) <span class="comment">// 1</span></span><br><span class="line">  <span class="built_in">console</span>.log(counter.add()) <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(counter.fn()) <span class="comment">// 0</span></span><br><span class="line">  <span class="built_in">console</span>.log(counter.fn()) <span class="comment">// 0</span></span><br><span class="line">  <span class="keyword">await</span> wait(<span class="number">20</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(counter.fn()) <span class="comment">// 3</span></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>看起来很完美？然而，没有考虑到异步函数是个大失败！</p>
+<p>尝试以下测试代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">get</span> = async i =&gt; i</span><br><span class="line"></span><br><span class="line">  console.log(await <span class="keyword">get</span>(1))</span><br><span class="line">  console.log(await <span class="keyword">get</span>(2))</span><br><span class="line">  const fn = debounce(10, <span class="keyword">get</span>, 0)</span><br><span class="line">  fn(3).then(i =&gt; console.log(i)) // fn(...).then is not a function</span><br><span class="line">  fn(4).then(i =&gt; console.log(i))</span><br><span class="line">  await wait(20)</span><br><span class="line">  fn(5).then(i =&gt; console.log(i))</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>会抛出异常 <code>fn(...).then is not a function</code>，因为我们包装过后的函数是同步的，第一次返回的值并不是 <code>Promise</code> 类型。</p>
+<p>除非我们修改默认值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">get</span> = async i =&gt; i</span><br><span class="line"></span><br><span class="line">  console.log(await <span class="keyword">get</span>(1))</span><br><span class="line">  console.log(await <span class="keyword">get</span>(2))</span><br><span class="line">  // 注意，修改默认值为 Promise</span><br><span class="line">  const fn = debounce(10, <span class="keyword">get</span>, new Promise(resolve =&gt; resolve(0)))</span><br><span class="line">  fn(3).then(i =&gt; console.log(i)) // 0</span><br><span class="line">  fn(4).then(i =&gt; console.log(i)) // 0</span><br><span class="line">  await wait(20)</span><br><span class="line">  fn(5).then(i =&gt; console.log(i)) // 4</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h3 id="支持有返回值的异步函数"><a href="#支持有返回值的异步函数" class="headerlink" title="支持有返回值的异步函数"></a>支持有返回值的异步函数</h3><p>支持异步有两种思路</p>
+<ol>
+<li>将异步函数包装为同步函数</li>
+<li>将包装后的函数异步化</li>
+</ol>
+<p>第一种思路实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">delay, action, init = undefined</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> flag</span><br><span class="line">  <span class="keyword">let</span> result = init</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) clearTimeout(flag)</span><br><span class="line">    flag = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> temp = action.apply(<span class="keyword">this</span>, args)</span><br><span class="line">      <span class="keyword">if</span> (temp <span class="keyword">instanceof</span> <span class="built_in">Promise</span>) &#123;</span><br><span class="line">        temp.then(<span class="function"><span class="params">res</span> =&gt;</span> (result = res))</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        result = temp</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, delay)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用方式和同步函数完全一样，当然，是支持异步函数的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">get</span> = async i =&gt; i</span><br><span class="line"></span><br><span class="line">  console.log(await <span class="keyword">get</span>(1))</span><br><span class="line">  console.log(await <span class="keyword">get</span>(2))</span><br><span class="line">  // 注意，修改默认值为 Promise</span><br><span class="line">  const fn = debounce(10, <span class="keyword">get</span>, 0)</span><br><span class="line">  console.log(fn(3)) // 0</span><br><span class="line">  console.log(fn(4)) // 0</span><br><span class="line">  await wait(20)</span><br><span class="line">  console.log(fn(5)) // 4</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>第二种思路实现</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debounce = <span class="function">(<span class="params">delay, action, init = <span class="literal">undefined</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> flag</span><br><span class="line">  <span class="keyword">let</span> result = init</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (flag) clearTimeout(flag)</span><br><span class="line">      flag = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        result = action.apply(<span class="keyword">this</span>, args)</span><br><span class="line">        resolve(result)</span><br><span class="line">      &#125;, delay)</span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        resolve(result)</span><br><span class="line">      &#125;, delay)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用方式支持异步的方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">get</span> = async i =&gt; i</span><br><span class="line"></span><br><span class="line">  console.log(await <span class="keyword">get</span>(1))</span><br><span class="line">  console.log(await <span class="keyword">get</span>(2))</span><br><span class="line">  // 注意，修改默认值为 Promise</span><br><span class="line">  const fn = debounce(10, <span class="keyword">get</span>, 0)</span><br><span class="line">  fn(3).then(i =&gt; console.log(i)) // 0</span><br><span class="line">  fn(4).then(i =&gt; console.log(i)) // 4</span><br><span class="line">  await wait(20)</span><br><span class="line">  fn(5).then(i =&gt; console.log(i)) // 5</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，第一种思路带来的问题是返回值永远会是 <strong>旧的</strong> 返回值，第二种思路主要问题是将同步函数也给包装成了异步。利弊权衡之下，吾辈觉得第二种思路更加正确一些，毕竟使用场景本身不太可能必须是同步的操作。而且，原本 <code>setTimeout</code> 也是异步的，只是不需要返回值的时候并未意识到这点。</p>
+<h3 id="避免原函数信息丢失"><a href="#避免原函数信息丢失" class="headerlink" title="避免原函数信息丢失"></a>避免原函数信息丢失</h3><p>后来，有人提出了一个问题，如果函数上面携带其他信息，例如类似于 <code>jQuery</code> 的 <code>$</code>，既是一个函数，但也同时含有其他属性，如果使用 <code>debounce</code> 就找不到了呀</p>
+<p>一开始吾辈立刻想到了复制函数上面的所有可遍历属性，然后想起了 ES6 的 <code>Proxy</code> 特性 – 这实在是太<strong>魔法</strong>了。使用 Proxy 解决这个问题将异常的简单 – 因为除了调用函数，其他的一切操作仍然指向原函数！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debounce = <span class="function">(<span class="params">delay, action, init = <span class="literal">undefined</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> flag</span><br><span class="line">  <span class="keyword">let</span> result = init</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(action, &#123;</span><br><span class="line">    apply(target, thisArg, args) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (flag) clearTimeout(flag)</span><br><span class="line">        flag = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          resolve((result = <span class="built_in">Reflect</span>.apply(target, thisArg, args)))</span><br><span class="line">        &#125;, delay)</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          resolve(result)</span><br><span class="line">        &#125;, delay)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;<span class="function">(<span class="params"><span class="keyword">async</span> (</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">get</span> = async i =&gt; i</span><br><span class="line">  <span class="keyword">get</span>.rx = 'rx'</span><br><span class="line"></span><br><span class="line">  console.log(<span class="keyword">get</span>.rx) // rx</span><br><span class="line">  const fn = debounce(10, <span class="keyword">get</span>, 0)</span><br><span class="line">  console.log(fn.rx) // rx</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现节流"><a href="#实现节流" class="headerlink" title="实现节流"></a>实现节流</h3><p>以这种思路实现一个节流函数 <code>throttle</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 函数节流</span></span><br><span class="line"><span class="comment"> * 节流 (throttle) 让一个函数不要执行的太频繁，减少执行过快的调用，叫节流</span></span><br><span class="line"><span class="comment"> * 类似于上面而又不同于上面的函数去抖, 包装后函数在上一次操作执行过去了最小间隔时间后会直接执行, 否则会忽略该次操作</span></span><br><span class="line"><span class="comment"> * 与上面函数去抖的明显区别在连续操作时会按照最小间隔时间循环执行操作, 而非仅执行最后一次操作</span></span><br><span class="line"><span class="comment"> * 注: 该函数第一次调用一定会执行，不需要担心第一次拿不到缓存值，后面的连续调用都会拿到上一次的缓存值</span></span><br><span class="line"><span class="comment"> * 注: 返回函数结果的高阶函数需要使用 &#123;<span class="doctag">@link </span>Proxy&#125; 实现，以避免原函数原型链上的信息丢失</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Number&#125;</span> </span>delay 最小间隔时间，单位为 ms</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>action 真正需要执行的操作</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return <span class="type">&#123;Function&#125;</span> </span>包装后有节流功能的函数。该函数是异步的，与需要包装的函数 &#123;<span class="doctag">@link </span>action&#125; 是否异步没有太大关联</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> throttle = <span class="function">(<span class="params">delay, action</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> last = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> result</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(action, &#123;</span><br><span class="line">    apply(target, thisArg, args) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> curr = <span class="built_in">Date</span>.now()</span><br><span class="line">        <span class="keyword">if</span> (curr - last &gt; delay) &#123;</span><br><span class="line">          result = <span class="built_in">Reflect</span>.apply(target, thisArg, args)</span><br><span class="line">          last = curr</span><br><span class="line">          resolve(result)</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        resolve(result)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>嘛，实际上这里的防抖和节流仍然是简单的实现，其他的像 <strong>取消防抖</strong>/<strong>强制刷新缓存</strong> 等功能尚未实现。当然，对于吾辈而言功能已然足够了，也被放到了公共的函数库 <a href="https://rx-util.rxliuli.com/" target="_blank" rel="noopener">rx-util</a> 中。</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 教程</a>
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/11/others/rxliuliBlog/JavaScript/layui-layer-load-%E5%BC%B9%E7%AA%97%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD%E7%9A%84%E9%97%AE%E9%A2%98/" rel="prev" title="layui-layer load 弹窗自动关闭的问题">
+      <i class="fa fa-chevron-left"></i> layui-layer load 弹窗自动关闭的问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/15/others/rxliuliBlog/JavaScript/JavaScript-%E5%BE%AE%E4%BB%BB%E5%8A%A1-%E5%AE%8F%E4%BB%BB%E5%8A%A1%E8%B8%A9%E5%9D%91/" rel="next" title="JavaScript 微任务/宏任务踩坑">
+      JavaScript 微任务/宏任务踩坑 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-防抖和节流"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 防抖和节流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用防抖和节流？"><span class="nav-number">1.1.1.</span> <span class="nav-text">为什么要用防抖和节流？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#演进"><span class="nav-number">1.2.</span> <span class="nav-text">演进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始实现"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-怎么办？"><span class="nav-number">1.2.2.</span> <span class="nav-text">this 怎么办？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回值呢？"><span class="nav-number">1.2.3.</span> <span class="nav-text">返回值呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持有返回值的异步函数"><span class="nav-number">1.2.4.</span> <span class="nav-text">支持有返回值的异步函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免原函数信息丢失"><span class="nav-number">1.2.5.</span> <span class="nav-text">避免原函数信息丢失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现节流"><span class="nav-number">1.2.6.</span> <span class="nav-text">实现节流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

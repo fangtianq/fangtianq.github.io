@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SIMD">
+<meta property="og:url" content="https://fangtianq.github.io/2020/07/12/javascript/es6-tutorial-master/docs/simd/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="…">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T10:51:00.000Z">
+<meta property="article:modified_time" content="2021-04-24T17:18:23.297Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/07/12/javascript/es6-tutorial-master/docs/simd/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SIMD | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/07/12/javascript/es6-tutorial-master/docs/simd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          SIMD
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-12 18:51:00" itemprop="dateCreated datePublished" datetime="2020-07-12T18:51:00+08:00">2020-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-25 01:18:23" itemprop="dateModified" datetime="2021-04-25T01:18:23+08:00">2021-04-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/es6/" itemprop="url" rel="index"><span itemprop="name">es6</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2020/07/12/javascript/es6-tutorial-master/docs/simd/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/12/javascript/es6-tutorial-master/docs/simd/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>…</p>
+<a id="more"></a>
+<h1 id="SIMD"><a href="#SIMD" class="headerlink" title="SIMD"></a>SIMD</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>SIMD（发音<code>/sim-dee/</code>）是“Single Instruction/Multiple Data”的缩写，意为“单指令，多数据”。它是 JavaScript 操作 CPU 对应指令的接口，你可以看做这是一种不同的运算执行模式。与它相对的是 SISD（“Single Instruction/Single Data”），即“单指令，单数据”。</p>
+<p>SIMD 的含义是使用一个指令，完成多个数据的运算；SISD 的含义是使用一个指令，完成单个数据的运算，这是 JavaScript 的默认运算模式。显而易见，SIMD 的执行效率要高于 SISD，所以被广泛用于 3D 图形运算、物理模拟等运算量超大的项目之中。</p>
+<p>为了理解 SIMD，请看下面的例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> b = [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];</span><br><span class="line"><span class="keyword">var</span> c = [];</span><br><span class="line"></span><br><span class="line">c[<span class="number">0</span>] = a[<span class="number">0</span>] + b[<span class="number">0</span>];</span><br><span class="line">c[<span class="number">1</span>] = a[<span class="number">1</span>] + b[<span class="number">1</span>];</span><br><span class="line">c[<span class="number">2</span>] = a[<span class="number">2</span>] + b[<span class="number">2</span>];</span><br><span class="line">c[<span class="number">3</span>] = a[<span class="number">3</span>] + b[<span class="number">3</span>];</span><br><span class="line">c <span class="comment">// Array[6, 8, 10, 12]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，数组<code>a</code>和<code>b</code>的对应成员相加，结果放入数组<code>c</code>。它的运算模式是依次处理每个数组成员，一共有四个数组成员，所以需要运算 4 次。</p>
+<p>如果采用 SIMD 模式，只要运算一次就够了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> c = SIMD.Float32x4.add(a, b); <span class="comment">// Float32x4[6, 8, 10, 12]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码之中，数组<code>a</code>和<code>b</code>的四个成员的各自相加，只用一条指令就完成了。因此，速度比上一种写法提高了 4 倍。</p>
+<p>一次 SIMD 运算，可以处理多个数据，这些数据被称为“通道”（lane）。上面代码中，一次运算了四个数据，因此就是四个通道。</p>
+<p>SIMD 通常用于矢量运算。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v + w = 〈v1, …, vn〉+ 〈w1, …, wn〉</span><br><span class="line">      = 〈v1+w1, …, vn+wn〉</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>v</code>和<code>w</code>是两个多元矢量。它们的加运算，在 SIMD 下是一个指令、而不是 n 个指令完成的，这就大大提高了效率。这对于 3D 动画、图像处理、信号处理、数值处理、加密等运算是非常重要的。比如，Canvas 的<code>getImageData()</code>会将图像文件读成一个二进制数组，SIMD 就很适合对于这种数组的处理。</p>
+<p>总的来说，SIMD 是数据并行处理（parallelism）的一种手段，可以加速一些运算密集型操作的速度。将来与 WebAssembly 结合以后，可以让 JavaScript 达到二进制代码的运行速度。</p>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>SIMD 提供 12 种数据类型，总长度都是 128 个二进制位。</p>
+<ul>
+<li>Float32x4：四个 32 位浮点数</li>
+<li>Float64x2：两个 64 位浮点数</li>
+<li>Int32x4：四个 32 位整数</li>
+<li>Int16x8：八个 16 位整数</li>
+<li>Int8x16：十六个 8 位整数</li>
+<li>Uint32x4：四个无符号的 32 位整数</li>
+<li>Uint16x8：八个无符号的 16 位整数</li>
+<li>Uint8x16：十六个无符号的 8 位整数</li>
+<li>Bool32x4：四个 32 位布尔值</li>
+<li>Bool16x8：八个 16 位布尔值</li>
+<li>Bool8x16：十六个 8 位布尔值</li>
+<li>Bool64x2：两个 64 位布尔值</li>
+</ul>
+<p>每种数据类型被<code>x</code>符号分隔成两部分，后面的部分表示通道数，前面的部分表示每个通道的宽度和类型。比如，<code>Float32x4</code>就表示这个值有 4 个通道，每个通道是一个 32 位浮点数。</p>
+<p>每个通道之中，可以放置四种数据。</p>
+<ul>
+<li>浮点数（float，比如 1.0）</li>
+<li>带符号的整数（Int，比如-1）</li>
+<li>无符号的整数（Uint，比如 1）</li>
+<li>布尔值（Bool，包含<code>true</code>和<code>false</code>两种值）</li>
+</ul>
+<p>每种 SIMD 的数据类型都是一个函数方法，可以传入参数，生成对应的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，变量<code>a</code>就是一个 128 位、包含四个 32 位浮点数（即四个通道）的值。</p>
+<p>注意，这些数据类型方法都不是构造函数，前面不能加<code>new</code>，否则会报错。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v = <span class="keyword">new</span> SIMD.Float32x4(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// TypeError: SIMD.Float32x4 is not a constructor</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="静态方法：数学运算"><a href="#静态方法：数学运算" class="headerlink" title="静态方法：数学运算"></a>静态方法：数学运算</h2><p>每种数据类型都有一系列运算符，支持基本的数学运算。</p>
+<h3 id="SIMD-type-abs-，SIMD-type-neg"><a href="#SIMD-type-abs-，SIMD-type-neg" class="headerlink" title="SIMD.%type%.abs()，SIMD.%type%.neg()"></a>SIMD.%type%.abs()，SIMD.%type%.neg()</h3><p><code>abs</code>方法接受一个 SIMD 值作为参数，将它的每个通道都转成绝对值，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">0</span>, <span class="literal">NaN</span>);</span><br><span class="line">SIMD.Float32x4.abs(a)</span><br><span class="line"><span class="comment">// Float32x4[1, 2, 0, NaN]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>neg</code>方法接受一个 SIMD 值作为参数，将它的每个通道都转成负值，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line">SIMD.Float32x4.neg(a)</span><br><span class="line"><span class="comment">// Float32x4[1, 2, -3, -0]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float64x2(<span class="literal">NaN</span>, <span class="literal">Infinity</span>);</span><br><span class="line">SIMD.Float64x2.neg(b)</span><br><span class="line"><span class="comment">// Float64x2[NaN, -Infinity]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-add-，SIMD-type-addSaturate"><a href="#SIMD-type-add-，SIMD-type-addSaturate" class="headerlink" title="SIMD.%type%.add()，SIMD.%type%.addSaturate()"></a>SIMD.%type%.add()，SIMD.%type%.addSaturate()</h3><p><code>add</code>方法接受两个 SIMD 值作为参数，将它们的每个通道相加，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">5.0</span>, <span class="number">10.0</span>, <span class="number">15.0</span>, <span class="number">20.0</span>);</span><br><span class="line"><span class="keyword">var</span> c = SIMD.Float32x4.add(a, b);</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，经过加法运算，新的 SIMD 值为<code>(6.0, 12.0, 18.0. 24.0)</code>。</p>
+<p><code>addSaturate</code>方法跟<code>add</code>方法的作用相同，都是两个通道相加，但是溢出的处理不一致。对于<code>add</code>方法，如果两个值相加发生溢出，溢出的二进制位会被丢弃; <code>addSaturate</code>方法则是返回该数据类型的最大值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Uint16x8(<span class="number">65533</span>, <span class="number">65534</span>, <span class="number">65535</span>, <span class="number">65535</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Uint16x8(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">5000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">SIMD.Uint16x8.addSaturate(a, b);</span><br><span class="line"><span class="comment">// Uint16x8[65534, 65535, 65535, 65535, 2, 2, 2, 2]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = SIMD.Int16x8(<span class="number">32765</span>, <span class="number">32766</span>, <span class="number">32767</span>, <span class="number">32767</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> d = SIMD.Int16x8(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">5000</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">SIMD.Int16x8.addSaturate(c, d);</span><br><span class="line"><span class="comment">// Int16x8[32766, 32767, 32767, 32767, 2, 2, 2, 2]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>Uint16</code>的最大值是 65535，<code>Int16</code>的最大值是 32767。一旦发生溢出，就返回这两个值。</p>
+<p>注意，<code>Uint32x4</code>和<code>Int32x4</code>这两种数据类型没有<code>addSaturate</code>方法。</p>
+<h3 id="SIMD-type-sub-，SIMD-type-subSaturate"><a href="#SIMD-type-sub-，SIMD-type-subSaturate" class="headerlink" title="SIMD.%type%.sub()，SIMD.%type%.subSaturate()"></a>SIMD.%type%.sub()，SIMD.%type%.subSaturate()</h3><p><code>sub</code>方法接受两个 SIMD 值作为参数，将它们的每个通道相减，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">SIMD.Float32x4.sub(a, b)</span><br><span class="line"><span class="comment">// Float32x4[-4, -5, 0, 1]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>subSaturate</code>方法跟<code>sub</code>方法的作用相同，都是两个通道相减，但是溢出的处理不一致。对于<code>sub</code>方法，如果两个值相减发生溢出，溢出的二进制位会被丢弃; <code>subSaturate</code>方法则是返回该数据类型的最小值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Uint16x8(<span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Uint16x8(<span class="number">10</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">SIMD.Uint16x8.subSaturate(a, b)</span><br><span class="line"><span class="comment">// Uint16x8[0, 0, 0, 0, 0, 0, 0, 0]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = SIMD.Int16x8(<span class="number">-100</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">var</span> d = SIMD.Int16x8(<span class="number">32767</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">SIMD.Int16x8.subSaturate(c, d)</span><br><span class="line"><span class="comment">// Int16x8[-32768, 0, 0, 0, 0, 0, 0, 0, 0]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>Uint16</code>的最小值是<code>0</code>，<code>Int16</code>的最小值是<code>-32678</code>。一旦运算发生溢出，就返回最小值。</p>
+<h3 id="SIMD-type-mul-，SIMD-type-div-，SIMD-type-sqrt"><a href="#SIMD-type-mul-，SIMD-type-div-，SIMD-type-sqrt" class="headerlink" title="SIMD.%type%.mul()，SIMD.%type%.div()，SIMD.%type%.sqrt()"></a>SIMD.%type%.mul()，SIMD.%type%.div()，SIMD.%type%.sqrt()</h3><p><code>mul</code>方法接受两个 SIMD 值作为参数，将它们的每个通道相乘，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">SIMD.Float32x4.mul(a, b)</span><br><span class="line"><span class="comment">// Float32x4[-3, -6, 9, 12]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>div</code>方法接受两个 SIMD 值作为参数，将它们的每个通道相除，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Float32x4.div(a, b)</span><br><span class="line"><span class="comment">// Float32x4[0.5, 0.5, 0.5, 0.5]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>sqrt</code>方法接受一个 SIMD 值作为参数，求出每个通道的平方根，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = SIMD.Float64x2(<span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line">SIMD.Float64x2.sqrt(b)</span><br><span class="line"><span class="comment">// Float64x2[2, 2.8284271247461903]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-FloatType-reciprocalApproximation-，SIMD-type-reciprocalSqrtApproximation"><a href="#SIMD-FloatType-reciprocalApproximation-，SIMD-type-reciprocalSqrtApproximation" class="headerlink" title="SIMD.%FloatType%.reciprocalApproximation()，SIMD.%type%.reciprocalSqrtApproximation()"></a>SIMD.%FloatType%.reciprocalApproximation()，SIMD.%type%.reciprocalSqrtApproximation()</h3><p><code>reciprocalApproximation</code>方法接受一个 SIMD 值作为参数，求出每个通道的倒数（<code>1 / x</code>），作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Float32x4.reciprocalApproximation(a);</span><br><span class="line"><span class="comment">// Float32x4[1, 0.5, 0.3333333432674408, 0.25]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>reciprocalSqrtApproximation</code>方法接受一个 SIMD 值作为参数，求出每个通道的平方根的倒数（<code>1 / (x^0.5)</code>），作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Float32x4.reciprocalSqrtApproximation(a)</span><br><span class="line"><span class="comment">// Float32x4[1, 0.7071067690849304, 0.5773502588272095, 0.5]</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，只有浮点数的数据类型才有这两个方法。</p>
+<h3 id="SIMD-IntegerType-shiftLeftByScalar"><a href="#SIMD-IntegerType-shiftLeftByScalar" class="headerlink" title="SIMD.%IntegerType%.shiftLeftByScalar()"></a>SIMD.%IntegerType%.shiftLeftByScalar()</h3><p><code>shiftLeftByScalar</code>方法接受一个 SIMD 值作为参数，然后将每个通道的值左移指定的位数，作为一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line">SIMD.Int32x4.shiftLeftByScalar(a, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// Int32x4[2, 4, 8, 16]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果左移后，新的值超出了当前数据类型的位数，溢出的部分会被丢弃。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ix4 = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> jx4 = SIMD.Int32x4.shiftLeftByScalar(ix4, <span class="number">32</span>);</span><br><span class="line"><span class="comment">// Int32x4[0, 0, 0, 0]</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，只有整数的数据类型才有这个方法。</p>
+<h3 id="SIMD-IntegerType-shiftRightByScalar"><a href="#SIMD-IntegerType-shiftRightByScalar" class="headerlink" title="SIMD.%IntegerType%.shiftRightByScalar()"></a>SIMD.%IntegerType%.shiftRightByScalar()</h3><p><code>shiftRightByScalar</code>方法接受一个 SIMD 值作为参数，然后将每个通道的值右移指定的位数，返回一个新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">-8</span>);</span><br><span class="line">SIMD.Int32x4.shiftRightByScalar(a, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// Int32x4[0, 1, 2, -4]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果原来通道的值是带符号的值，则符号位保持不变，不受右移影响。如果是不带符号位的值，则右移后头部会补<code>0</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Uint32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">-8</span>);</span><br><span class="line">SIMD.Uint32x4.shiftRightByScalar(a, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// Uint32x4[0, 1, 2, 2147483644]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>-8</code>右移一位变成了<code>2147483644</code>，是因为对于 32 位无符号整数来说，<code>-8</code>的二进制形式是<code>11111111111111111111111111111000</code>，右移一位就变成了<code>01111111111111111111111111111100</code>，相当于<code>2147483644</code>。</p>
+<p>注意，只有整数的数据类型才有这个方法。</p>
+<h2 id="静态方法：通道处理"><a href="#静态方法：通道处理" class="headerlink" title="静态方法：通道处理"></a>静态方法：通道处理</h2><h3 id="SIMD-type-check"><a href="#SIMD-type-check" class="headerlink" title="SIMD.%type%.check()"></a>SIMD.%type%.check()</h3><p><code>check</code>方法用于检查一个值是否为当前类型的 SIMD 值。如果是的，就返回这个值，否则就报错。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.check(a);</span><br><span class="line"><span class="comment">// Float32x4[1, 2, 3, 9]</span></span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.check([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]) <span class="comment">// 报错</span></span><br><span class="line">SIMD.Int32x4.check(a) <span class="comment">// 报错</span></span><br><span class="line">SIMD.Int32x4.check(<span class="string">'hello world'</span>) <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-extractLane-，SIMD-type-replaceLane"><a href="#SIMD-type-extractLane-，SIMD-type-replaceLane" class="headerlink" title="SIMD.%type%.extractLane()，SIMD.%type%.replaceLane()"></a>SIMD.%type%.extractLane()，SIMD.%type%.replaceLane()</h3><p><code>extractLane</code>方法用于返回给定通道的值。它接受两个参数，分别是 SIMD 值和通道编号。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Float32x4.extractLane(t, <span class="number">2</span>) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p><code>replaceLane</code>方法用于替换指定通道的值，并返回一个新的 SIMD 值。它接受三个参数，分别是原来的 SIMD 值、通道编号和新的通道值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Float32x4.replaceLane(t, <span class="number">2</span>, <span class="number">42</span>)</span><br><span class="line"><span class="comment">// Float32x4[1, 2, 42, 4]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-load"><a href="#SIMD-type-load" class="headerlink" title="SIMD.%type%.load()"></a>SIMD.%type%.load()</h3><p><code>load</code>方法用于从二进制数组读入数据，生成一个新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Int32Array</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]);</span><br><span class="line">SIMD.Int32x4.load(a, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// Int32x4[1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="built_in">Int32Array</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]);</span><br><span class="line">SIMD.Int32x4.load(a, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// Int32x4[3, 4, 5, 6]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>load</code>方法接受两个参数：一个二进制数组和开始读取的位置（从 0 开始）。如果位置不合法（比如<code>-1</code>或者超出二进制数组的大小），就会抛出一个错误。</p>
+<p>这个方法还有三个变种<code>load1()</code>、<code>load2()</code>、<code>load3()</code>，表示从指定位置开始，只加载一个通道、二个通道、三个通道的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 格式</span></span><br><span class="line">SIMD.Int32x4.load(tarray, index)</span><br><span class="line">SIMD.Int32x4.load1(tarray, index)</span><br><span class="line">SIMD.Int32x4.load2(tarray, index)</span><br><span class="line">SIMD.Int32x4.load3(tarray, index)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Int32Array</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]);</span><br><span class="line">SIMD.Int32x4.load1(a, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// Int32x4[1, 0, 0, 0]</span></span><br><span class="line">SIMD.Int32x4.load2(a, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// Int32x4[1, 2, 0, 0]</span></span><br><span class="line">SIMD.Int32x4.load3(a, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// Int32x4[1, 2, 3,0]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-store"><a href="#SIMD-type-store" class="headerlink" title="SIMD.%type%.store()"></a>SIMD.%type%.store()</h3><p><code>store</code>方法用于将一个 SIMD 值，写入一个二进制数组。它接受三个参数，分别是二进制数组、开始写入的数组位置、SIMD 值。它返回写入值以后的二进制数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t1 = <span class="keyword">new</span> <span class="built_in">Int32Array</span>(<span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> v1 = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Int32x4.store(t1, <span class="number">0</span>, v1)</span><br><span class="line"><span class="comment">// Int32Array[1, 2, 3, 4, 0, 0, 0, 0]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> t2 = <span class="keyword">new</span> <span class="built_in">Int32Array</span>(<span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> v2 = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Int32x4.store(t2, <span class="number">2</span>, v2)</span><br><span class="line"><span class="comment">// Int32Array[0, 0, 1, 2, 3, 4, 0, 0]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>t1</code>是一个二进制数组，<code>v1</code>是一个 SIMD 值，只有四个通道。所以写入<code>t1</code>以后，只有前四个位置有值，后四个位置都是 0。而<code>t2</code>是从 2 号位置开始写入，所以前两个位置和后两个位置都是 0。</p>
+<p>这个方法还有三个变种<code>store1()</code>、<code>store2()</code>和<code>store3()</code>，表示只写入一个通道、二个通道和三个通道的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tarray = <span class="keyword">new</span> <span class="built_in">Int32Array</span>(<span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> value = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Int32x4.store1(tarray, <span class="number">0</span>, value);</span><br><span class="line"><span class="comment">// Int32Array[1, 0, 0, 0, 0, 0, 0, 0]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-splat"><a href="#SIMD-type-splat" class="headerlink" title="SIMD.%type%.splat()"></a>SIMD.%type%.splat()</h3><p><code>splat</code>方法返回一个新的 SIMD 值，该值的所有通道都会设成同一个预先给定的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SIMD.Float32x4.splat(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// Float32x4[3, 3, 3, 3]</span></span><br><span class="line">SIMD.Float64x2.splat(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// Float64x2[3, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果省略参数，所有整数型的 SIMD 值都会设定<code>0</code>，浮点型的 SIMD 值都会设成<code>NaN</code>。</p>
+<h3 id="SIMD-type-swizzle"><a href="#SIMD-type-swizzle" class="headerlink" title="SIMD.%type%.swizzle()"></a>SIMD.%type%.swizzle()</h3><p><code>swizzle</code>方法返回一个新的 SIMD 值，重新排列原有的 SIMD 值的通道顺序。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">SIMD.Float32x4.swizzle(t, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// Float32x4[2,3,1,4]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>swizzle</code>方法的第一个参数是原有的 SIMD 值，后面的参数对应将要返回的 SIMD 值的四个通道。它的意思是新的 SIMD 的四个通道，依次是原来 SIMD 值的 1 号通道、2 号通道、0 号通道、3 号通道。由于 SIMD 值最多可以有 16 个通道，所以<code>swizzle</code>方法除了第一个参数以外，最多还可以接受 16 个参数。</p>
+<p>下面是另一个例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="comment">// Float32x4[1.0, 2.0, 3.0, 4.0]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4.swizzle(a, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// Float32x4[1.0, 1.0, 2.0, 2.0]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = SIMD.Float32x4.swizzle(a, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// Float32x4[4.0, 4.0, 4.0, 4.0]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> d = SIMD.Float32x4.swizzle(a, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// Float32x4[4.0, 3.0, 2.0, 1.0]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-shuffle"><a href="#SIMD-type-shuffle" class="headerlink" title="SIMD.%type%.shuffle()"></a>SIMD.%type%.shuffle()</h3><p><code>shuffle</code>方法从两个 SIMD 值之中取出指定通道，返回一个新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.shuffle(a, b, <span class="number">1</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// Float32x4[2, 6, 8, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>a</code>和<code>b</code>一共有 8 个通道，依次编号为 0 到 7。<code>shuffle</code>根据编号，取出相应的通道，返回一个新的 SIMD 值。</p>
+<h2 id="静态方法：比较运算"><a href="#静态方法：比较运算" class="headerlink" title="静态方法：比较运算"></a>静态方法：比较运算</h2><h3 id="SIMD-type-equal-，SIMD-type-notEqual"><a href="#SIMD-type-equal-，SIMD-type-notEqual" class="headerlink" title="SIMD.%type%.equal()，SIMD.%type%.notEqual()"></a>SIMD.%type%.equal()，SIMD.%type%.notEqual()</h3><p><code>equal</code>方法用来比较两个 SIMD 值<code>a</code>和<code>b</code>的每一个通道，根据两者是否精确相等（<code>a === b</code>），得到一个布尔值。最后，所有通道的比较结果，组成一个新的 SIMD 值，作为掩码返回。<code>notEqual</code>方法则是比较两个通道是否不相等（<code>a !== b</code>）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">9</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.equal(a,b)</span><br><span class="line"><span class="comment">// Bool32x4[true, false, false, true]</span></span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.notEqual(a,b);</span><br><span class="line"><span class="comment">// Bool32x4[false, true, true, false]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-greaterThan-，SIMD-type-greaterThanOrEqual"><a href="#SIMD-type-greaterThan-，SIMD-type-greaterThanOrEqual" class="headerlink" title="SIMD.%type%.greaterThan()，SIMD.%type%.greaterThanOrEqual()"></a>SIMD.%type%.greaterThan()，SIMD.%type%.greaterThanOrEqual()</h3><p><code>greatThan</code>方法用来比较两个 SIMD 值<code>a</code>和<code>b</code>的每一个通道，如果在该通道中，<code>a</code>较大就得到<code>true</code>，否则得到<code>false</code>。最后，所有通道的比较结果，组成一个新的 SIMD 值，作为掩码返回。<code>greaterThanOrEqual</code>则是比较<code>a</code>是否大于等于<code>b</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">11</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.greaterThan(a, b)</span><br><span class="line"><span class="comment">// Bool32x4[false, true, false, true]</span></span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.greaterThanOrEqual(a, b)</span><br><span class="line"><span class="comment">// Bool32x4[true, true, false, true]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-lessThan-，SIMD-type-lessThanOrEqual"><a href="#SIMD-type-lessThan-，SIMD-type-lessThanOrEqual" class="headerlink" title="SIMD.%type%.lessThan()，SIMD.%type%.lessThanOrEqual()"></a>SIMD.%type%.lessThan()，SIMD.%type%.lessThanOrEqual()</h3><p><code>lessThan</code>方法用来比较两个 SIMD 值<code>a</code>和<code>b</code>的每一个通道，如果在该通道中，<code>a</code>较小就得到<code>true</code>，否则得到<code>false</code>。最后，所有通道的比较结果，会组成一个新的 SIMD 值，作为掩码返回。<code>lessThanOrEqual</code>方法则是比较<code>a</code>是否等于<code>b</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">11</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.lessThan(a, b)</span><br><span class="line"><span class="comment">// Bool32x4[false, true, true, false]</span></span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.lessThanOrEqual(a, b)</span><br><span class="line"><span class="comment">// Bool32x4[true, true, true, false]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-select"><a href="#SIMD-type-select" class="headerlink" title="SIMD.%type%.select()"></a>SIMD.%type%.select()</h3><p><code>select</code>方法通过掩码生成一个新的 SIMD 值。它接受三个参数，分别是掩码和两个 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mask = SIMD.Bool32x4(<span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Float32x4.select(mask, a, b);</span><br><span class="line"><span class="comment">// Float32x4[1, 6, 7, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>select</code>方法接受掩码和两个 SIMD 值作为参数。当某个通道对应的掩码为<code>true</code>时，会选择第一个 SIMD 值的对应通道，否则选择第二个 SIMD 值的对应通道。</p>
+<p>这个方法通常与比较运算符结合使用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">0</span>, <span class="number">12</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">0</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mask = SIMD.Float32x4.lessThan(a,b);</span><br><span class="line"><span class="comment">// Bool32x4[false, false, true, true]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = SIMD.Float32x4.select(mask, a, b);</span><br><span class="line"><span class="comment">// Float32x4[0, 6, 3, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，先通过<code>lessThan</code>方法生成一个掩码，然后通过<code>select</code>方法生成一个由每个通道的较小值组成的新的 SIMD 值。</p>
+<h3 id="SIMD-BooleanType-allTrue-，SIMD-BooleanType-anyTrue"><a href="#SIMD-BooleanType-allTrue-，SIMD-BooleanType-anyTrue" class="headerlink" title="SIMD.%BooleanType%.allTrue()，SIMD.%BooleanType%.anyTrue()"></a>SIMD.%BooleanType%.allTrue()，SIMD.%BooleanType%.anyTrue()</h3><p><code>allTrue</code>方法接受一个 SIMD 值作为参数，然后返回一个布尔值，表示该 SIMD 值的所有通道是否都为<code>true</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Bool32x4(<span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Bool32x4(<span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Bool32x4.allTrue(a); <span class="comment">// true</span></span><br><span class="line">SIMD.Bool32x4.allTrue(b); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p><code>anyTrue</code>方法则是只要有一个通道为<code>true</code>，就返回<code>true</code>，否则返回<code>false</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Bool32x4(<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Bool32x4(<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">SIMD.Bool32x4.anyTrue(a); <span class="comment">// false</span></span><br><span class="line">SIMD.Bool32x4.anyTrue(b); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，只有四种布尔值数据类型（<code>Bool32x4</code>、<code>Bool16x8</code>、<code>Bool8x16</code>、<code>Bool64x2</code>）才有这两个方法。</p>
+<p>这两个方法通常与比较运算符结合使用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ax4    = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>);</span><br><span class="line"><span class="keyword">var</span> bx4    = SIMD.Float32x4(<span class="number">0.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>);</span><br><span class="line"><span class="keyword">var</span> ix4    = SIMD.Float32x4.lessThan(ax4, bx4);</span><br><span class="line"><span class="keyword">var</span> b1     = SIMD.Int32x4.allTrue(ix4); <span class="comment">// false</span></span><br><span class="line"><span class="keyword">var</span> b2     = SIMD.Int32x4.anyTrue(ix4); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-min-，SIMD-type-minNum"><a href="#SIMD-type-min-，SIMD-type-minNum" class="headerlink" title="SIMD.%type%.min()，SIMD.%type%.minNum()"></a>SIMD.%type%.min()，SIMD.%type%.minNum()</h3><p><code>min</code>方法接受两个 SIMD 值作为参数，将两者的对应通道的较小值，组成一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">3</span>, <span class="number">5.2</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">0</span>, <span class="number">-4</span>, <span class="number">6</span>, <span class="number">5.5</span>);</span><br><span class="line">SIMD.Float32x4.min(a, b);</span><br><span class="line"><span class="comment">// Float32x4[-1, -4, 3, 5.2]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有一个通道的值是<code>NaN</code>，则会优先返回<code>NaN</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = SIMD.Float64x2(<span class="literal">NaN</span>, <span class="literal">Infinity</span>)</span><br><span class="line"><span class="keyword">var</span> d = SIMD.Float64x2(<span class="number">1337</span>, <span class="number">42</span>);</span><br><span class="line">SIMD.Float64x2.min(c, d);</span><br><span class="line"><span class="comment">// Float64x2[NaN, 42]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>minNum</code>方法与<code>min</code>的作用一模一样，唯一的区别是如果有一个通道的值是<code>NaN</code>，则会优先返回另一个通道的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ax4 = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="literal">NaN</span>, <span class="literal">NaN</span>);</span><br><span class="line"><span class="keyword">var</span> bx4 = SIMD.Float32x4(<span class="number">2.0</span>, <span class="number">1.0</span>, <span class="number">3.0</span>, <span class="literal">NaN</span>);</span><br><span class="line"><span class="keyword">var</span> cx4 = SIMD.Float32x4.min(ax4, bx4);</span><br><span class="line"><span class="comment">// Float32x4[1.0, 1.0, NaN, NaN]</span></span><br><span class="line"><span class="keyword">var</span> dx4 = SIMD.Float32x4.minNum(ax4, bx4);</span><br><span class="line"><span class="comment">// Float32x4[1.0, 1.0, 3.0, NaN]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="SIMD-type-max-，SIMD-type-maxNum"><a href="#SIMD-type-max-，SIMD-type-maxNum" class="headerlink" title="SIMD.%type%.max()，SIMD.%type%.maxNum()"></a>SIMD.%type%.max()，SIMD.%type%.maxNum()</h3><p><code>max</code>方法接受两个 SIMD 值作为参数，将两者的对应通道的较大值，组成一个新的 SIMD 值返回。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">3</span>, <span class="number">5.2</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Float32x4(<span class="number">0</span>, <span class="number">-4</span>, <span class="number">6</span>, <span class="number">5.5</span>);</span><br><span class="line">SIMD.Float32x4.max(a, b);</span><br><span class="line"><span class="comment">// Float32x4[0, -2, 6, 5.5]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有一个通道的值是<code>NaN</code>，则会优先返回<code>NaN</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = SIMD.Float64x2(<span class="literal">NaN</span>, <span class="literal">Infinity</span>)</span><br><span class="line"><span class="keyword">var</span> d = SIMD.Float64x2(<span class="number">1337</span>, <span class="number">42</span>);</span><br><span class="line">SIMD.Float64x2.max(c, d)</span><br><span class="line"><span class="comment">// Float64x2[NaN, Infinity]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>maxNum</code>方法与<code>max</code>的作用一模一样，唯一的区别是如果有一个通道的值是<code>NaN</code>，则会优先返回另一个通道的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = SIMD.Float64x2(<span class="literal">NaN</span>, <span class="literal">Infinity</span>)</span><br><span class="line"><span class="keyword">var</span> d = SIMD.Float64x2(<span class="number">1337</span>, <span class="number">42</span>);</span><br><span class="line">SIMD.Float64x2.maxNum(c, d)</span><br><span class="line"><span class="comment">// Float64x2[1337, Infinity]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="静态方法：位运算"><a href="#静态方法：位运算" class="headerlink" title="静态方法：位运算"></a>静态方法：位运算</h2><h3 id="SIMD-type-and-，SIMD-type-or-，SIMD-type-xor-，SIMD-type-not"><a href="#SIMD-type-and-，SIMD-type-or-，SIMD-type-xor-，SIMD-type-not" class="headerlink" title="SIMD.%type%.and()，SIMD.%type%.or()，SIMD.%type%.xor()，SIMD.%type%.not()"></a>SIMD.%type%.and()，SIMD.%type%.or()，SIMD.%type%.xor()，SIMD.%type%.not()</h3><p><code>and</code>方法接受两个 SIMD 值作为参数，返回两者对应的通道进行二进制<code>AND</code>运算（<code>&amp;</code>）后得到的新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Int32x4(<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line">SIMD.Int32x4.and(a, b)</span><br><span class="line"><span class="comment">// Int32x4[1, 0, 4, 0]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，以通道<code>0</code>为例，<code>1</code>的二进制形式是<code>0001</code>，<code>5</code>的二进制形式是<code>01001</code>，所以进行<code>AND</code>运算以后，得到<code>0001</code>。</p>
+<p><code>or</code>方法接受两个 SIMD 值作为参数，返回两者对应的通道进行二进制<code>OR</code>运算（<code>|</code>）后得到的新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Int32x4(<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line">SIMD.Int32x4.or(a, b)</span><br><span class="line"><span class="comment">// Int32x4[5, 7, 5, 13]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>xor</code>方法接受两个 SIMD 值作为参数，返回两者对应的通道进行二进制“异或”运算（<code>^</code>）后得到的新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line"><span class="keyword">var</span> b = SIMD.Int32x4(<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>);</span><br><span class="line">SIMD.Int32x4.xor(a, b)</span><br><span class="line"><span class="comment">// Int32x4[4, 7, 1, 13]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>not</code>方法接受一个 SIMD 值作为参数，返回每个通道进行二进制“否”运算（<code>~</code>）后得到的新的 SIMD 值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Int32x4(<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>);</span><br><span class="line">SIMD.Int32x4.not(a)</span><br><span class="line"><span class="comment">// Int32x4[-2, -3, -5, -9]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>1</code>的否运算之所以得到<code>-2</code>，是因为在计算机内部，负数采用”2 的补码“这种形式进行表示。也就是说，整数<code>n</code>的负数形式<code>-n</code>，是对每一个二进制位取反以后，再加上 1。因此，直接取反就相当于负数形式再减去 1，比如<code>1</code>的负数形式是<code>-1</code>，再减去 1，就得到了<code>-2</code>。</p>
+<h2 id="静态方法：数据类型转换"><a href="#静态方法：数据类型转换" class="headerlink" title="静态方法：数据类型转换"></a>静态方法：数据类型转换</h2><p>SIMD 提供以下方法，用来将一种数据类型转为另一种数据类型。</p>
+<ul>
+<li><code>SIMD.%type%.fromFloat32x4()</code></li>
+<li><code>SIMD.%type%.fromFloat32x4Bits()</code></li>
+<li><code>SIMD.%type%.fromFloat64x2Bits()</code></li>
+<li><code>SIMD.%type%.fromInt32x4()</code></li>
+<li><code>SIMD.%type%.fromInt32x4Bits()</code></li>
+<li><code>SIMD.%type%.fromInt16x8Bits()</code></li>
+<li><code>SIMD.%type%.fromInt8x16Bits()</code></li>
+<li><code>SIMD.%type%.fromUint32x4()</code></li>
+<li><code>SIMD.%type%.fromUint32x4Bits()</code></li>
+<li><code>SIMD.%type%.fromUint16x8Bits()</code></li>
+<li><code>SIMD.%type%.fromUint8x16Bits()</code></li>
+</ul>
+<p>带有<code>Bits</code>后缀的方法，会原封不动地将二进制位拷贝到新的数据类型；不带后缀的方法，则会进行数据类型转换。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>);</span><br><span class="line">SIMD.Int32x4.fromFloat32x4(t);</span><br><span class="line"><span class="comment">// Int32x4[1, 2, 3, 4]</span></span><br><span class="line"></span><br><span class="line">SIMD.Int32x4.fromFloat32x4Bits(t);</span><br><span class="line"><span class="comment">// Int32x4[1065353216, 1073741824, 1077936128, 1082130432]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>fromFloat32x4</code>是将浮点数转为整数，然后存入新的数据类型；<code>fromFloat32x4Bits</code>则是将二进制位原封不动地拷贝进入新的数据类型，然后进行解读。</p>
+<p><code>Bits</code>后缀的方法，还可以用于通道数目不对等的拷贝。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t = SIMD.Float32x4(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>);</span><br><span class="line">SIMD.Int16x8.fromFloat32x4Bits(t);</span><br><span class="line"><span class="comment">// Int16x8[0, 16256, 0, 16384, 0, 16448, 0, 16512]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，原始 SIMD 值<code>t</code>是 4 通道的，而目标值是 8 通道的。</p>
+<p>如果数据转换时，原通道的数据大小，超过了目标通道的最大宽度，就会报错。</p>
+<h2 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h2><h3 id="SIMD-type-prototype-toString"><a href="#SIMD-type-prototype-toString" class="headerlink" title="SIMD.%type%.prototype.toString()"></a>SIMD.%type%.prototype.toString()</h3><p><code>toString</code>方法返回一个 SIMD 值的字符串形式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = SIMD.Float32x4(<span class="number">11</span>, <span class="number">22</span>, <span class="number">33</span>, <span class="number">44</span>);</span><br><span class="line">a.toString() <span class="comment">// "SIMD.Float32x4(11, 22, 33, 44)"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="实例：求平均值"><a href="#实例：求平均值" class="headerlink" title="实例：求平均值"></a>实例：求平均值</h2><p>正常模式下，计算<code>n</code>个值的平均值，需要运算<code>n</code>次。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">average</span>(<span class="params">list</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> n = list.length;</span><br><span class="line">  <span class="keyword">var</span> sum = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">    sum += list[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> sum / n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 SIMD，可以将计算次数减少到<code>n</code>次的四分之一。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">average</span>(<span class="params">list</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> n = list.length;</span><br><span class="line">  <span class="keyword">var</span> sum = SIMD.Float32x4.splat(<span class="number">0.0</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; n; i += <span class="number">4</span>) &#123;</span><br><span class="line">    sum = SIMD.Float32x4.add(</span><br><span class="line">      sum,</span><br><span class="line">      SIMD.Float32x4.load(list, i)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> total = SIMD.Float32x4.extractLane(sum, <span class="number">0</span>) +</span><br><span class="line">              SIMD.Float32x4.extractLane(sum, <span class="number">1</span>) +</span><br><span class="line">              SIMD.Float32x4.extractLane(sum, <span class="number">2</span>) +</span><br><span class="line">              SIMD.Float32x4.extractLane(sum, <span class="number">3</span>);</span><br><span class="line">  <span class="keyword">return</span> total / n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码先是每隔四位，将所有的值读入一个 SIMD，然后立刻累加。然后，得到累加值四个通道的总和，再除以<code>n</code>就可以了。</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文标题:</strong>
+    <a href="/2020/07/12/javascript/es6-tutorial-master/docs/simd/">SIMD</a>
+  </li>
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ftq
+  </li>
+  <li class="post-copyright-author">
+    <strong>发布时间:</strong>
+    2020年07月12日 - 18:51:00
+  </li>
+  <li class="post-copyright-author">
+    <strong>最后更新:</strong>
+    2021年04月25日 - 01:18:23
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fangtianq.github.io/2020/07/12/javascript/es6-tutorial-master/docs/simd/" title="SIMD">https://fangtianq.github.io/2020/07/12/javascript/es6-tutorial-master/docs/simd/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="theme-link" rel="noopener" target="_blank">BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/12/javascript/es6-tutorial-master/docs/spec/" rel="prev" title="读懂 ECMAScript 规格">
+      <i class="fa fa-chevron-left"></i> 读懂 ECMAScript 规格
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/12/javascript/es6-tutorial-master/docs/set-map/" rel="next" title="Set 和 Map 数据结构">
+      Set 和 Map 数据结构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SIMD"><span class="nav-number">1.</span> <span class="nav-text">SIMD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">1.2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法：数学运算"><span class="nav-number">1.3.</span> <span class="nav-text">静态方法：数学运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-abs-，SIMD-type-neg"><span class="nav-number">1.3.1.</span> <span class="nav-text">SIMD.%type%.abs()，SIMD.%type%.neg()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-add-，SIMD-type-addSaturate"><span class="nav-number">1.3.2.</span> <span class="nav-text">SIMD.%type%.add()，SIMD.%type%.addSaturate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-sub-，SIMD-type-subSaturate"><span class="nav-number">1.3.3.</span> <span class="nav-text">SIMD.%type%.sub()，SIMD.%type%.subSaturate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-mul-，SIMD-type-div-，SIMD-type-sqrt"><span class="nav-number">1.3.4.</span> <span class="nav-text">SIMD.%type%.mul()，SIMD.%type%.div()，SIMD.%type%.sqrt()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-FloatType-reciprocalApproximation-，SIMD-type-reciprocalSqrtApproximation"><span class="nav-number">1.3.5.</span> <span class="nav-text">SIMD.%FloatType%.reciprocalApproximation()，SIMD.%type%.reciprocalSqrtApproximation()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-IntegerType-shiftLeftByScalar"><span class="nav-number">1.3.6.</span> <span class="nav-text">SIMD.%IntegerType%.shiftLeftByScalar()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-IntegerType-shiftRightByScalar"><span class="nav-number">1.3.7.</span> <span class="nav-text">SIMD.%IntegerType%.shiftRightByScalar()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法：通道处理"><span class="nav-number">1.4.</span> <span class="nav-text">静态方法：通道处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-check"><span class="nav-number">1.4.1.</span> <span class="nav-text">SIMD.%type%.check()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-extractLane-，SIMD-type-replaceLane"><span class="nav-number">1.4.2.</span> <span class="nav-text">SIMD.%type%.extractLane()，SIMD.%type%.replaceLane()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-load"><span class="nav-number">1.4.3.</span> <span class="nav-text">SIMD.%type%.load()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-store"><span class="nav-number">1.4.4.</span> <span class="nav-text">SIMD.%type%.store()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-splat"><span class="nav-number">1.4.5.</span> <span class="nav-text">SIMD.%type%.splat()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-swizzle"><span class="nav-number">1.4.6.</span> <span class="nav-text">SIMD.%type%.swizzle()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-shuffle"><span class="nav-number">1.4.7.</span> <span class="nav-text">SIMD.%type%.shuffle()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法：比较运算"><span class="nav-number">1.5.</span> <span class="nav-text">静态方法：比较运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-equal-，SIMD-type-notEqual"><span class="nav-number">1.5.1.</span> <span class="nav-text">SIMD.%type%.equal()，SIMD.%type%.notEqual()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-greaterThan-，SIMD-type-greaterThanOrEqual"><span class="nav-number">1.5.2.</span> <span class="nav-text">SIMD.%type%.greaterThan()，SIMD.%type%.greaterThanOrEqual()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-lessThan-，SIMD-type-lessThanOrEqual"><span class="nav-number">1.5.3.</span> <span class="nav-text">SIMD.%type%.lessThan()，SIMD.%type%.lessThanOrEqual()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-select"><span class="nav-number">1.5.4.</span> <span class="nav-text">SIMD.%type%.select()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-BooleanType-allTrue-，SIMD-BooleanType-anyTrue"><span class="nav-number">1.5.5.</span> <span class="nav-text">SIMD.%BooleanType%.allTrue()，SIMD.%BooleanType%.anyTrue()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-min-，SIMD-type-minNum"><span class="nav-number">1.5.6.</span> <span class="nav-text">SIMD.%type%.min()，SIMD.%type%.minNum()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-max-，SIMD-type-maxNum"><span class="nav-number">1.5.7.</span> <span class="nav-text">SIMD.%type%.max()，SIMD.%type%.maxNum()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法：位运算"><span class="nav-number">1.6.</span> <span class="nav-text">静态方法：位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-and-，SIMD-type-or-，SIMD-type-xor-，SIMD-type-not"><span class="nav-number">1.6.1.</span> <span class="nav-text">SIMD.%type%.and()，SIMD.%type%.or()，SIMD.%type%.xor()，SIMD.%type%.not()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法：数据类型转换"><span class="nav-number">1.7.</span> <span class="nav-text">静态方法：数据类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例方法"><span class="nav-number">1.8.</span> <span class="nav-text">实例方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SIMD-type-prototype-toString"><span class="nav-number">1.8.1.</span> <span class="nav-text">SIMD.%type%.prototype.toString()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例：求平均值"><span class="nav-number">1.9.</span> <span class="nav-text">实例：求平均值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

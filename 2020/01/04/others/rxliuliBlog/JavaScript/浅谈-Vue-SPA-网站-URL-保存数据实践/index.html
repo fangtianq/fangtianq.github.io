@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="场景 该功能吾辈已经封装成 NPM 库 vue-url-persist  在使用 Vue SPA 开发面向普通用户的网站时，吾辈也遇到了一些之前未被重视，但却实实在在存在的问题，这次便浅谈一下 SPA 网站将所有数据都存储到内存中导致数据很容易丢失以及吾辈思考并尝试的解决方案。  参考：SPA 全称 single page application，意为 单页应用，不是泥萌想的那样！#笑哭  思维导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈 Vue SPA 网站 URL 保存数据实践">
+<meta property="og:url" content="https://fangtianq.github.io/2020/01/04/others/rxliuliBlog/JavaScript/%E6%B5%85%E8%B0%88-Vue-SPA-%E7%BD%91%E7%AB%99-URL-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="场景 该功能吾辈已经封装成 NPM 库 vue-url-persist  在使用 Vue SPA 开发面向普通用户的网站时，吾辈也遇到了一些之前未被重视，但却实实在在存在的问题，这次便浅谈一下 SPA 网站将所有数据都存储到内存中导致数据很容易丢失以及吾辈思考并尝试的解决方案。  参考：SPA 全称 single page application，意为 单页应用，不是泥萌想的那样！#笑哭  思维导">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20200105012847.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200105012848.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200105012846.png">
+<meta property="article:published_time" content="2020-01-04T15:53:22.000Z">
+<meta property="article:modified_time" content="2020-01-19T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20200105012847.png">
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/01/04/others/rxliuliBlog/JavaScript/%E6%B5%85%E8%B0%88-Vue-SPA-%E7%BD%91%E7%AB%99-URL-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>浅谈 Vue SPA 网站 URL 保存数据实践 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/01/04/others/rxliuliBlog/JavaScript/%E6%B5%85%E8%B0%88-Vue-SPA-%E7%BD%91%E7%AB%99-URL-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          浅谈 Vue SPA 网站 URL 保存数据实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-04 23:53:22" itemprop="dateCreated datePublished" datetime="2020-01-04T23:53:22+08:00">2020-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-20 00:00:00" itemprop="dateModified" datetime="2020-01-20T00:00:00+08:00">2020-01-20</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2020/01/04/others/rxliuliBlog/JavaScript/%E6%B5%85%E8%B0%88-Vue-SPA-%E7%BD%91%E7%AB%99-URL-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/04/others/rxliuliBlog/JavaScript/%E6%B5%85%E8%B0%88-Vue-SPA-%E7%BD%91%E7%AB%99-URL-%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><blockquote>
+<p>该功能吾辈已经封装成 NPM 库 <a href="https://www.npmjs.com/package/vue-url-persist" target="_blank" rel="noopener">vue-url-persist</a></p>
+</blockquote>
+<p>在使用 Vue SPA 开发面向普通用户的网站时，吾辈也遇到了一些之前未被重视，但却实实在在存在的问题，这次便浅谈一下 SPA 网站将所有数据都存储到内存中导致数据很容易丢失以及吾辈思考并尝试的解决方案。</p>
+<blockquote>
+<p>参考：SPA 全称 <code>single page application</code>，意为 <a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8" target="_blank" rel="noopener">单页应用</a>，不是泥萌想的那样！#笑哭</p>
+</blockquote>
+<p>思维导图</p>
+<iframe id="embed_dom" name="embed_dom" frameborder="0" style="display:block;width:525px; height:245px;" src="https://www.processon.com/embed/5e1e5d93e4b0c3908f881d64"></iframe>
+
+<p>首先列出为什么遇到这个问题，具体场景及解决的问题是什么？</p>
+<p>想要解决的一些问题</p>
+<ol>
+<li>刷新页面数据不丢失：因为数据都保存在内存中，所以刷新之后自然不存在了</li>
+<li>URL 复制给其他人数据不丢失：因为数据没有持久化到 URL 上，也没有根据 URL 上的数据进行初始化，所以复制给别人的 URL 当然会丢失数据（搜索条件之类）</li>
+<li>页面返回数据不丢失：因为数据都保存在内存中，所以跳转到其他路由再跳转回来数据当然不会存在了</li>
+</ol>
+<p>那么，先谈一下每个问题的解决方案</p>
+<ol>
+<li>刷新页面数据不丢失<ul>
+<li>将数据序列化到本地，例如 <code>localStorage</code> 中，然后在刷新后获取一次<ul>
+<li>注：这方面已经有先行者了，例如 <a href="https://www.npmjs.com/package/vuex-persist" target="_blank" rel="noopener">vuex-persist</a> 和 <a href="https://github.com/robinvdvleuten/vuex-persistedstate" target="_blank" rel="noopener">vuex-persistedstate</a></li>
+</ul>
+</li>
+<li>将数据序列化到 URL 上，每次加载都从 URL 上获取数据</li>
+</ul>
+</li>
+<li>URL 复制给其他人数据不丢失<ul>
+<li>只能将数据序列化到 URL 上</li>
+</ul>
+</li>
+<li>页面返回数据不丢失<ul>
+<li>将数据放到 vuex 中，并且在 URL 上使用 <code>key</code> 进行标识<ul>
+<li>注：这方面已经有先行者了，例如 <a href="https://www.npmjs.com/package/vue-navigation" target="_blank" rel="noopener">vue-navigation</a> 和 <a href="https://github.com/vuejs/vuex-router-sync" target="_blank" rel="noopener">vuex-router-sync</a></li>
+</ul>
+</li>
+<li>将数据序列化到 URL 上，并且不新增路由记录</li>
+<li>使用 vue-router 的缓存 <code>keep-alive</code></li>
+</ul>
+</li>
+</ol>
+<p>在了解了这么多的解决方案之后，吾辈最终选择了兼容性最好的 URL 保存数据，它能同时解决 3 个问题。然而，很遗憾的是，这似乎并没有很多人讨论这个问题，或许，这个问题本应该是默认就需要解决的，亦或是 SPA 网站真的很少关心这些了。</p>
+<blockquote>
+<p>虽说如此，吾辈还是找到了一些讨论的 <a href="https://stackoverflow.com/questions/42226479" target="_blank" rel="noopener">StackOverflow: How to hold URL query params in Vue with Vue-Router</a></p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>一个基本的思路是能够确定的</p>
+<ol>
+<li>在组件创建时，从 URL 获取数据并为需要的数据进行初始化</li>
+<li>在这些数据变化时，及时将数据序列化到 URL 上</li>
+</ol>
+<p><img src="https://img.rxliuli.com/20200105012847.png" alt="思路图"></p>
+<p>然后，再次出现了一个分歧点，到底要不要绑定 Vue？</p>
+<ol>
+<li>不绑定 vue 手动监听对象变化并将对象的变化响应到 URL 上<br><img src="https://img.rxliuli.com/20200105012848.png" alt="不绑定 vue"></li>
+<li>绑定 vue 并使用它的生命周期 <code>created, beforeRouteUpdate</code> 与监听器 <code>watch</code><br><img src="https://img.rxliuli.com/20200105012846.png" alt="绑定 vue"></li>
+</ol>
+<p>那么，两者有什么区别呢？</p>
+<table>
+<thead>
+<tr>
+<th>思路</th>
+<th>不绑定 vue</th>
+<th>绑定 vue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>优点</td>
+<td>非框架强相关，理论上可以通用 <code>Vue/React</code></td>
+<td>不需要手动实现 URL 的几种序列化模式，可以预见至少有两种：<code>HTML 5 History/Hash</code></td>
+</tr>
+<tr>
+<td></td>
+<td>没有 vue/vue-router 的历史包袱</td>
+<td>不需要手动实现数据监听/响应（虽然现在已然不算难了）</td>
+</tr>
+<tr>
+<td></td>
+<td>可以不管 vue-router 实现 URL 动态设置，可以自动优雅降级</td>
+<td>灵活性很强，实现比较好的封装之后使用成本很低</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>没有包袱，但同时没有基础，序列化/数据监听都需要手动实现</td>
+<td>存在历史包袱，vue/vue-router 的怪癖一点都绕不过去</td>
+</tr>
+<tr>
+<td></td>
+<td>灵活性不足，只能初始化一次，需要/不需要序列化的数据分割也相当有挑战</td>
+<td>依赖 vue/vue-router，在其更新之时也必须跟着更新</td>
+</tr>
+<tr>
+<td></td>
+<td>不绑定 vue 意味着与 vue 不可能完美契合</td>
+<td>无法通用，在任何一个其他框架（React）上还要再写一套</td>
+</tr>
+</tbody></table>
+<p>最终，在这个十字路口反复踌躇之后，吾辈选择了更加灵活、成本更低的第二种解决方案。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="已解决"><a href="#已解决" class="headerlink" title="已解决"></a>已解决</h3><ul>
+<li>序列化数据到 URL 上导致路由记录会随着改变增加</li>
+<li>即时序列化数据到 URL 上不现实<blockquote>
+<p>这里吾辈对 <a href="https://yarnpkg.com/" target="_blank" rel="noopener">yarn</a> 进行了考察发现其也是异步更新 URL</p>
+</blockquote>
+</li>
+<li>序列化到 URL 上时导致的死循环，<code>序列化数据到 URL 上 =&gt; 路由更新触发 =&gt; 初始化数据到 URL 上 =&gt; 触发数据改变 =&gt; 序列化数据到 URL 上。。。</code></li>
+<li>同一个路由携带不同的查询参数的 URL 直接在地址栏输入回车一次不会触发页面数据更新</li>
+<li>URL 最大保存数据 IE 最多支持 <code>2083</code> 长度的 URL，换算为中文即为 <code>231</code> 个，所以不能作为一种通用方式进行</li>
+<li>Vue 插件不能动态混入，而是在各个生命周期中判断是否要处理的</li>
+</ul>
+<h3 id="仍遗留"><a href="#仍遗留" class="headerlink" title="仍遗留"></a>仍遗留</h3><ul>
+<li>JSON 序列化的数据长度较 query param 更大</li>
+</ul>
+<blockquote>
+<p>下面是具体实现及代码，不喜欢的话可以直接跳到最下面的 <a href="#总结">总结</a>。</p>
+</blockquote>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><blockquote>
+<p><a href="https://github.com/rxliuli/example/tree/linter_vue_example/vue_url_persist_vue_example" target="_blank" rel="noopener">GitHub</a></p>
+</blockquote>
+<h3 id="基本尝试"><a href="#基本尝试" class="headerlink" title="基本尝试"></a>基本尝试</h3><p>首先，尝试不使用任何封装，直接在 <code>created</code> 生命周期中初始化并绑定 <code>$watch</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"form1"</span>&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;label <span class="keyword">for</span>=<span class="string">"keyword"</span>&gt;搜索名:&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">      &lt;input type="text" v-model="form.keyword" id="keyword" /</span>&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;input</span></span><br><span class="line"><span class="regexp">        type="checkbox"</span></span><br><span class="line"><span class="regexp">        v-model="form.hobbyList"</span></span><br><span class="line"><span class="regexp">        id="anime"</span></span><br><span class="line"><span class="regexp">        value="anime"</span></span><br><span class="line"><span class="regexp">      /</span>&gt;</span><br><span class="line">      &lt;label <span class="keyword">for</span>=<span class="string">"anime"</span>&gt;动画&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">      &lt;input type="checkbox" v-model="form.hobbyList" id="game" value="game" /</span>&gt;</span><br><span class="line">      &lt;label <span class="keyword">for</span>=<span class="string">"game"</span>&gt;游戏&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">      &lt;input</span></span><br><span class="line"><span class="regexp">        type="checkbox"</span></span><br><span class="line"><span class="regexp">        v-model="form.hobbyList"</span></span><br><span class="line"><span class="regexp">        id="movie"</span></span><br><span class="line"><span class="regexp">        value="movie"</span></span><br><span class="line"><span class="regexp">      /</span>&gt;</span><br><span class="line">      &lt;label <span class="keyword">for</span>=<span class="string">"movie"</span>&gt;电影&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">    &lt;p&gt;</span><br><span class="line">      &#123;&#123; form &#125;&#125;</span><br><span class="line">    &lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">export default &#123;</span></span><br><span class="line"><span class="regexp">  name: 'Form1',</span></span><br><span class="line"><span class="regexp">  data() &#123;</span></span><br><span class="line"><span class="regexp">    return &#123;</span></span><br><span class="line"><span class="regexp">      form: &#123;</span></span><br><span class="line"><span class="regexp">        keyword: '',</span></span><br><span class="line"><span class="regexp">        hobbyList: [],</span></span><br><span class="line"><span class="regexp">      &#125;,</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  created() &#123;</span></span><br><span class="line"><span class="regexp">    const key = 'qb'</span></span><br><span class="line"><span class="regexp">    const urlData = JSON.parse(this.$route.query[key] || '&#123;&#125;')</span></span><br><span class="line"><span class="regexp">    Object.assign(this.form, urlData.form)</span></span><br><span class="line"><span class="regexp">    this.$watch(</span></span><br><span class="line"><span class="regexp">      'form',</span></span><br><span class="line"><span class="regexp">      function(val) &#123;</span></span><br><span class="line"><span class="regexp">        urlData.form = val</span></span><br><span class="line"><span class="regexp">        this.$router.replace(&#123;</span></span><br><span class="line"><span class="regexp">          query: &#123;</span></span><br><span class="line"><span class="regexp">            ...this.$route.query,</span></span><br><span class="line"><span class="regexp">            [key]: JSON.stringify(urlData),</span></span><br><span class="line"><span class="regexp">          &#125;,</span></span><br><span class="line"><span class="regexp">        &#125;)</span></span><br><span class="line"><span class="regexp">      &#125;,</span></span><br><span class="line"><span class="regexp">      &#123;</span></span><br><span class="line"><span class="regexp">        deep: true,</span></span><br><span class="line"><span class="regexp">      &#125;,</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="分离通用性函数"><a href="#分离通用性函数" class="headerlink" title="分离通用性函数"></a>分离通用性函数</h3><p>然后，便是将之分离为单独的函数，方便在所有组件中进行复用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化一些数据需要序列化/反序列化到 url data 上</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>exps 监视的数据的表达式数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initUrlData</span>(<span class="params">exps</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> key = <span class="string">'qb'</span></span><br><span class="line">  <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.$route.query[key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">  exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">Object</span>.assign(<span class="keyword">this</span>[exp], urlData[exp])</span><br><span class="line">    <span class="keyword">this</span>.$watch(</span><br><span class="line">      exp,</span><br><span class="line">      <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">        urlData[exp] = val</span><br><span class="line">        <span class="keyword">this</span>.$router.replace(&#123;</span><br><span class="line">          query: &#123;</span><br><span class="line">            ...this.$route.query,</span><br><span class="line">            [key]: <span class="built_in">JSON</span>.stringify(urlData),</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        deep: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    )</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用起来需要在 <code>created</code> 生命中调用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  created() &#123;</span><br><span class="line">    initUrlData.call(<span class="keyword">this</span>, [<span class="string">'form'</span>])</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理深层监听"><a href="#处理深层监听" class="headerlink" title="处理深层监听"></a>处理深层监听</h3><p>如果需要监听的值不是 data 下的顶级字段，而是深层字段的话，便不能直接使用 <code>[]</code> 进行取值和赋值了，而是需要实现支持深层取值/赋值的 <code>get/set</code>。而且，深层监听也意味着一般不会是对象，所以也不能采用 <code>Object.assign</code> 进行合并。</p>
+<p>例如需要监听 <code>page</code> 对象中的 <code>offset, size</code> 两字段</p>
+<p>首先，需要编写通用的 <code>get/set</code> 函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解析字段字符串为数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>str 字段字符串</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns </span>字符串数组，数组的 `[]` 取法会被解析为数组的一个元素</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseFieldStr</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> str</span><br><span class="line">    .split(<span class="regexp">/[\\.\\[]/</span>)</span><br><span class="line">    .map(<span class="function"><span class="params">k</span> =&gt;</span> (<span class="regexp">/\]$/</span>.test(k) ? k.slice(<span class="number">0</span>, k.length - <span class="number">1</span>) : k))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 安全的深度获取对象的字段</span></span><br><span class="line"><span class="comment"> * 注: 只要获取字段的值为 &#123;<span class="doctag">@type </span>null|undefined&#125;，就会直接返回 &#123;<span class="doctag">@param </span>defVal&#125;</span></span><br><span class="line"><span class="comment"> * 类似于 ES2019 的可选调用链特性: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/%E5%8F%AF%E9%80%89%E9%93%BE</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>obj 获取的对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>fields 字段字符串或数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>[defVal] 取不到值时的默认值，默认为 null</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">obj, fields, defVal = null</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> fields === <span class="string">'string'</span>) &#123;</span><br><span class="line">    fields = parseFieldStr(fields)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> res = obj</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> field <span class="keyword">of</span> fields) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      res = <span class="built_in">Reflect</span>.get(res, field)</span><br><span class="line">      <span class="keyword">if</span> (res === <span class="literal">undefined</span> || res === <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> defVal</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">return</span> defVal</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 安全的深度设置对象的字段</span></span><br><span class="line"><span class="comment"> * 注: 只要设置字段的值为 &#123;<span class="doctag">@type </span>null|undefined&#125;，就会直接返回 &#123;<span class="doctag">@param </span>defVal&#125;</span></span><br><span class="line"><span class="comment"> * 类似于 ES2019 的可选调用链特性: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/%E5%8F%AF%E9%80%89%E9%93%BE</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>obj 设置的对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>fields 字段字符串或数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>[val] 设置字段的值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params">obj, fields, val</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> fields === <span class="string">'string'</span>) &#123;</span><br><span class="line">    fields = parseFieldStr(fields)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> res = obj</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = fields.length; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> field = fields[i]</span><br><span class="line">    <span class="built_in">console</span>.log(i, res, field, res[field])</span><br><span class="line">    <span class="keyword">if</span> (i === len - <span class="number">1</span>) &#123;</span><br><span class="line">      res[field] = val</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    res = res[field]</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'res: '</span>, res)</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> res !== <span class="string">'object'</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，是替换赋值操作，将之修改为一个专门的函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 为 vue 实例上的字段进行深度赋值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setInitData</span>(<span class="params">vm, exp, urlData</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> oldVal = <span class="keyword">get</span>(vm, exp, null)</span><br><span class="line">  const newVal = urlData[exp]</span><br><span class="line">  if (typeof oldVal === 'object' &amp;&amp; newVal !== undefined) &#123;</span><br><span class="line">    <span class="built_in">Object</span>.assign(<span class="keyword">get</span>(vm, exp), newVal)</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    <span class="keyword">set</span>(vm, exp, newVal)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 初始化一些数据需要序列化/反序列化到 url data 上</span><br><span class="line"> * @param exps 监视的数据的表达式数组</span><br><span class="line"> */</span><br><span class="line">function initUrlData(exps) &#123;</span><br><span class="line">  <span class="keyword">const</span> key = <span class="string">'qb'</span></span><br><span class="line">  <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.$route.query[key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">  exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> &#123;</span><br><span class="line">    setInitData(<span class="keyword">this</span>, exp, urlData)</span><br><span class="line">    <span class="keyword">this</span>.$watch(</span><br><span class="line">      exp,</span><br><span class="line">      <span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">        urlData[exp] = val</span><br><span class="line">        <span class="keyword">this</span>.$router.replace(&#123;</span><br><span class="line">          query: &#123;</span><br><span class="line">            ...this.$route.query,</span><br><span class="line">            [key]: <span class="built_in">JSON</span>.stringify(urlData),</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        deep: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    )</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，便能单独监听对象中的某个字段了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">initUrlData.call(<span class="keyword">this</span>, [<span class="string">'form.keyword'</span>])</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考：lodash 的函数 <a href="https://lodash.com/docs/4.17.15#get" target="_blank" rel="noopener">get</a>/<a href="https://lodash.com/docs/4.17.15#set" target="_blank" rel="noopener">set</a></p>
+</blockquote>
+<h3 id="使用防抖避免触发过快"><a href="#使用防抖避免触发过快" class="headerlink" title="使用防抖避免触发过快"></a>使用防抖避免触发过快</h3><p>但目前而言每次同步都是即时的，在数据量较大时，可能会存在一些问题，所以使用防抖避免每次数据更新都即时同步到 URL 上。</p>
+<p>首先，实现一个简单的防抖函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 函数去抖</span></span><br><span class="line"><span class="comment"> * 去抖 (debounce) 去抖就是对于一定时间段的连续的函数调用，只让其执行一次</span></span><br><span class="line"><span class="comment"> * 注: 包装后的函数如果两次操作间隔小于 delay 则不会被执行, 如果一直在操作就会一直不执行, 直到操作停止的时间大于 delay 最小间隔时间才会执行一次, 不管任何时间调用都需要停止操作等待最小延迟时间</span></span><br><span class="line"><span class="comment"> * 应用场景主要在那些连续的操作, 例如页面滚动监听, 包装后的函数只会执行最后一次</span></span><br><span class="line"><span class="comment"> * 注: 该函数第一次调用一定不会执行，第一次一定拿不到缓存值，后面的连续调用都会拿到上一次的缓存值。如果需要在第一次调用获取到的缓存值，则需要传入第三个参数 &#123;<span class="doctag">@param </span>init&#125;，默认为 &#123;<span class="doctag">@code </span>undefined&#125; 的可选参数</span></span><br><span class="line"><span class="comment"> * 注: 返回函数结果的高阶函数需要使用 &#123;<span class="doctag">@see </span>Proxy&#125; 实现，以避免原函数原型链上的信息丢失</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>action 真正需要执行的操作</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>delay 最小延迟时间，单位为 ms</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>init 初始的缓存值，不填默认为 &#123;<span class="doctag">@see </span>undefined&#125;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return </span>function(...[*]=): Promise&lt;any&gt; &#123;<span class="doctag">@see </span>action&#125; 是否异步没有太大关联</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">action, delay, init = null</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> flag</span><br><span class="line">  <span class="keyword">let</span> result = init</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (flag) clearTimeout(flag)</span><br><span class="line">      flag = setTimeout(</span><br><span class="line">        () =&gt; resolve((result = action.apply(<span class="keyword">this</span>, args))),</span><br><span class="line">        delay,</span><br><span class="line">      )</span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> resolve(result), delay)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>$watch</code> 中的函数用 <code>debounce</code> 进行包装</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化一些数据需要序列化/反序列化到 url data 上</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>exps 监视的数据的表达式数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initUrlData</span>(<span class="params">exps</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> key = <span class="string">'qb'</span></span><br><span class="line">  <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.$route.query[key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">  exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> &#123;</span><br><span class="line">    setInitData(<span class="keyword">this</span>, exp, urlData)</span><br><span class="line">    <span class="keyword">this</span>.$watch(</span><br><span class="line">      exp,</span><br><span class="line">      debounce(<span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">        urlData[exp] = val</span><br><span class="line">        <span class="keyword">this</span>.$router.replace(&#123;</span><br><span class="line">          query: &#123;</span><br><span class="line">            ...this.$route.query,</span><br><span class="line">            [key]: <span class="built_in">JSON</span>.stringify(urlData),</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;, <span class="number">1000</span>),</span><br><span class="line">      &#123;</span><br><span class="line">        deep: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    )</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>引用：<a href="https://juejin.im/post/5b8de829f265da43623c4261" target="_blank" rel="noopener">掘金：7 分钟理解 JS 的节流、防抖及使用场景</a><br>参考：lodash 的函数 <a href="https://lodash.com/docs/4.17.15#debounce" target="_blank" rel="noopener">debounce</a></p>
+</blockquote>
+<h3 id="处理路由不变但-query-修改的问题"><a href="#处理路由不变但-query-修改的问题" class="headerlink" title="处理路由不变但 query 修改的问题"></a>处理路由不变但 query 修改的问题</h3><p>接下来，就需要处理一种小众，但确实存在的场景了。</p>
+<ul>
+<li>同一个组件被多个路由复用，这些路由仅仅只是一个 path param 改变了。例如 <a href="https://ant.design/components/tabs-cn/" target="_blank" rel="noopener">标签页</a></li>
+<li>用户复制 URL 之后，发现其中的查询关键字错了，于是修改了关键字之后又复制了一次，而粘贴两次路由相同 query param 不同的 URL 是不会重新创建组件的</li>
+</ul>
+<p>首先确定基本的思路：在路由改变但组件没有重新创建时将 URL 上的数据为需要的数据进行初始化</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在组件被 vue-router 路由复用时，单独进行初始化数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>exps 监视的数据的表达式数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>route 将要改变的路由对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initUrlDataByRouteUpdate</span>(<span class="params">exps, route</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(route.query[key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">  exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> &#123;</span><br><span class="line">    setInitData(<span class="keyword">this</span>, exp, urlData)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 vue 实例的生命周期 <code>beforeRouteUpdate, beforeRouteEnter</code> 重新初始化 <code>data</code> 中的数据</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  beforeRouteUpdate(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">    initUrlDataByRouteUpdate.call(<span class="keyword">this</span>, [<span class="string">'form'</span>], to)</span><br><span class="line">    next()</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteEnter(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">    next(<span class="function"><span class="params">vm</span> =&gt;</span> initUrlDataByRouteUpdate.call(vm, [<span class="string">'form'</span>], to))</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>真的以为问题都解决了么？并不然，打开控制台你会发现一些 vue router 的警告</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue-router.esm.js?8c4f:2051 Uncaught (<span class="keyword">in</span> promise) NavigationDuplicated &#123;_name: <span class="string">"NavigationDuplicated"</span>, name: <span class="string">"NavigationDuplicated"</span>, message: <span class="string">"Navigating to current location ("</span>/form1/?qb=%7B%22…,%22movie%22,%22game%22%5D%7D%7D<span class="string">") is not allowed"</span>, stack: <span class="string">"Error↵    at new NavigationDuplicated (webpack-int…/views/Form1.vue?vue&amp;type=script&amp;lang=js&amp;:222:40)"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实是因为循环触发导致的：<code>序列化数据到 URL 上 =&gt; 路由更新触发 =&gt; 初始化数据到 URL 上 =&gt; 触发数据改变 =&gt; 序列化数据到 URL 上。。。</code>，目前可行的解决方案是在 <code>$watch</code> 中判断数据是否与原来的相同，相同就不进行赋值，避免再次触发 vue-router 的 <code>beforeRouteUpdate</code> 生命周期。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化一些数据需要序列化/反序列化到 url data 上</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>exps 监视的数据的表达式数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initUrlData</span>(<span class="params">exps</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.$route.query[key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">  exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> &#123;</span><br><span class="line">    setInitData(<span class="keyword">this</span>, exp, urlData)</span><br><span class="line">    <span class="keyword">this</span>.$watch(</span><br><span class="line">      exp,</span><br><span class="line">      debounce(<span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">        urlData[exp] = val</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.$route.query[key] === <span class="built_in">JSON</span>.stringify(urlData)) &#123;</span><br><span class="line">          <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.$router.replace(&#123;</span><br><span class="line">          query: &#123;</span><br><span class="line">            ...this.$route.query,</span><br><span class="line">            [key]: <span class="built_in">JSON</span>.stringify(urlData),</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;, <span class="number">1000</span>),</span><br><span class="line">      &#123;</span><br><span class="line">        deep: <span class="literal">true</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    )</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，控制台不会再有警告了。</p>
+<h3 id="封装起来"><a href="#封装起来" class="headerlink" title="封装起来"></a>封装起来</h3><h4 id="使用-Vue-插件"><a href="#使用-Vue-插件" class="headerlink" title="使用 Vue 插件"></a>使用 Vue 插件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; debounce, <span class="keyword">get</span>, <span class="keyword">set</span> &#125; from './common'</span><br><span class="line"></span><br><span class="line">class VueUrlPersist &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 一些选项</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.expListName = <span class="string">'exps'</span></span><br><span class="line">    <span class="keyword">this</span>.urlPersistName = <span class="string">'qb'</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 将 URL 上的数据初始化到 data 上</span></span><br><span class="line"><span class="comment">   * 此处存在一个谬误</span></span><br><span class="line"><span class="comment">   * 1. 如果对象不使用合并而是赋值，则处理 [干净] 的 URL 就会很棘手，因为无法感知到初始值是什么</span></span><br><span class="line"><span class="comment">   * 2. 如果对象使用合并，则手动输入的相同路由不同参数的 URL 就无法处理</span></span><br><span class="line"><span class="comment">   *    注：该问题已经通过在 watch 中判断值是否变化而解决，但总感觉还有莫名其妙的坑在前面等着。。。</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">vm</span></span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">expOrFn</span></span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">urlData</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  initVueData(vm, expOrFn, urlData) &#123;</span><br><span class="line">    <span class="keyword">const</span> oldVal = <span class="keyword">get</span>(vm, expOrFn, null)</span><br><span class="line">    const newVal = urlData[expOrFn]</span><br><span class="line">    if (oldVal === undefined || oldVal === null) &#123;</span><br><span class="line">      <span class="keyword">set</span>(vm, expOrFn, newVal)</span><br><span class="line">    &#125; else if (typeof oldVal === 'object' &amp;&amp; newVal !== undefined) &#123;</span><br><span class="line">      <span class="built_in">Object</span>.assign(<span class="keyword">get</span>(vm, expOrFn), newVal)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  /**</span><br><span class="line">   * 在组件被 vue-router 路由复用时，单独进行初始化数据</span><br><span class="line">   * @param vm</span><br><span class="line">   * @param expOrFnList</span><br><span class="line">   * @param route</span><br><span class="line">   */</span><br><span class="line">  initNextUrlData(vm, expOrFnList, route) &#123;</span><br><span class="line">    <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(route.query[<span class="keyword">this</span>.urlPersistName] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'urlData: '</span>, urlData)</span><br><span class="line">    expOrFnList.forEach(<span class="function"><span class="params">expOrFn</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.initVueData(vm, expOrFn, urlData)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 在组件被 vue 创建后初始化数据并监听之，在发生变化时自动序列化到 URL 上</span></span><br><span class="line"><span class="comment">   * 注：需要序列化到 URL 上的数据必须能被 JSON.stringfy 序列化</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">vm</span></span></span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="variable">expOrFnList</span></span></span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  initUrlData(vm, expOrFnList) &#123;</span><br><span class="line">    <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(vm.$route.query[<span class="keyword">this</span>.urlPersistName] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">    expOrFnList.forEach(<span class="function"><span class="params">expOrFn</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.initVueData(vm, expOrFn, urlData)</span><br><span class="line"></span><br><span class="line">      vm.$watch(</span><br><span class="line">        expOrFn,</span><br><span class="line">        debounce(<span class="number">1000</span>, <span class="keyword">async</span> val =&gt; &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">'val 变化了: '</span>, val)</span><br><span class="line">          urlData[expOrFn] = val</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (</span><br><span class="line">            vm.$route.query[<span class="keyword">this</span>.urlPersistName] === <span class="built_in">JSON</span>.stringify(urlData)</span><br><span class="line">          ) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">await</span> vm.$router.replace(&#123;</span><br><span class="line">            query: &#123;</span><br><span class="line">              ...vm.$route.query,</span><br><span class="line">              [<span class="keyword">this</span>.urlPersistName]: <span class="built_in">JSON</span>.stringify(urlData),</span><br><span class="line">            &#125;,</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;),</span><br><span class="line">        &#123;</span><br><span class="line">          deep: <span class="literal">true</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  install(Vue, options = &#123;&#125;) &#123;</span><br><span class="line">    <span class="keyword">const</span> _this = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">if</span> (options.expListName) &#123;</span><br><span class="line">      <span class="keyword">this</span>.expListName = options.expListName</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (options.urlPersistName) &#123;</span><br><span class="line">      <span class="keyword">this</span>.urlPersistName = options.urlPersistName</span><br><span class="line">    &#125;</span><br><span class="line">    Vue.prototype.$urlPersist = <span class="keyword">this</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">initDataByRouteUpdate</span>(<span class="params">to</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">const</span> expList = <span class="keyword">this</span>[_this.expListName]</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(expList)) &#123;</span><br><span class="line">        <span class="keyword">this</span>.$urlPersist.initNextUrlData(<span class="keyword">this</span>, expList, to)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Vue.mixin(&#123;</span><br><span class="line">      created() &#123;</span><br><span class="line">        <span class="keyword">const</span> expList = <span class="keyword">this</span>[_this.expListName]</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(expList)) &#123;</span><br><span class="line">          <span class="keyword">this</span>.$urlPersist.initUrlData(<span class="keyword">this</span>, expList)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      beforeRouteUpdate(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">        initDataByRouteUpdate.call(<span class="keyword">this</span>, to)</span><br><span class="line">        next()</span><br><span class="line">      &#125;,</span><br><span class="line">      beforeRouteEnter(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">        next(<span class="function"><span class="params">vm</span> =&gt;</span> initDataByRouteUpdate.call(vm, to))</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> VueUrlPersist</span><br></pre></td></tr></table></figure>
+
+<p>使用起来和其他的插件没什么差别</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> VueUrlPersist <span class="keyword">from</span> <span class="string">'./views/js/VueUrlPersist'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> vueUrlPersist = <span class="keyword">new</span> VueUrlPersist()</span><br><span class="line">Vue.use(vueUrlPersist)</span><br></pre></td></tr></table></figure>
+
+<p>在需要使用的组件中只要声明这个属性就好了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'Form2Tab'</span>,</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      form: &#123;</span><br><span class="line">        keyword: <span class="string">''</span>,</span><br><span class="line">        sex: <span class="number">0</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      exps: [<span class="string">'form'</span>],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而，使用 vue 插件有个致命的缺陷：无论是否需要，都会为每个组件中都混入三个生命周期函数，吾辈没有找到一种可以根据实例中是否包含某个值而决定是否混入的方式。</p>
+<h4 id="使用高阶函数"><a href="#使用高阶函数" class="headerlink" title="使用高阶函数"></a>使用高阶函数</h4><p>所以，我们使用 <code>高阶函数</code> + <code>mixin</code> 的形式看看。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; debounce, <span class="keyword">get</span>, <span class="keyword">set</span> &#125; from './common'</span><br><span class="line"></span><br><span class="line">class VueUrlPersist &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 一些选项</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">constructor</span>(&#123; key = <span class="string">'qb'</span> &#125; = &#123;&#125;) &#123;</span><br><span class="line">    <span class="keyword">this</span>.key = key</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 为 vue 实例上的字段进行深度赋值</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  setInitData(vm, exp, urlData) &#123;</span><br><span class="line">    <span class="keyword">const</span> oldVal = <span class="keyword">get</span>(vm, exp, null)</span><br><span class="line">    const newVal = urlData[exp]</span><br><span class="line">    //如果原值是对象且新值也是对象，则进行浅合并</span><br><span class="line">    if (</span><br><span class="line">      oldVal === undefined ||</span><br><span class="line">      oldVal === null ||</span><br><span class="line">      typeof oldVal === 'string' ||</span><br><span class="line">      typeof oldVal === 'number'</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="keyword">set</span>(vm, exp, newVal)</span><br><span class="line">    &#125; else if (typeof oldVal === 'object' &amp;&amp; typeof newVal === 'object') &#123;</span><br><span class="line">      <span class="built_in">Object</span>.assign(<span class="keyword">get</span>(vm, exp), newVal)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  /**</span><br><span class="line">   * 初始化一些数据需要序列化/反序列化到 url data 上</span><br><span class="line">   * @param vm vue 实例</span><br><span class="line">   * @param exps 监视的数据的表达式数组</span><br><span class="line">   */</span><br><span class="line">  initUrlDataByCreated(vm, exps) &#123;</span><br><span class="line">    <span class="keyword">const</span> key = <span class="keyword">this</span>.key</span><br><span class="line">    <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(vm.$route.query[key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">    exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.setInitData(vm, exp, urlData)</span><br><span class="line">      vm.$watch(</span><br><span class="line">        exp,</span><br><span class="line">        debounce(<span class="function"><span class="keyword">function</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">          urlData[exp] = val</span><br><span class="line">          <span class="keyword">if</span> (vm.$route.query[key] === <span class="built_in">JSON</span>.stringify(urlData)) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">          &#125;</span><br><span class="line">          vm.$router.replace(&#123;</span><br><span class="line">            query: &#123;</span><br><span class="line">              ...vm.$route.query,</span><br><span class="line">              [key]: <span class="built_in">JSON</span>.stringify(urlData),</span><br><span class="line">            &#125;,</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;, <span class="number">1000</span>),</span><br><span class="line">        &#123;</span><br><span class="line">          deep: <span class="literal">true</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 在组件被 vue-router 路由复用时，单独进行初始化数据</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>vm vue 实例</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>exps 监视的数据的表达式数组</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>route 将要改变的路由对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  initUrlDataByRouteUpdate(vm, exps, route) &#123;</span><br><span class="line">    <span class="keyword">const</span> urlData = <span class="built_in">JSON</span>.parse(route.query[<span class="keyword">this</span>.key] || <span class="string">'&#123;&#125;'</span>)</span><br><span class="line">    exps.forEach(<span class="function"><span class="params">exp</span> =&gt;</span> <span class="keyword">this</span>.setInitData(vm, exp, urlData))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 生成可以 mixin 到 vue 实例的对象</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>exps 监视的数据的表达式数组</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns <span class="type">&#123;&#123;created(): void, beforeRouteEnter(*=, *, *): void, beforeRouteUpdate(*=, *, *): void&#125;</span></span>&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  generateInitUrlData(...exps) &#123;</span><br><span class="line">    <span class="keyword">const</span> _this = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      created() &#123;</span><br><span class="line">        _this.initUrlDataByCreated(<span class="keyword">this</span>, exps)</span><br><span class="line">      &#125;,</span><br><span class="line">      beforeRouteUpdate(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">        _this.initUrlDataByRouteUpdate(<span class="keyword">this</span>, exps, to)</span><br><span class="line">        next()</span><br><span class="line">      &#125;,</span><br><span class="line">      beforeRouteEnter(to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'beforeRouteEnter'</span>)</span><br><span class="line">        next(<span class="function"><span class="params">vm</span> =&gt;</span> _this.initUrlDataByRouteUpdate(vm, exps, to))</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 修改一些配置</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param </span>options 配置项</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  config(options) &#123;</span><br><span class="line">    <span class="built_in">Object</span>.assign(<span class="keyword">this</span>, options)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> vueUrlPersist = <span class="keyword">new</span> VueUrlPersist()</span><br><span class="line"><span class="keyword">const</span> generateInitUrlData = vueUrlPersist.generateInitUrlData.bind(</span><br><span class="line">  vueUrlPersist,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; vueUrlPersist, generateInitUrlData, VueUrlPersist &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> vueUrlPersist</span><br></pre></td></tr></table></figure>
+
+<p>使用起来几乎一样简单</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; generateInitUrlData &#125; <span class="keyword">from</span> <span class="string">'./js/VueUrlPersist'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'Form1'</span>,</span><br><span class="line">  mixins: [generateInitUrlData(<span class="string">'form'</span>)],</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      form: &#123;</span><br><span class="line">        keyword: <span class="string">''</span>,</span><br><span class="line">        hobbyList: [],</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起来，使用高阶函数也没有比 Vue 插件麻烦太多。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，虽然路途坎坷，不过这个问题还是很有趣的，而且确实能解决实际的问题，所以还是有研究价值的。</p>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/01/others/rxliuliBlog/dev/%E6%BC%AB%E8%B0%88-%E5%8F%8D%E4%B9%8C%E6%89%98%E9%82%A6/" rel="prev" title="漫谈 反乌托邦">
+      <i class="fa fa-chevron-left"></i> 漫谈 反乌托邦
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/01/others/rxliuliBlog/JavaScript/%E9%9D%A2%E7%9B%B8-vue-%E5%BC%80%E5%8F%91%E8%80%85%E7%9A%84-react-%E5%85%A5%E5%9D%91%E6%8C%87%E5%8D%97/" rel="next" title="面相 vue 开发者的 react 入坑指南">
+      面相 vue 开发者的 react 入坑指南 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">3.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#已解决"><span class="nav-number">3.1.</span> <span class="nav-text">已解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#仍遗留"><span class="nav-number">3.2.</span> <span class="nav-text">仍遗留</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本尝试"><span class="nav-number">4.1.</span> <span class="nav-text">基本尝试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分离通用性函数"><span class="nav-number">4.2.</span> <span class="nav-text">分离通用性函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理深层监听"><span class="nav-number">4.3.</span> <span class="nav-text">处理深层监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用防抖避免触发过快"><span class="nav-number">4.4.</span> <span class="nav-text">使用防抖避免触发过快</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理路由不变但-query-修改的问题"><span class="nav-number">4.5.</span> <span class="nav-text">处理路由不变但 query 修改的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装起来"><span class="nav-number">4.6.</span> <span class="nav-text">封装起来</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Vue-插件"><span class="nav-number">4.6.1.</span> <span class="nav-text">使用 Vue 插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用高阶函数"><span class="nav-number">4.6.2.</span> <span class="nav-text">使用高阶函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

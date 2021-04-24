@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fangtianq.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":false,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准I&#x2F;O">
+<meta property="og:url" content="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="…">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:modified_time" content="2021-04-24T17:18:23.297Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>标准I/O | 越努力，越幸运！</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">越努力，越幸运！</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">56</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">309</span></a>
+
+  </li>
+        <li class="menu-item menu-item-留言版">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-fw fa-comments"></i>留言版</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+          标准I/O
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-12 22:16:00" itemprop="dateCreated datePublished" datetime="2020-07-12T22:16:00+08:00">2020-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-25 01:18:23" itemprop="dateModified" datetime="2021-04-25T01:18:23+08:00">2021-04-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bash/" itemprop="url" rel="index"><span itemprop="name">bash</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论：</span>
+    
+    <a title="valine" href="/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>…</p>
+<a id="more"></a>
+<h1 id="标准I-O"><a href="#标准I-O" class="headerlink" title="标准I/O"></a>标准I/O</h1><h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p><code>echo</code>命令用于将指定内容输出到显示屏（标准输出）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> this is a <span class="built_in">test</span></span><br><span class="line">this is a <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>它的参数如下。</p>
+<ul>
+<li><code>-e</code> 解释转义字符。</li>
+<li><code>-n</code> 不输出行尾的换行符</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"a\nb"</span></span><br><span class="line">a\nb</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> -e <span class="string">"a\nb"</span></span><br><span class="line">a</span><br><span class="line">b</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，如果不加<code>-e</code>参数，<code>\n</code>就会按字面形式输出；加了以后，就被解释成了换行符。</p>
+<p>引号之中可以包括多个换行符，即可以输出多行文本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"&lt;HTML&gt;</span></span><br><span class="line"><span class="string">    &lt;HEAD&gt;</span></span><br><span class="line"><span class="string">          &lt;TITLE&gt;Page Title&lt;/TITLE&gt;</span></span><br><span class="line"><span class="string">    &lt;/HEAD&gt;</span></span><br><span class="line"><span class="string">    &lt;BODY&gt;</span></span><br><span class="line"><span class="string">          Page body.</span></span><br><span class="line"><span class="string">    &lt;/BODY&gt;</span></span><br><span class="line"><span class="string">&lt;/HTML&gt;"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">echo &#39;&lt;HTML&gt;</span><br><span class="line">    &lt;HEAD&gt;</span><br><span class="line">          &lt;TITLE&gt;Page Title&lt;&#x2F;TITLE&gt;</span><br><span class="line">    &lt;&#x2F;HEAD&gt;</span><br><span class="line">    &lt;BODY&gt;</span><br><span class="line">          Page body.</span><br><span class="line">    &lt;&#x2F;BODY&gt;</span><br><span class="line">&lt;&#x2F;HTML&gt;&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="read"><a href="#read" class="headerlink" title="read"></a>read</h2><p><code>read</code>命令被用来从标准输入读取单行数据。这个命令可以用来读取键盘输入，当使用重定向的时候，读取文件中的一行数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> [-options] [variable...]</span><br></pre></td></tr></table></figure>
+
+<p>上面的 variable 用来存储输入数值的一个或多个变量名。如果没有提供变量名，shell 变量<code>REPLY</code>会包含数据行。</p>
+<p>基本上，read 会把来自标准输入的字段赋值给具体的变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">"Please enter an integer -&gt; "</span></span><br><span class="line"><span class="built_in">read</span> int</span><br></pre></td></tr></table></figure>
+
+<p><code>read</code>可以给多个变量赋值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># read-multiple: read multiple values from keyboard</span></span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"Enter one or more values &gt; "</span></span><br><span class="line"><span class="built_in">read</span> var1 var2 var3 var4 var5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"var1 = '<span class="variable">$var1</span>'"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"var2 = '<span class="variable">$var2</span>'"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"var3 = '<span class="variable">$var3</span>'"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"var4 = '<span class="variable">$var4</span>'"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"var5 = '<span class="variable">$var5</span>'"</span></span><br></pre></td></tr></table></figure>
+
+<p>上面脚本的用法如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">read</span>-multiple</span><br><span class="line">Enter one or more values &gt; a b c d e</span><br><span class="line">var1 = <span class="string">'a'</span></span><br><span class="line">var2 = <span class="string">'b'</span></span><br><span class="line">var3 = <span class="string">'c'</span></span><br><span class="line">var4 = <span class="string">'d'</span></span><br><span class="line">var5 = <span class="string">'e'</span></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">read</span>-multiple</span><br><span class="line">Enter one or more values &gt; a</span><br><span class="line">var1 = <span class="string">'a'</span></span><br><span class="line">var2 = <span class="string">''</span></span><br><span class="line">var3 = <span class="string">''</span></span><br><span class="line">var4 = <span class="string">''</span></span><br><span class="line">var5 = <span class="string">''</span></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">read</span>-multiple</span><br><span class="line">Enter one or more values &gt; a b c d e f g</span><br><span class="line">var1 = <span class="string">'a'</span></span><br><span class="line">var2 = <span class="string">'b'</span></span><br><span class="line">var3 = <span class="string">'c'</span></span><br><span class="line">var4 = <span class="string">'d'</span></span><br><span class="line">var5 = <span class="string">'e f g'</span></span><br></pre></td></tr></table></figure>
+
+<p>如果 read 命令接受到变量值数目少于期望的数字，那么额外的变量值为空，而多余的输入数据则会 被包含到最后一个变量中。</p>
+<p>如果 read 命令之后没有列出变量名，则一个 shell 变量<code>REPLY</code>，将会包含所有的输入。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># read-single: read multiple values into default variable</span></span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"Enter one or more values &gt; "</span></span><br><span class="line"><span class="built_in">read</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"REPLY = '<span class="variable">$REPLY</span>'"</span></span><br></pre></td></tr></table></figure>
+
+<p>上面脚本的输出结果如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">read</span>-single</span><br><span class="line">Enter one or more values &gt; a b c d</span><br><span class="line">REPLY = <span class="string">'a b c d'</span></span><br></pre></td></tr></table></figure>
+
+<p>read命令的参数如下。</p>
+<ul>
+<li><code>-a array</code>    把输入赋值到数组 array 中，从索引号零开始。</li>
+<li><code>-d delimiter</code>    用字符串 delimiter 中的第一个字符指示输入结束，而不是一个换行符。</li>
+<li><code>-e</code>    使用 Readline 来处理输入。这使得与命令行相同的方式编辑输入。</li>
+<li><code>-n num</code>    读取 num 个输入字符，而不是整行。</li>
+<li><code>-p prompt</code>    为输入显示提示信息，使用字符串 prompt。</li>
+<li><code>-r</code>    Raw mode. 不把反斜杠字符解释为转义字符。</li>
+<li><code>-s</code>    Silent mode. 不会在屏幕上显示输入的字符。当输入密码和其它确认信息的时候，这会很有帮助。</li>
+<li><code>-t seconds</code>    超时. 几秒钟后终止输入。read 会返回一个非零退出状态，若输入超时。</li>
+<li><code>-u fd</code>     使用文件描述符 fd 中的输入，而不是标准输入。</li>
+</ul>
+<p><code>-p</code>的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter one or more values &gt; "</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"REPLY = '<span class="variable">$REPLY</span>'"</span></span><br></pre></td></tr></table></figure>
+
+<p><code>-t</code>和<code>-s</code>的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">read</span> -t 10 -sp <span class="string">"Enter secret pass phrase &gt; "</span> secret_pass; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">"\nSecret pass phrase = '<span class="variable">$secret_pass</span>'"</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这个脚本提示用户输入一个密码，并等待输入10秒钟。如果在特定的时间内没有完成输入， 则脚本会退出并返回一个错误。因为包含了一个 -s 选项，所以输入的密码不会出现在屏幕上。</p>
+<p>Shell的内部变量<code>IFS</code>可以控制输入字段的分离。例如，这个 /etc/passwd 文件包含的数据行 使用冒号作为字段分隔符。通过把 IFS 的值更改为单个冒号，我们可以使用 read 读取 /etc/passwd 中的内容，并成功地把字段分给不同的变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># read-ifs: read fields from a file</span></span><br><span class="line">FILE=/etc/passwd</span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter a user name &gt; "</span> user_name</span><br><span class="line">file_info=$(grep <span class="string">"^<span class="variable">$user_name</span>:"</span> <span class="variable">$FILE</span>)</span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$file_info</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">    IFS=<span class="string">":"</span> <span class="built_in">read</span> user pw uid gid name home shell &lt;&lt;&lt; <span class="string">"<span class="variable">$file_info</span>"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"User = '<span class="variable">$user</span>'"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"UID = '<span class="variable">$uid</span>'"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"GID = '<span class="variable">$gid</span>'"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Full Name = '<span class="variable">$name</span>'"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Home Dir. = '<span class="variable">$home</span>'"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Shell = '<span class="variable">$shell</span>'"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"No such user '<span class="variable">$user_name</span>'"</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>Shell 允许在一个命令之前立即发生一个或多个变量赋值。这些赋值为跟随着的命令更改环境变量。 这个赋值的影响是暂时的；只是在命令存在期间改变环境变量。</p>
+<p>虽然通常 read 命令接受标准输入，但是你不能这样做：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> “foo” | <span class="built_in">read</span></span><br></pre></td></tr></table></figure>
+
+<p>我们期望这个命令能生效，但是它不能。这个命令将显示成功，但是 REPLY 变量 总是为空。为什么会这样？</p>
+<p>答案与 shell 处理管道线的方式有关系。在 bash（和其它 shells，例如 sh）中，管道线 会创建子 shell。它们是 shell 的副本，且用来执行命令的环境变量在管道线中。 上面示例中，read 命令将在子 shell 中执行。</p>
+<p>在类 Unix 的系统中，子 shell 执行的时候，会为进程创建父环境的副本。当进程结束 之后，环境副本就会被破坏掉。这意味着一个子 shell 永远不能改变父进程的环境。read 赋值变量， 然后会变为环境的一部分。在上面的例子中，read 在它的子 shell 环境中，把 foo 赋值给变量 REPLY， 但是当命令退出后，子 shell 和它的环境将被破坏掉，这样赋值的影响就会消失。</p>
+<p>使用 here 字符串是解决此问题的一种方法。</p>
+<p>下面是生成菜单的一个例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># read-menu: a menu driven system information program</span></span><br><span class="line">clear</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"</span></span><br><span class="line"><span class="string">Please Select:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    1. Display System Information</span></span><br><span class="line"><span class="string">    2. Display Disk Space</span></span><br><span class="line"><span class="string">    3. Display Home Space Utilization</span></span><br><span class="line"><span class="string">    0. Quit</span></span><br><span class="line"><span class="string">"</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter selection [0-3] &gt; "</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$REPLY</span> =~ ^[0-3]$ ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$REPLY</span> == 0 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Program terminated."</span></span><br><span class="line">        <span class="built_in">exit</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$REPLY</span> == 1 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Hostname: <span class="variable">$HOSTNAME</span>"</span></span><br><span class="line">        uptime</span><br><span class="line">        <span class="built_in">exit</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$REPLY</span> == 2 ]]; <span class="keyword">then</span></span><br><span class="line">        df -h</span><br><span class="line">        <span class="built_in">exit</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$REPLY</span> == 3 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">if</span> [[ $(id -u) -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Home Space Utilization (All Users)"</span></span><br><span class="line">            du -sh /home/*</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Home Space Utilization (<span class="variable">$USER</span>)"</span></span><br><span class="line">            du -sh <span class="variable">$HOME</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        <span class="built_in">exit</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Invalid entry."</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+    <div>
+          
+              <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+              -------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------
+        </div>
+    
+</div>
+<!--
+<div id="qrcode"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+<script>
+$('#qrcode').qrcode(window.location.href);
+</script>
+-->
+
+          
+    </div>
+    <div>
+          
+              
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文标题:</strong>
+    <a href="/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/">标准I/O</a>
+  </li>
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ftq
+  </li>
+  <li class="post-copyright-author">
+    <strong>发布时间:</strong>
+    2020年07月12日 - 22:16:00
+  </li>
+  <li class="post-copyright-author">
+    <strong>最后更新:</strong>
+    2021年04月25日 - 01:18:23
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/" title="标准I/O">https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="theme-link" rel="noopener" target="_blank">BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+
+          
+    </div>
+
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/12/javascript/es6-tutorial-master/README/" rel="prev" title="ECMAScript 6">
+      <i class="fa fa-chevron-left"></i> ECMAScript 6
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/12/linux/bash-tutorial-master/docs/variable/" rel="next" title="Bash 变量">
+      Bash 变量 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标准I-O"><span class="nav-number">1.</span> <span class="nav-text">标准I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#echo"><span class="nav-number">1.1.</span> <span class="nav-text">echo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#read"><span class="nav-number">1.2.</span> <span class="nav-text">read</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="fa fa-fw fa-github"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>Gitee.io</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://gitee.com/yzycake" title="https:&#x2F;&#x2F;gitee.com&#x2F;yzycake" rel="noopener" target="_blank">月光骑士</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">ftq</a></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.4m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:40</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span>浏览量<span id="busuanzi_value_site_pv"></span>次</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span>访客量<span id="busuanzi_value_site_uv"></span>人</span>
+      <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span>本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz',
+      appKey     : 'stH9SzRt55d1wnwQD7LcoaQR',
+      placeholder: "ヾﾉ≧∀≦)o 来呀！快活呀！~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : 'https://6nubzi5v.lc-cn-n1-shared.com'
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
