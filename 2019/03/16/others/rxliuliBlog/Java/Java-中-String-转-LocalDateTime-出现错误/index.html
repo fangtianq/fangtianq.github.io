@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java 中 String 转 LocalDateTime 出现错误场景在 Java 中使用 LocalDateTime 解析 String 失败 代码如下 12final LocalDateTime result &#x3D; LocalDateTime.parse(&quot;2000-01-01&quot;, DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&amp;q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 中 String 转 LocalDateTime 出现错误">
+<meta property="og:url" content="https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="Java 中 String 转 LocalDateTime 出现错误场景在 Java 中使用 LocalDateTime 解析 String 失败 代码如下 12final LocalDateTime result &#x3D; LocalDateTime.parse(&quot;2000-01-01&quot;, DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&amp;q">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-16T13:12:50.000Z">
+<meta property="article:modified_time" content="2019-03-16T13:12:50.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="记录">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/","path":"2019/03/16/others/rxliuliBlog/Java/Java-中-String-转-LocalDateTime-出现错误/","title":"Java 中 String 转 LocalDateTime 出现错误"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java 中 String 转 LocalDateTime 出现错误 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF"><span class="nav-number">1.</span> <span class="nav-text">Java 中 String 转 LocalDateTime 出现错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">1.2.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E8%BD%AC%E6%8D%A2%E4%B8%BA-LocalDate-%E5%86%8D%E4%BA%8C%E6%AC%A1%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.1.</span> <span class="nav-text">先转换为 LocalDate 再二次转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-DateTimeFormatter-%E5%85%88%E8%A7%A3%E6%9E%90%EF%BC%8C%E7%84%B6%E5%90%8E%E8%BD%AC%E6%8D%A2%E4%B8%BA-LocalDateTime"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用 DateTimeFormatter 先解析，然后转换为 LocalDateTime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-DateTimeFormatterBuilder-%E6%9E%84%E5%BB%BA%E5%99%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">使用 DateTimeFormatterBuilder 构建器</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java 中 String 转 LocalDateTime 出现错误 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 中 String 转 LocalDateTime 出现错误
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-16 21:12:50" itemprop="dateCreated datePublished" datetime="2019-03-16T21:12:50+08:00">2019-03-16</time>
+    </span>
+
+
+  
+    <span id="/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/" class="post-meta-item leancloud_visitors" data-flag-title="Java 中 String 转 LocalDateTime 出现错误" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="Java 中 String 转 LocalDateTime 出现错误" href="/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::a48230bf488d28bb0e4c1bc6f8a177a0" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Java-中-String-转-LocalDateTime-出现错误"><a href="#Java-中-String-转-LocalDateTime-出现错误" class="headerlink" title="Java 中 String 转 LocalDateTime 出现错误"></a>Java 中 String 转 LocalDateTime 出现错误</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在 Java 中使用 <code>LocalDateTime</code> 解析 <code>String</code> 失败</p>
+<p>代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">result</span> <span class="operator">=</span> LocalDateTime.parse(<span class="string">&quot;2000-01-01&quot;</span>, DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd&quot;</span>));</span><br><span class="line">log.info(<span class="string">&quot;result: &#123;&#125;&quot;</span>, result);</span><br></pre></td></tr></table></figure>
+
+<p>抛出异常</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.time.format.DateTimeParseException: Text <span class="string">&#x27;2000-01-01&#x27;</span> could not be parsed: Unable to obtain LocalDateTime from TemporalAccessor: &#123;&#125;,ISO resolved to 2000-01-01 of <span class="built_in">type</span> java.time.format.Parsed</span><br></pre></td></tr></table></figure>
+
+<p>吾辈也在 <a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000018526018">SegmentFault</a> 上提出了这个问题，然而直到写出这篇记录时然而没有人告诉吾辈答案。。。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><h3 id="先转换为-LocalDate-再二次转换"><a href="#先转换为-LocalDate-再二次转换" class="headerlink" title="先转换为 LocalDate 再二次转换"></a>先转换为 LocalDate 再二次转换</h3><p>吾辈首先找到了一种笨方法</p>
+<ol>
+<li>先解析为 <code>LocalDate</code></li>
+<li>将 <code>LocalDate</code> 转换为 <code>LocalDateTime</code>。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">localDateTime</span> <span class="operator">=</span> LocalDate.parse(<span class="string">&quot;2018-12-11&quot;</span>, DateTimeFormatter.ISO_DATE).atStartOfDay();</span><br><span class="line">assertThat(localDateTime)</span><br><span class="line">    .isNotNull();</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-DateTimeFormatter-先解析，然后转换为-LocalDateTime"><a href="#使用-DateTimeFormatter-先解析，然后转换为-LocalDateTime" class="headerlink" title="使用 DateTimeFormatter 先解析，然后转换为 LocalDateTime"></a>使用 DateTimeFormatter 先解析，然后转换为 LocalDateTime</h3><ol>
+<li>使用 <code>DateTimeFormatter.ISO_DATE</code> 解析文本并得到 <code>TemporalAccessor</code> 对象</li>
+<li>使用 <code>temporalAccessor.get</code> 方法获取指定属性</li>
+<li>使用 <code>LocalDateTime.of</code> 构造一个 <code>LocalDateTime</code> 对象</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">TemporalAccessor</span> <span class="variable">temporalAccessor</span> <span class="operator">=</span> DateTimeFormatter.ISO_DATE.parse(<span class="string">&quot;2018-12-11&quot;</span>);</span><br><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">localDateTime</span> <span class="operator">=</span> LocalDateTime.of(</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.YEAR),</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.MONTH_OF_YEAR),</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.DAY_OF_MONTH),</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.HOUR_OF_DAY),</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.MINUTE_OF_HOUR),</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.SECOND_OF_MINUTE),</span><br><span class="line">    secureGet(temporalAccessor, ChronoField.NANO_OF_SECOND)</span><br><span class="line">);</span><br><span class="line">log.info(<span class="string">&quot;localDateTime: &#123;&#125;&quot;</span>, localDateTime);</span><br></pre></td></tr></table></figure>
+
+<p><code>secureGet</code> 是吾辈自定义的一个工具方法，具体看下面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 安全获取时间的某个属性</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> temporalAccessor 需要获取的时间对象</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> chronoField      需要获取的属性</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> 时间的值，如果无法获取则默认为 0</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">secureGet</span><span class="params">(TemporalAccessor temporalAccessor, ChronoField chronoField)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (temporalAccessor.isSupported(chronoField)) &#123;</span><br><span class="line">        <span class="keyword">return</span> temporalAccessor.get(chronoField);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-DateTimeFormatterBuilder-构建器"><a href="#使用-DateTimeFormatterBuilder-构建器" class="headerlink" title="使用 DateTimeFormatterBuilder 构建器"></a>使用 DateTimeFormatterBuilder 构建器</h3><p>吾辈在 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/27454025">StackOverflow</a> 找到了一个好的方法</p>
+<ol>
+<li>使用 <code>DateTimeFormatterBuilder</code> 构建 <code>DateTimeFormatter</code> 对象</li>
+<li>赋予可选匹配项默认值（<strong>非常重要</strong>）</li>
+<li>使用 <code>LocalDateTime.parse</code> 进行解析</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DateTimeFormatterBuilder</span>()</span><br><span class="line">    .appendPattern(<span class="string">&quot;yyyy-MM-dd[[&#x27;T&#x27;hh][:mm][:ss]]&quot;</span>)</span><br><span class="line">    .parseDefaulting(ChronoField.HOUR_OF_DAY, <span class="number">0</span>)</span><br><span class="line">    .parseDefaulting(ChronoField.MINUTE_OF_HOUR, <span class="number">0</span>)</span><br><span class="line">    .parseDefaulting(ChronoField.SECOND_OF_MINUTE, <span class="number">0</span>)</span><br><span class="line">    .parseDefaulting(ChronoField.MILLI_OF_SECOND, <span class="number">0</span>)</span><br><span class="line">    .toFormatter();</span><br><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">localDateTime</span> <span class="operator">=</span> LocalDateTime.parse(<span class="string">&quot;2018-12-11&quot;</span>, formatter);</span><br><span class="line">assertThat(localDateTime)</span><br><span class="line">    .isNotNull();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>最后一种方法满足了吾辈的需求，所以，也便是在这里记录一下啦</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"># 记录</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/12/others/rxliuliBlog/Tool/Git/Git-%E9%94%99%E8%AF%AF-Reset-%E6%81%A2%E5%A4%8D/" rel="prev" title="Git 错误 Reset 恢复">
+                  <i class="fa fa-chevron-left"></i> Git 错误 Reset 恢复
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/" rel="next" title="2016 年里做前端是怎样一种体验">
+                  2016 年里做前端是怎样一种体验 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="a48230bf488d28bb0e4c1bc6f8a177a0"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

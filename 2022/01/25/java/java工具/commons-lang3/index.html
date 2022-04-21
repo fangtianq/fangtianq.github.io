@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="请添加个描述...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="commons-lang3">
+<meta property="og:url" content="https://fangtianq.github.io/2022/01/25/java/java%E5%B7%A5%E5%85%B7/commons-lang3/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="请添加个描述...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-25T07:58:00.000Z">
+<meta property="article:modified_time" content="2022-01-25T07:58:00.000Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2022/01/25/java/java%E5%B7%A5%E5%85%B7/commons-lang3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2022/01/25/java/java%E5%B7%A5%E5%85%B7/commons-lang3/","path":"2022/01/25/java/java工具/commons-lang3/","title":"commons-lang3"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>commons-lang3 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#commons-lang3%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">commons-lang3简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Maven%E4%BE%9D%E8%B5%96"><span class="nav-number">2.</span> <span class="nav-text">Maven依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%A4%84%E7%90%86%E7%B1%BB%EF%BC%88StringUtils%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">字符串的处理类（StringUtils）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E7%B1%BB%EF%BC%88RandomStringUtils%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">随机数生成类（RandomStringUtils）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%B1%BBNumberUtils"><span class="nav-number">5.</span> <span class="nav-text">数字类NumberUtils</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%B1%BB-ArrayUtils"><span class="nav-number">6.</span> <span class="nav-text">数组类 ArrayUtils</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E7%B1%BBDateUtils"><span class="nav-number">7.</span> <span class="nav-text">日期类DateUtils</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86%E7%B1%BB"><span class="nav-number">8.</span> <span class="nav-text">加密解密类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E7%9A%84%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="nav-number">9.</span> <span class="nav-text">运行环境的系统信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">10.</span> <span class="nav-text">字符串格式化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%86%E5%89%B2"><span class="nav-number">11.</span> <span class="nav-text">字符串分割</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2022/01/25/java/java%E5%B7%A5%E5%85%B7/commons-lang3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="commons-lang3 | 越努力，越幸运！">
+      <meta itemprop="description" content="请添加个描述...">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          commons-lang3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-25 15:58:00" itemprop="dateCreated datePublished" datetime="2022-01-25T15:58:00+08:00">2022-01-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+        </span>
+    </span>
+
+
+  
+    <span id="/2022/01/25/java/java%E5%B7%A5%E5%85%B7/commons-lang3/" class="post-meta-item leancloud_visitors" data-flag-title="commons-lang3" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="commons-lang3" href="/2022/01/25/java/java%E5%B7%A5%E5%85%B7/commons-lang3/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::c264c437232eea53075179c75d08f9f3" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">请添加个描述...</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <span id="more"></span>
+<h1 id="commons-lang3简介"><a href="#commons-lang3简介" class="headerlink" title="commons-lang3简介"></a>commons-lang3简介</h1><p>commons-lang3是Apache的Jakarta commons工程下具有一系列公共基础类。<br>Apache的Jakarta commons工程项目列表路径：<a target="_blank" rel="noopener" href="http://commons.apache.org/">http://commons.apache.org</a><br>Commons基础类包基本上是基于JDK API开发而来，依赖微小，可重用性是Jakarta commons的灵魂所在。<br>Lang组件主要是一些工具类，涉及到数组工具类，字符串工具类，字符工具类，数学方面，时间日期工具类，异常，事件等工具类。</p>
+<h1 id="Maven依赖"><a href="#Maven依赖" class="headerlink" title="Maven依赖"></a>Maven依赖</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.9&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="字符串的处理类（StringUtils）"><a href="#字符串的处理类（StringUtils）" class="headerlink" title="字符串的处理类（StringUtils）"></a>字符串的处理类（StringUtils）</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">//缩短到某长度,用...结尾.其实就是(substring(str, 0, max-3) + &quot;...&quot;)</span><br><span class="line">//public static String abbreviate(String str,int maxWidth)</span><br><span class="line">StringUtils.abbreviate(&quot;abcdefg&quot;, 6);// ---&quot;abc...&quot;</span><br><span class="line"></span><br><span class="line">//字符串结尾的后缀是否与你要结尾的后缀匹配，若不匹配则添加后缀</span><br><span class="line">StringUtils.appendIfMissing(&quot;abc&quot;,&quot;xyz&quot;);//---&quot;abcxyz&quot;</span><br><span class="line">StringUtils.appendIfMissingIgnoreCase(&quot;abcXYZ&quot;,&quot;xyz&quot;);//---&quot;abcXYZ&quot;</span><br><span class="line"></span><br><span class="line">//首字母大小写转换</span><br><span class="line">StringUtils.capitalize(&quot;cat&quot;);//---&quot;Cat&quot;</span><br><span class="line">StringUtils.uncapitalize(&quot;Cat&quot;);//---&quot;cat&quot;</span><br><span class="line"></span><br><span class="line">//字符串扩充至指定大小且居中（若扩充大小少于原字符大小则返回原字符，若扩充大小为 负数则为0计算 ）</span><br><span class="line">StringUtils.center(&quot;abcd&quot;, 2);//--- &quot;abcd&quot;</span><br><span class="line">StringUtils.center(&quot;ab&quot;, -1);//--- &quot;ab&quot;</span><br><span class="line">StringUtils.center(&quot;ab&quot;, 4);//---&quot; ab &quot;</span><br><span class="line">StringUtils.center(&quot;a&quot;, 4, &quot;yz&quot;);//---&quot;yayz&quot;</span><br><span class="line">StringUtils.center(&quot;abc&quot;, 7, &quot;&quot;);//---&quot;  abc  &quot;</span><br><span class="line"></span><br><span class="line">//去除字符串中的&quot;\n&quot;, &quot;\r&quot;, or &quot;\r\n&quot;</span><br><span class="line">StringUtils.chomp(&quot;abc\r\n&quot;);//---&quot;abc&quot;</span><br><span class="line"></span><br><span class="line">//判断一字符串是否包含另一字符串</span><br><span class="line">StringUtils.contains(&quot;abc&quot;, &quot;z&quot;);//---false</span><br><span class="line">StringUtils.containsIgnoreCase(&quot;abc&quot;, &quot;A&quot;);//---true</span><br><span class="line"></span><br><span class="line">//统计一字符串在另一字符串中出现次数</span><br><span class="line">StringUtils.countMatches(&quot;abba&quot;, &quot;a&quot;);//---2</span><br><span class="line"></span><br><span class="line">//删除字符串中的梭有空格</span><br><span class="line">StringUtils.deleteWhitespace(&quot;   ab  c  &quot;);//---&quot;abc&quot;</span><br><span class="line"></span><br><span class="line">//比较两字符串，返回不同之处。确切的说是返回第二个参数中与第一个参数所不同的字符串</span><br><span class="line">StringUtils.difference(&quot;abcde&quot;, &quot;abxyz&quot;);//---&quot;xyz&quot;</span><br><span class="line"></span><br><span class="line">//检查字符串结尾后缀是否匹配</span><br><span class="line">StringUtils.endsWith(&quot;abcdef&quot;, &quot;def&quot;);//---true</span><br><span class="line">StringUtils.endsWithIgnoreCase(&quot;ABCDEF&quot;, &quot;def&quot;);//---true</span><br><span class="line">StringUtils.endsWithAny(&quot;abcxyz&quot;, new String[] &#123;null, &quot;xyz&quot;, &quot;abc&quot;&#125;);//---true</span><br><span class="line"></span><br><span class="line">//检查起始字符串是否匹配</span><br><span class="line">StringUtils.startsWith(&quot;abcdef&quot;, &quot;abc&quot;);//---true</span><br><span class="line">StringUtils.startsWithIgnoreCase(&quot;ABCDEF&quot;, &quot;abc&quot;);//---true</span><br><span class="line">StringUtils.startsWithAny(&quot;abcxyz&quot;, new String[] &#123;null, &quot;xyz&quot;, &quot;abc&quot;&#125;);//---true</span><br><span class="line"></span><br><span class="line">//判断两字符串是否相同</span><br><span class="line">StringUtils.equals(&quot;abc&quot;, &quot;abc&quot;);//---true</span><br><span class="line">StringUtils.equalsIgnoreCase(&quot;abc&quot;, &quot;ABC&quot;);//---true</span><br><span class="line"></span><br><span class="line">//比较字符串数组内的所有元素的字符序列，起始一致则返回一致的字符串，若无则返回&quot;&quot;</span><br><span class="line">StringUtils.getCommonPrefix(new String[] &#123;&quot;abcde&quot;, &quot;abxyz&quot;&#125;);//---&quot;ab&quot;</span><br><span class="line"></span><br><span class="line">//正向查找字符在字符串中第一次出现的位置</span><br><span class="line">StringUtils.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;);//---2</span><br><span class="line">StringUtils.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;, 3);//---5(从角标3后查找)</span><br><span class="line">StringUtils.ordinalIndexOf(&quot;aabaabaa&quot;, &quot;a&quot;, 3);//---1(查找第n次出现的位置)</span><br><span class="line"></span><br><span class="line">//反向查找字符串第一次出现的位置</span><br><span class="line">StringUtils.lastIndexOf(&quot;aabaabaa&quot;, ‘b‘);//---5</span><br><span class="line">StringUtils.lastIndexOf(&quot;aabaabaa&quot;, ‘b‘, 4);//---2</span><br><span class="line">StringUtils.lastOrdinalIndexOf(&quot;aabaabaa&quot;, &quot;ab&quot;, 2);//---1</span><br><span class="line"></span><br><span class="line">//判断字符串大写、小写</span><br><span class="line">StringUtils.isAllUpperCase(&quot;ABC&quot;);//---true</span><br><span class="line">StringUtils.isAllLowerCase(&quot;abC&quot;);//---false</span><br><span class="line"></span><br><span class="line">//判断是否为空(注：isBlank与isEmpty 区别)</span><br><span class="line">StringUtils.isBlank(null);StringUtils.isBlank(&quot;&quot;);StringUtils.isBlank(&quot; &quot;);//---true</span><br><span class="line">StringUtils.isNoneBlank(&quot; &quot;, &quot;bar&quot;);//---false</span><br><span class="line"></span><br><span class="line">StringUtils.isEmpty(null);StringUtils.isEmpty(&quot;&quot;);//---true</span><br><span class="line">StringUtils.isEmpty(&quot; &quot;);//---false</span><br><span class="line">StringUtils.isNoneEmpty(&quot; &quot;, &quot;bar&quot;);//---true</span><br><span class="line"></span><br><span class="line">//判断字符串数字</span><br><span class="line">StringUtils.isNumeric(&quot;123&quot;);//---false</span><br><span class="line">StringUtils.isNumeric(&quot;12 3&quot;);//---false (不识别运算符号、小数点、空格……)</span><br><span class="line">StringUtils.isNumericSpace(&quot;12 3&quot;);//---true</span><br><span class="line"></span><br><span class="line">//数组中加入分隔符号</span><br><span class="line">//StringUtils.join([1, 2, 3], ‘;‘);//---&quot;1;2;3&quot;</span><br><span class="line"></span><br><span class="line">//大小写转换</span><br><span class="line">StringUtils.upperCase(&quot;aBc&quot;);//---&quot;ABC&quot;</span><br><span class="line">StringUtils.lowerCase(&quot;aBc&quot;);//---&quot;abc&quot;</span><br><span class="line">StringUtils.swapCase(&quot;The dog has a BONE&quot;);//---&quot;tHE DOG HAS A bone&quot;</span><br><span class="line"></span><br><span class="line">//替换字符串内容……（replacePattern、replceOnce）</span><br><span class="line">StringUtils.replace(&quot;aba&quot;, &quot;a&quot;, &quot;z&quot;);//---&quot;zbz&quot;</span><br><span class="line">StringUtils.overlay(&quot;abcdef&quot;, &quot;zz&quot;, 2, 4);//---&quot;abzzef&quot;(指定区域)</span><br><span class="line">StringUtils.replaceEach(&quot;abcde&quot;, new String[]&#123;&quot;ab&quot;, &quot;d&quot;&#125;,</span><br><span class="line">        new String[]&#123;&quot;w&quot;, &quot;t&quot;&#125;);//---&quot;wcte&quot;(多组指定替换ab-&gt;w，d-&gt;t)</span><br><span class="line"></span><br><span class="line">//重复字符</span><br><span class="line">StringUtils.repeat(‘e‘, 3);//---&quot;eee&quot;</span><br><span class="line"></span><br><span class="line">//反转字符串</span><br><span class="line">StringUtils.reverse(&quot;bat&quot;);//---&quot;tab&quot;</span><br><span class="line"></span><br><span class="line">//删除某字符</span><br><span class="line">StringUtils.remove(&quot;queued&quot;, ‘u‘);//---&quot;qeed&quot;</span><br><span class="line"></span><br><span class="line">//分割字符串</span><br><span class="line">StringUtils.split(&quot;a..b.c&quot;, ‘.‘);//---[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</span><br><span class="line">StringUtils.split(&quot;ab:cd:ef&quot;, &quot;:&quot;, 2);//---[&quot;ab&quot;, &quot;cd:ef&quot;]</span><br><span class="line">StringUtils.splitByWholeSeparator(&quot;ab-!-cd-!-ef&quot;, &quot;-!-&quot;, 2);//---[&quot;ab&quot;, &quot;cd-!-ef&quot;]</span><br><span class="line">StringUtils.splitByWholeSeparatorPreserveAllTokens(&quot;ab::cd:ef&quot;, &quot;:&quot;);//-[&quot;ab&quot;,&quot; &quot;,&quot;cd&quot;,&quot;ef&quot;]</span><br><span class="line"></span><br><span class="line">//去除首尾空格，类似trim……（stripStart、stripEnd、stripAll、stripAccents）</span><br><span class="line">StringUtils.strip(&quot; ab c &quot;);//---&quot;ab c&quot;</span><br><span class="line">StringUtils.stripToNull(null);//---null</span><br><span class="line">StringUtils.stripToEmpty(null);//---&quot;&quot;</span><br><span class="line"></span><br><span class="line">//截取字符串</span><br><span class="line">StringUtils.substring(&quot;abcd&quot;, 2);//---&quot;cd&quot;</span><br><span class="line">StringUtils.substring(&quot;abcdef&quot;, 2, 4);//---&quot;cd&quot;</span><br><span class="line"></span><br><span class="line">//left、right从左(右)开始截取n位字符</span><br><span class="line">StringUtils.left(&quot;abc&quot;, 2);//---&quot;ab&quot;</span><br><span class="line">StringUtils.right(&quot;abc&quot;, 2);//---&quot;bc&quot;</span><br><span class="line">//从第n位开始截取m位字符       n  m</span><br><span class="line">StringUtils.mid(&quot;abcdefg&quot;, 2, 4);//---&quot;cdef&quot;</span><br><span class="line"></span><br><span class="line">StringUtils.substringBefore(&quot;abcba&quot;, &quot;b&quot;);//---&quot;a&quot;</span><br><span class="line">StringUtils.substringBeforeLast(&quot;abcba&quot;, &quot;b&quot;);//---&quot;abc&quot;</span><br><span class="line">StringUtils.substringAfter(&quot;abcba&quot;, &quot;b&quot;);//---&quot;cba&quot;</span><br><span class="line">StringUtils.substringAfterLast(&quot;abcba&quot;, &quot;b&quot;);//---&quot;a&quot;</span><br><span class="line"></span><br><span class="line">StringUtils.substringBetween(&quot;tagabctag&quot;, &quot;tag&quot;);//---&quot;abc&quot;</span><br><span class="line">StringUtils.substringBetween(&quot;yabczyabcz&quot;, &quot;y&quot;, &quot;z&quot;);//---&quot;abc&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="随机数生成类（RandomStringUtils）"><a href="#随机数生成类（RandomStringUtils）" class="headerlink" title="随机数生成类（RandomStringUtils）"></a>随机数生成类（RandomStringUtils）</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//随机生成n位数数字</span><br><span class="line">RandomStringUtils.randomNumeric(n);</span><br><span class="line">//在指定字符串中生成长度为n的随机字符串</span><br><span class="line">RandomStringUtils.random(n, &quot;abcdefghijk&quot;);</span><br><span class="line">//指定从字符或数字中生成随机字符串</span><br><span class="line">System.out.println(RandomStringUtils.random(n, true, false));  </span><br><span class="line">System.out.println(RandomStringUtils.random(n, false, true));</span><br></pre></td></tr></table></figure>
+<h1 id="数字类NumberUtils"><a href="#数字类NumberUtils" class="headerlink" title="数字类NumberUtils"></a>数字类NumberUtils</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//从数组中选出最大值</span><br><span class="line">NumberUtils.max(new int[] &#123; 1, 2, 3, 4 &#125;);//---4</span><br><span class="line">//判断字符串是否全是整数</span><br><span class="line">NumberUtils.isDigits(&quot;153.4&quot;);//--false</span><br><span class="line">//判断字符串是否是有效数字</span><br><span class="line">NumberUtils.isNumber(&quot;0321.1&quot;);//---false    </span><br></pre></td></tr></table></figure>
+<h1 id="数组类-ArrayUtils"><a href="#数组类-ArrayUtils" class="headerlink" title="数组类 ArrayUtils"></a>数组类 ArrayUtils</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//创建数组</span><br><span class="line">String[] array = ArrayUtils.toArray(&quot;1&quot;, &quot;2&quot;);</span><br><span class="line">//判断两个数据是否相等，如果内容相同， 顺序相同 则返回 true</span><br><span class="line">ArrayUtils.isEquals(arr1,arr2);</span><br><span class="line">//判断数组中是否包含某一对象</span><br><span class="line">ArrayUtils.contains(arr, &quot;33&quot;);</span><br><span class="line">//二维数组转换成MAP</span><br><span class="line">Map map = ArrayUtils.toMap(new String[][] &#123; </span><br><span class="line">        &#123; &quot;RED&quot;, &quot;#FF0000&quot; &#125;, &#123; &quot;GREEN&quot;, &quot;#00FF00&quot; &#125;, &#123; &quot;BLUE&quot;, &quot;#0000FF&quot; &#125; &#125;);</span><br></pre></td></tr></table></figure>
+<h1 id="日期类DateUtils"><a href="#日期类DateUtils" class="headerlink" title="日期类DateUtils"></a>日期类DateUtils</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//日期加n天</span><br><span class="line">DateUtils.addDays(new Date(), n);</span><br><span class="line">//判断是否同一天</span><br><span class="line">DateUtils.isSameDay(date1, date2);</span><br><span class="line">//字符串时间转换为Date</span><br><span class="line">DateUtils.parseDate(str, parsePatterns);</span><br></pre></td></tr></table></figure>
+<h1 id="加密解密类"><a href="#加密解密类" class="headerlink" title="加密解密类"></a>加密解密类</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> // MD5加密</span><br><span class="line">  String encodeStr=DigestUtils.md5Hex(text + key);</span><br><span class="line"> // 密钥进行验证</span><br><span class="line">String md5Text = md5(text, key);</span><br><span class="line">if(md5Text.equalsIgnoreCase(md5))</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(&quot;MD5验证通过&quot;);</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="运行环境的系统信息"><a href="#运行环境的系统信息" class="headerlink" title="运行环境的系统信息"></a>运行环境的系统信息</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getArch();// 获取电脑处理器体系结构 32 bit、64 bit、unknown</span><br><span class="line">getType();// 返回处理器类型 x86、ia64、ppc、unknown</span><br><span class="line">is32Bit();// 检查处理器是否为32位</span><br><span class="line">is64Bit();// 检查处理器是否为64位</span><br><span class="line">isIA64();// 检查是否是英特尔安腾处理器类型</span><br><span class="line">isPPC();// 检查处理器是否是电源PC类型</span><br><span class="line">isX86();// 检查处理器是否是x86类型</span><br></pre></td></tr></table></figure>
+
+<h1 id="字符串格式化"><a href="#字符串格式化" class="headerlink" title="字符串格式化"></a>字符串格式化</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String,String&gt; params = new HashMap&lt;&gt;();</span><br><span class="line">params.put(&quot;name&quot;,&quot;asdf&quot;);</span><br><span class="line">params.put(&quot;xxx&quot;,&quot;jkl&quot;);</span><br><span class="line">String replace = StrSubstitutor.replace(&quot;zzz $&#123;name&#125;, xxx $&#123;xxx&#125;&quot;, params);</span><br><span class="line">System.out.println(replace);</span><br><span class="line">// 输出 zzz asdf, xxx jkl</span><br><span class="line">Map map = new HashMap();</span><br><span class="line">map.put(&quot;code&quot;,&quot;267468&quot;);</span><br><span class="line">map.put(&quot;product&quot;,&quot;xxx系统&quot;);</span><br><span class="line">String str1 = &quot;您正在登录$&#123;product&#125;,验证码为：$&#123;code&#125;，五分钟内有效，如非本人操作请忽略。&quot;;</span><br><span class="line">StrSubstitutor sb = new StrSubstitutor(map);</span><br><span class="line">String content = sb.replace(str1);</span><br><span class="line">System.out.println(content);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="字符串分割"><a href="#字符串分割" class="headerlink" title="字符串分割"></a>字符串分割</h1><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">String str = &quot;This is String , split by StringTokenizer, created by runoob&quot;;</span><br><span class="line">StringTokenizer st = new StringTokenizer(str);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;----- 通过空格分隔 ------&quot;);</span><br><span class="line">while (st.hasMoreElements()) &#123;</span><br><span class="line">    System.out.println(st.nextElement());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;----- 通过逗号分隔 ------&quot;);</span><br><span class="line">StringTokenizer st2 = new StringTokenizer(str, &quot;,&quot;);</span><br><span class="line"></span><br><span class="line">while (st2.hasMoreElements()) &#123;</span><br><span class="line">    System.out.println(st2.nextElement());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">----- 通过空格分隔 ------</span><br><span class="line">This</span><br><span class="line">is</span><br><span class="line">String</span><br><span class="line">,</span><br><span class="line">split</span><br><span class="line">by</span><br><span class="line">StringTokenizer,</span><br><span class="line">created</span><br><span class="line">by</span><br><span class="line">runoob</span><br><span class="line">----- 通过逗号分隔 ------</span><br><span class="line">This is String </span><br><span class="line"> split by StringTokenizer</span><br><span class="line"> created by runoob</span><br><span class="line">//注意，StringTokenizer的分隔符不需要使用转义字符</span><br><span class="line">String.Split（）使用正则表达式，而StringTokenizer的只是使用逐字分裂的字符。</span><br><span class="line">如果不用正则表达式（StringTokenizer也不能使用正则表达式），StringTokenizer在截取字符串中的效率最高。</span><br></pre></td></tr></table></figure>
+
+<p>#对单词的操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.WordUtils.capitalize()：把通过空格分隔的单词首字母大写</span><br><span class="line">2.WordUtils.capitalize(&quot;my love my dear,my girl&quot;, new char[]&#123;&#x27; &#x27;,&#x27;,&#x27;&#125;) ：通过指定的符号将所有分隔的字母的首字母大写。结果：My Love My Dear,My Girl</span><br><span class="line">3.WordUtils.capitalizeFully()与WordUtils.capitalize()差不多</span><br><span class="line">4.WordUtils.capitalizeFully(&quot;my love my dear my girl&quot;, new char[]&#123;&#x27; &#x27;,&#x27;,&#x27;&#125;)与2的一个差不多</span><br><span class="line">5.WordUtils.initials(&quot;my love my dear my girl&quot;) ：返回每个单词的首字母组合的字符串 结果：mlmdmg</span><br><span class="line">6.WordUtils.swapCase(&quot;My love, mY dear, my girl&quot;) ：将大写字母转为小写，将小写字母转为大写  结果：mY LOVE, My DEAR, MY GIRL</span><br><span class="line">7.WordUtils.uncapitalize(&quot;My Love My Dear My girl&quot;) ：将所有单词首字母转为小写</span><br><span class="line">8.WordUtils.wrap(&quot;my love my girl&quot;, 9) ：一行显示指定长度的个数，超过指定的个数就换行</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/24/pri/project/%E9%9D%A2%E8%AF%95%E8%80%83%E7%82%B9/" rel="prev" title="面试考点">
+                  <i class="fa fa-chevron-left"></i> 面试考点
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/25/java/java%E5%B7%A5%E5%85%B7/test/" rel="next" title="test">
+                  test <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="c264c437232eea53075179c75d08f9f3"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

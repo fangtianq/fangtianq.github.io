@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="树莓派入坑体会前言最近想在家里搭个本地服务器玩，于是便买了个树莓派 4。现在，吾辈已经让它在纸盒里默默吃灰了。  为什么吾辈搭建服务器？ 为什么吾辈要选择树莓派？ 以及为何最终它还是吃灰了？  上面这些问题吾辈会在下面一一解答。 为什么吾辈搭建服务器搭建本地服务器的原因当然是想让一些服务持续 24 小时运行了，而吾辈最初的需求便是 PT&#x2F;BT 做种。BT 或许很多人听说过，PT 又是什么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派入坑体会">
+<meta property="og:url" content="https://fangtianq.github.io/2019/09/02/others/rxliuliBlog/Linux/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="树莓派入坑体会前言最近想在家里搭个本地服务器玩，于是便买了个树莓派 4。现在，吾辈已经让它在纸盒里默默吃灰了。  为什么吾辈搭建服务器？ 为什么吾辈要选择树莓派？ 以及为何最终它还是吃灰了？  上面这些问题吾辈会在下面一一解答。 为什么吾辈搭建服务器搭建本地服务器的原因当然是想让一些服务持续 24 小时运行了，而吾辈最初的需求便是 PT&#x2F;BT 做种。BT 或许很多人听说过，PT 又是什么">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190903081607.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190903143806.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190903081924.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190903150304.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190903150520.gif">
+<meta property="article:published_time" content="2019-09-02T23:04:11.000Z">
+<meta property="article:modified_time" content="2019-09-02T23:04:11.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="杂谈">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190903081607.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/09/02/others/rxliuliBlog/Linux/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/09/02/others/rxliuliBlog/Linux/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A/","path":"2019/09/02/others/rxliuliBlog/Linux/树莓派入坑体会/","title":"树莓派入坑体会"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>树莓派入坑体会 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">树莓派入坑体会</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%90%BE%E8%BE%88%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">为什么吾辈搭建服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%90%BE%E8%BE%88%E8%A6%81%E9%80%89%E6%8B%A9%E6%A0%91%E8%8E%93%E6%B4%BE"><span class="nav-number">1.3.</span> <span class="nav-text">为什么吾辈要选择树莓派</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E6%9C%80%E7%BB%88%E5%AE%83%E8%BF%98%E6%98%AF%E5%90%83%E7%81%B0%E4%BA%86"><span class="nav-number">1.4.</span> <span class="nav-text">以及为何最终它还是吃灰了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/09/02/others/rxliuliBlog/Linux/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="树莓派入坑体会 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          树莓派入坑体会
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-03 07:04:11" itemprop="dateCreated datePublished" datetime="2019-09-03T07:04:11+08:00">2019-09-03</time>
+    </span>
+
+
+  
+    <span id="/2019/09/02/others/rxliuliBlog/Linux/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派入坑体会" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="树莓派入坑体会" href="/2019/09/02/others/rxliuliBlog/Linux/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E5%9D%91%E4%BD%93%E4%BC%9A/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::e719810024b4ab132262a049b4642f14" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="树莓派入坑体会"><a href="#树莓派入坑体会" class="headerlink" title="树莓派入坑体会"></a>树莓派入坑体会</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近想在家里搭个本地服务器玩，于是便买了个树莓派 4。现在，吾辈已经让它在纸盒里默默吃灰了。</p>
+<ul>
+<li>为什么吾辈搭建服务器？</li>
+<li>为什么吾辈要选择树莓派？</li>
+<li>以及为何最终它还是吃灰了？</li>
+</ul>
+<p>上面这些问题吾辈会在下面一一解答。</p>
+<h2 id="为什么吾辈搭建服务器"><a href="#为什么吾辈搭建服务器" class="headerlink" title="为什么吾辈搭建服务器"></a>为什么吾辈搭建服务器</h2><p>搭建本地服务器的原因当然是想让一些服务持续 24 小时运行了，而吾辈最初的需求便是 <strong>PT&#x2F;BT 做种</strong>。BT 或许很多人听说过，PT 又是什么呢？</p>
+<p><img src="https://img.rxliuli.com/20190903081607.png" alt="PT 下载"></p>
+<p>PT，全程 Private Tracker，是一种私有的 BT 服务。整个 BT 网络将不再是完全公开并且可供任何人下载的了，每个用户都会被计算上传量&#x2F;下载量，如果这个比率过低就会被 ban。这种下载方式本意是为了解决 BT 中很多用户喜欢只下载而不进行上传的行为，强制所有人必须<strong>殚精竭虑</strong>地计算分享率，注意自己的下载量，考虑下载热门资源而赚取积分（事实证明这条路注定也不会走的太顺利，分享是一个长期收益的行为，最终下载的人短期内实际上并不多，而计算分享率却是实时的）。<br>吾辈需要的便是 24h 不间断的挂着 PT&#x2F;BT 服务，以在闲暇时刻消耗家里的网络带宽，顺便做一波公益行为。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh/PT%E4%B8%8B%E8%BC%89">PT 下载 Wiki</a></p>
+</blockquote>
+<h2 id="为什么吾辈要选择树莓派"><a href="#为什么吾辈要选择树莓派" class="headerlink" title="为什么吾辈要选择树莓派"></a>为什么吾辈要选择树莓派</h2><p>一言以蔽之：树莓派宣传的很厉害。</p>
+<p><img src="https://img.rxliuli.com/20190903143806.png" alt="树莓派官方图"></p>
+<p>让我们看看网络上对树莓派的相关内容</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.iplaysoft.com/raspberrypi.html">异次元软件: 树莓派 4 代 - 全球最流行的 Linux 小型迷你电脑，性能大幅飙升！(支持 4K &#x2F; USB3.0)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20859055">知乎: 「树莓派」是什么以及普通人怎么玩？</a></li>
+</ul>
+<p>树莓派<a target="_blank" rel="noopener" href="https://www.raspberrypi.org/">官网</a>也自称是小型、双显示器的台式电脑，而且提供了一个树莓派专用的 Linux Debian 的定制发行版。</p>
+<p>下面放一张吾辈买的树莓派 4 的照片，体积之小可见一斑。<br><img src="https://img.rxliuli.com/20190903081924.png" alt="树莓派"></p>
+<p>讲真第一次看到这么小的时候吾辈真的被惊艳到了，从来没想过一个电脑能这么小，而且居然还能安装可视化的操作系统。</p>
+<h2 id="以及为何最终它还是吃灰了"><a href="#以及为何最终它还是吃灰了" class="headerlink" title="以及为何最终它还是吃灰了"></a>以及为何最终它还是吃灰了</h2><p>之后吾辈便开始安装了官方的操作系统，首先，官方提供了两个选项</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/noobs/">NOOBS</a>: 全新开箱即用的软件 - 适合初学者的操作系统安装引导程序。</li>
+<li><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian</a>: 官方支持的树莓派操作系统 - 基于 Debian Buster。</li>
+</ul>
+<p>然而事实上，两者皆有不足之处。首先，前者需要屏幕、键盘和鼠标进行安装，对于吾辈这种只是想把它作为本地服务器的用户而言，这是不可接受的。而使用官方的烧录工具将 Raspbian 刻录到 SD 卡之后，启动命令行倒是没有什么问题，但在启动桌面时却遇到的 bug – <a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000020144913">树莓派 4 VNC 远程连接桌面错误</a>。当时似乎互联网上并没有多少人遇到这个问题，而吾辈恰好遇到了，所以费了一番功夫之后才成功开启了桌面。<br>进入桌面之后，又是换源又是更新，之后才在命令行安装了 qBittorrent（是的，即使已经有了桌面仍然需要从命令行安装程序）。嘛，不谈遇到了多少麻烦，qBittorrent 终于启动了 BT 服务，吾辈把 RSS 挂上了之后使其自动更新和下载最新种子，也便是大功告成了。</p>
+<p><img src="https://img.rxliuli.com/20190903150304.png" alt="qBittorrent"></p>
+<p>然后发现种子的 RSS 服务器有时会更新失败，吾辈猜想是没有代理的问题，于是便去网络上找到了一个 Linux 下的 SSR 可视化客户端 – <a target="_blank" rel="noopener" href="https://github.com/shadowsocksrr/electron-ssr">electron-ssr</a>，然而下载完之后安装直接提示安装错误。</p>
+<blockquote>
+<p>注: electron-ssr 项目作者已经被请喝茶了，真真是风声鹤唳。</p>
+</blockquote>
+<p>然后向他人询问的时候甚至说出了 <strong>“咱也回答你了 ，需要找 arm 的 debian 包”</strong>，我的天，难道 Linux 下安装程序这么麻烦的么？不仅发行版要区分，现在连 CPU 架构也要区分了？用户体验老实说糟糕透顶，吾辈最终直接使用了本地的 SSR 局域网代理，笔记本开着的时候有代理，关了就没了，也便只能是暂且用着。</p>
+<p>后来吾辈在几次偶尔使用 VNC 连接时发现 qBittorrent 关了，吾辈以为是 Linux 会默认杀掉不活跃的程序，没有在意，就手动重启了。直到昨天，吾辈在启动 qBittorrent 后直接闪退了。。。在观察了任务管理器之后，吾辈发现是启动时 CPU 的使用率暴增，然后就 GG 了。</p>
+<p><img src="https://img.rxliuli.com/20190903150520.gif" alt="GIF 动图"></p>
+<p>好了，还是放它在角落里吃灰吧。既然吾辈这个唯一的需求都无法实现，那留它何用，拉出去斩了吧！这或许是 qBittorrent 的问题，或许是 Raspbian 的问题，但吾辈已然不想关心，深究之下终究就得不偿失。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前就吾辈使用的体验而言，树莓派不可能真正的普及开来，只能作为一个极客的玩具罢了 – 没错，就是玩具，而非工具。<br>这时候一定会有人反对吾辈说 <strong>“永远不要（把自己遇到的问题）归因于（他人的）恶意，这恰恰说明了（你自己的）无能”</strong>，这点 Linux 桌面的社区也有很多开发者喜欢这样说，然而现在的结果是 Linux 无法在桌面领域立足，究其原因还是对用户不友好，难道开发者就不算是用户了？记得有人说过 <strong>“我是开发者，但同时也是用户。你的产品因为各种原因让我不爽，我就不会选你，我才不会管究竟是谁的锅”</strong>，用户中心论在这里可以说是体现的淋漓尽致。</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9D%82%E8%B0%88/" rel="tag"># 杂谈</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/02/others/rxliuliBlog/Essay/%E5%A6%82%E4%BD%95%E8%B6%85%E8%BF%87%E5%A4%A7%E5%A4%9A%E6%95%B0%E4%BA%BA/" rel="prev" title="如何超过大多数人">
+                  <i class="fa fa-chevron-left"></i> 如何超过大多数人
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/06/others/rxliuliBlog/Essay/%E8%AE%BA%E5%9B%BD%E5%86%85%E7%9A%84%E9%80%9A%E8%B4%A7%E8%86%A8%E8%83%80%E7%8E%87/" rel="next" title="论国内的通货膨胀率">
+                  论国内的通货膨胀率 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="e719810024b4ab132262a049b4642f14"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

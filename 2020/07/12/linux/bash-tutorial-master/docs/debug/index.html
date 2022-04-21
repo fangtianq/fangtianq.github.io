@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="脚本除错">
+<meta property="og:url" content="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/debug/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="…">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:modified_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/debug/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/debug/","path":"2020/07/12/linux/bash-tutorial-master/docs/debug/","title":"脚本除错"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>脚本除错 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E9%99%A4%E9%94%99"><span class="nav-number">1.</span> <span class="nav-text">脚本除错</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="nav-number">1.1.</span> <span class="nav-text">常见错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bash%E7%9A%84-x%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">bash的-x参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.</span> <span class="nav-text">环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LINENO"><span class="nav-number">1.3.1.</span> <span class="nav-text">LINENO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FUNCNAME"><span class="nav-number">1.3.2.</span> <span class="nav-text">FUNCNAME</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BASH-SOURCE"><span class="nav-number">1.3.3.</span> <span class="nav-text">BASH_SOURCE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BASH-LINENO"><span class="nav-number">1.3.4.</span> <span class="nav-text">BASH_LINENO</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/debug/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="脚本除错 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          脚本除错
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-12 22:16:00" itemprop="dateCreated datePublished" datetime="2020-07-12T22:16:00+08:00">2020-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/bash/" itemprop="url" rel="index"><span itemprop="name">bash</span></a>
+        </span>
+    </span>
+
+
+  
+    <span id="/2020/07/12/linux/bash-tutorial-master/docs/debug/" class="post-meta-item leancloud_visitors" data-flag-title="脚本除错" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="脚本除错" href="/2020/07/12/linux/bash-tutorial-master/docs/debug/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::ff8057b1147628f69f119d4034dbe490" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>…</p>
+<span id="more"></span>
+<h1 id="脚本除错"><a href="#脚本除错" class="headerlink" title="脚本除错"></a>脚本除错</h1><p>本章介绍如何对 Shell 脚本除错。</p>
+<h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><p>编写 Shell 脚本的时候，一定要考虑到命令失败的情况，否则很容易出错。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line">dir_name=/path/not/exist</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$dir_name</span></span><br><span class="line"><span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>上面脚本中，如果目录<code>$dir_name</code>不存在，<code>cd $dir_name</code>命令就会执行失败。这时，就不会改变当前目录，脚本会继续执行下去，导致<code>rm *</code>命令删光当前目录的文件。</p>
+<p>如果改成下面的样子，也会有问题。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$dir_name</span> &amp;&amp; <span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>上面脚本中，只有<code>cd $dir_name</code>执行成功，才会执行<code>rm *</code>。但是，如果变量<code>$dir_name</code>为空，<code>cd</code>就会进入用户主目录，从而删光用户主目录的文件。</p>
+<p>下面的写法才是正确的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ -d <span class="variable">$dir_name</span> ]] &amp;&amp; <span class="built_in">cd</span> <span class="variable">$dir_name</span> &amp;&amp; <span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，先判断目录<code>$dir_name</code>是否存在，然后才执行其他操作。</p>
+<p>如果不放心删除什么文件，可以先打印出来看一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[ -d <span class="variable">$dir_name</span> ]] &amp;&amp; <span class="built_in">cd</span> <span class="variable">$dir_name</span> &amp;&amp; <span class="built_in">echo</span> <span class="built_in">rm</span> *</span><br></pre></td></tr></table></figure>
+
+<p>上面命令中，<code>echo rm *</code>不会删除文件，只会打印出来要删除的文件。</p>
+<h2 id="bash的-x参数"><a href="#bash的-x参数" class="headerlink" title="bash的-x参数"></a><code>bash</code>的<code>-x</code>参数</h2><p><code>bash</code>的<code>-x</code>参数可以在执行每一行命令之前，打印该命令。这样就不用自己输出执行的命令，一旦出错，比较容易追查。</p>
+<p>下面是一个脚本<code>script.sh</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># script.sh</span></span><br><span class="line"><span class="built_in">echo</span> hello world</span><br></pre></td></tr></table></figure>
+
+<p>加上<code>-x</code>参数，执行每条命令之前，都会显示该命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ bash -x script.sh</span><br><span class="line">+ <span class="built_in">echo</span> hello world</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，行首为<code>+</code>的行，显示该行是所要执行的命令，下一行才是该命令的执行结果。</p>
+<p>下面再看一个<code>-x</code>写在脚本内部的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash -x</span></span><br><span class="line"><span class="comment"># trouble: script to demonstrate common errors</span></span><br><span class="line"></span><br><span class="line">number=1</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$number</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Number is equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Number is not equal to 1.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的脚本执行之后，会输出每一行命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ trouble</span><br><span class="line">+ number=1</span><br><span class="line">+ <span class="string">&#x27;[&#x27;</span> 1 = 1 <span class="string">&#x27;]&#x27;</span></span><br><span class="line">+ <span class="built_in">echo</span> <span class="string">&#x27;Number is equal to 1.&#x27;</span></span><br><span class="line">Number is equal to 1.</span><br></pre></td></tr></table></figure>
+
+<p>输出的命令之前的<code>+</code>号，是由系统变量<code>PS4</code>决定，可以修改这个变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PS4=<span class="string">&#x27;$LINENO + &#x27;</span></span><br><span class="line">$ trouble</span><br><span class="line">5 + number=1</span><br><span class="line">7 + <span class="string">&#x27;[&#x27;</span> 1 = 1 <span class="string">&#x27;]&#x27;</span></span><br><span class="line">8 + <span class="built_in">echo</span> <span class="string">&#x27;Number is equal to 1.&#x27;</span></span><br><span class="line">Number is equal to 1.</span><br></pre></td></tr></table></figure>
+
+<p>另外，<code>set</code>命令也可以设置 Shell 的行为参数，有利于脚本除错，详见《set 命令》一章。</p>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><p>有一些环境变量常用于除错。</p>
+<h3 id="LINENO"><a href="#LINENO" class="headerlink" title="LINENO"></a>LINENO</h3><p>变量<code>LINENO</code>返回它在脚本里面的行号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;This is line <span class="variable">$LINENO</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行上面的脚本<code>test.sh</code>，<code>$LINENO</code>会返回<code>3</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./test.sh</span><br><span class="line">This is line 3</span><br></pre></td></tr></table></figure>
+
+<h3 id="FUNCNAME"><a href="#FUNCNAME" class="headerlink" title="FUNCNAME"></a>FUNCNAME</h3><p>变量<code>FUNCNAME</code>返回一个数组，内容是当前的函数调用堆栈。该数组的0号成员是当前调用的函数，1号成员是调用当前函数的函数，以此类推。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func1</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: FUNCNAME0 is <span class="variable">$&#123;FUNCNAME[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: FUNCNAME1 is <span class="variable">$&#123;FUNCNAME[1]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: FUNCNAME2 is <span class="variable">$&#123;FUNCNAME[2]&#125;</span>&quot;</span></span><br><span class="line">  func2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func2</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: FUNCNAME0 is <span class="variable">$&#123;FUNCNAME[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: FUNCNAME1 is <span class="variable">$&#123;FUNCNAME[1]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: FUNCNAME2 is <span class="variable">$&#123;FUNCNAME[2]&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func1</span><br></pre></td></tr></table></figure>
+
+<p>执行上面的脚本<code>test.sh</code>，结果如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ./test.sh</span><br><span class="line">func1: FUNCNAME0 is func1</span><br><span class="line">func1: FUNCNAME1 is main</span><br><span class="line">func1: FUNCNAME2 is</span><br><span class="line">func2: FUNCNAME0 is func2</span><br><span class="line">func2: FUNCNAME1 is func1</span><br><span class="line">func2: FUNCNAME2 is main</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，执行<code>func1</code>时，变量<code>FUNCNAME</code>的0号成员是<code>func1</code>，1号成员是调用<code>func1</code>的主脚本<code>main</code>。执行<code>func2</code>时，变量<code>FUNCNAME</code>的0号成员是<code>func2</code>，1号成员是调用<code>func2</code>的<code>func1</code>。</p>
+<h3 id="BASH-SOURCE"><a href="#BASH-SOURCE" class="headerlink" title="BASH_SOURCE"></a>BASH_SOURCE</h3><p>变量<code>BASH_SOURCE</code>返回一个数组，内容是当前的脚本调用堆栈。该数组的0号成员是当前执行的脚本，1号成员是调用当前脚本的脚本，以此类推，跟变量<code>FUNCNAME</code>是一一对应关系。</p>
+<p>下面有两个子脚本<code>lib1.sh</code>和<code>lib2.sh</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># lib1.sh</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func1</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: BASH_SOURCE0 is <span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: BASH_SOURCE1 is <span class="variable">$&#123;BASH_SOURCE[1]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: BASH_SOURCE2 is <span class="variable">$&#123;BASH_SOURCE[2]&#125;</span>&quot;</span></span><br><span class="line">  func2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># lib2.sh</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func2</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: BASH_SOURCE0 is <span class="variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: BASH_SOURCE1 is <span class="variable">$&#123;BASH_SOURCE[1]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: BASH_SOURCE2 is <span class="variable">$&#123;BASH_SOURCE[2]&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，主脚本<code>main.sh</code>调用上面两个子脚本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># main.sh</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> lib1.sh</span><br><span class="line"><span class="built_in">source</span> lib2.sh</span><br><span class="line"></span><br><span class="line">func1</span><br></pre></td></tr></table></figure>
+
+<p>执行主脚本<code>main.sh</code>，会得到下面的结果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ./main.sh</span><br><span class="line">func1: BASH_SOURCE0 is lib1.sh</span><br><span class="line">func1: BASH_SOURCE1 is ./main.sh</span><br><span class="line">func1: BASH_SOURCE2 is</span><br><span class="line">func2: BASH_SOURCE0 is lib2.sh</span><br><span class="line">func2: BASH_SOURCE1 is lib1.sh</span><br><span class="line">func2: BASH_SOURCE2 is ./main.sh</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，执行函数<code>func1</code>时，变量<code>BASH_SOURCE</code>的0号成员是<code>func1</code>所在的脚本<code>lib1.sh</code>，1号成员是主脚本<code>main.sh</code>；执行函数<code>func2</code>时，变量<code>BASH_SOURCE</code>的0号成员是<code>func2</code>所在的脚本<code>lib2.sh</code>，1号成员是调用<code>func2</code>的脚本<code>lib1.sh</code>。</p>
+<h3 id="BASH-LINENO"><a href="#BASH-LINENO" class="headerlink" title="BASH_LINENO"></a>BASH_LINENO</h3><p>变量<code>BASH_LINENO</code>返回一个数组，内容是每一轮调用对应的行号。<code>$&#123;BASH_LINENO[$i]&#125;</code>跟<code>$&#123;FUNCNAME[$i]&#125;</code>是一一对应关系，表示<code>$&#123;FUNCNAME[$i]&#125;</code>在调用它的脚本文件<code>$&#123;BASH_SOURCE[$i+1]&#125;</code>里面的行号。</p>
+<p>下面有两个子脚本<code>lib1.sh</code>和<code>lib2.sh</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># lib1.sh</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func1</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: BASH_LINENO is <span class="variable">$&#123;BASH_LINENO[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: FUNCNAME is <span class="variable">$&#123;FUNCNAME[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func1: BASH_SOURCE is <span class="variable">$&#123;BASH_SOURCE[1]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">  func2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># lib2.sh</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">func2</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: BASH_LINENO is <span class="variable">$&#123;BASH_LINENO[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: FUNCNAME is <span class="variable">$&#123;FUNCNAME[0]&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;func2: BASH_SOURCE is <span class="variable">$&#123;BASH_SOURCE[1]&#125;</span>&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，主脚本<code>main.sh</code>调用上面两个子脚本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># main.sh</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> lib1.sh</span><br><span class="line"><span class="built_in">source</span> lib2.sh</span><br><span class="line"></span><br><span class="line">func1</span><br></pre></td></tr></table></figure>
+
+<p>执行主脚本<code>main.sh</code>，会得到下面的结果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ./main.sh</span><br><span class="line">func1: BASH_LINENO is 7</span><br><span class="line">func1: FUNCNAME is func1</span><br><span class="line">func1: BASH_SOURCE is main.sh</span><br><span class="line">func2: BASH_LINENO is 8</span><br><span class="line">func2: FUNCNAME is func2</span><br><span class="line">func2: BASH_SOURCE is lib1.sh</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，函数<code>func1</code>是在<code>main.sh</code>的第7行调用，函数<code>func2</code>是在<code>lib1.sh</code>的第8行调用的。</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/function/" rel="prev" title="Bash 函数">
+                  <i class="fa fa-chevron-left"></i> Bash 函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/array/" rel="next" title="数组">
+                  数组 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="ff8057b1147628f69f119d4034dbe490"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

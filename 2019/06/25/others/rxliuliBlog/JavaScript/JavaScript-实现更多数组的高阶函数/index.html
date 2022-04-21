@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JavaScript 实现更多数组的高阶函数场景 虽说人人平等，但有些人更加平等。  为什么有了 Lodash 这种通用函数工具库，吾辈要写这篇文章呢？吾辈在 SegmentFault 上经常看到关于 JavaScript 数组的相关疑问，甚至于，相同类型的问题，只是数据变化了一些，就直接提出了一个新的问题（实际上，对自身并无帮助）。简单搜索了一下 Array，居然有 2360+ 条的结果，足可见">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 实现更多数组的高阶函数">
+<meta property="og:url" content="https://fangtianq.github.io/2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="JavaScript 实现更多数组的高阶函数场景 虽说人人平等，但有些人更加平等。  为什么有了 Lodash 这种通用函数工具库，吾辈要写这篇文章呢？吾辈在 SegmentFault 上经常看到关于 JavaScript 数组的相关疑问，甚至于，相同类型的问题，只是数据变化了一些，就直接提出了一个新的问题（实际上，对自身并无帮助）。简单搜索了一下 Array，居然有 2360+ 条的结果，足可见">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-25T09:55:01.000Z">
+<meta property="article:modified_time" content="2019-07-05T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/","path":"2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-实现更多数组的高阶函数/","title":"JavaScript 实现更多数组的高阶函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript 实现更多数组的高阶函数 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 实现更多数组的高阶函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uniqueBy-%E5%8E%BB%E9%87%8D"><span class="nav-number">1.2.</span> <span class="nav-text">uniqueBy: 去重</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sortBy-%E6%8E%92%E5%BA%8F"><span class="nav-number">1.3.</span> <span class="nav-text">sortBy: 排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filterItems-%E8%BF%87%E6%BB%A4%E6%8E%89%E4%B8%80%E4%BA%9B%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.</span> <span class="nav-text">filterItems: 过滤掉一些元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diffBy-%E5%B7%AE%E5%BC%82"><span class="nav-number">1.5.</span> <span class="nav-text">diffBy: 差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#groupBy-%E5%88%86%E7%BB%84"><span class="nav-number">1.6.</span> <span class="nav-text">groupBy: 分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arrayToMap-%E8%BD%AC%E6%8D%A2%E4%B8%BA-Map"><span class="nav-number">1.7.</span> <span class="nav-text">arrayToMap: 转换为 Map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">1.8.</span> <span class="nav-text">递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E4%BE%8B"><span class="nav-number">1.9.</span> <span class="nav-text">反例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.10.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JavaScript 实现更多数组的高阶函数 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript 实现更多数组的高阶函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-25 17:55:01" itemprop="dateCreated datePublished" datetime="2019-06-25T17:55:01+08:00">2019-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-07-06 00:00:00" itemprop="dateModified" datetime="2019-07-06T00:00:00+08:00">2019-07-06</time>
+    </span>
+
+
+  
+    <span id="/2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/" class="post-meta-item leancloud_visitors" data-flag-title="JavaScript 实现更多数组的高阶函数" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="JavaScript 实现更多数组的高阶函数" href="/2019/06/25/others/rxliuliBlog/JavaScript/JavaScript-%E5%AE%9E%E7%8E%B0%E6%9B%B4%E5%A4%9A%E6%95%B0%E7%BB%84%E7%9A%84%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::fdd1810b1b77a93577b0aab3fb04f508" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="JavaScript-实现更多数组的高阶函数"><a href="#JavaScript-实现更多数组的高阶函数" class="headerlink" title="JavaScript 实现更多数组的高阶函数"></a>JavaScript 实现更多数组的高阶函数</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><blockquote>
+<p>虽说人人平等，但有些人更加平等。</p>
+</blockquote>
+<p>为什么有了 Lodash 这种通用函数工具库，吾辈要写这篇文章呢？吾辈在 SegmentFault 上经常看到关于 JavaScript 数组的相关疑问，甚至于，相同类型的问题，只是数据变化了一些，就直接提出了一个新的问题（实际上，对自身并无帮助）。简单<a target="_blank" rel="noopener" href="https://segmentfault.com/search?q=Array&type=question">搜索了一下 Array</a>，居然有 2360+ 条的结果，足可见这类问题的频率之高。若是有一篇适合 JavaScript 萌新阅读的自己实现数组更多操作的文章，情况或许会发生一些变化。</p>
+<p>下面吾辈便来实现以下几种常见的操作</p>
+<ul>
+<li><code>uniqueBy</code>: 去重</li>
+<li><code>sortBy</code>: 排序</li>
+<li><code>filterItems</code>: 过滤掉一些元素</li>
+<li><code>diffBy</code>: 差异</li>
+<li><code>groupBy</code>: 分组</li>
+<li><code>arrayToMap</code>: Array 转换为 Map</li>
+<li>递归操作</li>
+</ul>
+<blockquote>
+<p>前言:<br>你至少需要了解 ES6 的一些特性你才能愉快的阅读</p>
+</blockquote>
+<h2 id="uniqueBy-去重"><a href="#uniqueBy-去重" class="headerlink" title="uniqueBy: 去重"></a><code>uniqueBy</code>: 去重</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000002674331">javascript 怎么实现多种数据类型的数组去重？</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000010936175">JS 有没有比较高效的数组去重的方法？</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * js 的数组去重方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr 要进行去重的数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> kFn 唯一标识元素的方法，默认使用 &#123;<span class="doctag">@link</span> returnItself&#125;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 进行去重操作之后得到的新的数组 (原数组并未改变)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">uniqueBy</span>(<span class="params">arr, kFn = val =&gt; val</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> set = <span class="keyword">new</span> <span class="title class_">Set</span>()</span><br><span class="line">  <span class="keyword">return</span> arr.<span class="title function_">filter</span>(<span class="function">(<span class="params">v, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> k = <span class="title function_">kFn</span>(v, ...args)</span><br><span class="line">    <span class="keyword">if</span> (set.<span class="title function_">has</span>(k)) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    set.<span class="title function_">add</span>(k)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">uniqueBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>])) <span class="comment">// [ 1, 2, 3, &#x27;1&#x27;, &#x27;2&#x27; ]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">uniqueBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>], <span class="function"><span class="params">i</span> =&gt;</span> i + <span class="string">&#x27;&#x27;</span>)) <span class="comment">// [ 1, 2, 3 ]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="sortBy-排序"><a href="#sortBy-排序" class="headerlink" title="sortBy: 排序"></a><code>sortBy</code>: 排序</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000014304039">js 中如何对含有特殊字符的数组进行排序？</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000017141566">以下数组怎么按名称排序</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 快速根据指定函数对数组进行排序</span></span><br><span class="line"><span class="comment"> * 注: 使用递归实现，对于超大数组（其实前端的数组不可能特别大吧？#笑）可能造成堆栈溢出</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr 需要排序的数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> kFn 对数组中每个元素都产生可比较的值的函数，默认返回自身进行比较</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 排序后的新数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sortBy</span>(<span class="params">arr, kFn = v =&gt; v</span>) &#123;</span><br><span class="line">  <span class="comment">// TODO 此处为了让 typedoc 能生成文档而不得不加上类型</span></span><br><span class="line">  <span class="keyword">const</span> newArr = arr.<span class="title function_">map</span>(<span class="function">(<span class="params">v, i</span>) =&gt;</span> [v, i])</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">_sort</span>(<span class="params">arr, fn</span>) &#123;</span><br><span class="line">    <span class="comment">// 边界条件，如果传入数组的值</span></span><br><span class="line">    <span class="keyword">if</span> (arr.<span class="property">length</span> &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> arr</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 根据中间值对数组分治为两个数组</span></span><br><span class="line">    <span class="keyword">const</span> medianIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(arr.<span class="property">length</span> / <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">const</span> medianValue = arr[medianIndex]</span><br><span class="line">    <span class="keyword">const</span> left = []</span><br><span class="line">    <span class="keyword">const</span> right = []</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.<span class="property">length</span>; i &lt; len; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i === medianIndex) &#123;</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> v = arr[i]</span><br><span class="line">      <span class="keyword">if</span> (<span class="title function_">fn</span>(v, medianValue) &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        left.<span class="title function_">push</span>(v)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        right.<span class="title function_">push</span>(v)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">_sort</span>(left, fn)</span><br><span class="line">      .<span class="title function_">concat</span>([medianValue])</span><br><span class="line">      .<span class="title function_">concat</span>(<span class="title function_">_sort</span>(right, fn))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">_sort</span>(newArr, <span class="function">(<span class="params">[t1, i1], [t2, i2]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> k1 = <span class="title function_">kFn</span>(t1, i1, arr)</span><br><span class="line">    <span class="keyword">const</span> k2 = <span class="title function_">kFn</span>(t2, i2, arr)</span><br><span class="line">    <span class="keyword">if</span> (k1 === k2) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (k1 &lt; k2) &#123;</span><br><span class="line">      <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).<span class="title function_">map</span>(<span class="function">(<span class="params">[_v, i]</span>) =&gt;</span> arr[i])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">sortBy</span>([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>])) <span class="comment">// [ 1, 2, 3, 4, 5 ]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">sortBy</span>([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;4&#x27;</span>])) <span class="comment">// [ 1, &#x27;2&#x27;, 3, &#x27;4&#x27;, 5 ]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">sortBy</span>([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;4&#x27;</span>], <span class="function"><span class="params">i</span> =&gt;</span> -i)) <span class="comment">// [ 5, &#x27;4&#x27;, 3, &#x27;2&#x27;, 1 ]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="filterItems-过滤掉一些元素"><a href="#filterItems-过滤掉一些元素" class="headerlink" title="filterItems: 过滤掉一些元素"></a><code>filterItems</code>: 过滤掉一些元素</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000009045163">过滤数组子集</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000017464256">对比两组对象数组 根据元素内某一属性是否相等过滤数组</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 从数组中移除指定的元素</span></span><br><span class="line"><span class="comment"> * 注: 时间复杂度为 1~3On</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr 需要被过滤的数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> deleteItems 要过滤的元素数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> kFn 每个元素的唯一键函数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">filterItems</span>(<span class="params">arr, deleteItems, kFn = v =&gt; v</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> kSet = <span class="keyword">new</span> <span class="title class_">Set</span>(deleteItems.<span class="title function_">map</span>(kFn))</span><br><span class="line">  <span class="keyword">return</span> arr.<span class="title function_">filter</span>(<span class="function">(<span class="params">v, i, arr</span>) =&gt;</span> !kSet.<span class="title function_">has</span>(<span class="title function_">kFn</span>(v, i, arr)))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">filterItems</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>])) <span class="comment">// [ 3, 4, 5 ]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">filterItems</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], [<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>], <span class="function"><span class="params">i</span> =&gt;</span> i + <span class="string">&#x27;&#x27;</span>)) <span class="comment">// [ 3, 4, 5 ]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="diffBy-差异"><a href="#diffBy-差异" class="headerlink" title="diffBy: 差异"></a><code>diffBy</code>: 差异</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000019019878">JS 求两个对象数组的差集</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000008825206">JavaScript 数组系列问题：数组差集</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 比较两个数组的差异</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> left 第一个数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> right 第二个数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> kFn 每个元素的唯一标识产生函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 比较的差异结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">diffBy</span>(<span class="params">left, right, kFn = v =&gt; v</span>) &#123;</span><br><span class="line">  <span class="comment">// 首先得到两个 kSet 集合用于过滤</span></span><br><span class="line">  <span class="keyword">const</span> kThanSet = <span class="keyword">new</span> <span class="title class_">Set</span>(left.<span class="title function_">map</span>(kFn))</span><br><span class="line">  <span class="keyword">const</span> kThatSet = <span class="keyword">new</span> <span class="title class_">Set</span>(right.<span class="title function_">map</span>(kFn))</span><br><span class="line">  <span class="keyword">const</span> leftUnique = left.<span class="title function_">filter</span>(<span class="function">(<span class="params">v, ...args</span>) =&gt;</span> !kThatSet.<span class="title function_">has</span>(<span class="title function_">kFn</span>(v, ...args)))</span><br><span class="line">  <span class="keyword">const</span> rightUnique = right.<span class="title function_">filter</span>(</span><br><span class="line">    <span class="function">(<span class="params">v, ...args</span>) =&gt;</span> !kThanSet.<span class="title function_">has</span>(<span class="title function_">kFn</span>(v, ...args)),</span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">const</span> kLeftSet = <span class="keyword">new</span> <span class="title class_">Set</span>(leftUnique.<span class="title function_">map</span>(kFn))</span><br><span class="line">  <span class="keyword">const</span> common = left.<span class="title function_">filter</span>(<span class="function">(<span class="params">v, ...args</span>) =&gt;</span> !kLeftSet.<span class="title function_">has</span>(<span class="title function_">kFn</span>(v, ...args)))</span><br><span class="line">  <span class="keyword">return</span> &#123; <span class="attr">left</span>: leftUnique, <span class="attr">right</span>: rightUnique, common &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">diffBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])) <span class="comment">// &#123; left: [ 1 ], right: [ 4 ], common: [ 2, 3 ] &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">diffBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="string">&#x27;2&#x27;</span>, <span class="number">3</span>, <span class="number">4</span>])) <span class="comment">// &#123; left: [ 1, 2 ], right: [ &#x27;2&#x27;, 4 ], common: [ 3 ] &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">diffBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="string">&#x27;2&#x27;</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="function"><span class="params">i</span> =&gt;</span> i + <span class="string">&#x27;&#x27;</span>)) <span class="comment">// &#123; left: [ 1 ], right: [ 4 ], common: [ 2, 3 ] &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="groupBy-分组"><a href="#groupBy-分组" class="headerlink" title="groupBy: 分组"></a><code>groupBy</code>: 分组</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000004944432">求一个数组按属性分组的方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000008789413">js 数组分组？</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * js 数组按照某个条件进行分组</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr 要进行分组的数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> kFn 元素分组的唯一标识函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> vFn 元素分组的值处理的函数。第一个参数是累计值，第二个参数是当前正在迭代的元素，如果你使用过 &#123;<span class="doctag">@link</span> Array#reduce&#125; 函数的话应该对此很熟悉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> init 每个分组的产生初始值的函数。类似于 reduce 的初始值，但它是一个函数，避免初始值在所有分组中进行累加。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 元素标识 =&gt; 数组映射 Map</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">groupBy</span>(<span class="params"></span></span><br><span class="line"><span class="params">  arr,</span></span><br><span class="line"><span class="params">  kFn = v =&gt; v,</span></span><br><span class="line"><span class="params">  <span class="comment">/**</span></span></span><br><span class="line"><span class="comment"><span class="params">   * 默认的值处理函数</span></span></span><br><span class="line"><span class="comment"><span class="params">   * <span class="doctag">@param</span> res 最终 V 集合</span></span></span><br><span class="line"><span class="comment"><span class="params">   * <span class="doctag">@param</span> item 当前迭代的元素</span></span></span><br><span class="line"><span class="comment"><span class="params">   * <span class="doctag">@returns</span> 将当前元素合并后的最终 V 集合</span></span></span><br><span class="line"><span class="comment"><span class="params">   */</span></span></span><br><span class="line"><span class="params">  vFn = (res, item) =&gt; &#123;</span></span><br><span class="line"><span class="params">    res.push(item)</span></span><br><span class="line"><span class="params">    <span class="keyword">return</span> res</span></span><br><span class="line"><span class="params">  &#125;,</span></span><br><span class="line"><span class="params">  init = () =&gt; [],</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 将元素按照分组条件进行分组得到一个 条件 -&gt; 数组 的对象</span></span><br><span class="line">  <span class="keyword">return</span> arr.<span class="title function_">reduce</span>(<span class="function">(<span class="params">res, item, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> k = <span class="title function_">kFn</span>(item, index, arr)</span><br><span class="line">    <span class="comment">// 如果已经有这个键了就直接追加, 否则先将之初始化再追加元素</span></span><br><span class="line">    <span class="keyword">if</span> (!res.<span class="title function_">has</span>(k)) &#123;</span><br><span class="line">      res.<span class="title function_">set</span>(k, <span class="title function_">init</span>())</span><br><span class="line">    &#125;</span><br><span class="line">    res.<span class="title function_">set</span>(k, <span class="title function_">vFn</span>(res.<span class="title function_">get</span>(k), item, index, arr))</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">  &#125;, <span class="keyword">new</span> <span class="title class_">Map</span>())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">groupBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="function"><span class="params">i</span> =&gt;</span> i)) <span class="comment">// Map &#123; 1 =&gt; [ 1 ],  2 =&gt; [ 2, 2, 2 ],  4 =&gt; [ 4, 4 ],  5 =&gt; [ 5, 5 ],  6 =&gt; [ 6 ] &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">groupBy</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="function"><span class="params">i</span> =&gt;</span> i % <span class="number">2</span> === <span class="number">0</span>)) <span class="comment">// Map &#123; false =&gt; [ 1, 5, 5 ], true =&gt; [ 2, 2, 2, 4, 4, 6 ] &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">  <span class="title function_">groupBy</span>(</span><br><span class="line">    [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>],</span><br><span class="line">    <span class="function"><span class="params">i</span> =&gt;</span> i % <span class="number">2</span> === <span class="number">0</span>,</span><br><span class="line">    <span class="function">(<span class="params">res, i</span>) =&gt;</span> res.<span class="title function_">add</span>(i),</span><br><span class="line">    <span class="function">() =&gt;</span> <span class="keyword">new</span> <span class="title class_">Set</span>(),</span><br><span class="line">  ),</span><br><span class="line">) <span class="comment">// Map &#123; false =&gt; Set &#123; 1, 5 &#125;, true =&gt; Set &#123; 2, 4, 6 &#125; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="arrayToMap-转换为-Map"><a href="#arrayToMap-转换为-Map" class="headerlink" title="arrayToMap: 转换为 Map"></a><code>arrayToMap</code>: 转换为 Map</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000019537004">js 怎么把数组下面的对象里面的两个字段取出来组成一个新的对象，key:value 形式</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将数组映射为 Map</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr 数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> k 产生 Map 元素唯一标识的函数，或者对象元素中的一个属性名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> v 产生 Map 值的函数，默认为返回数组的元素，或者对象元素中的一个属性名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 映射产生的 map 集合</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">arrayToMap</span>(<span class="params">arr, k, v = val =&gt; val</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> kFn = k <span class="keyword">instanceof</span> <span class="title class_">Function</span> ? k : <span class="function"><span class="params">item</span> =&gt;</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(item, k)</span><br><span class="line">  <span class="keyword">const</span> vFn = v <span class="keyword">instanceof</span> <span class="title class_">Function</span> ? v : <span class="function"><span class="params">item</span> =&gt;</span> <span class="title class_">Reflect</span>.<span class="title function_">get</span>(item, v)</span><br><span class="line">  <span class="keyword">return</span> arr.<span class="title function_">reduce</span>(</span><br><span class="line">    <span class="function">(<span class="params">res, item, index, arr</span>) =&gt;</span></span><br><span class="line">      res.<span class="title function_">set</span>(<span class="title function_">kFn</span>(item, index, arr), <span class="title function_">vFn</span>(item, index, arr)),</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Map</span>(),</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> county_list = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">code</span>: <span class="string">&#x27;110101&#x27;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;东城区&#x27;</span>,</span><br><span class="line">    <span class="attr">citycode</span>: <span class="string">&#x27;110100&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">id</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">code</span>: <span class="string">&#x27;110102&#x27;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;西城区&#x27;</span>,</span><br><span class="line">    <span class="attr">citycode</span>: <span class="string">&#x27;110100&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">id</span>: <span class="number">3</span>,</span><br><span class="line">    <span class="attr">code</span>: <span class="string">&#x27;110103&#x27;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;崇文区&#x27;</span>,</span><br><span class="line">    <span class="attr">citycode</span>: <span class="string">&#x27;110100&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">arrayToMap</span>(county_list, <span class="string">&#x27;code&#x27;</span>, <span class="string">&#x27;name&#x27;</span>)) <span class="comment">// Map &#123; &#x27;110101&#x27; =&gt; &#x27;东城区&#x27;, &#x27;110102&#x27; =&gt; &#x27;西城区&#x27;, &#x27;110103&#x27; =&gt; &#x27;崇文区&#x27; &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">arrayToMap</span>(county_list, <span class="function">(<span class="params">&#123; code &#125;</span>) =&gt;</span> code, <span class="function">(<span class="params">&#123; name &#125;</span>) =&gt;</span> name)) <span class="comment">// Map &#123; &#x27;110101&#x27; =&gt; &#x27;东城区&#x27;, &#x27;110102&#x27; =&gt; &#x27;西城区&#x27;, &#x27;110103&#x27; =&gt; &#x27;崇文区&#x27; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p>相关问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000018502694">复杂数组去重</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000000444289">JavaScript 数组中包含数组如何去重？</a></li>
+</ul>
+<p>以上种种操作皆是对一层数组进行操作，如果我们想对嵌套数组进行操作呢？例如上面这两个问题？其实问题是类似的，只是递归遍历数组而已。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * js 的数组递归去重方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> arr 要进行去重的数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> kFn 唯一标识元素的方法，默认使用 &#123;<span class="doctag">@link</span> returnItself&#125;，只对非数组元素生效</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 进行去重操作之后得到的新的数组 (原数组并未改变)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">deepUniqueBy</span>(<span class="params">arr, kFn = val =&gt; val</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> set = <span class="keyword">new</span> <span class="title class_">Set</span>()</span><br><span class="line">  <span class="keyword">return</span> arr.<span class="title function_">reduce</span>(<span class="function">(<span class="params">res, v, i, arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(v)) &#123;</span><br><span class="line">      res.<span class="title function_">push</span>(<span class="title function_">deepUniqueBy</span>(v))</span><br><span class="line">      <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> k = <span class="title function_">kFn</span>(v, i, arr)</span><br><span class="line">    <span class="keyword">if</span> (!set.<span class="title function_">has</span>(k)) &#123;</span><br><span class="line">      set.<span class="title function_">add</span>(k)</span><br><span class="line">      res.<span class="title function_">push</span>(v)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">  &#125;, [])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> testArr = [</span><br><span class="line">  <span class="number">1</span>,</span><br><span class="line">  <span class="number">1</span>,</span><br><span class="line">  <span class="number">3</span>,</span><br><span class="line">  <span class="string">&#x27;hello&#x27;</span>,</span><br><span class="line">  [<span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, [<span class="number">5</span>, <span class="number">5</span>, [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;r&#x27;</span>]]],</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">key</span>: <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="number">4</span>,</span><br><span class="line">  [<span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">]</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">deepUniqueBy</span>(testArr)) <span class="comment">// [ 1,  3,  &#x27;hello&#x27;,  [ 3, 4, &#x27;hello&#x27;, &#x27;5&#x27;, [ 5, [Object] ] ],  &#123; key: &#x27;test&#x27; &#125;,  4,  [ 3, 0, 2 ] ]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="反例"><a href="#反例" class="headerlink" title="反例"></a>反例</h2><p>事实上，目前 SegmentFault 上存在着大量低质量且重复的问题及回答，关于这点确实比不上 StackOverflow。下面是两个例子，可以看一下能否发现什么问题</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000019537004">js 怎么把数组下面的对象里面的两个字段取出来组成一个新的对象，key:value 形式</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000017490985">JS 中处理 JSON 数据重复问题，取出里面 name 字段数值相同的作为一个数组；不相同的作为一个数组？</a></li>
+</ul>
+<p>事实上，不管是问题还是答案，都没有突出核心 – <strong>Array 映射为 Map&#x2F;Array 分组</strong>，而且这种问题和答案还层出不穷。如果对 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array">Array 的 API</a> 都没有看过一遍就来询问的话，对于帮助者来说却是太失礼了！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>JavaScript 对函数式编程支持很好，所以习惯高阶函数于我们而言是一件好事，将问题的本质抽离出来，而不是每次都局限于某个具体的问题上。</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/22/others/rxliuliBlog/dev/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%90%BE%E8%BE%88%E4%B8%8D%E5%96%9C%E6%AC%A2-TypeScript/" rel="prev" title="为什么吾辈不喜欢 TypeScript">
+                  <i class="fa fa-chevron-left"></i> 为什么吾辈不喜欢 TypeScript
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/12/others/rxliuliBlog/Tool/%E8%AF%BB%E4%B9%A6/%E8%AF%BB%E4%B9%A6-%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6/" rel="next" title="读书 [黑客与画家]">
+                  读书 [黑客与画家] <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="fdd1810b1b77a93577b0aab3fb04f508"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

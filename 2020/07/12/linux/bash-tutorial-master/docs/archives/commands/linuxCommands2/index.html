@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="请添加个描述吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linuxCommands2">
+<meta property="og:url" content="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="请添加个描述吧">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T14:26:00.000Z">
+<meta property="article:modified_time" content="2020-07-12T14:26:00.000Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/","path":"2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/","title":"linuxCommands2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>linuxCommands2 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#file"><span class="nav-number">1.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#find"><span class="nav-number">2.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fmt"><span class="nav-number">3.</span> <span class="nav-text">fmt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#grep"><span class="nav-number">4.</span> <span class="nav-text">grep</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gunzip"><span class="nav-number">5.</span> <span class="nav-text">gunzip</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gzcat"><span class="nav-number">6.</span> <span class="nav-text">gzcat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gzip"><span class="nav-number">7.</span> <span class="nav-text">gzip</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kill"><span class="nav-number">8.</span> <span class="nav-text">kill</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#killall"><span class="nav-number">9.</span> <span class="nav-text">killall</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#last"><span class="nav-number">10.</span> <span class="nav-text">last</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lpq"><span class="nav-number">11.</span> <span class="nav-text">lpq</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lpr"><span class="nav-number">12.</span> <span class="nav-text">lpr</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ls"><span class="nav-number">13.</span> <span class="nav-text">ls</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0-1"><span class="nav-number">13.1.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nl"><span class="nav-number">14.</span> <span class="nav-text">nl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ps"><span class="nav-number">15.</span> <span class="nav-text">ps</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0-2"><span class="nav-number">15.1.</span> <span class="nav-text">参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scp"><span class="nav-number">16.</span> <span class="nav-text">scp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">16.1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0-3"><span class="nav-number">16.2.</span> <span class="nav-text">参数</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="linuxCommands2 | 越努力，越幸运！">
+      <meta itemprop="description" content="请添加个描述吧">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linuxCommands2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-12 22:26:00" itemprop="dateCreated datePublished" datetime="2020-07-12T22:26:00+08:00">2020-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/bash/" itemprop="url" rel="index"><span itemprop="name">bash</span></a>
+        </span>
+    </span>
+
+
+  
+    <span id="/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/" class="post-meta-item leancloud_visitors" data-flag-title="linuxCommands2" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="linuxCommands2" href="/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands2/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::c66f9621d1264fbc10f11613cd8d679b" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">请添加个描述吧</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>…</p>
+<span id="more"></span>
+<h1 id="file"><a href="#file" class="headerlink" title="file"></a>file</h1><p><code>file</code>命令用来某个文件的类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file index.html</span><br><span class="line"> index.html: HTML document, ASCII text</span><br></pre></td></tr></table></figure>
+
+<p>file 工具可以对所给的文件一行简短的介绍，它用文件后缀、头部信息和一些其他的线索来判断文件。你在检查一堆你不熟悉的文件时使用 find 非常方便：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ find -<span class="built_in">exec</span> file &#123;&#125; \;</span><br><span class="line">.:            directory</span><br><span class="line">./hanoi:      Perl script, ASCII text executable</span><br><span class="line">./.hanoi.swp: Vim swap file, version 7.3</span><br><span class="line">./factorial:  Perl script, ASCII text executable</span><br><span class="line">./bits.c:     C <span class="built_in">source</span>, ASCII text</span><br><span class="line">./bits:       ELF 32-bit LSB executable, Intel 80386, version ...</span><br></pre></td></tr></table></figure>
+<h1 id="find"><a href="#find" class="headerlink" title="find"></a>find</h1><p><code>find</code>命令用于寻找文件，会包括当前目录的所有下级目录。</p>
+<p>如果不带任何参数，<code>find</code>文件会列出当前目录的所有文件，甚至还包括相对路径。如果把结果导入 sort 效果更好。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ find | <span class="built_in">sort</span></span><br><span class="line">.</span><br><span class="line">./Makefile</span><br><span class="line">./README</span><br><span class="line">./build</span><br><span class="line">./client.c</span><br><span class="line">./client.h</span><br><span class="line">./common.h</span><br><span class="line">./project.c</span><br><span class="line">./server.c</span><br><span class="line">./server.h</span><br><span class="line">./tests</span><br><span class="line">./tests/suite1.pl</span><br><span class="line">./tests/suite2.pl</span><br><span class="line">./tests/suite3.pl</span><br><span class="line">./tests/suite4.pl</span><br></pre></td></tr></table></figure>
+
+<p>如果想要 ls -l 样式的列表，只要在 find 后面加上 -ls。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find -<span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p>find 有它自己的一套复杂的过滤语句。下面列举的是一些最常用的你可以用以获取某些文件列表的过滤器：</p>
+<ul>
+<li>find -name ‘*.c’ —— 查找符合某 shell 式样式的文件名的文件。用 iname 开启大小写不敏感搜索。</li>
+<li>find -path ‘<em>test</em>‘ —— 查找符合某 shell 式样式的路径的文件。用 ipath 开启大小写不敏感搜索。</li>
+<li>find -mtime -5 —— 查找近五天内编辑过的文件。你也可以用 +5 来查找五天之前编辑过的文件。</li>
+<li>find -newer server.c —— 查找比 server.c 更新的文件。</li>
+<li>find -type d —— 查找所有文件夹。如果想找出所有文件，那就用 -type f；找符号连接就用 -type l。</li>
+</ul>
+<p>要注意，上面提到的这些过滤器都是可以组合使用的，例如找出近两天内编辑过的 C 源码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find -name <span class="string">&#x27;*.c&#x27;</span> -mtime -2</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下， find 对搜索结果所采取的动作只是简单地通过标准输出输出一个列表，然而其实还有其他一些有用的后续动作。</p>
+<ul>
+<li>-ls —— 如前文，提供了一种类 ls -l 式的列表。</li>
+<li>-delete —— 删除符合查找条件的文件。</li>
+<li>-exec —— 对搜索结果里的每个文件都运行某个命令， <code>&#123;&#125;</code>会被替换成适当的文件名，并且命令用<code>\;</code>终结。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find -name <span class="string">&#x27;*.pl&#x27;</span> -<span class="built_in">exec</span> perl -c &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+<p>你也可以使用<code>+</code>作为终止符来对所有结果运行一次命令。我还发现一个我经常使用的小技巧，就是用 find 生成一个文件列表，然后在 Vim 的垂直分窗中编辑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find -name <span class="string">&#x27;*.c&#x27;</span> -<span class="built_in">exec</span> vim &#123;&#125; +</span><br></pre></td></tr></table></figure>
+<h1 id="fmt"><a href="#fmt" class="headerlink" title="fmt"></a>fmt</h1><p><code>fmt</code>命令用于对文本指定样式。</p>
+<p>下面是<code>example.txt</code>的内容，是非常长的一行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span><br></pre></td></tr></table></figure>
+
+<p><code>fmt</code>可以将其输出为每行80个字符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> example.txt | <span class="built_in">fmt</span> -w 20</span><br><span class="line">Lorem ipsum</span><br><span class="line">dolor sit amet,</span><br><span class="line">consetetur</span><br><span class="line">sadipscing elitr,</span><br><span class="line">sed diam nonumy</span><br><span class="line">eirmod tempor</span><br><span class="line">invidunt ut labore</span><br><span class="line">et dolore magna</span><br><span class="line">aliquyam erat, sed</span><br><span class="line">diam voluptua. At</span><br><span class="line">vero eos et</span><br><span class="line">accusam et justo</span><br><span class="line">duo dolores et ea</span><br><span class="line">rebum. Stet clita</span><br><span class="line">kasd gubergren,</span><br><span class="line">no sea takimata</span><br><span class="line">sanctus est Lorem</span><br><span class="line">ipsum dolor sit</span><br><span class="line">amet.</span><br></pre></td></tr></table></figure>
+<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p><code>grep</code>命令用于文件内容的搜索，返回所有匹配的行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep pattern filename</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ grep admin /etc/passwd</span><br><span class="line">_kadmin_admin:*:218:-2:Kerberos Admin Service:/var/empty:/usr/bin/false</span><br><span class="line">_kadmin_changepw:*:219:-2:Kerberos Change Password Service:/var/empty:/usr/bin/false</span><br><span class="line">_krb_kadmin:*:231:-2:Open Directory Kerberos Admin Service:/var/empty:/usr/bin/false</span><br></pre></td></tr></table></figure>
+
+<p>一般情况下，应该使用<code>grep -R</code>，递归地找出当前目录下符合<code>someVar</code>的文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -FR <span class="string">&#x27;someVar&#x27;</span> .</span><br></pre></td></tr></table></figure>
+
+<p>別忘了大小不敏感的参数，因为 grep 默认搜索是大小写敏感的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -iR <span class="string">&#x27;somevar&#x27;</span> .</span><br></pre></td></tr></table></figure>
+
+<p>也可以用<code>grep -l</code>光打印出符合条件的文件名而非文件内容选段。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -lR <span class="string">&#x27;somevar&#x27;</span> .</span><br></pre></td></tr></table></figure>
+
+<p>如果你写的脚本或批处理任务需要上面的输出内容，可以使用 while 和 read 来处理文件名中的空格和其他特殊字符：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -lR someVar | <span class="keyword">while</span> IFS= <span class="built_in">read</span> -r file; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">head</span> <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你在你的项目里使用了版本控制软件，它通常会在 .svn， .git， .hg 目录下包含一些元数据。你也可以很容易地用 grep -v 把这些目录移出搜索范围，当然得用 grep -F 指定一个恰当且确定的字符串，即要移除的目录名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -R <span class="string">&#x27;someVar&#x27;</span> . | grep -vF <span class="string">&#x27;.svn&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>部分版本的 grep 包含了 –exclude 和 –exclude-dir 选项，这看起来更加易读。</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><p><code>-i</code>参数表示忽略大小写。</p>
+<p><code>-r</code>表示搜索某个目录下面的所有文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -r admin /etc/</span><br></pre></td></tr></table></figure>
+
+<p><code>-v</code>过滤包含某个词的行，即<code>grep</code>的逆操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示所有包含 vim，但不包含 grep 的行</span></span><br><span class="line">$ ps | grep vim | grep -v grep</span><br></pre></td></tr></table></figure>
+<h1 id="gunzip"><a href="#gunzip" class="headerlink" title="gunzip"></a>gunzip</h1><p><code>gunzip</code>命令用于解压<code>gzip</code>命令压缩的文件。</p>
+<h1 id="gzcat"><a href="#gzcat" class="headerlink" title="gzcat"></a>gzcat</h1><p><code>gzcat</code>命令用于查看一个<code>gz</code>文件，但并不实际解压它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gzcat filename</span><br></pre></td></tr></table></figure>
+
+<h1 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h1><p><code>gzip</code>命令用于压缩文件。</p>
+<h1 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h1><p><code>kill</code>命令用户终止指定进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">kill</span> PID</span><br></pre></td></tr></table></figure>
+<h1 id="killall"><a href="#killall" class="headerlink" title="killall"></a>killall</h1><p><code>killall</code>命令终止给定名字的一系列相关进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ killall processname</span><br></pre></td></tr></table></figure>
+<h1 id="last"><a href="#last" class="headerlink" title="last"></a>last</h1><p><code>last</code>命令显示用户登录系统的记录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ last</span><br></pre></td></tr></table></figure>
+
+<p><code>last</code>命令后面加上用户名，会显示该用户上次登录的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ last yourUsername</span><br></pre></td></tr></table></figure>
+
+<h1 id="lpq"><a href="#lpq" class="headerlink" title="lpq"></a>lpq</h1><p><code>lpq</code>命令显示打印机队列。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ lpq</span><br><span class="line">Rank    Owner   Job     File(s)                         Total Size</span><br><span class="line">active  adnanad 59      demo                            399360 bytes</span><br><span class="line">1st     adnanad 60      (stdin)                         0 bytes</span><br></pre></td></tr></table></figure>
+<h1 id="lpr"><a href="#lpr" class="headerlink" title="lpr"></a>lpr</h1><p><code>lpr</code>命令用于打印文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpr filename</span><br></pre></td></tr></table></figure>
+
+<h1 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h1><p><code>ls</code>命令用于列出当前目录里面的文件和子目录。</p>
+<h2 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h2><ul>
+<li>a：列出隐藏文件</li>
+<li>l：以长格式列出文件</li>
+<li>t：按最后编辑日期排序，最新的最先。这在某个大目录里找出最近修改的文件列表时很有用，比如将结果导入（ pipe ） head 或者 sed 10q。或许加上 -l 会效果更好。当然如果你想获取最旧的文件列表，只要加 -r 反转列表即可。</li>
+<li>X：按文件类型分类。这在多语言或多后缀的项目中特别方便，比如头文件和源文件分开，或区分开源文件和生成文件或目录。</li>
+<li>v：按照文件名里的版本号排序。</li>
+<li>S：按文件大小排序。</li>
+<li>R：递归地列举文件。这个选项和 -l 组合使用并将结果导出到 less 效果很好。</li>
+</ul>
+<p>可以把结果导出给类似 vim 的进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -XR | vim -</span><br></pre></td></tr></table></figure>
+<h1 id="nl"><a href="#nl" class="headerlink" title="nl"></a>nl</h1><p><code>nl</code>命令用于显示行号。</p>
+<p>下面是<code>example.txt</code>文件的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Lorem ipsum</span><br><span class="line">dolor sit amet,</span><br><span class="line">consetetur</span><br><span class="line">sadipscing elitr,</span><br><span class="line">sed diam nonumy</span><br><span class="line">eirmod tempor</span><br><span class="line">invidunt ut labore</span><br><span class="line">et dolore magna</span><br><span class="line">aliquyam erat, sed</span><br><span class="line">diam voluptua. At</span><br><span class="line">vero eos et</span><br><span class="line">accusam et justo</span><br><span class="line">duo dolores et ea</span><br><span class="line">rebum. Stet clita</span><br><span class="line">kasd gubergren,</span><br><span class="line">no sea takimata</span><br><span class="line">sanctus est Lorem</span><br><span class="line">ipsum dolor sit</span><br><span class="line">amet.</span><br></pre></td></tr></table></figure>
+
+<p><code>nl</code>命令让上面这段文本显示行号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">nl</span> -s<span class="string">&quot;. &quot;</span> example.txt</span><br><span class="line">     1. Lorem ipsum</span><br><span class="line">     2. dolor sit amet,</span><br><span class="line">     3. consetetur</span><br><span class="line">     4. sadipscing elitr,</span><br><span class="line">     5. sed diam nonumy</span><br><span class="line">     6. eirmod tempor</span><br><span class="line">     7. invidunt ut labore</span><br><span class="line">     8. et dolore magna</span><br><span class="line">     9. aliquyam erat, sed</span><br><span class="line">    10. diam voluptua. At</span><br><span class="line">    11. vero eos et</span><br><span class="line">    12. accusam et justo</span><br><span class="line">    13. duo dolores et ea</span><br><span class="line">    14. rebum. Stet clita</span><br><span class="line">    15. kasd gubergren,</span><br><span class="line">    16. no sea takimata</span><br><span class="line">    17. sanctus est Lorem</span><br><span class="line">    18. ipsum dolor sit</span><br><span class="line">    19. amet.</span><br></pre></td></tr></table></figure>
+
+<p><code>-s</code>参数表示行号的后缀。</p>
+<h1 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h1><p><code>ps</code>命令列出当前正在执行的进程信息。</p>
+<p>由于进程很多，所以为了快速找到某个进程，一般与<code>grep</code>配合使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出正在运行 vim 的进程</span></span><br><span class="line">$ ps | grep vi</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h2><p><code>-u</code>参数列出指定用户拥有的进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ps -u yourusername</span><br></pre></td></tr></table></figure>
+
+<h1 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h1><h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p><code>scp</code>是 secure copy 的缩写，用来在两台主机之间加密传送文件。它的底层是 SSH 协议，默认端口是22。</p>
+<p>它主要用于以下三种复制操作。</p>
+<ul>
+<li>从本地系统到远程系统。</li>
+<li>从远程系统到本地系统。</li>
+<li>在本地系统的两个远程系统之间。</li>
+</ul>
+<p>使用<code>scp</code>传输数据时，文件和密码都是加密的，不会泄漏敏感信息。</p>
+<p><code>scp</code>的语法类似<code>cp</code>的语法。</p>
+<p>注意，如果传输的文件在本机和远程系统，有相同的名称和位置，<code>scp</code>会在没有警告的情况下覆盖文件。</p>
+<p><strong>（1）本地文件复制到远程系统</strong></p>
+<p>复制本机文件到远程系统的基本语法如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法</span></span><br><span class="line">$ scp SourceFile user@host:directory/TargetFile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">$ scp file.txt remote_username@10.10.0.2:/remote/directory</span><br></pre></td></tr></table></figure>
+
+<p>下面是复制整个目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将本机的 documents 目录拷贝到远程主机，</span></span><br><span class="line"><span class="comment"># 会在远程主机创建 documents 目录</span></span><br><span class="line">$ scp -r documents username@server_ip:/path_to_remote_directory</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将本机整个目录拷贝到远程目录下</span></span><br><span class="line">$ scp -r localmachine/path_to_the_directory username@server_ip:/path_to_remote_directory/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将本机目录下的所有内容拷贝到远程目录下</span></span><br><span class="line">$ scp -r localmachine/path_to_the_directory/* username@server_ip:/path_to_remote_directory/</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）远程文件复制到本地</strong></p>
+<p>从远程主机复制文件到本地的语法如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法</span></span><br><span class="line">$ scp user@host:directory/SourceFile TargetFile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">$ scp remote_username@10.10.0.2:/remote/file.txt /local/directory</span><br></pre></td></tr></table></figure>
+
+<p>下面是复制整个目录的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拷贝一个远程目录到本机目录下</span></span><br><span class="line">$ scp -r username@server_ip:/path_to_remote_directory local-machine/path_to_the_directory/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝远程目录下的所有内容，到本机目录下</span></span><br><span class="line">$ scp -r username@server_ip:/path_to_remote_directory/* local-machine/path_to_the_directory/</span><br><span class="line">$ scp -r user@host:directory/SourceFolder TargetFolder</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）两个远程系统之间的复制</strong></p>
+<p>本机发出指令，从远程主机 A 拷贝到远程主机 B 的语法如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法</span></span><br><span class="line">$ scp user@host1:directory/SourceFile user@host2:directory/SourceFile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">$ scp user1@host1.com:/files/file.txt user2@host2.com:/files</span><br></pre></td></tr></table></figure>
+
+<p>系统将提示您输入两个远程帐户的密码。数据将直接从一个远程主机传输到另一个远程主机。</p>
+<h2 id="参数-3"><a href="#参数-3" class="headerlink" title="参数"></a>参数</h2><p><code>-P</code>用来指定远程主机的 SSH 端口。如果远程主机使用非默认端口22，可以在命令中指定。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -P 2222 user@host:directory/SourceFile TargetFile</span><br></pre></td></tr></table></figure>
+
+<p><code>-p</code>参数用来保留修改时间（modification time）、访问时间（access time）、文件状态（mode）等原始文件的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -C -p ~/test.txt root@192.168.1.3:/some/path/test.txt</span><br></pre></td></tr></table></figure>
+
+<p><code>-l</code>参数用来限制传输数据的带宽速率，单位是 Kbit&#x2F;sec。对于多人分享的带宽，这个参数可以留出一部分带宽供其他人使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -l 80 yourusername@yourserver:/home/yourusername/* .</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>scp</code>命令占用的带宽限制为每秒80K比特位，即每秒10K字节。</p>
+<p><code>-c</code>参数用来指定加密算法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -c blowfish some_file your_username@remotehost.edu:~</span><br></pre></td></tr></table></figure>
+
+<p>上面代码指定加密算法为<code>blowfish</code>。</p>
+<p><code>-C</code>表示是否在传输时压缩文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -c blowfish -C local_file your_username@remotehost.edu:~</span><br></pre></td></tr></table></figure>
+
+<p><code>-q</code>参数用来关闭显示拷贝的进度条。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -q Label.pdf mrarianto@202.x.x.x:.</span><br></pre></td></tr></table></figure>
+
+<p><code>-F</code>参数用来指定 ssh_config 文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -F /home/pungki/proxy_ssh_config Label.pdf</span><br></pre></td></tr></table></figure>
+
+<p><code>-v</code>参数用来显示详细的输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -v ~/test.txt root@192.168.1.3:/root/help2356.txt</span><br></pre></td></tr></table></figure>
+
+<p><code>-i</code>参数用来指定密钥。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp -vCq -i private_key.pem ~/test.txt root@192.168.1.3:/some/path/test.txt</span><br></pre></td></tr></table></figure>
+
+<p><code>-r</code>参数表示是否以递归方式复制目录。</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands1/" rel="prev" title="linuxCommands1">
+                  <i class="fa fa-chevron-left"></i> linuxCommands1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/archives/commands/linuxCommands3/" rel="next" title="linuxCommands3">
+                  linuxCommands3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="c66f9621d1264fbc10f11613cd8d679b"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

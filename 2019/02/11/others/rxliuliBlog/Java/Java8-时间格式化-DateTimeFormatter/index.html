@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java8 时间格式化 DateTimeFormatter场景吾辈在使用 Java8 的 LocalDateTime 想要根据某种格式格式化字符串为日期时间，本以来会简单的事情，事实上却出乎预料！ 问题想要格式化一个字符串为日期时间。例如常见的 yyyy-MM-dd hh:mm:ss 格式的 2017-12-11 10:11:05，吾辈习惯性的写出以下代码 1234final String tex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8 时间格式化 DateTimeFormatter">
+<meta property="og:url" content="https://fangtianq.github.io/2019/02/11/others/rxliuliBlog/Java/Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="Java8 时间格式化 DateTimeFormatter场景吾辈在使用 Java8 的 LocalDateTime 想要根据某种格式格式化字符串为日期时间，本以来会简单的事情，事实上却出乎预料！ 问题想要格式化一个字符串为日期时间。例如常见的 yyyy-MM-dd hh:mm:ss 格式的 2017-12-11 10:11:05，吾辈习惯性的写出以下代码 1234final String tex">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-02-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-02-12T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="记录">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/02/11/others/rxliuliBlog/Java/Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/02/11/others/rxliuliBlog/Java/Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter/","path":"2019/02/11/others/rxliuliBlog/Java/Java8-时间格式化-DateTimeFormatter/","title":"Java8 时间格式化 DateTimeFormatter"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java8 时间格式化 DateTimeFormatter | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter"><span class="nav-number">1.</span> <span class="nav-text">Java8 时间格式化 DateTimeFormatter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B9%E6%BA%90"><span class="nav-number">1.3.</span> <span class="nav-text">根源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">1.4.</span> <span class="nav-text">解决</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/02/11/others/rxliuliBlog/Java/Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java8 时间格式化 DateTimeFormatter | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java8 时间格式化 DateTimeFormatter
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-12T00:00:00+08:00">2019-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-02-13 00:00:00" itemprop="dateModified" datetime="2019-02-13T00:00:00+08:00">2019-02-13</time>
+    </span>
+
+
+  
+    <span id="/2019/02/11/others/rxliuliBlog/Java/Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter/" class="post-meta-item leancloud_visitors" data-flag-title="Java8 时间格式化 DateTimeFormatter" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="Java8 时间格式化 DateTimeFormatter" href="/2019/02/11/others/rxliuliBlog/Java/Java8-%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96-DateTimeFormatter/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::7390fdf785eb5a87696db27085da7b48" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Java8-时间格式化-DateTimeFormatter"><a href="#Java8-时间格式化-DateTimeFormatter" class="headerlink" title="Java8 时间格式化 DateTimeFormatter"></a>Java8 时间格式化 DateTimeFormatter</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>吾辈在使用 Java8 的 <code>LocalDateTime</code> 想要根据某种格式格式化字符串为日期时间，本以来会简单的事情，事实上却出乎预料！</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>想要格式化一个字符串为日期时间。例如常见的 <code>yyyy-MM-dd hh:mm:ss</code> 格式的 <code>2017-12-11 10:11:05</code>，吾辈习惯性的写出以下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> <span class="string">&quot;2017-12-11 10:11:05&quot;</span>;</span><br><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">pattern</span> <span class="operator">=</span> <span class="string">&quot;yyyy-MM-dd hh:mm:ss&quot;</span>;</span><br><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">dateTime</span> <span class="operator">=</span> LocalDateTime.parse(text, DateTimeFormatter.ofPattern(pattern));</span><br><span class="line">System.out.println(dateTime);</span><br></pre></td></tr></table></figure>
+
+<p>谜之音：<strong>JVM</strong> 不想理你，并抛给了你一个 <strong>Error</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.time.format.DateTimeParseException: Text <span class="string">&#x27;2017-12-11 10:11:05&#x27;</span> could not be parsed: Unable to obtain LocalDateTime from TemporalAccessor: &#123;MinuteOfHour=11, MilliOfSecond=0, MicroOfSecond=0, SecondOfMinute=5, HourOfAmPm=10, NanoOfSecond=0&#125;,ISO resolved to 2017-12-11 of <span class="built_in">type</span> java.time.format.Parsed</span><br></pre></td></tr></table></figure>
+
+<p>大意便是无法解析，去 Google 了一下，在 StackOverflow 上发现了这个问题：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/43732751/">DateTimeParseException: Text could not be parsed: Unable to obtain LocalDateTime from TemporalAccessor
+</a></p>
+<p>里面的答案说是使用 <code>HH</code>（每小时）而非 <code>hh</code>（每小时上午时钟），所以吾辈修改了代码，变成了下面这样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> <span class="string">&quot;2017-12-11 10:11:05&quot;</span>;</span><br><span class="line"><span class="comment">// 只改了这里的格式</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">pattern</span> <span class="operator">=</span> <span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>;</span><br><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">dateTime</span> <span class="operator">=</span> LocalDateTime.parse(text, DateTimeFormatter.ofPattern(pattern));</span><br><span class="line">System.out.println(dateTime);</span><br></pre></td></tr></table></figure>
+
+<p>然而确实能正常解析了！？？**#黑人问号**</p>
+<h2 id="根源"><a href="#根源" class="headerlink" title="根源"></a>根源</h2><p>去看了一下 Java8 的 <code>DateTimeFormatter</code> 日期时间格式化类，发现了 class 上一段有趣的注释</p>
+<p>All letters ‘A’ to ‘Z’ and ‘a’ to ‘z’ are reserved as pattern letters. The<br>following pattern letters are defined:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Presentation</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>G</code></td>
+<td>era</td>
+<td>text</td>
+<td>AD; Anno Domini; A</td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td>year</td>
+<td>year</td>
+<td>2004; 04</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td>year-of-era</td>
+<td>year</td>
+<td>2004; 04</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>day-of-year</td>
+<td>number</td>
+<td>189</td>
+</tr>
+<tr>
+<td><code>M/L</code></td>
+<td>month-of-year</td>
+<td>number&#x2F;text</td>
+<td>7; 07; Jul; July; J</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td>day-of-month</td>
+<td>number</td>
+<td>10</td>
+</tr>
+<tr>
+<td><code>Q/q</code></td>
+<td>quarter-of-year</td>
+<td>number&#x2F;text</td>
+<td>3; 03; Q3; 3rd quarter</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>week-based-year</td>
+<td>year</td>
+<td>1996; 96</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>week-of-week-based-year</td>
+<td>number</td>
+<td>27</td>
+</tr>
+<tr>
+<td><code>W</code></td>
+<td>week-of-month</td>
+<td>number</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>E</code></td>
+<td>day-of-week</td>
+<td>text</td>
+<td>Tue; Tuesday; T</td>
+</tr>
+<tr>
+<td><code>e/c</code></td>
+<td>localized day-of-week</td>
+<td>number&#x2F;text</td>
+<td>2; 02; Tue; Tuesday; T</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>week-of-month</td>
+<td>number</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>am-pm-of-day</td>
+<td>text</td>
+<td>PM</td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td>clock-hour-of-am-pm (1-12)</td>
+<td>number</td>
+<td>12</td>
+</tr>
+<tr>
+<td><code>K</code></td>
+<td>hour-of-am-pm (0-11)</td>
+<td>number</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td>clock-hour-of-am-pm (1-24)</td>
+<td>number</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>hour-of-day (0-23)</td>
+<td>number</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td>minute-of-hour</td>
+<td>number</td>
+<td>30</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>second-of-minute</td>
+<td>number</td>
+<td>55</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>fraction-of-second</td>
+<td>fraction</td>
+<td>978</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td>milli-of-day</td>
+<td>number</td>
+<td>1234</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>nano-of-second</td>
+<td>number</td>
+<td>987654321</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>nano-of-day</td>
+<td>number</td>
+<td>1234000000</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td>time-zone ID</td>
+<td>zone-id</td>
+<td>America&#x2F;Los_Angeles; Z; -08:30</td>
+</tr>
+<tr>
+<td><code>z</code></td>
+<td>time-zone name</td>
+<td>zone-name</td>
+<td>Pacific Standard Time; PST</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td>localized zone-offset</td>
+<td>offset-O</td>
+<td>GMT+8; GMT+08:00; UTC-08:00;</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>zone-offset ‘Z’ for zero</td>
+<td>offset-X</td>
+<td>Z; -08; -0830; -08:30; -083015; -08:30:15;</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>zone-offset</td>
+<td>offset-x</td>
+<td>+0000; -08; -0830; -08:30; -083015; -08:30:15;</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>zone-offset</td>
+<td>offset-Z</td>
+<td>+0000; -0800; -08:00;</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>pad next</td>
+<td>pad modifier</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>&#39;</code></td>
+<td>escape for text</td>
+<td>delimiter</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&#39;&#39;</code></td>
+<td>single quote</td>
+<td>literal ‘</td>
+<td></td>
+</tr>
+<tr>
+<td><code>[</code></td>
+<td>optional section start</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>]</code></td>
+<td>optional section end</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>#</code></td>
+<td>reserved for future use</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>&#123;</code></td>
+<td>reserved for future use</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>&#125;</code></td>
+<td>reserved for future use</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>是的，这是一个日期格式的说明，在这里确实可以看到 <code>HH</code> 才代表的是 24 小时，而 <code>hh</code> 则是将小时分为 <code>am/pm</code>（上午&#x2F;下午）。</p>
+<blockquote>
+<p>附：这里吐槽一下，Java 的格式化规则居然和标准的有偏差，<code>uuuu</code> 也能当作更好的 <code>yyyy</code> 使用（主要针对负的年份）</p>
+</blockquote>
+<p>所以现在也只能将格式化时间的 pattern 修改为 <code>uuuu-MM-dd HH:mm:ss</code> 便能正常匹配了！</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>那么，既然知道日期时间格式化模式的规则，那么接下来就可以直接写模式字符串了</p>
+<ul>
+<li>日期：<code>uuuu-MM-dd</code></li>
+<li>时间：<code>HH:mm:ss</code></li>
+<li>常见的日期时间：<code>uuuu-MM-dd HH:mm:ss</code></li>
+<li>标准的日期时间：<code>DateTimeFormatter.ISO_DATE_TIME</code>（Java8 time 库中已存在）</li>
+</ul>
+<p>将字符串转换为日期时间大致有两种方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> <span class="string">&quot;2019-02-12T01:24:07.425Z&quot;</span>;</span><br><span class="line"><span class="comment">// 先解析为时间在转换为具体的日期时间类</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">from</span> <span class="operator">=</span> LocalDateTime.from(DateTimeFormatter.ISO_DATE_TIME.parse(text));</span><br><span class="line"><span class="comment">// 直接根据指定的格式解析字符串为具体的日期时间类</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">LocalDateTime</span> <span class="variable">parse</span> <span class="operator">=</span> LocalDateTime.parse(text, DateTimeFormatter.ISO_DATE_TIME);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>那么，<code>Java8</code> 的踩坑之路还在继续，不知还有多少人在用 <code>Java7-</code> 呢？＼（＠￣ ∇ ￣＠）／</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"># 记录</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/06/others/rxliuliBlog/Tool/Android/Android-%E5%B8%B8%E7%94%A8-App-%E6%B8%85%E5%8D%95/" rel="prev" title="Android 常用 App 清单">
+                  <i class="fa fa-chevron-left"></i> Android 常用 App 清单
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/15/others/rxliuliBlog/Java/Java8-%E5%87%BD%E6%95%B0%E5%BC%8F%E5%8A%9F%E8%83%BD%E9%80%9F%E6%9F%A5/" rel="next" title="Java8 函数式功能速查">
+                  Java8 函数式功能速查 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="7390fdf785eb5a87696db27085da7b48"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

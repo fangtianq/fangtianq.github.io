@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="IDEA 创建和运行一个简单的 maven web 项目场景本文是为了帮助刚接触 IDEA 的萌新快速了解如何创建与运行一个 Maven Web 项目，但由于 知识的诅咒（#笑），如果有什么不太明白或者发现了什么问题，欢迎在最下方进行留言哦 创建首先打开 IDEA，进入到了 IDEA 欢迎页，点击 Create New Project 来到项目创建面板  选择 Maven 勾选上 Create f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDEA 创建和运行一个简单的 maven web 项目">
+<meta property="og:url" content="https://fangtianq.github.io/2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="IDEA 创建和运行一个简单的 maven web 项目场景本文是为了帮助刚接触 IDEA 的萌新快速了解如何创建与运行一个 Maven Web 项目，但由于 知识的诅咒（#笑），如果有什么不太明白或者发现了什么问题，欢迎在最下方进行留言哦 创建首先打开 IDEA，进入到了 IDEA 欢迎页，点击 Create New Project 来到项目创建面板  选择 Maven 勾选上 Create f">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20181204181531.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204182057.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204183441.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204183409.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204183707.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204184028.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204185414.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204185728.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204190023.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204190127.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204190459.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204191042.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204191242.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204200454.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204184248.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204194615.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204194742.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204195327.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181204202042.png">
+<meta property="article:published_time" content="2018-12-04T10:11:33.000Z">
+<meta property="article:modified_time" content="2018-12-04T10:11:33.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="Maven">
+<meta property="article:tag" content="IDEA">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20181204181531.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE/","path":"2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-创建和运行一个简单的-maven-web-项目/","title":"IDEA 创建和运行一个简单的 maven web 项目"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IDEA 创建和运行一个简单的 maven web 项目 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">IDEA 创建和运行一个简单的 maven web 项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">1.2.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.3.</span> <span class="nav-text">配置项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.1.</span> <span class="nav-text">项目初始配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-Tomcat-%E5%AE%B9%E5%99%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置 Tomcat 容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.4.1.</span> <span class="nav-text">配置项目目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-java-x2F-resources-%E7%9B%AE%E5%BD%95"><span class="nav-number">1.4.2.</span> <span class="nav-text">配置 java&#x2F;resources 目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-web-xml-%E7%9A%84-servlet-%E7%89%88%E6%9C%AC%E4%B8%BA-3-1"><span class="nav-number">1.4.3.</span> <span class="nav-text">修改 web.xml 的 servlet 版本为 3.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-servlet-x2F-jsp-%E4%BE%9D%E8%B5%96"><span class="nav-number">1.4.4.</span> <span class="nav-text">添加 servlet&#x2F;jsp 依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-Servlet"><span class="nav-number">1.4.5.</span> <span class="nav-text">创建 Servlet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IDEA 创建和运行一个简单的 maven web 项目 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IDEA 创建和运行一个简单的 maven web 项目
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-04 18:11:33" itemprop="dateCreated datePublished" datetime="2018-12-04T18:11:33+08:00">2018-12-04</time>
+    </span>
+
+
+  
+    <span id="/2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE/" class="post-meta-item leancloud_visitors" data-flag-title="IDEA 创建和运行一个简单的 maven web 项目" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="IDEA 创建和运行一个简单的 maven web 项目" href="/2018/12/04/others/rxliuliBlog/Tool/IDEA/IDEA-%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-maven-web-%E9%A1%B9%E7%9B%AE/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::fd2fb6cc316bf5fdcb29a57eff38395e" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="IDEA-创建和运行一个简单的-maven-web-项目"><a href="#IDEA-创建和运行一个简单的-maven-web-项目" class="headerlink" title="IDEA 创建和运行一个简单的 maven web 项目"></a>IDEA 创建和运行一个简单的 maven web 项目</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>本文是为了帮助刚接触 IDEA 的萌新快速了解如何创建与运行一个 Maven Web 项目，但由于 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Curse_of_knowledge">知识的诅咒</a>（#笑），如果有什么不太明白或者发现了什么问题，欢迎在最下方进行留言哦</p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>首先打开 IDEA，进入到了 IDEA 欢迎页，点击 <strong>Create New Project</strong><br><img src="https://img.rxliuli.com/20181204181531.png" alt="IDEA 欢迎页"></p>
+<p>来到项目创建面板</p>
+<ol>
+<li>选择 Maven</li>
+<li>勾选上 <strong>Create from archetype</strong>（根据原型创建）</li>
+<li>选择 <code>org.apche.maven.archetypes:maven-archetype-webapp</code> 原型<blockquote>
+<p>这里可以输入 webapp，就可以通过 Top&#x2F;Bottom 键来快速找到原型了</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="https://img.rxliuli.com/20181204182057.png" alt="创建面板"></p>
+<p>接下来设定一下 Maven 的基本配置</p>
+<ul>
+<li>GroupId：代表该项目的实体或组织。例如 <code>com.rxliuli.example</code> 就是一个组织 id。<blockquote>
+<p>如果你对 maven 没有任何基础，可以直接使用 <code>com.&#123;你的英文名&#125;</code> 作为组织 id</p>
+</blockquote>
+</li>
+<li>ArtifactId：实际的工件名称。例如 <code>idea-maven-webapp-example</code> 就指明了该项目就是一个 idea 创建的 maven webapp 案例项目</li>
+<li>Version：该项目的版本号，没什么好说的。</li>
+</ul>
+<p><img src="https://img.rxliuli.com/20181204183441.png" alt="Maven 基本配置"></p>
+<p>然后是使用的 Maven 程序，IDEA 内置了 Maven，所以如果你不怎么了解 Maven 可以直接 Next 过去<br><img src="https://img.rxliuli.com/20181204183409.png" alt="使用的 Maven 程序"></p>
+<p>最后一步是创建 IDEA 项目，基本上不需要修改什么，直接 FINISH 即可<br><img src="https://img.rxliuli.com/20181204183707.png" alt="创建 IDEA 项目"></p>
+<h2 id="配置项目"><a href="#配置项目" class="headerlink" title="配置项目"></a>配置项目</h2><h3 id="项目初始配置"><a href="#项目初始配置" class="headerlink" title="项目初始配置"></a>项目初始配置</h3><p>创建完成后会提示是否选择自动引入依赖，这里选择 <strong>Enable Auto import</strong>。当然，另一个要我们去配置 Web 框架的提示就不用管了，IDEA 已经自动完成了这一切。<br><img src="https://img.rxliuli.com/20181204184028.png" alt="创建完成提示"></p>
+<h3 id="配置-Tomcat-容器"><a href="#配置-Tomcat-容器" class="headerlink" title="配置 Tomcat 容器"></a>配置 Tomcat 容器</h3><p>项目搭建好了，然而我们还需要一个 Web 容器，这里以 Tomcat 作为演示</p>
+<ol>
+<li>使用快捷键 <code>CS-A</code> 打开 IDEA 结构化设置搜索</li>
+<li>输入 <code>edit config</code>，找到 <code>edit configurations...</code> 项</li>
+<li>回车打开 IDEA 运行配置面板<br><img src="https://img.rxliuli.com/20181204185414.png" alt="IDEA 结构化设置搜索"></li>
+<li>添加一个新的 Tomcat 容器运行配置项<br><img src="https://img.rxliuli.com/20181204185728.png" alt="Tomcat 容器运行配置"></li>
+<li>配置 Application server，点击 CONFIGURETION 按钮<br><img src="https://img.rxliuli.com/20181204190023.png" alt="配置 Application server"></li>
+<li>选择本地 Tomcat 的目录并确定<br><img src="https://img.rxliuli.com/20181204190127.png" alt="选择本地 Tomcat 的目录"></li>
+<li>选择要运行的 war 包<br>配置完成会发现下面多了一条警告 <code>Warning:No artifacts marked for deployment</code>，意思是没有 jar&#x2F;war 包需要被部署，这里我们只要点一下 Fix，并且选择 <code>war exploded</code>，之后 IDEA 会自动完成剩余的事<br><img src="https://img.rxliuli.com/20181204190459.png" alt="部署 war 项目"><blockquote>
+<p>注：有人觉得每次都要配置 Tomcat 真的挺麻烦的，这里吾辈坚决声明这是误解，只有第一次才需要配置各种环境，后面 IDEA 是能够<strong>记住</strong>的。</p>
+</blockquote>
+</li>
+<li>最后，修改一下运行配置的名字，然后点击 OK 按钮<br><img src="https://img.rxliuli.com/20181204191042.png" alt="修改运行配置的名字"></li>
+<li>在右上角的运行配置里应该已经显示出刚才添加的运行配置项 Tomcat 了，这是点击右边的 Debug 按钮，一切就开始了<br><img src="https://img.rxliuli.com/20181204191242.png" alt="Debug 开始"></li>
+<li>运行完成后会自动打开浏览器 <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a>，显示出这个项目的首页了呢<br><img src="https://img.rxliuli.com/20181204200454.png" alt="浏览器"></li>
+</ol>
+<p>至此，我们已经使用 IDEA 运行起来了一个基本的 Web 项目了呢！</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="配置项目目录结构"><a href="#配置项目目录结构" class="headerlink" title="配置项目目录结构"></a>配置项目目录结构</h3><p>项目的文件菜单树大概长这样，初始只有这么几个文件，稍微解释一下用途</p>
+<ul>
+<li><code>pom.xml</code>：Maven 的配置文件，所有 Maven 搭建的项目都会有，记录着项目所有的依赖</li>
+<li><code>web.xml</code>：Web 项目所需要的一个配置文件。主要用来配置 <code>Servlet</code>, <code>Filter</code>, <code>Listene</code>。</li>
+<li><code>index.jsp</code>：Maven webapp 原型自带的一个初始的 jsp 首页</li>
+</ul>
+<p><img src="https://img.rxliuli.com/20181204184248.png" alt="项目文件结构"></p>
+<h3 id="配置-java-x2F-resources-目录"><a href="#配置-java-x2F-resources-目录" class="headerlink" title="配置 java&#x2F;resources 目录"></a>配置 java&#x2F;resources 目录</h3><p>现在，我们已经可以写 jsp 了，那么 <code>Servlet</code> 之类的 java 文件应该写到哪里呢？</p>
+<ol>
+<li><p>在 <em>src&#x2F;main</em> 新建 <em>java</em> 和 <em>resources</em> 目录<br><img src="https://img.rxliuli.com/20181204194615.png" alt="新建 java/resources 目录"></p>
+</li>
+<li><p>点击 <em>File &gt; Project Structure</em> 打开项目结构配置面板（或者使用快捷键 <code>CSA-S</code>）<br><img src="https://img.rxliuli.com/20181204194742.png" alt="Project Structure"></p>
+</li>
+<li><p>标识目录</p>
+<ol>
+<li>点击 Module 项</li>
+<li>选择需要的项目</li>
+<li>选中 java 文件夹</li>
+<li>点击 Source 使 java 目录变为蓝色</li>
+<li>选中 resources 目录</li>
+<li>点击 Resources 使 resources 目录变为紫色</li>
+<li>完成后点击下方的 OK</li>
+</ol>
+<p><img src="https://img.rxliuli.com/20181204195327.png" alt="标识目录"></p>
+</li>
+</ol>
+<h3 id="修改-web-xml-的-servlet-版本为-3-1"><a href="#修改-web-xml-的-servlet-版本为-3-1" class="headerlink" title="修改 web.xml 的 servlet 版本为 3.1"></a>修改 web.xml 的 servlet 版本为 3.1</h3><p>其实就是把 <code>web.xml</code> 的内容修改为下面这样</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">version</span>=<span class="string">&quot;3.1&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="添加-servlet-x2F-jsp-依赖"><a href="#添加-servlet-x2F-jsp-依赖" class="headerlink" title="添加 servlet&#x2F;jsp 依赖"></a>添加 servlet&#x2F;jsp 依赖</h3><p>虽然 tomcat 本身就有 servlet&#x2F;jsp 的实现，但那是在项目运行时才会有的，而我们需要在代码中使用 Servlet 的类时，则需要添加对应的依赖。</p>
+<p>找到 <code>pom.xml</code> maven 配置文件，在 dependencies 中添加 <code>javax.servlet</code> 和 <code>javax.servlet.jsp</code> 两项依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 其他内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet.jsp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet.jsp-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 其他依赖 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 其他内容 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建-Servlet"><a href="#创建-Servlet" class="headerlink" title="创建 Servlet"></a>创建 Servlet</h3><p>接下来，我们的 Java 源码就全部放到 <em>&#x2F;src&#x2F;main&#x2F;java</em> 下即可</p>
+<p>新建一个简单的 Servlet 类 <code>HomeServlet</code> (path: <code>com.rxliuli.example.ideamavenwebappexample.HomeServlet</code>)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rxliuli.example.ideamavenwebappexample;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rxliuli</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WebServlet(name = &quot;HomeServlet&quot;, urlPatterns = &quot;/home&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HomeServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        doPost(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        resp.setCharacterEncoding(<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">        resp.setContentType(<span class="string">&quot;text/html;charset=utf-8&quot;</span>);</span><br><span class="line">        <span class="keyword">final</span> <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">        out.println(<span class="string">&quot;这里是首页哦&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，再次点击 Debug 按钮重新运行项目，在浏览器中访问 <a target="_blank" rel="noopener" href="http://localhost:8080/home">http://localhost:8080/home</a>，可以看到我们的 Servlet 已经生效了呢<br><img src="https://img.rxliuli.com/20181204202042.png" alt="访问 home Servlet"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>这个演示项目吾辈也放到了 <a target="_blank" rel="noopener" href="https://github.com/rxliuli/idea-maven-webapp-example">GitHub</a> 上，如果需要可以随便下载</li>
+<li>如果你还不了解 maven 的话强烈建议稍微了解一下 maven 的基本概念。可以参照吾辈 blog 上的教程 <a target="_blank" rel="noopener" href="https://blog.rxliuli.com/p/82700e2a/">Windows 上 Maven 安装与使用</a> 进行安装</li>
+<li>如果你还不了解 IDEA（废话，这不是当然的嘛！#打），推荐阅读 <a target="_blank" rel="noopener" href="https://github.com/judasn/IntelliJ-IDEA-Tutorial">IntelliJ IDEA 简体中文专题教程</a> 进行入门</li>
+</ul>
+<p>那么，这篇教程到这里便结束啦，希望我们都能愉快地使用 IDEA 呢 o(〃＾ ▽ ＾〃)o</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+              <a href="/tags/Maven/" rel="tag"># Maven</a>
+              <a href="/tags/IDEA/" rel="tag"># IDEA</a>
+              <a href="/tags/Web/" rel="tag"># Web</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/01/others/rxliuliBlog/Tool/VSCode/VSCode-Markdown-All-in-One-%E6%8F%92%E4%BB%B6%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8-TOC-%E5%91%BD%E4%BB%A4%E5%88%9B%E5%BB%BA%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95/" rel="prev" title="VSCode Markdown All in One 插件不能使用 TOC 命令创建文章目录">
+                  <i class="fa fa-chevron-left"></i> VSCode Markdown All in One 插件不能使用 TOC 命令创建文章目录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/06/others/rxliuliBlog/Tool/VSCode/VSCode-%E5%9C%A8-markdown-%E6%96%87%E6%A1%A3%E4%B8%AD%E5%AD%98%E5%9C%A8%E8%A1%A8%E6%A0%BC%E6%97%B6%E4%B8%8D%E8%83%BD%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%A1%A3/" rel="next" title="VSCode 在 markdown 文档中存在表格时不能格式化文档">
+                  VSCode 在 markdown 文档中存在表格时不能格式化文档 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="fd2fb6cc316bf5fdcb29a57eff38395e"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

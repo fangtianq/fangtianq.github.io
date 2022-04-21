@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java 优雅的拷贝对象属性场景在 Java 项目中，经常遇到需要在对象之间拷贝属性的问题。然而，除了直接使用 Getter&#x2F;Stter 方法，我们还有其他的方法么？当然有，例如 Apache Common Lang3 的 BeanUtils，然而 BeanUtils 却无法完全满足吾辈的需求，所以吾辈便自己封装了一个，这里分享出来以供参考。  需要大量复制对象的属性 对象之间的属性名可能是不同的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 优雅的拷贝对象属性">
+<meta property="og:url" content="https://fangtianq.github.io/2019/02/27/others/rxliuliBlog/Java/Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="Java 优雅的拷贝对象属性场景在 Java 项目中，经常遇到需要在对象之间拷贝属性的问题。然而，除了直接使用 Getter&#x2F;Stter 方法，我们还有其他的方法么？当然有，例如 Apache Common Lang3 的 BeanUtils，然而 BeanUtils 却无法完全满足吾辈的需求，所以吾辈便自己封装了一个，这里分享出来以供参考。  需要大量复制对象的属性 对象之间的属性名可能是不同的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190227215703.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190228000845.png">
+<meta property="article:published_time" content="2019-02-27T06:20:04.000Z">
+<meta property="article:modified_time" content="2019-02-26T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190227215703.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/02/27/others/rxliuliBlog/Java/Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/02/27/others/rxliuliBlog/Java/Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7/","path":"2019/02/27/others/rxliuliBlog/Java/Java-优雅的拷贝对象属性/","title":"Java 优雅的拷贝对象属性"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java 优雅的拷贝对象属性 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">Java 优雅的拷贝对象属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87"><span class="nav-number">1.2.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.4.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E9%97%A8%E9%9D%A2%E7%B1%BB-BeanCopyUtil-%E7%94%A8%E4%BB%A5%E6%9A%B4%E9%9C%B2%E5%87%BA%E4%B8%80%E4%BA%9B-API"><span class="nav-number">1.4.1.</span> <span class="nav-text">定义门面类 BeanCopyUtil 用以暴露出一些 API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%AF%8F%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B1%BB-BeanCopyField%EF%BC%8C%E4%BF%9D%E5%AD%98%E5%AF%B9%E6%AF%8F%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.2.</span> <span class="nav-text">定义每个字段的操作类 BeanCopyField，保存对每个字段的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-BeanCopyConfig%EF%BC%8C%E7%94%A8%E4%BA%8E%E9%85%8D%E7%BD%AE%E6%8B%B7%E8%B4%9D%E5%B1%9E%E6%80%A7%E7%9A%84%E7%AD%96%E7%95%A5"><span class="nav-number">1.4.3.</span> <span class="nav-text">定义 BeanCopyConfig，用于配置拷贝属性的策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-BeanCopyOperator-%E4%BD%9C%E4%B8%BA%E6%8B%B7%E8%B4%9D%E7%9A%84%E7%9C%9F%E6%AD%A3%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.4.4.</span> <span class="nav-text">定义 BeanCopyOperator 作为拷贝的真正实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">1.5.1.</span> <span class="nav-text">使用流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.5.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/02/27/others/rxliuliBlog/Java/Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java 优雅的拷贝对象属性 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 优雅的拷贝对象属性
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2019-02-27 14:20:04 / 修改时间：00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-27T14:20:04+08:00">2019-02-27</time>
+    </span>
+
+
+  
+    <span id="/2019/02/27/others/rxliuliBlog/Java/Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7/" class="post-meta-item leancloud_visitors" data-flag-title="Java 优雅的拷贝对象属性" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="Java 优雅的拷贝对象属性" href="/2019/02/27/others/rxliuliBlog/Java/Java-%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::ebf881baba45c034f672f9f6d53fb10f" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Java-优雅的拷贝对象属性"><a href="#Java-优雅的拷贝对象属性" class="headerlink" title="Java 优雅的拷贝对象属性"></a>Java 优雅的拷贝对象属性</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在 Java 项目中，经常遇到需要在对象之间拷贝属性的问题。然而，除了直接使用 <code>Getter/Stter</code> 方法，我们还有其他的方法么？<br>当然有，例如 <code>Apache Common Lang3</code> 的 <code>BeanUtils</code>，然而 <code>BeanUtils</code> 却无法完全满足吾辈的需求，所以吾辈便自己封装了一个，这里分享出来以供参考。</p>
+<ul>
+<li>需要大量复制对象的属性</li>
+<li>对象之间的属性名可能是不同的</li>
+<li>对象之间的属性类型可能是不同的</li>
+</ul>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>简单易用的 API</p>
+<ul>
+<li><code>copy</code>: 指定需要拷贝的源对象和目标对象</li>
+<li><code>prop</code>: 拷贝指定对象的字段</li>
+<li><code>props</code>: 拷贝指定对象的多个字段</li>
+<li><code>exec</code>: 执行真正的拷贝操作</li>
+<li><code>from</code>: 重新开始添加其他对象的属性</li>
+<li><code>get</code>: 返回当前的目标对象</li>
+<li><code>config</code>: 配置拷贝的一些策略</li>
+</ul>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>定义门面类 <code>BeanCopyUtil</code> 用以暴露出一些 API</li>
+<li>定义每个字段的操作类 <code>BeanCopyField</code>，保存对每个字段的操作</li>
+<li>定义 <code>BeanCopyConfig</code>，用于配置拷贝属性的策略</li>
+<li>定义 <code>BeanCopyOperator</code> 作为拷贝的真正实现</li>
+</ol>
+<p>图解</p>
+<p><img src="https://img.rxliuli.com/20190227215703.png" alt="图解"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><blockquote>
+<p>注：反射部分依赖于 <a target="_blank" rel="noopener" href="https://github.com/jOOQ/jOOR">joor</a>, JDK1.8 请使用 <a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.jooq/joor-java-8/0.9.7">joor-java-8</a></p>
+</blockquote>
+<h3 id="定义门面类-BeanCopyUtil-用以暴露出一些-API"><a href="#定义门面类-BeanCopyUtil-用以暴露出一些-API" class="headerlink" title="定义门面类 BeanCopyUtil 用以暴露出一些 API"></a>定义门面类 <code>BeanCopyUtil</code> 用以暴露出一些 API</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * java bean 复制操作的工具类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rxliuli</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanCopyUtil</span>&lt;F, T&gt; &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 源对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> F from;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 目标对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> T to;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拷贝的字段信息列表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;BeanCopyField&gt; copyFieldList = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 配置信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">BeanCopyConfig</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BeanCopyConfig</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">BeanCopyUtil</span><span class="params">(F from, T to)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.from = from;</span><br><span class="line">        <span class="built_in">this</span>.to = to;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 指定需要拷贝的源对象和目标对象</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> from 源对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> to   目标对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;F&gt;  源对象类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;  目标对象类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 一个 &#123;<span class="doctag">@link</span> BeanCopyUtil&#125; 对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;F, T&gt; BeanCopyUtil&lt;F, T&gt; <span class="title function_">copy</span><span class="params">(F from, T to)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">BeanCopyUtil</span>&lt;&gt;(from, to);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拷贝指定对象的字段</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> fromField 源对象中的字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> toField   目标对象中的字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> converter 将源对象中字段转换为目标对象字段类型的转换器</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">prop</span><span class="params">(String fromField, String toField, Function&lt;? <span class="built_in">super</span> Object, ? <span class="built_in">super</span> Object&gt; converter)</span> &#123;</span><br><span class="line">        copyFieldList.add(<span class="keyword">new</span> <span class="title class_">BeanCopyField</span>(fromField, toField, converter));</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拷贝指定对象的字段</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> fromField 源对象中的字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> toField   目标对象中的字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">prop</span><span class="params">(String fromField, String toField)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> prop(fromField, toField, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拷贝指定对象的字段</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> field     源对象中与目标对象中的字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> converter 将源对象中字段转换为目标对象字段类型的转换器</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">prop</span><span class="params">(String field, Function&lt;? <span class="built_in">super</span> Object, ? <span class="built_in">super</span> Object&gt; converter)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> prop(field, field, converter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拷贝指定对象的字段</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> field 源对象中与目标对象中的字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">prop</span><span class="params">(String field)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> prop(field, field, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拷贝指定对象的多个字段</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> fields 源对象中与目标对象中的多个字段名</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">props</span><span class="params">(String... fields)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (String field : fields) &#123;</span><br><span class="line">            prop(field);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行真正的拷贝操作</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">exec</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">BeanCopyOperator</span>&lt;&gt;(from, to, copyFieldList, config).copy();</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 重新开始添加其他对象的属性</span></span><br><span class="line"><span class="comment">     * 用于在执行完 &#123;<span class="doctag">@link</span> #exec()&#125; 之后还想复制其它对象的属性</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> from 源对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;R&gt;  源对象类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 一个新的 &#123;<span class="doctag">@link</span> BeanCopyUtil&#125; 对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> &lt;R&gt; BeanCopyUtil&lt;R, T&gt; <span class="title function_">from</span><span class="params">(R from)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">BeanCopyUtil</span>&lt;&gt;(from, to);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回当前的目标对象</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 当前的目标对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> to;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 配置拷贝的一些策略</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> config 拷贝配置对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回 &#123;<span class="doctag">@code</span> this&#125;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> BeanCopyUtil&lt;F, T&gt; <span class="title function_">config</span><span class="params">(BeanCopyConfig config)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.config = config;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义每个字段的操作类-BeanCopyField，保存对每个字段的操作"><a href="#定义每个字段的操作类-BeanCopyField，保存对每个字段的操作" class="headerlink" title="定义每个字段的操作类 BeanCopyField，保存对每个字段的操作"></a>定义每个字段的操作类 <code>BeanCopyField</code>，保存对每个字段的操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 拷贝属性的每一个字段的选项</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rxliuli</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanCopyField</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String from;</span><br><span class="line">    <span class="keyword">private</span> String to;</span><br><span class="line">    <span class="keyword">private</span> Function&lt;? <span class="built_in">super</span> Object, ? <span class="built_in">super</span> Object&gt; converter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BeanCopyField</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BeanCopyField</span><span class="params">(String from, String to, Function&lt;? <span class="built_in">super</span> Object, ? <span class="built_in">super</span> Object&gt; converter)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.from = from;</span><br><span class="line">        <span class="built_in">this</span>.to = to;</span><br><span class="line">        <span class="built_in">this</span>.converter = converter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getFrom</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> from;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyField <span class="title function_">setFrom</span><span class="params">(String from)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.from = from;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getTo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> to;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyField <span class="title function_">setTo</span><span class="params">(String to)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.to = to;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Function&lt;? <span class="built_in">super</span> Object, ? <span class="built_in">super</span> Object&gt; getConverter() &#123;</span><br><span class="line">        <span class="keyword">return</span> converter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyField <span class="title function_">setConverter</span><span class="params">(Function&lt;? <span class="built_in">super</span> Object, ? <span class="built_in">super</span> Object&gt; converter)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.converter = converter;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义-BeanCopyConfig，用于配置拷贝属性的策略"><a href="#定义-BeanCopyConfig，用于配置拷贝属性的策略" class="headerlink" title="定义 BeanCopyConfig，用于配置拷贝属性的策略"></a>定义 <code>BeanCopyConfig</code>，用于配置拷贝属性的策略</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 拷贝属性的配置</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rxliuli</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanCopyConfig</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 同名的字段自动复制</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">same</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 覆盖同名的字段</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">override</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 忽略 &#123;<span class="doctag">@code</span> null&#125; 的源对象属性</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">ignoreNull</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 尝试进行自动转换</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">converter</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BeanCopyConfig</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BeanCopyConfig</span><span class="params">(<span class="type">boolean</span> same, <span class="type">boolean</span> override, <span class="type">boolean</span> ignoreNull, <span class="type">boolean</span> converter)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.same = same;</span><br><span class="line">        <span class="built_in">this</span>.override = override;</span><br><span class="line">        <span class="built_in">this</span>.ignoreNull = ignoreNull;</span><br><span class="line">        <span class="built_in">this</span>.converter = converter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isSame</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> same;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyConfig <span class="title function_">setSame</span><span class="params">(<span class="type">boolean</span> same)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.same = same;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isOverride</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> override;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyConfig <span class="title function_">setOverride</span><span class="params">(<span class="type">boolean</span> override)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.override = override;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isIgnoreNull</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ignoreNull;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyConfig <span class="title function_">setIgnoreNull</span><span class="params">(<span class="type">boolean</span> ignoreNull)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.ignoreNull = ignoreNull;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isConverter</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> converter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BeanCopyConfig <span class="title function_">setConverter</span><span class="params">(<span class="type">boolean</span> converter)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.converter = converter;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义-BeanCopyOperator-作为拷贝的真正实现"><a href="#定义-BeanCopyOperator-作为拷贝的真正实现" class="headerlink" title="定义 BeanCopyOperator 作为拷贝的真正实现"></a>定义 <code>BeanCopyOperator</code> 作为拷贝的真正实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 真正执行 copy 属性的类</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> rxliuli</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanCopyOperator</span>&lt;F, T&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">log</span> <span class="operator">=</span> LoggerFactory.getLogger(BeanCopyUtil.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> F from;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> T to;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> BeanCopyConfig config;</span><br><span class="line">    <span class="keyword">private</span> List&lt;BeanCopyField&gt; copyFieldList;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BeanCopyOperator</span><span class="params">(F from, T to, List&lt;BeanCopyField&gt; copyFieldList, BeanCopyConfig config)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.from = from;</span><br><span class="line">        <span class="built_in">this</span>.to = to;</span><br><span class="line">        <span class="built_in">this</span>.copyFieldList = copyFieldList;</span><br><span class="line">        <span class="built_in">this</span>.config = config;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">copy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//获取到两个对象所有的属性</span></span><br><span class="line">        <span class="keyword">final</span> Map&lt;String, Reflect&gt; fromFields = Reflect.on(from).fields();</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Reflect</span> <span class="variable">to</span> <span class="operator">=</span> Reflect.on(<span class="built_in">this</span>.to);</span><br><span class="line">        <span class="keyword">final</span> Map&lt;String, Reflect&gt; toFields = to.fields();</span><br><span class="line">        <span class="comment">//过滤出所有相同字段名的字段并进行拷贝</span></span><br><span class="line">        <span class="keyword">if</span> (config.isSame()) &#123;</span><br><span class="line">            <span class="keyword">final</span> Map&lt;ListUtil.ListDiffState, List&lt;String&gt;&gt; different = ListUtil.different(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(fromFields.keySet()), <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(toFields.keySet()));</span><br><span class="line">            copyFieldList = Stream.concat(different.get(ListUtil.ListDiffState.common).stream()</span><br><span class="line">                    .map(s -&gt; <span class="keyword">new</span> <span class="title class_">BeanCopyField</span>(s, s, <span class="literal">null</span>)), copyFieldList.stream())</span><br><span class="line">                    .collect(Collectors.toList());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//根据拷贝字段列表进行拷贝</span></span><br><span class="line">        copyFieldList.stream()</span><br><span class="line">                <span class="comment">//忽略空值</span></span><br><span class="line">                .filter(beanCopyField -&gt; !config.isIgnoreNull() || fromFields.get(beanCopyField.getFrom()).get() != <span class="literal">null</span>)</span><br><span class="line">                <span class="comment">//覆盖属性</span></span><br><span class="line">                .filter(beanCopyField -&gt; config.isOverride() || toFields.get(beanCopyField.getTo()).get() == <span class="literal">null</span>)</span><br><span class="line">                <span class="comment">//如果没有转换器，则使用默认的转换器</span></span><br><span class="line">                .peek(beanCopyField -&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span> (beanCopyField.getConverter() == <span class="literal">null</span>) &#123;</span><br><span class="line">                        beanCopyField.setConverter(Function.identity());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">                .forEach(beanCopyField -&gt; &#123;</span><br><span class="line">                    <span class="keyword">final</span> <span class="type">String</span> <span class="variable">fromField</span> <span class="operator">=</span> beanCopyField.getFrom();</span><br><span class="line">                    <span class="keyword">final</span> <span class="type">F</span> <span class="variable">from</span> <span class="operator">=</span> fromFields.get(fromField).get();</span><br><span class="line">                    <span class="keyword">final</span> <span class="type">String</span> <span class="variable">toField</span> <span class="operator">=</span> beanCopyField.getTo();</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        to.set(toField, beanCopyField.getConverter().apply(from));</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (ReflectException e) &#123;</span><br><span class="line">                        log.warn(<span class="string">&quot;Copy field failed, from &#123;&#125; to &#123;&#125;, exception is &#123;&#125;&quot;</span>, fromField, toField, e.getMessage());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="使用流程图"><a href="#使用流程图" class="headerlink" title="使用流程图"></a>使用流程图</h3><p><img src="https://img.rxliuli.com/20190228000845.png" alt="使用流程图"></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>代码写完了，让我们测试一下！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanCopyUtilTest</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">log</span> <span class="operator">=</span> LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="keyword">private</span> Student student;</span><br><span class="line">    <span class="keyword">private</span> Teacher teacher;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">()</span> &#123;</span><br><span class="line">        student = <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;琉璃&quot;</span>, <span class="number">10</span>, <span class="string">&quot;女&quot;</span>, <span class="number">4</span>);</span><br><span class="line">        teacher = <span class="keyword">new</span> <span class="title class_">Teacher</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">copy</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//简单的复制（类似于 BeanUtils.copyProperties）</span></span><br><span class="line">        BeanCopyUtil.copy(student, teacher).exec();</span><br><span class="line">        log.info(<span class="string">&quot;teacher: &#123;&#125;&quot;</span>, teacher);</span><br><span class="line">        assertThat(teacher)</span><br><span class="line">                .extracting(<span class="string">&quot;age&quot;</span>)</span><br><span class="line">                .containsOnlyOnce(student.getAge());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">prop</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//不同名字的属性</span></span><br><span class="line">        BeanCopyUtil.copy(student, teacher)</span><br><span class="line">                .prop(<span class="string">&quot;sex&quot;</span>, <span class="string">&quot;sex&quot;</span>, sex -&gt; Objects.equals(sex, <span class="string">&quot;男&quot;</span>))</span><br><span class="line">                .prop(<span class="string">&quot;realname&quot;</span>, <span class="string">&quot;name&quot;</span>)</span><br><span class="line">                .exec();</span><br><span class="line">        assertThat(teacher)</span><br><span class="line">                .extracting(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>, <span class="string">&quot;sex&quot;</span>)</span><br><span class="line">                .containsOnlyOnce(student.getRealname(), student.getAge(), <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">prop1</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//不存的属性</span></span><br><span class="line">        assertThat(BeanCopyUtil.copy(student, teacher)</span><br><span class="line">                .prop(<span class="string">&quot;sex&quot;</span>, <span class="string">&quot;sex&quot;</span>, sex -&gt; Objects.equals(sex, <span class="string">&quot;男&quot;</span>))</span><br><span class="line">                .prop(<span class="string">&quot;realname&quot;</span>, <span class="string">&quot;name2&quot;</span>)</span><br><span class="line">                .exec()</span><br><span class="line">                .get())</span><br><span class="line">                .extracting(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;sex&quot;</span>)</span><br><span class="line">                .containsOnlyOnce(student.getAge(), <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">from</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Teacher</span> <span class="variable">lingMeng</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>()</span><br><span class="line">                .setName(<span class="string">&quot;灵梦&quot;</span>)</span><br><span class="line">                .setAge(<span class="number">17</span>);</span><br><span class="line">        <span class="comment">//测试 from 是否覆盖</span></span><br><span class="line">        assertThat(BeanCopyUtil.copy(student, teacher)</span><br><span class="line">                .prop(<span class="string">&quot;sex&quot;</span>, <span class="string">&quot;sex&quot;</span>, sex -&gt; Objects.equals(sex, <span class="string">&quot;男&quot;</span>))</span><br><span class="line">                .prop(<span class="string">&quot;realname&quot;</span>, <span class="string">&quot;name&quot;</span>)</span><br><span class="line">                .exec()</span><br><span class="line">                .from(lingMeng)</span><br><span class="line">                .exec()</span><br><span class="line">                .get())</span><br><span class="line">                .extracting(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>, <span class="string">&quot;sex&quot;</span>)</span><br><span class="line">                .containsOnlyOnce(lingMeng.getName(), lingMeng.getAge(), <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//测试 get 是否有效</span></span><br><span class="line">        assertThat(BeanCopyUtil.copy(student, teacher)</span><br><span class="line">                .prop(<span class="string">&quot;sex&quot;</span>, <span class="string">&quot;sex&quot;</span>, sex -&gt; Objects.equals(sex, <span class="string">&quot;男&quot;</span>))</span><br><span class="line">                .prop(<span class="string">&quot;realname&quot;</span>, <span class="string">&quot;name&quot;</span>)</span><br><span class="line">                .exec()</span><br><span class="line">                .get())</span><br><span class="line">                .extracting(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>, <span class="string">&quot;sex&quot;</span>)</span><br><span class="line">                .containsOnlyOnce(student.getRealname(), student.getAge(), <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">config</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//不自动复制同名属性</span></span><br><span class="line">        assertThat(BeanCopyUtil.copy(<span class="keyword">new</span> <span class="title class_">Student</span>().setAge(<span class="number">15</span>), <span class="keyword">new</span> <span class="title class_">Teacher</span>())</span><br><span class="line">                .config(<span class="keyword">new</span> <span class="title class_">BeanCopyConfig</span>().setSame(<span class="literal">false</span>))</span><br><span class="line">                .exec()</span><br><span class="line">                .get())</span><br><span class="line">                .extracting(<span class="string">&quot;age&quot;</span>)</span><br><span class="line">                .containsOnlyNulls();</span><br><span class="line">        <span class="comment">//不覆盖不为空的属性</span></span><br><span class="line">        assertThat(BeanCopyUtil.copy(<span class="keyword">new</span> <span class="title class_">Student</span>().setAge(<span class="number">15</span>), <span class="keyword">new</span> <span class="title class_">Teacher</span>().setAge(<span class="number">10</span>))</span><br><span class="line">                .config(<span class="keyword">new</span> <span class="title class_">BeanCopyConfig</span>().setOverride(<span class="literal">false</span>))</span><br><span class="line">                .exec()</span><br><span class="line">                .get())</span><br><span class="line">                .extracting(<span class="string">&quot;age&quot;</span>)</span><br><span class="line">                .containsOnlyOnce(<span class="number">10</span>);</span><br><span class="line">        <span class="comment">//不忽略源对象不为空的属性</span></span><br><span class="line">        assertThat(BeanCopyUtil.copy(<span class="keyword">new</span> <span class="title class_">Student</span>(), student)</span><br><span class="line">                .config(<span class="keyword">new</span> <span class="title class_">BeanCopyConfig</span>().setIgnoreNull(<span class="literal">false</span>))</span><br><span class="line">                .exec()</span><br><span class="line">                .get())</span><br><span class="line">                .extracting(<span class="string">&quot;realname&quot;</span>, <span class="string">&quot;age&quot;</span>, <span class="string">&quot;sex&quot;</span>, <span class="string">&quot;grade&quot;</span>)</span><br><span class="line">                .containsOnlyNulls();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试学生类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 姓名</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> String realname;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 年龄</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> Integer age;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 性别，男/女</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> String sex;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 年级，1 - 6</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> Integer grade;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">()</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String realname, Integer age, String sex, Integer grade)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.realname = realname;</span><br><span class="line">            <span class="built_in">this</span>.age = age;</span><br><span class="line">            <span class="built_in">this</span>.sex = sex;</span><br><span class="line">            <span class="built_in">this</span>.grade = grade;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">getRealname</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> realname;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Student <span class="title function_">setRealname</span><span class="params">(String realname)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.realname = realname;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Student <span class="title function_">setAge</span><span class="params">(Integer age)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.age = age;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">getSex</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> sex;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Student <span class="title function_">setSex</span><span class="params">(String sex)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.sex = sex;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Integer <span class="title function_">getGrade</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> grade;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Student <span class="title function_">setGrade</span><span class="params">(Integer grade)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.grade = grade;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> ToStringBuilder.reflectionToString(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试教师类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Teacher</span> &#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 姓名</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 年龄</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> Integer age;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 性别，true 男，false 女</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> Boolean sex;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 职位</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> String post;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Teacher</span><span class="params">()</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Teacher</span><span class="params">(String name, Integer age, Boolean sex, String post)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.name = name;</span><br><span class="line">            <span class="built_in">this</span>.age = age;</span><br><span class="line">            <span class="built_in">this</span>.sex = sex;</span><br><span class="line">            <span class="built_in">this</span>.post = post;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Teacher <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.name = name;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Integer <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Teacher <span class="title function_">setAge</span><span class="params">(Integer age)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.age = age;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Boolean <span class="title function_">getSex</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> sex;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Teacher <span class="title function_">setSex</span><span class="params">(Boolean sex)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.sex = sex;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">getPost</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> post;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Teacher <span class="title function_">setPost</span><span class="params">(String post)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.post = post;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> ToStringBuilder.reflectionToString(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果没有发生什么意外，那么一切将能够正常运行！</p>
+<hr>
+<p>好了，那么关于在 Java 中优雅的拷贝对象属性就到这里啦</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/26/others/rxliuliBlog/Java/%E4%BD%BF%E7%94%A8-Java-%E5%AE%9E%E7%8E%B0-setTimeout-setInterval/" rel="prev" title="使用 Java 实现 setTimeout/setInterval">
+                  <i class="fa fa-chevron-left"></i> 使用 Java 实现 setTimeout/setInterval
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/09/others/rxliuliBlog/Java/Java-%E4%BD%BF%E7%94%A8-FTP-SFTP/" rel="next" title="Java 使用 FTP/SFTP">
+                  Java 使用 FTP/SFTP <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="ebf881baba45c034f672f9f6d53fb10f"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

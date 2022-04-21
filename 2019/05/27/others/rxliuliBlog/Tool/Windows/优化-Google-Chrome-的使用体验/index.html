@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="优化 Google Chrome 的使用体验前言 假若我没有看见光明，我本可以忍受黑暗。  下面是吾辈在使用 Chrome 遇到的一些不舒服的地方，以及对应的解决方法。一切皆是为了一个目标：提高浏览器的使用体验！ 字体在之前吾辈也未曾对字体有过什么注意，直到后来听闻 MacOS 的字体显示比 Windows 上好很多，去看了一下确实如此。想要有一个好看的字体，字体本身极为重要，这里吾辈目前在使用，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优化 Google Chrome 的使用体验">
+<meta property="og:url" content="https://fangtianq.github.io/2019/05/27/others/rxliuliBlog/Tool/Windows/%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="优化 Google Chrome 的使用体验前言 假若我没有看见光明，我本可以忍受黑暗。  下面是吾辈在使用 Chrome 遇到的一些不舒服的地方，以及对应的解决方法。一切皆是为了一个目标：提高浏览器的使用体验！ 字体在之前吾辈也未曾对字体有过什么注意，直到后来听闻 MacOS 的字体显示比 Windows 上好很多，去看了一下确实如此。想要有一个好看的字体，字体本身极为重要，这里吾辈目前在使用，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190527190659.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190527221308.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190527221458.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531203702.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531225833.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531210354.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531210454.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531210759.png">
+<meta property="og:image" content="https://img.rxliuli.com/20191114123652.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531213523.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531214002.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531214650.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531220652.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531221709.png">
+<meta property="og:image" content="https://img.rxliuli.com/20191114123238.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531223619.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531223909.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190531224452.png">
+<meta property="article:published_time" content="2019-05-27T10:29:11.000Z">
+<meta property="article:modified_time" content="2019-12-08T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="Chrome">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190527190659.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/05/27/others/rxliuliBlog/Tool/Windows/%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/05/27/others/rxliuliBlog/Tool/Windows/%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/","path":"2019/05/27/others/rxliuliBlog/Tool/Windows/优化-Google-Chrome-的使用体验/","title":"优化 Google Chrome 的使用体验"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>优化 Google Chrome 的使用体验 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C"><span class="nav-number">1.</span> <span class="nav-text">优化 Google Chrome 的使用体验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93"><span class="nav-number">1.2.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%BD%91%E9%A1%B5%E9%BB%98%E8%AE%A4%E5%AD%97%E4%BD%93"><span class="nav-number">1.3.</span> <span class="nav-text">设置网页默认字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9C%E9%97%B4%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">夜间模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%91%8A%E8%BF%87%E6%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">广告过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E7%BF%BB%E9%A1%B5"><span class="nav-number">1.6.</span> <span class="nav-text">自动翻页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%8F%E8%94%BD-Google-%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C"><span class="nav-number">1.7.</span> <span class="nav-text">屏蔽 Google 搜索结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%BB%E7%BB%93%E5%90%8E%E5%8F%B0%E6%A0%87%E7%AD%BE%E9%A1%B5"><span class="nav-number">1.8.</span> <span class="nav-text">冻结后台标签页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%A2%9E%E5%BC%BA"><span class="nav-number">1.9.</span> <span class="nav-text">下载增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.10.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub-%E4%BC%98%E5%8C%96"><span class="nav-number">1.11.</span> <span class="nav-text">GitHub 优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E7%BB%93%E6%9E%84%E6%B5%8F%E8%A7%88%E4%BB%A3%E7%A0%81"><span class="nav-number">1.11.1.</span> <span class="nav-text">树结构浏览代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E4%BD%93%E5%8C%96-GitHub-%E7%94%A8%E6%88%B7%E6%B4%BB%E5%8A%A8"><span class="nav-number">1.11.2.</span> <span class="nav-text">立体化 GitHub 用户活动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E4%BB%93%E5%BA%93%E5%A4%A7%E5%B0%8F"><span class="nav-number">1.11.3.</span> <span class="nav-text">统计仓库大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.12.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/05/27/others/rxliuliBlog/Tool/Windows/%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="优化 Google Chrome 的使用体验 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          优化 Google Chrome 的使用体验
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-27 18:29:11" itemprop="dateCreated datePublished" datetime="2019-05-27T18:29:11+08:00">2019-05-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-12-09 00:00:00" itemprop="dateModified" datetime="2019-12-09T00:00:00+08:00">2019-12-09</time>
+    </span>
+
+
+  
+    <span id="/2019/05/27/others/rxliuliBlog/Tool/Windows/%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/" class="post-meta-item leancloud_visitors" data-flag-title="优化 Google Chrome 的使用体验" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="优化 Google Chrome 的使用体验" href="/2019/05/27/others/rxliuliBlog/Tool/Windows/%E4%BC%98%E5%8C%96-Google-Chrome-%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::5d073eaae8d1346ea0d6f081c2ac2a8c" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="优化-Google-Chrome-的使用体验"><a href="#优化-Google-Chrome-的使用体验" class="headerlink" title="优化 Google Chrome 的使用体验"></a>优化 Google Chrome 的使用体验</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>假若我没有看见光明，我本可以忍受黑暗。</p>
+</blockquote>
+<p>下面是吾辈在使用 Chrome 遇到的一些不舒服的地方，以及对应的解决方法。一切皆是为了一个目标：<strong>提高浏览器的使用体验！</strong></p>
+<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>在之前吾辈也未曾对字体有过什么注意，直到后来听闻 MacOS 的字体显示比 Windows 上好很多，去看了一下确实如此。想要有一个好看的字体，字体本身极为重要，这里吾辈目前在使用，也很推荐的字体是 <a target="_blank" rel="noopener" href="https://github.com/be5invis/Sarasa-Gothic">Sarasa Gothic</a>。支持 <strong>简中&#x2F;繁中&#x2F;英&#x2F;日</strong> 四种语言，虽然体积稍微庞大，但效果却是相当不错。</p>
+<p>Windows 字体预览</p>
+<p><img src="https://img.rxliuli.com/20190527190659.png" alt="更纱黑体"></p>
+<blockquote>
+<p>这里也推荐作为编程字体，毕竟程序中同时存在中英文，而一个同时支持中英文的等宽字体实在难得。</p>
+</blockquote>
+<h2 id="设置网页默认字体"><a href="#设置网页默认字体" class="headerlink" title="设置网页默认字体"></a>设置网页默认字体</h2><p>安装完了字体，然而 Chrome 默认并不会使用它，我们还需要 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne">Stylus</a> 进行指定。</p>
+<p><img src="https://img.rxliuli.com/20190527221308.png" alt="添加 UserCSS"></p>
+<p>添加一个新的样式，内容只需要设置所有元素使用的字体为 <strong>Sarasa Mono CL</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 全局字体设置 */</span></span><br><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;Sarasa Mono CL&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 强制指定 input 框中的字体 */</span></span><br><span class="line"><span class="selector-tag">input</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;Sarasa Mono CL&#x27;</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时候查看一下字体效果</p>
+<p><img src="https://img.rxliuli.com/20190527221458.png" alt="效果"></p>
+<h2 id="夜间模式"><a href="#夜间模式" class="headerlink" title="夜间模式"></a>夜间模式</h2><p>如果你像吾辈一样，喜欢暗色的主题，可以使用插件 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh">Dark Reader</a>，它能够让网页默认使用暗色模式，看起来和编辑器保持一致：并且，看起来很 <strong>Geek</strong>！</p>
+<p><img src="https://img.rxliuli.com/20190531203702.png" alt="暗色模式"></p>
+<p>看起来标题栏很违和？安装一个 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/morpheon-dark/mafbdhjdkjnoafhfelkjpchpaepjknad">Dark 主题</a> 试试看。<br>现在，是不是变得很和谐了呢？</p>
+<p><img src="https://img.rxliuli.com/20190531225833.png" alt="暗色标题栏"></p>
+<h2 id="广告过滤"><a href="#广告过滤" class="headerlink" title="广告过滤"></a>广告过滤</h2><p>目前而言，浏览网站时，没有一个广告过滤插件的话，广告的数量将是难以置信的庞大，而且讨人厌！<br>吾辈目前在 Chrome 上仅推荐 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm">uBlock Origin</a>，开源免费，不推荐 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb">Adblock Plus</a> 与 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/ublock/epcnnfbjfcgphgdmggkamkmgojdagdnn">Ublock</a>。前者将广告拦截做成了生意（参见 <a target="_blank" rel="noopener" href="https://36kr.com/p/5052897">向来以屏蔽互联网广告为己任的 AdBlock Plus，为什么卖起广告了？</a>），后者则是接手开发者的自私接受捐款导致原作者 Fork 并开发了新版本 Ublock Origin（参见 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/UBlock_Origin">Wiki uBlock Origin 历史</a>）。</p>
+<p>虽然吾辈基本上日常 Google，不过为了比较这里来看一下未进行广告过滤前的百度搜索结果</p>
+<p>搜索<strong>购物</strong>，天啊，第一页全都是<strong>广告</strong>，百度真的丧心病狂。。。</p>
+<blockquote>
+<p>注意每个搜索结果下面的小字 <strong>广告</strong></p>
+</blockquote>
+<p><img src="https://img.rxliuli.com/20190531210354.png" alt="百度的广告"></p>
+<p>使用插件后的效果</p>
+<p><img src="https://img.rxliuli.com/20190531210454.png" alt="过滤后的百度搜索"></p>
+<p>嗯，清爽了许多呢 ~ o(*￣ ▽ ￣*)o</p>
+<p>这里对比一下 Google 的搜索结果，可以明显看出来百度的广告的数量之多。。。</p>
+<p><img src="https://img.rxliuli.com/20190531210759.png" alt="对比的 Google 搜索结果"></p>
+<h2 id="自动翻页"><a href="#自动翻页" class="headerlink" title="自动翻页"></a>自动翻页</h2><p>如果你也觉得搜索结果需要翻页好麻烦，那么 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/uautopagerize/kdplapeciagkkjoignnkfpbfkebcfbpb">uAutoPagerize</a> 可以一样可以帮到你！</p>
+<blockquote>
+<p>相比于 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/autopagerize/igiofjhpmpihnifddepnpngfjhkfenbp">AutoPagerize</a> 万年不更新，uAutoPagerize 仍在积极维护中！</p>
+</blockquote>
+<p>下面是使用了 uAutoPagerize 后的 Google 搜索结果，会在滚动到接近底部时，自动获取下一页的内容并拼接到最后！</p>
+<p><img src="https://img.rxliuli.com/20191114123652.png" alt="使用 uAutoPagerize"></p>
+<p>当然，它也支持百度哦</p>
+<h2 id="屏蔽-Google-搜索结果"><a href="#屏蔽-Google-搜索结果" class="headerlink" title="屏蔽 Google 搜索结果"></a>屏蔽 Google 搜索结果</h2><p>当你搜索中文技术相关的内容时，一定会遇到一个令人厌恶的社区 – CSDN 博客。里面的内容基本上都是复制粘贴，甚至作者都并未真实尝试过就发出来了，实在是太烂了！<br>所以，使用 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a> 油猴插件 + 油猴脚本便可以轻松屏蔽掉它们。</p>
+<blockquote>
+<p>吾辈并不否认 CSDN 有很多有趣的作者，但是啊，相比于这个平台的大多数人，他们实在太少了，简直如同大海捞针一般。<br><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh/Greasemonkey">油猴脚本</a>: 是一段可以在某个网页自动运行的 JavaScript 脚本，事实上，抛开 Tampermonkey 这个运行容器不说，油猴脚本就是彻头彻尾的 JavaScript 代码，任何了解过 Web 开发的人应该都能写一个简单的油猴脚本。如果你打算尝试玩玩油猴脚本，可以参考吾辈踩过的坑 <a target="_blank" rel="noopener" href="https://blog.rxliuli.com/p/75bbc83f/">Greasemonkey 踩坑之路</a></p>
+</blockquote>
+<p>你需要先安装 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a> 插件，然后在 <a target="_blank" rel="noopener" href="https://greasyfork.org/zh-CN/">Greasy Fork</a> 安装脚本 <a target="_blank" rel="noopener" href="https://greasyfork.org/zh-CN/scripts/1682">Google Hit Hider by Domain</a>。</p>
+<p>然后在 Google 搜索 <a target="_blank" rel="noopener" href="https://www.google.com/search?q=js+%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D">js 数组去重</a>，可以看到包含了几个的 CSDN 博客的结果</p>
+<p><img src="https://img.rxliuli.com/20190531213523.png" alt="CSND 博客搜索结果"></p>
+<p>现在，让我们从 Google 搜索中屏蔽 blog.csdn.net 这个域名</p>
+<p><img src="https://img.rxliuli.com/20190531214002.png" alt="Block 操作"></p>
+<p>屏蔽后的搜索结果，CSDN Blog 那些垃圾博客不见了，心情大好！</p>
+<p><img src="https://img.rxliuli.com/20190531214650.png" alt="屏蔽后的结果"></p>
+<h2 id="冻结后台标签页"><a href="#冻结后台标签页" class="headerlink" title="冻结后台标签页"></a>冻结后台标签页</h2><p>你是否也曾因为 Chrome 开了太多标签页而占用了庞大的内存？那么 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/the-great-suspender/klbibkeccnjlkjkiokjodocebajanakg">The Great Suspender</a> 就是最好的帮手，它能自动冻结后台一段时间没有访问的标签页，以便于释放系统内存。并且，当你再次访问时，标签页将会自动重新加载。如果你也经常开了很多个标签页忘记关闭了，那么它可以帮助你自动管理他们。</p>
+<p>下面演示多个标签页被冻结的效果</p>
+<p><img src="https://img.rxliuli.com/20190531220652.png" alt="冻结的标签页"></p>
+<h2 id="下载增强"><a href="#下载增强" class="headerlink" title="下载增强"></a>下载增强</h2><p>你使用 Chrome 下载过资料么？是否也对 Chrome 单线程下载并且在下载完成后强制检查资源安全性感到不满？那么 <a target="_blank" rel="noopener" href="https://www.freedownloadmanager.org/zh/">FDM</a> 应该是 Windows 上比较好的选择下载工具了，你可以下载并安装到 PC 上，然后安装 Chrome 插件 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/free-download-manager/ahmpjcflkgiildlgicmcieglgoilbfdp">Free Download Manager</a> 即可将所有 Chrome 中的下载请求交给 FDM，并且，它携带着 Cookie，所以即使是有权限校验的下载也能够胜任。</p>
+<p>FDM 的优势</p>
+<ul>
+<li>多线程下载</li>
+<li>断点续传</li>
+<li>支持 BT</li>
+<li>自动分类</li>
+<li>下载限速</li>
+<li>国际化</li>
+<li>自由免费</li>
+</ul>
+<p>所以，如果经常下载资料的话推荐入坑 FDM，这里放一张首页</p>
+<p><img src="https://img.rxliuli.com/20190531221709.png" alt="FDM 首页"></p>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>使用浏览器，一些高频操作的快捷键也是必不可少的。</p>
+<ul>
+<li><code>CS-T</code>: 重新打开上一个关闭的标签页</li>
+<li><code>中键/C-左键</code>: 强制在新标签页打开链接</li>
+<li><code>中键(浏览器标签上)</code>: 关闭这个标签页</li>
+<li><code>A-左键</code>: 选择链接中的文字（不会触发拖动链接）</li>
+<li><code>S-滚轮</code>: 水平移动滚动条</li>
+<li><code>空格</code>: 翻到下一页</li>
+<li><code>F12</code>: 开启&#x2F;关闭开发者工具</li>
+<li><code>C-R</code>: 重新加载当前页面</li>
+<li><code>CS-R</code>: 硬性重新加载</li>
+<li><code>CS-N</code>: 打开隐私标签页</li>
+<li><code>C-T</code>: 打开新的标签页</li>
+<li><code>C-W</code>: 关闭当前标签页</li>
+</ul>
+<h2 id="GitHub-优化"><a href="#GitHub-优化" class="headerlink" title="GitHub 优化"></a>GitHub 优化</h2><p>众所周知，GitHub 作为最大的开源平台，平时访问的频率是相当高的，这里吾辈推荐一些插件&#x2F;UserCSS 以增强使用体验。</p>
+<h3 id="树结构浏览代码"><a href="#树结构浏览代码" class="headerlink" title="树结构浏览代码"></a>树结构浏览代码</h3><p>GitHub 浏览代码侧边栏没有一个文件栏实在难受，所以这里推荐 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/gitako-github-file-tree/giljefjcheohhamkjphiebfjnlphnokk">Gitako</a>   这个插件。它能够为 GitHub 添加一个侧边栏，极大的方便了在线代码浏览。</p>
+<blockquote>
+<p>相比于 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc">Octotree</a>，Gitako 的性能更好，而且是完全免费的。</p>
+</blockquote>
+<p><img src="https://img.rxliuli.com/20191114123238.png" alt="Gitako 侧边文件夹"></p>
+<h3 id="立体化-GitHub-用户活动"><a href="#立体化-GitHub-用户活动" class="headerlink" title="立体化 GitHub 用户活动"></a>立体化 GitHub 用户活动</h3><p>当你查看一个 GitHub 用户的活动概览时，总是平面方块未免有些无聊，而且以颜色深浅区分也尚不明了。</p>
+<p><img src="https://img.rxliuli.com/20190531223619.png" alt="GitHub 用户活动平面图"></p>
+<p>所以，你可以使用 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/isometric-contributions/mjoedlfflcchnleknnceiplgaeoegien">Isometric Contributions</a> 插件，让活动变得更有趣一点，变成更直观的 3D 柱状图。</p>
+<p><img src="https://img.rxliuli.com/20190531223909.png" alt="GitHub 用户活动 3D 图"></p>
+<h3 id="统计仓库大小"><a href="#统计仓库大小" class="headerlink" title="统计仓库大小"></a>统计仓库大小</h3><p>或许你也有 clone 之前先知道仓库大小的习惯，这在网络稍差的环境中尤为重要，例如 TypeScript 的仓库大小超过 1G，如果没有准备的话直接下载很容易炸！</p>
+<blockquote>
+<p>GitHub 下载仓库时并不会给出下载的百分比，所以什么时候下载完成是个玄学。。。</p>
+</blockquote>
+<p><img src="https://img.rxliuli.com/20190531224452.png" alt="统计仓库大小"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Chrome 有很多可以优化体验的地方，这里也只是吾辈所接触到的一部分罢了，欢迎在下面留言补充！</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Chrome/" rel="tag"># Chrome</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/23/others/rxliuliBlog/JavaScript/JavaScript-TypeScript-%E8%BF%81%E7%A7%BB%E4%BD%93%E9%AA%8C/" rel="prev" title="JavaScript => TypeScript 迁移体验">
+                  <i class="fa fa-chevron-left"></i> JavaScript => TypeScript 迁移体验
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/10/others/rxliuliBlog/JavaScript/JavaScript-%E8%A7%84%E8%8C%83%E6%95%B4%E7%90%86/" rel="next" title="JavaScript 规范整理">
+                  JavaScript 规范整理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="5d073eaae8d1346ea0d6f081c2ac2a8c"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+var $=unsafeWindow.jQuery||top.jQuery;(function(){"use strict";let e=unsafeWindow.__INITIAL_SSR_STATE__;let i=e.NoteView.noteInfo.imageList;$(".slide li").each((function(e,n){$(n).css("height","450");$(n).append(`<img src="//ci.xiaohongshu.com/${i[e].traceId}" />`)}))})();

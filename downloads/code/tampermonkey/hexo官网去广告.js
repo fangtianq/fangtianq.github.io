@@ -1,0 +1,1 @@
+var $=unsafeWindow.jQuery||top.jQuery;(function(){"use strict";$(".adsbygoogle").remove()})();

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="IDEA 使用技巧IDEA 全局默认配置使用场景：使用 IDEA 经常会遇到一种情况，在这个项目自顶了一些设置（Settings 而非 Project Structure，例如 自定义的 Maven，项目字符编码等等），到了新的项目全部恢复了默认值又要重新设定。 解决方案：通过 IDEA 的默认设置（File &gt; Other Settings &gt; Default Settings）就可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDEA 使用技巧">
+<meta property="og:url" content="https://fangtianq.github.io/2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="IDEA 使用技巧IDEA 全局默认配置使用场景：使用 IDEA 经常会遇到一种情况，在这个项目自顶了一些设置（Settings 而非 Project Structure，例如 自定义的 Maven，项目字符编码等等），到了新的项目全部恢复了默认值又要重新设定。 解决方案：通过 IDEA 的默认设置（File &gt; Other Settings &gt; Default Settings）就可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190627110522.gif">
+<meta property="og:image" content="https://img.rxliuli.com/20191212090747.png">
+<meta property="og:image" content="https://img.rxliuli.com/20191224100414.png">
+<meta property="og:image" content="https://img.rxliuli.com/20191212090627.png">
+<meta property="article:published_time" content="2018-07-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-12-23T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="IDEA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190627110522.gif">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/","path":"2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA 使用技巧/","title":"IDEA 使用技巧"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IDEA 使用技巧 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IDEA-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">1.</span> <span class="nav-text">IDEA 使用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IDEA-%E5%85%A8%E5%B1%80%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">IDEA 全局默认配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alt-Enter-%E6%93%8D%E4%BD%9C%E6%8F%90%E7%A4%BA"><span class="nav-number">1.2.</span> <span class="nav-text">Alt-Enter 操作提示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Double-Shift-%E4%BB%BB%E6%84%8F%E6%90%9C%E7%B4%A2"><span class="nav-number">1.3.</span> <span class="nav-text">Double Shift 任意搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E7%BC%96%E8%BE%91"><span class="nav-number">1.4.</span> <span class="nav-text">列编辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.5.</span> <span class="nav-text">常用快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">1.6.</span> <span class="nav-text">常用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E8%A8%80%E6%B3%A8%E5%85%A5"><span class="nav-number">1.7.</span> <span class="nav-text">语言注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Live-Template-x2F-Postfix-Template-%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.8.</span> <span class="nav-text">Live Template&#x2F;Postfix Template 模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%9C%89%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="nav-number">1.9.</span> <span class="nav-text">一些有用的配置项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#soft-wrap-%E5%BC%BA%E5%88%B6%E6%8D%A2%E8%A1%8C"><span class="nav-number">1.9.1.</span> <span class="nav-text">soft wrap 强制换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E6%BA%90%E4%BB%A3%E7%A0%81%E8%87%AA%E5%8A%A8%E6%BB%9A%E5%8A%A8%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.9.2.</span> <span class="nav-text">根据源代码自动滚动项目</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IDEA 使用技巧 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IDEA 使用技巧
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2018-07-31T00:00:00+08:00">2018-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-12-24 00:00:00" itemprop="dateModified" datetime="2019-12-24T00:00:00+08:00">2019-12-24</time>
+    </span>
+
+
+  
+    <span id="/2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" class="post-meta-item leancloud_visitors" data-flag-title="IDEA 使用技巧" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="IDEA 使用技巧" href="/2018/07/30/others/rxliuliBlog/Tool/IDEA/IDEA%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::a4a8073d7bf595cd370f9ebc2f67b9a4" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="IDEA-使用技巧"><a href="#IDEA-使用技巧" class="headerlink" title="IDEA 使用技巧"></a>IDEA 使用技巧</h1><h2 id="IDEA-全局默认配置"><a href="#IDEA-全局默认配置" class="headerlink" title="IDEA 全局默认配置"></a>IDEA 全局默认配置</h2><p>使用场景：<br>使用 IDEA 经常会遇到一种情况，在这个项目自顶了一些设置（<strong>Settings</strong> 而非 <strong>Project Structure</strong>，例如 自定义的 Maven，项目字符编码等等），到了新的项目全部恢复了默认值又要重新设定。</p>
+<p>解决方案：<br>通过 IDEA 的默认设置（<strong>File &gt; Other Settings &gt; Default Settings</strong>）就可以设定全局的 <strong>Settings</strong>，而不需要在每个项目中重新设定一次。</p>
+<blockquote>
+<p>默认设定按吾辈的理解应该是用于设定那些可以使项目级别的设置，例如 <strong>代码检查</strong>，<strong>代码样式</strong> 等。毕竟大部分的设置都是全局的嘛</p>
+</blockquote>
+<h2 id="Alt-Enter-操作提示"><a href="#Alt-Enter-操作提示" class="headerlink" title="Alt-Enter 操作提示"></a>Alt-Enter 操作提示</h2><p>Alter-Enter 大概是 IDEA 最强大快捷键了，放在不同的位置有不同的功能。</p>
+<ul>
+<li>警告（代码下面有黄色波浪线），会自动帮我们修复警告。<br>代码重复，代码冗余（1&#x2F;0 之类），多余的变量（声明完就立刻返回&#x2F;声明完最多只使用了一次）</li>
+<li>错误（代码下面有红色波浪线），一般会提出合适的修复建议。<br>代码缺少注解，具体子类有未实现的方法</li>
+<li>接口名（接口的名字），一般会提示可以生成实现类或者跳转到实现类</li>
+<li>自动修复变量名的问题（不符合驼峰）</li>
+<li>普通类名，一般会提示创建测试类，没有 JavaDoc 注释还会提示生成注释</li>
+<li>字符串里面，会提示使用 <a href="#%E8%AF%AD%E8%A8%80%E6%B3%A8%E5%85%A5">语言注入</a></li>
+<li>跳转到注入语言的编辑面板</li>
+</ul>
+<h2 id="Double-Shift-任意搜索"><a href="#Double-Shift-任意搜索" class="headerlink" title="Double Shift 任意搜索"></a>Double Shift 任意搜索</h2><p>这个功能其实是集成了多个搜索，但有时候真的很好用，集成的功能包括</p>
+<ul>
+<li>搜索 <code>Settings</code>（<code>CS-A</code>）：搜索 IDEA 的设置</li>
+<li>搜索 <code>class</code>（<code>C-N</code>）：搜索代码里的 class 类</li>
+<li>搜索 <code>File</code>（<code>CS-N</code>）：搜索任何文件</li>
+<li>搜索 <code>symbol</code>（<code>CSA-N</code>）：搜索符号，主要用于搜索 Spring MVC 路径</li>
+<li>搜索 <code>Tool Windows</code>（<code>C-Tab</code>）：搜索工具窗口</li>
+<li>搜索 <code>Run configuration</code>（<code>SA-F9/F10</code>）：搜索运行的配置项</li>
+<li>搜索 <code>Action</code>（<code>Alt-Enter</code>）：搜索当前位置的代码可执行操作</li>
+</ul>
+<p>如果你知道需要搜索的类型，请尽量使用单独的搜索选项，毕竟速度上会有一些优势</p>
+<h2 id="列编辑"><a href="#列编辑" class="headerlink" title="列编辑"></a>列编辑</h2><p>列编辑是一个非常有趣的功能，可以让你同时编辑多行文本。</p>
+<p>共有下面几种方式触发</p>
+<ul>
+<li>使用鼠标中键下拉或上拉选中多行</li>
+<li>使用 <code>A-J</code> 依次选择相同的代码片段，并使用 <code>SA-J</code> 取消选择</li>
+<li>使用 <code>CSA-J</code> 选中当前文件所有匹配的代码片段</li>
+<li>使用 <code>CA-Top/Bottom</code> 向上或向下选择多行（需要添加快捷键 <code>Editor Actions =&gt; Clone Caret Above/Clone Caret Below</code>）</li>
+</ul>
+<p>GIF 演示</p>
+<p><img src="https://img.rxliuli.com/20190627110522.gif" alt="GIF 演示"></p>
+<h2 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h2><blockquote>
+<p>快捷键想要熟练没有什么好的办法，却是只能多加使用了。如果你还不熟悉 IDEA 的快捷键，可以使用 <a target="_blank" rel="noopener" href="https://github.com/halirutan/IntelliJ-Key-Promoter-X">Key Promoter X</a> 插件来提示你使用快捷键操作。</p>
+</blockquote>
+<ul>
+<li>搜索<ul>
+<li><code>C-N</code> ：搜索类</li>
+<li><code>CS-N</code> ：搜索文件</li>
+<li><code>CSA-N</code> ：搜索字段名(包含数据库字段)&#x2F;方法名</li>
+<li><code>SS</code> ：搜索接口路径，类名，文件名，字段名&#x2F;方法名</li>
+<li><code>CS-F</code>：全局搜索代码（该快捷键与 Windows10 的默认输入法冲突，可以修改快捷键，或者换用其他输入法）</li>
+</ul>
+</li>
+<li>面板操作<ul>
+<li><code>ESC</code>：返回到编辑器中</li>
+<li><code>C-E</code> ：列出最近操作的文件历史以及可操作面板列表，然后可以通过输入单词跳转到对应的面板</li>
+<li><code>C-Tab -&gt; *</code>：列出最近操作的文件历史以及可操作面板，并能通过单个字母导航到对应的操作面板（需要一直按住 <code>Ctrl</code>）</li>
+<li><code>A-Top/Bottom/Left/Right</code> ：左右是切换标签页，上下是切换方法</li>
+<li><code>F12</code> ：跳转到最后一个使用的面板</li>
+<li><code>CS-F12</code> ：收起&#x2F;显示所有面板</li>
+<li><code>C-F12</code> ：在一个悬浮面板上列出所有字段&#x2F;方法</li>
+</ul>
+</li>
+<li>选择<ul>
+<li><code>C-W/CS-W</code> ：扩大&#x2F;缩小选择区域范围</li>
+<li><code>CS-[/]</code>：选择至当前区域的开始&#x2F;结束</li>
+<li><code>A/SA-J</code> ：选中&#x2F;反选相同的单词进行列编辑（一个个的选中）</li>
+<li><code>CSA-J</code> ：选中多个相同的单词（当前文件全部选中）</li>
+</ul>
+</li>
+<li>代码跳转<ul>
+<li><code>CA-Left/Right</code> ：跳转到上一个&#x2F;下一个浏览的位置</li>
+<li><code>CS-Backspace</code> ：回退到上一个编辑的位置</li>
+<li><code>C-Top/Bottom/Left/Right</code>：左右是跳转到上一个&#x2F;下一个单词，上下是移动屏幕（非移动光标）</li>
+<li><code>C-;</code> ：屏幕内任意跳转（需要安装 <strong>Ace Jumper</strong> 插件）</li>
+<li><code>Home</code> ：跳转到行首&#x2F;编辑器的最左侧</li>
+<li><code>End</code> ：跳转到行尾</li>
+<li><code>C-Home/End</code> ：跳转到文件的开始&#x2F;结尾</li>
+<li><code>C-Page Up/Page Down</code> ：跳转到当前屏幕的第一行&#x2F;最后一行</li>
+<li><code>F2/S-F2</code> ：跳转到下一个&#x2F;上一个错误&#x2F;警告的位置</li>
+<li><code>C-Left/C-Right</code> ：跳转到上一个&#x2F;下一个单词的位置</li>
+<li><code>C-B</code> ：跳转到变量&#x2F;方法的声明处</li>
+<li><code>CS-B</code> ：跳转到变量&#x2F;方法的具体实现处，如果不止一处就会列出下拉框<blockquote>
+<p>注：这里吾辈修改了快捷键，毕竟 <code>CA-B</code> 单手按起来还真有点麻烦</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>小键盘专用<ul>
+<li><code>CS-Number</code><ul>
+<li><code>CS-8/2/4/6</code> ：相当于 <code>C-Top/Bottom/Left/Right</code></li>
+<li><code>CS-7/1/9/3</code> ：相当于 <code>C-Home/End/Page Up/Page Down</code></li>
+<li><code>CS-0</code> ：相当于 <code>C-C</code></li>
+<li><code>CS-.</code> ：相当于 <code>C-Delete</code></li>
+</ul>
+</li>
+<li><code>SA-Number</code><ul>
+<li><code>SA-8/2/4/6</code> ：相当于 <code>A-Top/Bottom/Left/Right</code></li>
+<li><code>SA-7</code> ：相当于 <code>A-Home</code></li>
+<li><code>SA-0</code> ：相当于 <code>A-Insert</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注：在 IDEA 看来左侧字母上面的数字键和右侧小键盘的数字键是不同的！<br>注: <code>Shift</code> 一般用于 <strong>增强&#x2F;取反</strong> 功能。例如 <code>C-F</code> 搜索当前文件，<code>CS-F</code> 搜索所有文件，<code>F2</code> 跳转到下一个错误，<code>S-F2</code> 跳转到上一个错误。</p>
+</blockquote>
+<h2 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/4441-jrebel-for-intellij">JRebel for IntelliJ</a>：做 Java Web 开发时真心免不了的 Plugin，能够有效解决 Web 容器（例如 Apache Tomcat）启动速度慢的问题（因为几乎所有的资源都能够热加载，热部署）</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7007-liveedit">LiveEdit</a>：提供了 HTML&#x2F;CSS&#x2F;JavaScript 的实时预览和刷新功能</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/10119-mybatisx">MybatisX</a>：Mybatis 的一个辅助开发插件，能够比较愉快的使用 Mybatis 框架了</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines">Alibaba Java Coding Guidelines</a>：Alibaba 出品的一个 Java 规范检查插件，能够规避一些不好的代码</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/8579-translation">Translation</a>：目前使用感觉最好的翻译插件，能够提供比较长的内容进行翻译（某些翻译插件只能翻译很短的内容）</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/2162-string-manipulation">String Manipulation</a>：字符串操作工具，可以方便对变量名或其他字符串修改为其他风格，例如将变量从 <strong>驼峰命名</strong>（Java 标准命名） 修改为 <strong>下划线命名</strong>（SQL 标准命名）或者 <strong>中缀线命名</strong>（HTML&#x2F;CSS 标准命名）。<blockquote>
+<p>其实这么多命名规范真心坑。。。</p>
+</blockquote>
+</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/9792-key-promoter-x">Key Promoter X</a>：使用鼠标操作时提示对应的快捷键</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/9862-custom-postfix-templates">Custom Postfix Templates</a>：提供自定义的后缀模板</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7896-markdown-navigator">Markdown Navigator</a>：IDEA 平台的 Markdown 写作插件，比自带的 Markdown Support 要好很多，主要在需要写的 Markdown 内容中含有代码时比较方便</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7179-maven-helper">Maven Helper</a>：一个 Apache Maven 的辅助操作插件</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7275-codeglance">CodeGlance</a>：在编辑器右侧显示一块代码缩略图，主要为了方便使用滑块进行上下滑动</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7125-grep-console">Grep Console</a>：自定义控制台的输出颜色</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7495--ignore">.ignore</a>：在使用版本控制时，快速忽略某些文件&#x2F;文件夹，目前支持广泛</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/5834-cmd-support">CMD support</a>：Cmd 支持，主要是方便在 IDEA 中直接运行 bat 脚本</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/6098-nodejs">NodeJS</a>：集成了 NodeJS，可以直接在 IDEA 中运行 NodeJS</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/9442-vue-js">Vue.js</a>：集成 Vue.js 框架</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7494-eslint">ESLint</a>：前端代码规范</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/10456-prettier">Prettier</a>：根据上面 ESLint 的规范自动格式化代码</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/8000-properties-to-yaml-converter">Properties to YAML Converter</a>：将 <code>Properties</code> 文件快速转换为 <code>YAML</code> 格式的配置文件</li>
+<li><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7425-wakatime">WakaTime</a>：统计使用的编程语言，不同 IDE 的记录</li>
+</ul>
+<h2 id="语言注入"><a href="#语言注入" class="headerlink" title="语言注入"></a>语言注入</h2><p>为某一段区域的注入其他语言，IDEA 最常见的就是在 JavaScript 的字符串中注入了 HTML&#x2F;CSS&#x2F;JavaScript，使得在字符串内也有代码提示可用。</p>
+<blockquote>
+<p>此功能常用于 JavaScript 字符串拼接 HTML 代码，当然目前这个需求在 ES6 中由 <code>模板字符串</code> 原生实现了。</p>
+</blockquote>
+<p>我们也可以手动注入，例如为 Java 中的字符串注入 SQL 语言，这样在写 SQL 语句就不用跑到 SQL 编辑器那里写完 SQL 语句在粘贴过来了。</p>
+<h2 id="Live-Template-x2F-Postfix-Template-模板"><a href="#Live-Template-x2F-Postfix-Template-模板" class="headerlink" title="Live Template&#x2F;Postfix Template 模板"></a>Live Template&#x2F;Postfix Template 模板</h2><p>Live Template 模板就是那种在 Java 中输入 <code>sout</code> 就可以生成以下代码的模板功能，而这功能在 IDEA 还可以自定义。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println($END$);</span><br></pre></td></tr></table></figure>
+
+<p>例如吾辈就定义了 <code>autowired</code> 用于生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span> <span class="keyword">private</span> $BeanClass$ $BeanName$;</span><br><span class="line">$END$</span><br></pre></td></tr></table></figure>
+
+<p>或者 <code>thread</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">    $END$</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+
+<p>此功能使用得当甚至能大量减少重复编码。不过相比之下另外一个代码生成功能吾辈更加喜欢，但 IDEA 在 2018.2 版本之前并不支持自定义，所以功能上来说就显得稍弱一些，当然吾辈也使用插件（Custom Postfix Templates <a target="_blank" rel="noopener" href="https://github.com/xylo/intellij-postfix-templates#download">GitHub</a>）实现了自定义的需求。最新版本 IDEA 原生支持了自定义功能（<a target="_blank" rel="noopener" href="https://blog.jetbrains.com/idea/2014/03/postfix-completion/">IDEA 官方介绍</a>），但实现尚不完善。</p>
+<p>此功能可以做到另外一种形式的模板字符串，例如输入 <code>&quot;str&quot;.var</code> 然后回车会得到</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">$variableName$</span> <span class="operator">=</span> <span class="string">&quot;str&quot;</span>;$END$</span><br></pre></td></tr></table></figure>
+
+<p>或者 <code>&quot;str&quot;.sout</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sysout.out.println(<span class="string">&quot;str&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>吾辈也自定义一些，例如输入了 <code>&quot;str&quot;.val</code>，会生成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">String</span> <span class="variable">$variableName$</span> <span class="operator">=</span> <span class="string">&quot;str&quot;</span>;$END$</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些有用的配置项"><a href="#一些有用的配置项" class="headerlink" title="一些有用的配置项"></a>一些有用的配置项</h2><h3 id="soft-wrap-强制换行"><a href="#soft-wrap-强制换行" class="headerlink" title="soft wrap 强制换行"></a>soft wrap 强制换行</h3><p>IDEA 在一行过长时会出现横向滚动条，那我们不想要它出现以便于能直接使用键盘就能看完要怎么办呢？</p>
+<p>可以在 <em>Settings ⇒ Editor ⇒ General ⇒ Soft Wraps</em> 中找到设置，将 <strong>Soft-wrap files</strong> 的值修改为 <code>*</code> 即可。</p>
+<p><img src="https://img.rxliuli.com/20191212090747.png" alt="强制换行"></p>
+<h3 id="根据源代码自动滚动项目"><a href="#根据源代码自动滚动项目" class="headerlink" title="根据源代码自动滚动项目"></a>根据源代码自动滚动项目</h3><p>可以在跳转文件时，使文件目录自动聚焦在当前编辑的文件上，这在很多时候是有利于查看目录&#x2F;文件的。</p>
+<p>2019.3 之后</p>
+<p>在 <em>Project ⇒ Always Select Opened File</em> 中可以找到这个配置，启用即在整个项目中启用了。</p>
+<p><img src="https://img.rxliuli.com/20191224100414.png" alt="根据源代码自动滚动项目设置"></p>
+<p>2019.3 之前</p>
+<p>在 <em>Project ⇒ Tool ⇒ Autoscroll from Source</em> 中可以找到这个配置，启用即在整个项目中启用了。</p>
+<p><img src="https://img.rxliuli.com/20191212090627.png" alt="根据源代码自动滚动项目设置"></p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IDEA/" rel="tag"># IDEA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/07/22/others/rxliuliBlog/Tool/Git/Git%20%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%8F%96%E6%B6%88%E4%BB%A3%E7%90%86/" rel="prev" title="Git 设置和取消代理">
+                  <i class="fa fa-chevron-left"></i> Git 设置和取消代理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/30/others/rxliuliBlog/Java/%E4%BD%BF%E7%94%A8%20Spring%20%E6%97%B6%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95/" rel="next" title="使用 Spring 时进行测试">
+                  使用 Spring 时进行测试 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="a4a8073d7bf595cd370f9ebc2f67b9a4"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Vue 深度监听场景吾辈在前端项目中需要监听 Vue 组件中的一个数组的变化，然而没想到这个简单的功能却发现并没有想象中的容易。在废了一波三折之后终于算是实现了效果，所以便在这里记录一下。 代码 吾辈写一个 demo 在 GitHub，如果需要可以去看下。也有一个 网站 用来演示下面的三种方法的效果  123456789101112131415161718192021222324252627282">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 深度监听">
+<meta property="og:url" content="https://fangtianq.github.io/2018/11/27/others/rxliuliBlog/JavaScript/Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="Vue 深度监听场景吾辈在前端项目中需要监听 Vue 组件中的一个数组的变化，然而没想到这个简单的功能却发现并没有想象中的容易。在废了一波三折之后终于算是实现了效果，所以便在这里记录一下。 代码 吾辈写一个 demo 在 GitHub，如果需要可以去看下。也有一个 网站 用来演示下面的三种方法的效果  123456789101112131415161718192021222324252627282">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-11-27T04:57:46.000Z">
+<meta property="article:modified_time" content="2018-11-27T04:57:46.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="VueJS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/11/27/others/rxliuliBlog/JavaScript/Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2018/11/27/others/rxliuliBlog/JavaScript/Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC/","path":"2018/11/27/others/rxliuliBlog/JavaScript/Vue-深度监听/","title":"Vue 深度监听"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vue 深度监听 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC"><span class="nav-number">1.</span> <span class="nav-text">Vue 深度监听</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8-watch-%E7%9B%91%E5%90%AC"><span class="nav-number">1.3.</span> <span class="nav-text">直接使用 watch 监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-deep-%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC"><span class="nav-number">1.4.</span> <span class="nav-text">使用 deep 属性设置深度监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%A2%9D%E5%A4%96%E7%9A%84%E5%8F%98%E9%87%8F%E4%BF%9D%E5%AD%98%E6%97%A7%E5%80%BC"><span class="nav-number">1.5.</span> <span class="nav-text">使用额外的变量保存旧值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/11/27/others/rxliuliBlog/JavaScript/Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vue 深度监听 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue 深度监听
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-27 12:57:46" itemprop="dateCreated datePublished" datetime="2018-11-27T12:57:46+08:00">2018-11-27</time>
+    </span>
+
+
+  
+    <span id="/2018/11/27/others/rxliuliBlog/JavaScript/Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC/" class="post-meta-item leancloud_visitors" data-flag-title="Vue 深度监听" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="Vue 深度监听" href="/2018/11/27/others/rxliuliBlog/JavaScript/Vue-%E6%B7%B1%E5%BA%A6%E7%9B%91%E5%90%AC/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::e5ba5b98e1df6bb8559426c3fda39d6d" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Vue-深度监听"><a href="#Vue-深度监听" class="headerlink" title="Vue 深度监听"></a>Vue 深度监听</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>吾辈在前端项目中需要监听 Vue 组件中的一个数组的变化，然而没想到这个简单的功能却发现并没有想象中的容易。在废了一波三折之后终于算是实现了效果，所以便在这里记录一下。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><blockquote>
+<p>吾辈写一个 demo 在 <a target="_blank" rel="noopener" href="https://github.com/rxliuli/vue-deep-monitoring">GitHub</a>，如果需要可以去看下。也有一个 <a target="_blank" rel="noopener" href="https://vue-deep-monitoring.rxliuli.com/">网站</a> 用来演示下面的三种方法的效果</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">v-card</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">v-card-title</span> <span class="attr">primary-title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>普通监听<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">v-subheader</span>&gt;</span>不会发生变化<span class="tag">&lt;/<span class="name">v-subheader</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">v-card-title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">v-card-text</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">v-list</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">v-list-tile</span> <span class="attr">v-for</span>=<span class="string">&quot;item in items&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;item.k&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">v-text-field</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">:label</span>=<span class="string">&quot;`输入框 $&#123;item.k&#125;`&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">v-model</span>=<span class="string">&quot;item.v&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          &gt;</span><span class="tag">&lt;/<span class="name">v-text-field</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">v-list-tile</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">v-list</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">v-layout</span> <span class="attr">row</span> <span class="attr">wrap</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">v-flex</span> <span class="attr">md4</span> <span class="attr">xs12</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">h2</span>&gt;</span>旧值<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; oldVal &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">v-flex</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">v-flex</span> <span class="attr">md4</span> <span class="attr">sm4</span> <span class="attr">xs12</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">h2</span>&gt;</span>差异<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; difference &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">v-flex</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">v-flex</span> <span class="attr">md4</span> <span class="attr">xs12</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">h2</span>&gt;</span>新值<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; val &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">v-flex</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">v-layout</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">v-layout</span> <span class="attr">row</span> <span class="attr">wrap</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">v-flex</span> <span class="attr">xs12</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">h4</span>&gt;</span>最后更新于：&#123;&#123; lastUpdateTime &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">v-flex</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">v-layout</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">v-card-text</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">v-card</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">&#x27;lodash&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">data</span>: <span class="function">() =&gt;</span> (&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="comment">// 吾辈想要监视这个的变化</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">items</span>: [],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="comment">// 下面的两个属性仅用于展示</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">oldVal</span>: [],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">val</span>: [],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">difference</span>: [],</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="attr">lastUpdateTime</span>: <span class="keyword">new</span> <span class="title class_">Date</span>()</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;),</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="comment">/**</span></span></span></span><br><span class="line"><span class="comment"><span class="language-javascript"><span class="language-xml">     * 初始化 items</span></span></span></span><br><span class="line"><span class="comment"><span class="language-javascript"><span class="language-xml">     */</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="title function_">init</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      <span class="variable language_">this</span>.<span class="property">items</span> = _.<span class="title function_">range</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="title function_">map</span>(<span class="function"><span class="params">i</span> =&gt;</span> (&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        <span class="attr">k</span>: i,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        <span class="attr">v</span>: <span class="string">&#x27;&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">      &#125;))</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="title function_">mounted</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="variable language_">this</span>.<span class="title function_">init</span>()</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="直接使用-watch-监听"><a href="#直接使用-watch-监听" class="headerlink" title="直接使用 watch 监听"></a>直接使用 <code>watch</code> 监听</h2><p>最开始吾辈使用 <code>watch</code> 直接监听数组 <code>items</code> 的变化</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">watch</span>: &#123;</span><br><span class="line">  <span class="comment">// 监听 items 的变化（实际上数组内部的值变化监听不到）</span></span><br><span class="line">  <span class="title function_">items</span>(<span class="params">val, oldVal</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">val</span> = val</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">oldVal</span> = oldVal</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">difference</span> = _.<span class="title function_">differenceWith</span>(</span><br><span class="line">      val,</span><br><span class="line">      oldVal,</span><br><span class="line">      <span class="function">(<span class="params">i, k</span>) =&gt;</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(i) === <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(k)</span><br><span class="line">    )</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">lastUpdateTime</span> = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toISOString</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>结果发现完全没有一点效果，vuejs 居然认为数组没有变化。查了一下官网文档，发现在 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/list.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">这里</a> 有一段话。</p>
+<blockquote>
+<p>由于 JavaScript 的限制，Vue 不能检测以下变动的数组：</p>
+<ol>
+<li>当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] &#x3D; newValue</li>
+<li>当你修改数组的长度时，例如：vm.items.length &#x3D; newLength</li>
+</ol>
+</blockquote>
+<h2 id="使用-deep-属性设置深度监听"><a href="#使用-deep-属性设置深度监听" class="headerlink" title="使用 deep 属性设置深度监听"></a>使用 <code>deep</code> 属性设置深度监听</h2><p>后来，在 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/api/#watch">watch 的 API</a> 里面，吾辈找到了一个属性：<code>deep</code> ，使用它就可以对数组等嵌套对象进行深度监听。</p>
+<p>所以，吾辈的监听代码变成了这样</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">watch</span>: &#123;</span><br><span class="line">  <span class="attr">items</span>: &#123;</span><br><span class="line">    handler (val, oldVal) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">val</span> = val</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">oldVal</span> = oldVal</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">difference</span> = _.<span class="title function_">differenceWith</span>(val, oldVal, <span class="function">(<span class="params">i, k</span>) =&gt;</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(i) === <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(k))</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">lastUpdateTime</span> = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toISOString</span>()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 这里是关键，代表递归监听 items 的变化</span></span><br><span class="line">    <span class="attr">deep</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而之后又发现了一个问题，深度监听是能够响应数组里面的元素每一次的变化，但旧的值并没有被记录。原因在 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/api/#vm-watch">官网文档</a> 也有指明。</p>
+<blockquote>
+<p>注意：在变异 (不是替换) 对象或数组时，旧值将与新值相同，因为它们的引用指向同一个对象 &#x2F; 数组。Vue 不会保留变异之前值的副本。</p>
+</blockquote>
+<h2 id="使用额外的变量保存旧值"><a href="#使用额外的变量保存旧值" class="headerlink" title="使用额外的变量保存旧值"></a>使用额外的变量保存旧值</h2><p>没办法，既然 vuejs 限制如此，引用类型的变量无法保存旧值，那我们就自己保存吧</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">watch</span>: &#123;</span><br><span class="line">  <span class="attr">items</span>: &#123;</span><br><span class="line">    handler (val) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">val</span> = val</span><br><span class="line">      <span class="comment">// itemOld 就是额外的变量</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">oldVal</span> = <span class="variable language_">this</span>.<span class="property">itemOld</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">difference</span> = _.<span class="title function_">differenceWith</span>(val, <span class="variable language_">this</span>.<span class="property">itemOld</span>, <span class="function">(<span class="params">i, k</span>) =&gt;</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(i) === <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(k))</span><br><span class="line">      <span class="comment">// 注意：这里更新旧值采用的是深层复制而非简单的引用</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">itemOld</span> = _.<span class="title function_">cloneDeep</span>(val)</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">lastUpdateTime</span> = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toISOString</span>()</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 这里是关键，代表递归监听 items 的变化</span></span><br><span class="line">    <span class="attr">deep</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>vuejs 的坑是真的不少呢，不过踩过去就好啦</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"># 记录</a>
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+              <a href="/tags/VueJS/" rel="tag"># VueJS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/26/others/rxliuliBlog/Java/%E6%88%90%E4%B8%BA-Java-%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E6%8E%8C%E6%8F%A1%E5%93%AA%E4%BA%9B%EF%BC%9F/" rel="prev" title="成为 Java 高级程序员需要掌握哪些？">
+                  <i class="fa fa-chevron-left"></i> 成为 Java 高级程序员需要掌握哪些？
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/01/others/rxliuliBlog/Tool/Windows/markdown-%E8%AF%AD%E6%B3%95%E8%AF%B4%E6%98%8E/" rel="next" title="markdown 语法说明">
+                  markdown 语法说明 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="e5ba5b98e1df6bb8559426c3fda39d6d"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

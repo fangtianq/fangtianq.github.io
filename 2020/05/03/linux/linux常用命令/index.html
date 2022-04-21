@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="请添加个描述吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux常用命令">
+<meta property="og:url" content="https://fangtianq.github.io/2020/05/03/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="请添加个描述吧">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-03T04:30:00.000Z">
+<meta property="article:modified_time" content="2020-05-03T04:30:00.000Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/05/03/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/05/03/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/","path":"2020/05/03/linux/linux常用命令/","title":"linux常用命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>linux常用命令 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">314</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">314</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/05/03/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="linux常用命令 | 越努力，越幸运！">
+      <meta itemprop="description" content="请添加个描述吧">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux常用命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-03 12:30:00" itemprop="dateCreated datePublished" datetime="2020-05-03T12:30:00+08:00">2020-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+        </span>
+    </span>
+
+
+  
+    <span id="/2020/05/03/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-meta-item leancloud_visitors" data-flag-title="linux常用命令" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="linux常用命令" href="/2020/05/03/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::a466582753d72316a4fb011b9a698c5a" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">请添加个描述吧</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>…</p>
+<span id="more"></span>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br></pre></td><td class="code"><pre><span class="line">---------------【系统信息】------------------</span><br><span class="line"><span class="built_in">arch</span> 显示机器的处理器架构(1) </span><br><span class="line"><span class="built_in">uname</span> -m 显示机器的处理器架构(2) </span><br><span class="line"><span class="built_in">uname</span> -r 显示正在使用的内核版本 </span><br><span class="line">dmidecode -q 显示硬件系统部件 - (SMBIOS / DMI) </span><br><span class="line">hdparm -i /dev/hda 罗列一个磁盘的架构特性 </span><br><span class="line">hdparm -tT /dev/sda 在磁盘上执行测试性读取操作 </span><br><span class="line"><span class="built_in">cat</span> /proc/cpuinfo 显示CPU info的信息 </span><br><span class="line"><span class="built_in">cat</span> /proc/interrupts 显示中断 </span><br><span class="line"><span class="built_in">cat</span> /proc/meminfo 校验内存使用 </span><br><span class="line"><span class="built_in">cat</span> /proc/swaps 显示哪些swap被使用 </span><br><span class="line"><span class="built_in">cat</span> /proc/version 显示内核的版本 </span><br><span class="line"><span class="built_in">cat</span> /proc/net/dev 显示网络适配器及统计 </span><br><span class="line"><span class="built_in">cat</span> /proc/mounts 显示已加载的文件系统 </span><br><span class="line">lspci -tv 罗列 PCI 设备 </span><br><span class="line">lsusb -tv 显示 USB 设备 </span><br><span class="line"><span class="built_in">date</span> 显示系统日期 </span><br><span class="line">cal 2007 显示2007年的日历表 </span><br><span class="line"><span class="built_in">date</span> 041217002007.00 设置日期和时间 - 月日时分年.秒 </span><br><span class="line">clock -w 将时间修改保存到 BIOS </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------------------【机 (系统的关机、重启以及登出 ) 】------------------</span><br><span class="line">shutdown -h now 关闭系统(1) </span><br><span class="line">init 0 关闭系统(2) </span><br><span class="line">telinit 0 关闭系统(3) </span><br><span class="line">shutdown -h hours:minutes &amp; 按预定时间关闭系统 </span><br><span class="line">shutdown -c 取消按预定时间关闭系统 </span><br><span class="line">shutdown -r now 重启(1) </span><br><span class="line">reboot 重启(2) </span><br><span class="line"><span class="built_in">logout</span> 注销 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---------------------【文件和目录 】--------------------</span><br><span class="line"><span class="built_in">cd</span> /home 进入 <span class="string">&#x27;/ home&#x27;</span> 目录<span class="string">&#x27; </span></span><br><span class="line"><span class="string">cd .. 返回上一级目录 </span></span><br><span class="line"><span class="string">cd ../.. 返回上两级目录 </span></span><br><span class="line"><span class="string">cd 进入个人的主目录 </span></span><br><span class="line"><span class="string">cd ~user1 进入个人的主目录 </span></span><br><span class="line"><span class="string">cd - 返回上次所在的目录 </span></span><br><span class="line"><span class="string">pwd 显示工作路径 </span></span><br><span class="line"><span class="string">ls 查看目录中的文件 </span></span><br><span class="line"><span class="string">ls -F 查看目录中的文件 </span></span><br><span class="line"><span class="string">ls -l 显示文件和目录的详细资料 </span></span><br><span class="line"><span class="string">ls -a 显示隐藏文件 </span></span><br><span class="line"><span class="string">ls *[0-9]* 显示包含数字的文件名和目录名 </span></span><br><span class="line"><span class="string">tree 显示文件和目录由根目录开始的树形结构(1) </span></span><br><span class="line"><span class="string">lstree 显示文件和目录由根目录开始的树形结构(2) </span></span><br><span class="line"><span class="string">mkdir dir1 创建一个叫做 &#x27;</span>dir1<span class="string">&#x27; 的目录&#x27;</span> </span><br><span class="line"><span class="built_in">mkdir</span> dir1 dir2 同时创建两个目录 </span><br><span class="line"><span class="built_in">mkdir</span> -p /tmp/dir1/dir2 创建一个目录树 </span><br><span class="line"><span class="built_in">rm</span> -f file1 删除一个叫做 <span class="string">&#x27;file1&#x27;</span> 的文件<span class="string">&#x27; </span></span><br><span class="line"><span class="string">rmdir dir1 删除一个叫做 &#x27;</span>dir1<span class="string">&#x27; 的目录&#x27;</span> </span><br><span class="line"><span class="built_in">rm</span> -rf dir1 删除一个叫做 <span class="string">&#x27;dir1&#x27;</span> 的目录并同时删除其内容 </span><br><span class="line"><span class="built_in">rm</span> -rf dir1 dir2 同时删除两个目录及它们的内容 </span><br><span class="line"><span class="built_in">mv</span> dir1 new_dir 重命名/移动 一个目录 </span><br><span class="line"><span class="built_in">cp</span> file1 file2 复制一个文件 </span><br><span class="line"><span class="built_in">cp</span> <span class="built_in">dir</span>/* . 复制一个目录下的所有文件到当前工作目录 </span><br><span class="line"><span class="built_in">cp</span> -a /tmp/dir1 . 复制一个目录到当前工作目录 </span><br><span class="line"><span class="built_in">cp</span> -a dir1 dir2 复制一个目录 </span><br><span class="line"><span class="built_in">ln</span> -s file1 lnk1 创建一个指向文件或目录的软链接 </span><br><span class="line"><span class="built_in">ln</span> file1 lnk1 创建一个指向文件或目录的物理链接 </span><br><span class="line"><span class="built_in">touch</span> -t 0712250000 file1 修改一个文件或目录的时间戳 - (YYMMDDhhmm) </span><br><span class="line">file file1 outputs the mime <span class="built_in">type</span> of the file as text </span><br><span class="line">iconv -l 列出已知的编码 </span><br><span class="line">iconv -f fromEncoding -t toEncoding inputFile &gt; outputFile creates a new from the given input file by assuming it is encoded <span class="keyword">in</span> fromEncoding and converting it to toEncoding. </span><br><span class="line">find . -maxdepth 1 -name *.jpg -<span class="built_in">print</span> -<span class="built_in">exec</span> convert <span class="string">&quot;&#123;&#125;&quot;</span> -resize 80x60 <span class="string">&quot;thumbs/&#123;&#125;&quot;</span> \; batch resize files <span class="keyword">in</span> the current directory and send them to a thumbnails directory (requires convert from Imagemagick) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------------------【文件搜索】----------------</span><br><span class="line">find / -name file1 从 <span class="string">&#x27;/&#x27;</span> 开始进入根文件系统搜索文件和目录 </span><br><span class="line">find / -user user1 搜索属于用户 <span class="string">&#x27;user1&#x27;</span> 的文件和目录 </span><br><span class="line">find /home/user1 -name \*.bin 在目录 <span class="string">&#x27;/ home/user1&#x27;</span> 中搜索带有<span class="string">&#x27;.bin&#x27;</span> 结尾的文件 </span><br><span class="line">find /usr/bin -<span class="built_in">type</span> f -atime +100 搜索在过去100天内未被使用过的执行文件 </span><br><span class="line">find /usr/bin -<span class="built_in">type</span> f -mtime -10 搜索在10天内被创建或者修改过的文件 </span><br><span class="line">find / -name \*.rpm -<span class="built_in">exec</span> <span class="built_in">chmod</span> 755 <span class="string">&#x27;&#123;&#125;&#x27;</span> \; 搜索以 <span class="string">&#x27;.rpm&#x27;</span> 结尾的文件并定义其权限 </span><br><span class="line">find / -xdev -name \*.rpm 搜索以 <span class="string">&#x27;.rpm&#x27;</span> 结尾的文件，忽略光驱、捷盘等可移动设备 </span><br><span class="line">locate \*.ps 寻找以 <span class="string">&#x27;.ps&#x27;</span> 结尾的文件 - 先运行 <span class="string">&#x27;updatedb&#x27;</span> 命令 </span><br><span class="line">whereis halt 显示一个二进制文件、源码或man的位置 </span><br><span class="line"><span class="built_in">which</span> halt 显示一个二进制文件或可执行文件的完整路径 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---------------【挂载一个文件系统 】-----------------</span><br><span class="line">mount /dev/hda2 /mnt/hda2 挂载一个叫做hda2的盘 - 确定目录 <span class="string">&#x27;/ mnt/hda2&#x27;</span> 已经存在 </span><br><span class="line">umount /dev/hda2 卸载一个叫做hda2的盘 - 先从挂载点 <span class="string">&#x27;/ mnt/hda2&#x27;</span> 退出 </span><br><span class="line">fuser -km /mnt/hda2 当设备繁忙时强制卸载 </span><br><span class="line">umount -n /mnt/hda2 运行卸载操作而不写入 /etc/mtab 文件- 当文件为只读或当磁盘写满时非常有用 </span><br><span class="line">mount /dev/fd0 /mnt/floppy 挂载一个软盘 </span><br><span class="line">mount /dev/cdrom /mnt/cdrom 挂载一个cdrom或dvdrom </span><br><span class="line">mount /dev/hdc /mnt/cdrecorder 挂载一个cdrw或dvdrom </span><br><span class="line">mount /dev/hdb /mnt/cdrecorder 挂载一个cdrw或dvdrom </span><br><span class="line">mount -o loop file.iso /mnt/cdrom 挂载一个文件或ISO镜像文件 </span><br><span class="line">mount -t vfat /dev/hda5 /mnt/hda5 挂载一个Windows FAT32文件系统 </span><br><span class="line">mount /dev/sda1 /mnt/usbdisk 挂载一个usb 捷盘或闪存设备 </span><br><span class="line">mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share 挂载一个windows网络共享 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------【磁盘空间 】----------------------</span><br><span class="line"><span class="built_in">df</span> -h 显示已经挂载的分区列表 </span><br><span class="line"><span class="built_in">ls</span> -lSr |more 以尺寸大小排列文件和目录 </span><br><span class="line"><span class="built_in">du</span> -sh dir1 估算目录 <span class="string">&#x27;dir1&#x27;</span> 已经使用的磁盘空间<span class="string">&#x27; </span></span><br><span class="line"><span class="string">du -sk * | sort -rn 以容量大小为依据依次显示文件和目录的大小 </span></span><br><span class="line"><span class="string">rpm -q -a --qf &#x27;</span>%10&#123;SIZE&#125;t%&#123;NAME&#125;n<span class="string">&#x27; | sort -k1,1n 以大小为依据依次显示已安装的rpm包所使用的空间 (fedora, redhat类系统) </span></span><br><span class="line"><span class="string">dpkg-query -W -f=&#x27;</span><span class="variable">$&#123;Installed-Size;10&#125;</span>t<span class="variable">$&#123;Package&#125;</span>n<span class="string">&#x27; | sort -k1,1n 以大小为依据显示已安装的deb包所使用的空间 (ubuntu, debian类系统) </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--------------【用户和群组 】--------------</span></span><br><span class="line"><span class="string">groupadd group_name 创建一个新用户组 </span></span><br><span class="line"><span class="string">groupdel group_name 删除一个用户组 </span></span><br><span class="line"><span class="string">groupmod -n new_group_name old_group_name 重命名一个用户组 </span></span><br><span class="line"><span class="string">useradd -c &quot;Name Surname &quot; -g admin -d /home/user1 -s /bin/bash user1 创建一个属于 &quot;admin&quot; 用户组的用户 </span></span><br><span class="line"><span class="string">useradd user1 创建一个新用户 </span></span><br><span class="line"><span class="string">userdel -r user1 删除一个用户 ( &#x27;</span>-r<span class="string">&#x27; 排除主目录) </span></span><br><span class="line"><span class="string">usermod -c &quot;User FTP&quot; -g system -d /ftp/user1 -s /bin/nologin user1 修改用户属性 </span></span><br><span class="line"><span class="string">passwd 修改口令 </span></span><br><span class="line"><span class="string">passwd user1 修改一个用户的口令 (只允许root执行) </span></span><br><span class="line"><span class="string">chage -E 2005-12-31 user1 设置用户口令的失效期限 </span></span><br><span class="line"><span class="string">pwck 检查 &#x27;</span>/etc/passwd<span class="string">&#x27; 的文件格式和语法修正以及存在的用户 </span></span><br><span class="line"><span class="string">grpck 检查 &#x27;</span>/etc/passwd<span class="string">&#x27; 的文件格式和语法修正以及存在的群组 </span></span><br><span class="line"><span class="string">newgrp group_name 登陆进一个新的群组以改变新创建文件的预设群组 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--------【文件的权限 - 使用 &quot;+&quot; 设置权限，使用 &quot;-&quot; 用于取消 】---------</span></span><br><span class="line"><span class="string">ls -lh 显示权限 </span></span><br><span class="line"><span class="string">ls /tmp | pr -T5 -W$COLUMNS 将终端划分成5栏显示 </span></span><br><span class="line"><span class="string">chmod ugo+rwx directory1 设置目录的所有人(u)、群组(g)以及其他人(o)以读（r ）、写(w)和执行(x)的权限 </span></span><br><span class="line"><span class="string">chmod go-rwx directory1 删除群组(g)与其他人(o)对目录的读写执行权限 </span></span><br><span class="line"><span class="string">chown user1 file1 改变一个文件的所有人属性 </span></span><br><span class="line"><span class="string">chown -R user1 directory1 改变一个目录的所有人属性并同时改变改目录下所有文件的属性 </span></span><br><span class="line"><span class="string">chgrp group1 file1 改变文件的群组 </span></span><br><span class="line"><span class="string">chown user1:group1 file1 改变一个文件的所有人和群组属性 </span></span><br><span class="line"><span class="string">find / -perm -u+s 罗列一个系统中所有使用了SUID控制的文件 </span></span><br><span class="line"><span class="string">chmod u+s /bin/file1 设置一个二进制文件的 SUID 位 - 运行该文件的用户也被赋予和所有者同样的权限 </span></span><br><span class="line"><span class="string">chmod u-s /bin/file1 禁用一个二进制文件的 SUID位 </span></span><br><span class="line"><span class="string">chmod g+s /home/public 设置一个目录的SGID 位 - 类似SUID ，不过这是针对目录的 </span></span><br><span class="line"><span class="string">chmod g-s /home/public 禁用一个目录的 SGID 位 </span></span><br><span class="line"><span class="string">chmod o+t /home/public 设置一个文件的 STIKY 位 - 只允许合法所有人删除文件 </span></span><br><span class="line"><span class="string">chmod o-t /home/public 禁用一个目录的 STIKY 位 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-----【文件的特殊属性 - 使用 &quot;+&quot; 设置权限，使用 &quot;-&quot; 用于取消 】-------</span></span><br><span class="line"><span class="string">chattr +a file1 只允许以追加方式读写文件 </span></span><br><span class="line"><span class="string">chattr +c file1 允许这个文件能被内核自动压缩/解压 </span></span><br><span class="line"><span class="string">chattr +d file1 在进行文件系统备份时，dump程序将忽略这个文件 </span></span><br><span class="line"><span class="string">chattr +i file1 设置成不可变的文件，不能被删除、修改、重命名或者链接 </span></span><br><span class="line"><span class="string">chattr +s file1 允许一个文件被安全地删除 </span></span><br><span class="line"><span class="string">chattr +S file1 一旦应用程序对这个文件执行了写操作，使系统立刻把修改的结果写到磁盘 </span></span><br><span class="line"><span class="string">chattr +u file1 若文件被删除，系统会允许你在以后恢复这个被删除的文件 </span></span><br><span class="line"><span class="string">lsattr 显示特殊的属性 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">------------【打包和压缩文件 】---------</span></span><br><span class="line"><span class="string">bunzip2 file1.bz2 解压一个叫做 &#x27;</span>file1.bz2<span class="string">&#x27;的文件 </span></span><br><span class="line"><span class="string">bzip2 file1 压缩一个叫做 &#x27;</span>file1<span class="string">&#x27; 的文件 </span></span><br><span class="line"><span class="string">gunzip file1.gz 解压一个叫做 &#x27;</span>file1.gz<span class="string">&#x27;的文件 </span></span><br><span class="line"><span class="string">gzip file1 压缩一个叫做 &#x27;</span>file1<span class="string">&#x27;的文件 </span></span><br><span class="line"><span class="string">gzip -9 file1 最大程度压缩 </span></span><br><span class="line"><span class="string">rar a file1.rar test_file 创建一个叫做 &#x27;</span>file1.rar<span class="string">&#x27; 的包 </span></span><br><span class="line"><span class="string">rar a file1.rar file1 file2 dir1 同时压缩 &#x27;</span>file1<span class="string">&#x27;, &#x27;</span>file2<span class="string">&#x27; 以及目录 &#x27;</span>dir1<span class="string">&#x27; </span></span><br><span class="line"><span class="string">rar x file1.rar 解压rar包 </span></span><br><span class="line"><span class="string">unrar x file1.rar 解压rar包 </span></span><br><span class="line"><span class="string">tar -cvf archive.tar file1 创建一个非压缩的 tarball </span></span><br><span class="line"><span class="string">tar -cvf archive.tar file1 file2 dir1 创建一个包含了 &#x27;</span>file1<span class="string">&#x27;, &#x27;</span>file2<span class="string">&#x27; 以及 &#x27;</span>dir1<span class="string">&#x27;的档案文件 </span></span><br><span class="line"><span class="string">tar -tf archive.tar 显示一个包中的内容 </span></span><br><span class="line"><span class="string">tar -xvf archive.tar 释放一个包 </span></span><br><span class="line"><span class="string">tar -xvf archive.tar -C /tmp 将压缩包释放到 /tmp目录下 </span></span><br><span class="line"><span class="string">tar -cvfj archive.tar.bz2 dir1 创建一个bzip2格式的压缩包 </span></span><br><span class="line"><span class="string">tar -xvfj archive.tar.bz2 解压一个bzip2格式的压缩包 </span></span><br><span class="line"><span class="string">tar -cvfz archive.tar.gz dir1 创建一个gzip格式的压缩包 </span></span><br><span class="line"><span class="string">tar -xvfz archive.tar.gz 解压一个gzip格式的压缩包 </span></span><br><span class="line"><span class="string">zip file1.zip file1 创建一个zip格式的压缩包 </span></span><br><span class="line"><span class="string">zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包 </span></span><br><span class="line"><span class="string">unzip file1.zip 解压一个zip格式压缩包 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-------------【RPM 包 - （Fedora, Redhat及类似系统）】-------------</span></span><br><span class="line"><span class="string">rpm -ivh package.rpm 安装一个rpm包 </span></span><br><span class="line"><span class="string">rpm -ivh --nodeeps package.rpm 安装一个rpm包而忽略依赖关系警告 </span></span><br><span class="line"><span class="string">rpm -U package.rpm 更新一个rpm包但不改变其配置文件 </span></span><br><span class="line"><span class="string">rpm -F package.rpm 更新一个确定已经安装的rpm包 </span></span><br><span class="line"><span class="string">rpm -e package_name.rpm 删除一个rpm包 </span></span><br><span class="line"><span class="string">rpm -qa 显示系统中所有已经安装的rpm包 </span></span><br><span class="line"><span class="string">rpm -qa | grep httpd 显示所有名称中包含 &quot;httpd&quot; 字样的rpm包 </span></span><br><span class="line"><span class="string">rpm -qi package_name 获取一个已安装包的特殊信息 </span></span><br><span class="line"><span class="string">rpm -qg &quot;System Environment/Daemons&quot; 显示一个组件的rpm包 </span></span><br><span class="line"><span class="string">rpm -ql package_name 显示一个已经安装的rpm包提供的文件列表 </span></span><br><span class="line"><span class="string">rpm -qc package_name 显示一个已经安装的rpm包提供的配置文件列表 </span></span><br><span class="line"><span class="string">rpm -q package_name --whatrequires 显示与一个rpm包存在依赖关系的列表 </span></span><br><span class="line"><span class="string">rpm -q package_name --whatprovides 显示一个rpm包所占的体积 </span></span><br><span class="line"><span class="string">rpm -q package_name --scripts 显示在安装/删除期间所执行的脚本l </span></span><br><span class="line"><span class="string">rpm -q package_name --changelog 显示一个rpm包的修改历史 </span></span><br><span class="line"><span class="string">rpm -qf /etc/httpd/conf/httpd.conf 确认所给的文件由哪个rpm包所提供 </span></span><br><span class="line"><span class="string">rpm -qp package.rpm -l 显示由一个尚未安装的rpm包提供的文件列表 </span></span><br><span class="line"><span class="string">rpm --import /media/cdrom/RPM-GPG-KEY 导入公钥数字证书 </span></span><br><span class="line"><span class="string">rpm --checksig package.rpm 确认一个rpm包的完整性 </span></span><br><span class="line"><span class="string">rpm -qa gpg-pubkey 确认已安装的所有rpm包的完整性 </span></span><br><span class="line"><span class="string">rpm -V package_name 检查文件尺寸、 许可、类型、所有者、群组、MD5检查以及最后修改时间 </span></span><br><span class="line"><span class="string">rpm -Va 检查系统中所有已安装的rpm包- 小心使用 </span></span><br><span class="line"><span class="string">rpm -Vp package.rpm 确认一个rpm包还未安装 </span></span><br><span class="line"><span class="string">rpm2cpio package.rpm | cpio --extract --make-directories *bin* 从一个rpm包运行可执行文件 </span></span><br><span class="line"><span class="string">rpm -ivh /usr/src/redhat/RPMS/`arch`/package.rpm 从一个rpm源码安装一个构建好的包 </span></span><br><span class="line"><span class="string">rpmbuild --rebuild package_name.src.rpm 从一个rpm源码构建一个 rpm 包 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-------------【YUM 软件包升级器 - （Fedora, RedHat及类似系统） 】--------------</span></span><br><span class="line"><span class="string">yum install package_name 下载并安装一个rpm包 </span></span><br><span class="line"><span class="string">yum localinstall package_name.rpm 将安装一个rpm包，使用你自己的软件仓库为你解决所有依赖关系 </span></span><br><span class="line"><span class="string">yum update package_name.rpm 更新当前系统中所有安装的rpm包 </span></span><br><span class="line"><span class="string">yum update package_name 更新一个rpm包 </span></span><br><span class="line"><span class="string">yum remove package_name 删除一个rpm包 </span></span><br><span class="line"><span class="string">yum list 列出当前系统中安装的所有包 </span></span><br><span class="line"><span class="string">yum search package_name 在rpm仓库中搜寻软件包 </span></span><br><span class="line"><span class="string">yum clean packages 清理rpm缓存删除下载的包 </span></span><br><span class="line"><span class="string">yum clean headers 删除所有头文件 </span></span><br><span class="line"><span class="string">yum clean all 删除所有缓存的包和头文件 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">返回顶部索引 ^</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--------------【DEB 包 (Debian, Ubuntu 以及类似系统) 】-----------------</span></span><br><span class="line"><span class="string">dpkg -i package.deb 安装/更新一个 deb 包 </span></span><br><span class="line"><span class="string">dpkg -r package_name 从系统删除一个 deb 包 </span></span><br><span class="line"><span class="string">dpkg -l 显示系统中所有已经安装的 deb 包 </span></span><br><span class="line"><span class="string">dpkg -l | grep httpd 显示所有名称中包含 &quot;httpd&quot; 字样的deb包 </span></span><br><span class="line"><span class="string">dpkg -s package_name 获得已经安装在系统中一个特殊包的信息 </span></span><br><span class="line"><span class="string">dpkg -L package_name 显示系统中已经安装的一个deb包所提供的文件列表 </span></span><br><span class="line"><span class="string">dpkg --contents package.deb 显示尚未安装的一个包所提供的文件列表 </span></span><br><span class="line"><span class="string">dpkg -S /bin/ping 确认所给的文件由哪个deb包提供 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--------------【APT 软件工具 (Debian, Ubuntu 以及类似系统) 】-------------</span></span><br><span class="line"><span class="string">apt-get install package_name 安装/更新一个 deb 包 </span></span><br><span class="line"><span class="string">apt-cdrom install package_name 从光盘安装/更新一个 deb 包 </span></span><br><span class="line"><span class="string">apt-get update 升级列表中的软件包 </span></span><br><span class="line"><span class="string">apt-get upgrade 升级所有已安装的软件 </span></span><br><span class="line"><span class="string">apt-get remove package_name 从系统删除一个deb包 </span></span><br><span class="line"><span class="string">apt-get check 确认依赖的软件仓库正确 </span></span><br><span class="line"><span class="string">apt-get clean 从下载的软件包中清理缓存 </span></span><br><span class="line"><span class="string">apt-cache search searched-package 返回包含所要搜索字符串的软件包名称 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">----------【查看文件内容 】------------</span></span><br><span class="line"><span class="string">cat file1 从第一个字节开始正向查看文件的内容 </span></span><br><span class="line"><span class="string">tac file1 从最后一行开始反向查看一个文件的内容 </span></span><br><span class="line"><span class="string">more file1 查看一个长文件的内容 </span></span><br><span class="line"><span class="string">less file1 类似于 &#x27;</span>more<span class="string">&#x27; 命令，但是它允许在文件中和正向操作一样的反向操作 </span></span><br><span class="line"><span class="string">head -2 file1 查看一个文件的前两行 </span></span><br><span class="line"><span class="string">tail -2 file1 查看一个文件的最后两行 </span></span><br><span class="line"><span class="string">tail -f /var/log/messages 实时查看被添加到一个文件中的内容 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">------------【文本处理】-------------</span></span><br><span class="line"><span class="string">cat file1 file2 ... | command &lt;&gt; file1_in.txt_or_file1_out.txt general syntax for text manipulation using PIPE, STDIN and STDOUT </span></span><br><span class="line"><span class="string">cat file1 | command( sed, grep, awk, grep, etc...) &gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个新文件中 </span></span><br><span class="line"><span class="string">cat file1 | command( sed, grep, awk, grep, etc...) &gt;&gt; result.txt 合并一个文件的详细说明文本，并将简介写入一个已有的文件中 </span></span><br><span class="line"><span class="string">grep Aug /var/log/messages 在文件 &#x27;</span>/var/log/messages<span class="string">&#x27;中查找关键词&quot;Aug&quot; </span></span><br><span class="line"><span class="string">grep ^Aug /var/log/messages 在文件 &#x27;</span>/var/log/messages<span class="string">&#x27;中查找以&quot;Aug&quot;开始的词汇 </span></span><br><span class="line"><span class="string">grep [0-9] /var/log/messages 选择 &#x27;</span>/var/log/messages<span class="string">&#x27; 文件中所有包含数字的行 </span></span><br><span class="line"><span class="string">grep Aug -R /var/log/* 在目录 &#x27;</span>/var/log<span class="string">&#x27; 及随后的目录中搜索字符串&quot;Aug&quot; </span></span><br><span class="line"><span class="string">sed &#x27;</span>s/stringa1/stringa2/g<span class="string">&#x27; example.txt 将example.txt文件中的 &quot;string1&quot; 替换成 &quot;string2&quot; </span></span><br><span class="line"><span class="string">sed &#x27;</span>/^$/d<span class="string">&#x27; example.txt 从example.txt文件中删除所有空白行 </span></span><br><span class="line"><span class="string">sed &#x27;</span>/ *<span class="comment">#/d; /^$/d&#x27; example.txt 从example.txt文件中删除所有注释和空白行 </span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;esempio&#x27;</span> | <span class="built_in">tr</span> <span class="string">&#x27;[:lower:]&#x27;</span> <span class="string">&#x27;[:upper:]&#x27;</span> 合并上下单元格内容 </span><br><span class="line">sed -e <span class="string">&#x27;1d&#x27;</span> result.txt 从文件example.txt 中排除第一行 </span><br><span class="line">sed -n <span class="string">&#x27;/stringa1/p&#x27;</span> 查看只包含词汇 <span class="string">&quot;string1&quot;</span>的行 </span><br><span class="line">sed -e <span class="string">&#x27;s/ *$//&#x27;</span> example.txt 删除每一行最后的空白字符 </span><br><span class="line">sed -e <span class="string">&#x27;s/stringa1//g&#x27;</span> example.txt 从文档中只删除词汇 <span class="string">&quot;string1&quot;</span> 并保留剩余全部 </span><br><span class="line">sed -n <span class="string">&#x27;1,5p;5q&#x27;</span> example.txt 查看从第一行到第5行内容 </span><br><span class="line">sed -n <span class="string">&#x27;5p;5q&#x27;</span> example.txt 查看第5行 </span><br><span class="line">sed -e <span class="string">&#x27;s/00*/0/g&#x27;</span> example.txt 用单个零替换多个零 </span><br><span class="line"><span class="built_in">cat</span> -n file1 标示文件的行数 </span><br><span class="line"><span class="built_in">cat</span> example.txt | awk <span class="string">&#x27;NR%2==1&#x27;</span> 删除example.txt文件中的所有偶数行 </span><br><span class="line"><span class="built_in">echo</span> a b c | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> 查看一行第一栏 </span><br><span class="line"><span class="built_in">echo</span> a b c | awk <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> 查看一行的第一和第三栏 </span><br><span class="line"><span class="built_in">paste</span> file1 file2 合并两个文件或两栏的内容 </span><br><span class="line"><span class="built_in">paste</span> -d <span class="string">&#x27;+&#x27;</span> file1 file2 合并两个文件或两栏的内容，中间用<span class="string">&quot;+&quot;</span>区分 </span><br><span class="line"><span class="built_in">sort</span> file1 file2 排序两个文件的内容 </span><br><span class="line"><span class="built_in">sort</span> file1 file2 | <span class="built_in">uniq</span> 取出两个文件的并集(重复的行只保留一份) </span><br><span class="line"><span class="built_in">sort</span> file1 file2 | <span class="built_in">uniq</span> -u 删除交集，留下其他的行 </span><br><span class="line"><span class="built_in">sort</span> file1 file2 | <span class="built_in">uniq</span> -d 取出两个文件的交集(只留下同时存在于两个文件中的文件) </span><br><span class="line"><span class="built_in">comm</span> -1 file1 file2 比较两个文件的内容只删除 <span class="string">&#x27;file1&#x27;</span> 所包含的内容 </span><br><span class="line"><span class="built_in">comm</span> -2 file1 file2 比较两个文件的内容只删除 <span class="string">&#x27;file2&#x27;</span> 所包含的内容 </span><br><span class="line"><span class="built_in">comm</span> -3 file1 file2 比较两个文件的内容只删除两个文件共有的部分 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------【字符设置和文件格式转换】-------------</span><br><span class="line">dos2unix filedos.txt fileunix.txt 将一个文本文件的格式从MSDOS转换成UNIX </span><br><span class="line">unix2dos fileunix.txt filedos.txt 将一个文本文件的格式从UNIX转换成MSDOS </span><br><span class="line">recode ..HTML &lt; page.txt &gt; page.html 将一个文本文件转换成html </span><br><span class="line">recode -l | more 显示所有允许的转换格式 </span><br><span class="line"></span><br><span class="line">-------------【文件系统分析 】---------------------</span><br><span class="line">badblocks -v /dev/hda1 检查磁盘hda1上的坏磁块 </span><br><span class="line">fsck /dev/hda1 修复/检查hda1磁盘上linux文件系统的完整性 </span><br><span class="line">fsck.ext2 /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性 </span><br><span class="line">e2fsck /dev/hda1 修复/检查hda1磁盘上ext2文件系统的完整性 </span><br><span class="line">e2fsck -j /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性 </span><br><span class="line">fsck.ext3 /dev/hda1 修复/检查hda1磁盘上ext3文件系统的完整性 </span><br><span class="line">fsck.vfat /dev/hda1 修复/检查hda1磁盘上fat文件系统的完整性 </span><br><span class="line">fsck.msdos /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性 </span><br><span class="line">dosfsck /dev/hda1 修复/检查hda1磁盘上dos文件系统的完整性 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------------【初始化一个文件系统 】-----------------</span><br><span class="line">mkfs /dev/hda1 在hda1分区创建一个文件系统 </span><br><span class="line">mke2fs /dev/hda1 在hda1分区创建一个linux ext2的文件系统 </span><br><span class="line">mke2fs -j /dev/hda1 在hda1分区创建一个linux ext3(日志型)的文件系统 </span><br><span class="line">mkfs -t vfat 32 -F /dev/hda1 创建一个 FAT32 文件系统 </span><br><span class="line">fdformat -n /dev/fd0 格式化一个软盘 </span><br><span class="line">mkswap /dev/hda3 创建一个swap文件系统 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------【SWAP文件系统 】--------------------</span><br><span class="line">mkswap /dev/hda3 创建一个swap文件系统 </span><br><span class="line">swapon /dev/hda3 启用一个新的swap文件系统 </span><br><span class="line">swapon /dev/hda2 /dev/hdb3 启用两个swap分区 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---------------------【备份 】--------------------</span><br><span class="line">dump -0aj -f /tmp/home0.bak /home 制作一个 <span class="string">&#x27;/home&#x27;</span> 目录的完整备份 </span><br><span class="line">dump -1aj -f /tmp/home0.bak /home 制作一个 <span class="string">&#x27;/home&#x27;</span> 目录的交互式备份 </span><br><span class="line">restore -<span class="keyword">if</span> /tmp/home0.bak 还原一个交互式备份 </span><br><span class="line">rsync -rogpav --delete /home /tmp 同步两边的目录 </span><br><span class="line">rsync -rogpav -e ssh --delete /home ip_address:/tmp 通过SSH通道rsync </span><br><span class="line">rsync -az -e ssh --delete ip_addr:/home/public /home/local 通过ssh和压缩将一个远程目录同步到本地目录 </span><br><span class="line">rsync -az -e ssh --delete /home/local ip_addr:/home/public 通过ssh和压缩将本地目录同步到远程目录 </span><br><span class="line"><span class="built_in">dd</span> bs=1M <span class="keyword">if</span>=/dev/hda | gzip | ssh user@ip_addr <span class="string">&#x27;dd of=hda.gz&#x27;</span> 通过ssh在远程主机上执行一次备份本地磁盘的操作 </span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sda of=/tmp/file1 备份磁盘内容到一个文件 </span><br><span class="line">tar -Puf backup.tar /home/user 执行一次对 <span class="string">&#x27;/home/user&#x27;</span> 目录的交互式备份操作 </span><br><span class="line">( <span class="built_in">cd</span> /tmp/local/ &amp;&amp; tar c . ) | ssh -C user@ip_addr <span class="string">&#x27;cd /home/share/ &amp;&amp; tar x -p&#x27;</span> 通过ssh在远程目录中复制一个目录内容 </span><br><span class="line">( tar c /home ) | ssh -C user@ip_addr <span class="string">&#x27;cd /home/backup-home &amp;&amp; tar x -p&#x27;</span> 通过ssh在远程目录中复制一个本地目录 </span><br><span class="line">tar cf - . | (<span class="built_in">cd</span> /tmp/backup ; tar xf - ) 本地将一个目录复制到另一个地方，保留原有权限及链接 </span><br><span class="line">find /home/user1 -name <span class="string">&#x27;*.txt&#x27;</span> | xargs <span class="built_in">cp</span> -av --target-directory=/home/backup/ --parents 从一个目录查找并复制所有以 <span class="string">&#x27;.txt&#x27;</span> 结尾的文件到另一个目录 </span><br><span class="line">find /var/log -name <span class="string">&#x27;*.log&#x27;</span> | tar cv --files-from=- | bzip2 &gt; log.tar.bz2 查找所有以 <span class="string">&#x27;.log&#x27;</span> 结尾的文件并做成一个bzip包 </span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/hda of=/dev/fd0 bs=512 count=1 做一个将 MBR (Master Boot Record)内容复制到软盘的动作 </span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/fd0 of=/dev/hda bs=512 count=1 从已经保存到软盘的备份中恢复MBR内容 </span><br><span class="line"></span><br><span class="line">---------------【光盘 】-----------------</span><br><span class="line">cdrecord -v gracetime=2 dev=/dev/cdrom -eject blank=fast -force 清空一个可复写的光盘内容 </span><br><span class="line">mkisofs /dev/cdrom &gt; cd.iso 在磁盘上创建一个光盘的iso镜像文件 </span><br><span class="line">mkisofs /dev/cdrom | gzip &gt; cd_iso.gz 在磁盘上创建一个压缩了的光盘iso镜像文件 </span><br><span class="line">mkisofs -J -allow-leading-dots -R -V <span class="string">&quot;Label CD&quot;</span> -iso-level 4 -o ./cd.iso data_cd 创建一个目录的iso镜像文件 </span><br><span class="line">cdrecord -v dev=/dev/cdrom cd.iso 刻录一个ISO镜像文件 </span><br><span class="line">gzip -dc cd_iso.gz | cdrecord dev=/dev/cdrom - 刻录一个压缩了的ISO镜像文件 </span><br><span class="line">mount -o loop cd.iso /mnt/iso 挂载一个ISO镜像文件 </span><br><span class="line">cd-paranoia -B 从一个CD光盘转录音轨到 wav 文件中 </span><br><span class="line">cd-paranoia -- <span class="string">&quot;-3&quot;</span> 从一个CD光盘转录音轨到 wav 文件中（参数-3） </span><br><span class="line">cdrecord --scanbus 扫描总线以识别scsi通道 </span><br><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=/dev/hdc | <span class="built_in">md5sum</span> 校验一个设备的<span class="built_in">md5sum</span>编码，例如一张 CD </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------【网络 - （以太网和WIFI无线） 】-----------</span><br><span class="line">ifconfig eth0 显示一个以太网卡的配置 </span><br><span class="line">ifup eth0 启用一个 <span class="string">&#x27;eth0&#x27;</span> 网络设备 </span><br><span class="line">ifdown eth0 禁用一个 <span class="string">&#x27;eth0&#x27;</span> 网络设备 </span><br><span class="line">ifconfig eth0 192.168.1.1 netmask 255.255.255.0 控制IP地址 </span><br><span class="line">ifconfig eth0 promisc 设置 <span class="string">&#x27;eth0&#x27;</span> 成混杂模式以嗅探数据包 (sniffing) </span><br><span class="line">dhclient eth0 以dhcp模式启用 <span class="string">&#x27;eth0&#x27;</span> </span><br><span class="line">route -n show routing table </span><br><span class="line">route add -net 0/0 gw IP_Gateway configura default gateway </span><br><span class="line">route add -net 192.168.0.0 netmask 255.255.0.0 gw 192.168.1.1 configure static route to reach network <span class="string">&#x27;192.168.0.0/16&#x27;</span> </span><br><span class="line">route del 0/0 gw IP_gateway remove static route </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;1&quot;</span> &gt; /proc/sys/net/ipv4/ip_forward activate ip routing </span><br><span class="line">hostname show hostname of system </span><br><span class="line">host www.example.com lookup hostname to resolve name to ip address and viceversa(1) </span><br><span class="line">nslookup www.example.com lookup hostname to resolve name to ip address and viceversa(2) </span><br><span class="line">ip <span class="built_in">link</span> show show <span class="built_in">link</span> status of all interfaces </span><br><span class="line">mii-tool eth0 show <span class="built_in">link</span> status of <span class="string">&#x27;eth0&#x27;</span> </span><br><span class="line">ethtool eth0 show statistics of network card <span class="string">&#x27;eth0&#x27;</span> </span><br><span class="line">netstat -tup show all active network connections and their PID </span><br><span class="line">netstat -tupl show all network services listening on the system and their PID </span><br><span class="line">tcpdump tcp port 80 show all HTTP traffic </span><br><span class="line">iwlist scan show wireless networks </span><br><span class="line">iwconfig eth1 show configuration of a wireless network card </span><br><span class="line">hostname show hostname </span><br><span class="line">host www.example.com lookup hostname to resolve name to ip address and viceversa </span><br><span class="line">nslookup www.example.com lookup hostname to resolve name to ip address and viceversa </span><br><span class="line">whois www.example.com lookup on Whois database </span><br><span class="line"></span><br><span class="line">GO TOP INDEX ^ </span><br><span class="line">Microsoft Windows networks (SAMBA) </span><br><span class="line">nbtscan ip_addr netbios name resolution </span><br><span class="line">nmblookup -A ip_addr netbios name resolution </span><br><span class="line">smbclient -L ip_addr/hostname show remote shares of a windows host </span><br><span class="line">smbget -Rr smb://ip_addr/share like wget can download files from a host windows via smb </span><br><span class="line">mount -t smbfs -o username=user,password=pass //WinClient/share /mnt/share mount a windows network share</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/03/java/springCloud/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9D%83%E9%99%90%E6%B3%A8%E8%A7%A3/" rel="prev" title="自定义权限注解">
+                  <i class="fa fa-chevron-left"></i> 自定义权限注解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/03/%E6%8A%80%E6%9C%AF%E7%A7%AF%E7%B4%AF/" rel="next" title="慢慢扩展">
+                  慢慢扩展 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="a466582753d72316a4fb011b9a698c5a"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:55</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
