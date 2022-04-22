@@ -2,9 +2,9 @@
   --body-bg-color: #eee;
   --content-bg-color: #fff;
   --card-bg-color: #f5f5f5;
-  --text-color: #555;
+  --text-color: #4c402d;
   --blockquote-color: #666;
-  --link-color: #555;
+  --link-color: #4c402d;
   --link-hover-color: #222;
   --brand-color: #fff;
   --brand-hover-color: #fff;
@@ -13,8 +13,8 @@
   --menu-item-bg-color: #f5f5f5;
   --theme-color: #222;
   --btn-default-bg: #fff;
-  --btn-default-color: #555;
-  --btn-default-border-color: #555;
+  --btn-default-color: #4c402d;
+  --btn-default-border-color: #4c402d;
   --btn-default-hover-bg: #222;
   --btn-default-hover-color: #fff;
   --btn-default-hover-border-color: #222;
@@ -550,7 +550,7 @@ pre code {
   width: 100%;
 }
 .post-body .label {
-  color: #555;
+  color: #4c402d;
   padding: 0 2px;
 }
 .post-body .label.default {
@@ -1088,12 +1088,12 @@ pre code {
 }
 @media (min-width: 1200px) {
   .header-inner {
-    width: 1160px;
+    width: 1400px;
   }
 }
 @media (min-width: 1600px) {
   .header-inner {
-    width: 73%;
+    width: 78%;
   }
 }
 .site-brand-container {
@@ -1535,12 +1535,12 @@ pre code {
 }
 @media (min-width: 1200px) {
   .footer-inner {
-    width: 1160px;
+    width: 1400px;
   }
 }
 @media (min-width: 1600px) {
   .footer-inner {
-    width: 73%;
+    width: 78%;
   }
 }
 .use-motion .footer {
@@ -2506,7 +2506,7 @@ mark.search-keyword {
   background: var(--content-bg-color);
   border-radius: initial;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
-  width: 240px;
+  width: 250px;
 }
 @media (max-width: 991px) {
   .header-inner {
@@ -2523,12 +2523,12 @@ mark.search-keyword {
 }
 @media (min-width: 1200px) {
   .main {
-    width: 1160px;
+    width: 1400px;
   }
 }
 @media (min-width: 1600px) {
   .main {
-    width: 73%;
+    width: 78%;
   }
 }
 @media (max-width: 991px) {
@@ -2540,7 +2540,7 @@ mark.search-keyword {
 .main-inner {
   border-radius: initial;
   box-sizing: border-box;
-  width: calc(100% - 252px);
+  width: calc(100% - 262px);
 }
 @media (max-width: 991px) {
   .main-inner {
@@ -2549,7 +2549,7 @@ mark.search-keyword {
   }
 }
 .footer-inner {
-  padding-left: 252px;
+  padding-left: 262px;
 }
 @media (max-width: 991px) {
   .footer-inner {
@@ -2656,7 +2656,7 @@ mark.search-keyword {
   position: -webkit-sticky;
   position: sticky;
   top: 12px;
-  width: 240px;
+  width: 250px;
   visibility: hidden;
 }
 @media (max-width: 991px) {
