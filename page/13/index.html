@@ -84,7 +84,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">319</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">320</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">319</span>
+          <span class="site-state-item-count">320</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -223,6 +223,556 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/06/13/others/rxliuliBlog/JavaScript/react-%E9%80%9A%E7%94%A8%E5%88%97%E8%A1%A8%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/06/13/others/rxliuliBlog/JavaScript/react-%E9%80%9A%E7%94%A8%E5%88%97%E8%A1%A8%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85/" class="post-title-link" itemprop="url">react 通用列表组件封装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-13 23:36:55" itemprop="dateCreated datePublished" datetime="2020-06-13T23:36:55+08:00">2020-06-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-06-15 23:36:55" itemprop="dateModified" datetime="2020-06-15T23:36:55+08:00">2020-06-15</time>
+    </span>
+
+
+  
+    <span id="/2020/06/13/others/rxliuliBlog/JavaScript/react-%E9%80%9A%E7%94%A8%E5%88%97%E8%A1%A8%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85/" class="post-meta-item leancloud_visitors" data-flag-title="react 通用列表组件封装" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="react 通用列表组件封装" href="/2020/06/13/others/rxliuliBlog/JavaScript/react-%E9%80%9A%E7%94%A8%E5%88%97%E8%A1%A8%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::061b2e620514b3960f692989b9e220c4" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/rxliuli/example/tree/master/basic_list">GitHub 源码</a></p>
+</blockquote>
+<p>在后台项目中，即便使用了 antd，仍然存在太多太多的列表页面。这些列表页面大多数又是非常相似的，所以吾辈需要解决重复的简单列表的编写，避免每次都手动控制过滤器&#x2F;分页之类的东西，将之抽象成配置项，然后通过配置生成列表页面。或许已经有很多人做过了这件事情，但于吾辈而言，这仍然是全新的体验，所以也便于此记录，并供之以他人参考。</p>
+<h2 id="理念"><a href="#理念" class="headerlink" title="理念"></a>理念</h2><p>使用逐级递进的方式进行封装，使用者可以根据需求停留在一个合适的封装层次，使用不同封装层次的组件。</p>
+<ul>
+<li><code>BasicList</code>：高层列表封装组件<ul>
+<li><code>ListHeader</code>：列表页顶部工具栏组件<ul>
+<li><code>CommonHeader</code>: 通用的顶部工具栏组件</li>
+</ul>
+</li>
+<li><code>ListFilter</code>：过滤器组件<ul>
+<li><code>FilterSelect</code>：单选过滤器</li>
+<li><code>FilterTimeRange</code>：时间区间过滤器</li>
+<li><code>FilterSlot</code>：自定义过滤器</li>
+</ul>
+</li>
+<li><code>ListTable</code>：列表封装组件</li>
+</ul>
+</li>
+</ul>
+<p>BasicList 使用步骤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">A[添加 api class 实现 BasicListApi] --&gt; B[添加配置项]</span><br><span class="line">B --&gt; C&#123;是否需要动态修改&#125;;</span><br><span class="line">C --&gt; |是| C1[使用 useMemo 声明]</span><br><span class="line">C --&gt; |否| C2[将之抽离到组件外部声明为常量]</span><br><span class="line">C1 --&gt; D</span><br><span class="line">C2 --&gt; D</span><br><span class="line">D&#123;是否有非通用 Filter&#125;</span><br><span class="line">D --&gt; |是| D1[自定义 slot filter]</span><br><span class="line">D --&gt; |否| D2[使用 select/time filter]</span><br><span class="line">D1 --&gt; E</span><br><span class="line">D2 --&gt; E</span><br><span class="line">E&#123;是否需要自定义表格相关功能&#125;</span><br><span class="line">E --&gt; |是| E1[使用 filterOperate 配置]</span><br><span class="line">E --&gt; |否| E2[不声明 filter 配置]</span><br><span class="line">E1 --&gt; F</span><br><span class="line">E2 --&gt; F</span><br><span class="line">F[列表渲染]</span><br></pre></td></tr></table></figure>
+
+<p>BasicList 渲染流程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">A[从 props 拿到配置项列表] --&gt; B&#123;header 是否为 ReactElement&#125;</span><br><span class="line">B --&gt; |是| B1[直接渲染]</span><br><span class="line">B --&gt; |否| B2[使用 ListHeader 渲染 header 配置项]</span><br><span class="line">B1 --&gt; C</span><br><span class="line">B2 --&gt; C</span><br><span class="line">C&#123;filters 是否存在&#125;</span><br><span class="line">C --&gt; |是| C1&#123;filters 是否为 ReactElement&#125;</span><br><span class="line">  C1 --&gt; |是| C1A[直接渲染]</span><br><span class="line">  C1 --&gt; |否| C1B[使用 ListFilter 渲染 filters 配置项] --&gt; C1C[监听 initialParams 变化, 以随时修改 form]</span><br><span class="line">C --&gt; |否| C2[不渲染]</span><br><span class="line">C1A --&gt; D</span><br><span class="line">C1B --&gt; D</span><br><span class="line">C2 --&gt; D</span><br><span class="line">D[渲染列表]</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><h3 id="使用基本-API"><a href="#使用基本-API" class="headerlink" title="使用基本 API"></a>使用基本 API</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/rxliuli/example/blob/master/basic_list/src/pages/example/BasicListExample.tsx">GitHub 代码示例</a></p>
+</blockquote>
+<p>如下所示，我们想要构造下面这样一个简单的列表页面，包含一个面包屑导航列表、搜索框、过滤条件选择器和一个表格。</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Button</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;antd&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Link</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Moment</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;moment&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">LabeledValue</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;antd/es/select&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; userApi &#125; <span class="keyword">from</span> <span class="string">&#x27;./api/UserApi&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  <span class="title class_">BasicList</span>,</span><br><span class="line">  <span class="title class_">BasicListPropsType</span>,</span><br><span class="line">  <span class="title class_">FilterFieldTypeEnum</span>,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&#x27;../../components/list&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">PropsType</span> = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Config</span> = <span class="title class_">Omit</span>&lt;<span class="title class_">BasicListPropsType</span>, <span class="string">&#x27;params&#x27;</span>&gt; &amp; &#123;</span><br><span class="line">  params?: &#123;</span><br><span class="line">    keyword?: <span class="built_in">string</span></span><br><span class="line">    test?: <span class="built_in">number</span></span><br><span class="line">    birthdayTimeRange?: [<span class="title class_">Moment</span>, <span class="title class_">Moment</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">testOptionList</span>: <span class="title class_">LabeledValue</span>[] = [</span><br><span class="line">  &#123; <span class="attr">value</span>: <span class="number">0</span>, <span class="attr">label</span>: <span class="string">&#x27;测试 0&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">value</span>: <span class="number">1</span>, <span class="attr">label</span>: <span class="string">&#x27;测试 1&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">value</span>: <span class="number">2</span>, <span class="attr">label</span>: <span class="string">&#x27;测试 2&#x27;</span> &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">//列表配置项</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">config</span>: <span class="title class_">Config</span> = &#123;</span><br><span class="line">  <span class="attr">header</span>: &#123;</span><br><span class="line">    <span class="attr">placeholder</span>: <span class="string">&#x27;用户名/住址&#x27;</span>,</span><br><span class="line">    <span class="attr">list</span>: [<span class="string">&#x27;用户&#x27;</span>, <span class="string">&#x27;列表&#x27;</span>],</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">filters</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">FilterFieldTypeEnum</span>.<span class="property">Select</span>,</span><br><span class="line">      <span class="attr">label</span>: <span class="string">&#x27;测试字段&#x27;</span>,</span><br><span class="line">      <span class="attr">field</span>: <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">      <span class="attr">options</span>: testOptionList,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">FilterFieldTypeEnum</span>.<span class="property">TimeRange</span>,</span><br><span class="line">      <span class="attr">label</span>: <span class="string">&#x27;生日&#x27;</span>,</span><br><span class="line">      <span class="attr">field</span>: <span class="string">&#x27;birthdayTimeRange&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">columns</span>: [</span><br><span class="line">    &#123; <span class="attr">field</span>: <span class="string">&#x27;id&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;ID&#x27;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">field</span>: <span class="string">&#x27;name&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;姓名&#x27;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">field</span>: <span class="string">&#x27;birthday&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;生日&#x27;</span> &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">field</span>: <span class="string">&#x27;operate&#x27;</span>,</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&#x27;操作&#x27;</span>,</span><br><span class="line">      <span class="attr">slot</span>: <span class="function">(<span class="params">param</span>) =&gt;</span> <span class="language-xml"><span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">&#123;</span>`/<span class="attr">system</span>/<span class="attr">user</span>/$&#123;<span class="attr">param.record.id</span>&#125;`&#125;&gt;</span>详情<span class="tag">&lt;/<span class="name">Link</span>&gt;</span></span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">api</span>: userApi,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 一个基本的列表页面</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@constructor</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">BasicListExample</span>: <span class="title class_">React</span>.<span class="property">FC</span>&lt;<span class="title class_">PropsType</span>&gt; = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">BasicList</span> &#123;<span class="attr">...config</span>&#125; /&gt;</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">BasicListExample</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用自定义过滤器组件"><a href="#使用自定义过滤器组件" class="headerlink" title="使用自定义过滤器组件"></a>使用自定义过滤器组件</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/rxliuli/example/blob/master/basic_list/src/pages/example/CustomFilterListExample.tsx">GitHub 代码示例</a></p>
+</blockquote>
+<p>事实上，总有各种奇怪的过滤器无法满足，这时候就需要添加一个自定义的过滤器了。<br>例如下面这个过滤器，包含了年龄的值和单位，是不是感觉很奇怪</p>
+<p>关键代码配置如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">config</span>: <span class="title class_">Config</span> = &#123;</span><br><span class="line">  <span class="attr">filters</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="title class_">FilterFieldTypeEnum</span>.<span class="property">Slot</span>,</span><br><span class="line">      <span class="attr">label</span>: <span class="string">&#x27;年龄&#x27;</span>,</span><br><span class="line">      <span class="attr">field</span>: <span class="string">&#x27;age&#x27;</span>,</span><br><span class="line">      <span class="attr">children</span>: (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">Input.Group</span> <span class="attr">compact</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Form.Item</span> <span class="attr">name</span>=<span class="string">&#123;[</span>&#x27;<span class="attr">age</span>&#x27;, &#x27;<span class="attr">value</span>&#x27;]&#125; <span class="attr">noStyle</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">InputNumber</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> &#x27;<span class="attr">calc</span>(<span class="attr">100</span>% <span class="attr">-</span> <span class="attr">64px</span>)&#x27; &#125;&#125; /&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">Form.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Form.Item</span> <span class="attr">name</span>=<span class="string">&#123;[</span>&#x27;<span class="attr">age</span>&#x27;, &#x27;<span class="attr">unit</span>&#x27;]&#125; <span class="attr">noStyle</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">Select</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">width:</span> <span class="attr">64</span> &#125;&#125; <span class="attr">options</span>=<span class="string">&#123;ageUnitOptionList&#125;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">Form.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">Input.Group</span>&gt;</span></span></span><br><span class="line">      ),</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// 此处是为了添加过滤器的默认值</span></span><br><span class="line">  <span class="attr">params</span>: &#123;</span><br><span class="line">    <span class="attr">age</span>: &#123;</span><br><span class="line">      <span class="attr">unit</span>: <span class="number">0</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加表格的额外操作"><a href="#添加表格的额外操作" class="headerlink" title="添加表格的额外操作"></a>添加表格的额外操作</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/rxliuli/example/blob/master/basic_list/src/pages/example/TableOperationListExample.tsx">GitHub 代码示例</a></p>
+</blockquote>
+<p>有时候，我们需要添加一个额外的表格操作，例如导出&#x2F;导入数据&#x2F;删除选中数据。</p>
+<p>关键代码如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">handleBatchDelete</span>(<span class="params">&#123;</span></span><br><span class="line"><span class="params">  selectedRowKeys,</span></span><br><span class="line"><span class="params">  setSelectedRowKeys,</span></span><br><span class="line"><span class="params">  searchPage,</span></span><br><span class="line"><span class="params">&#125;: ListTableOperateParam</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (selectedRowKeys.<span class="property">length</span> === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">await</span> userApi.<span class="title function_">batchDelete</span>(selectedRowKeys)</span><br><span class="line">  <span class="title function_">setSelectedRowKeys</span>([])</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">searchPage</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = useMemo&lt;<span class="title class_">Config</span>&gt;(</span><br><span class="line">  <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">tableOperate</span>: <span class="function">(<span class="params">params</span>) =&gt;</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">Button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> handleBatchDelete(params)&#125;&gt;删除选中<span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span></span><br><span class="line">    ),</span><br><span class="line">  &#125;),</span><br><span class="line">  [],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤器的下拉框数据来源是异步的"><a href="#过滤器的下拉框数据来源是异步的" class="headerlink" title="过滤器的下拉框数据来源是异步的"></a>过滤器的下拉框数据来源是异步的</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/rxliuli/example/blob/master/basic_list/src/pages/example/AsyncSelectOptionsListExample.tsx">GitHub 代码示例</a></p>
+</blockquote>
+<p>很多时候，我们的数据来源并不是由前端写死，而是从后台获取的，这就要求我们传入的值是 react 的一个 State 而非一个固定值。</p>
+<p>关键代码如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> testOptionList = <span class="title function_">useAsyncMemo</span>([], dictApi.<span class="property">list</span>)</span><br><span class="line"><span class="keyword">const</span> config = useMemo&lt;<span class="title class_">Config</span>&gt;(</span><br><span class="line">  <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    <span class="attr">filters</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="title class_">FilterFieldTypeEnum</span>.<span class="property">Select</span>,</span><br><span class="line">        <span class="attr">label</span>: <span class="string">&#x27;测试字段&#x27;</span>,</span><br><span class="line">        <span class="attr">field</span>: <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">        <span class="attr">options</span>: testOptionList,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;),</span><br><span class="line">  [testOptionList],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="组件-API"><a href="#组件-API" class="headerlink" title="组件 API"></a>组件 API</h2><h3 id="BasicList"><a href="#BasicList" class="headerlink" title="BasicList"></a>BasicList</h3><p>参考 <em>src&#x2F;components&#x2F;common&#x2F;table&#x2F;js&#x2F;BasicListOptions.d.ts</em></p>
+<table>
+<thead>
+<tr>
+<th><code>prop</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>header</code></td>
+<td><code>BasicList.Header</code></td>
+<td>标题栏相关配置</td>
+</tr>
+<tr>
+<td><code>[filters]</code></td>
+<td><code>BaseFilterField[]</code></td>
+<td>过滤器列表</td>
+</tr>
+<tr>
+<td></td>
+<td><code>((params: any, onChange: (params: any) =&gt; void) =&gt; ReactElement)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>[params]</code></td>
+<td><code>Params</code></td>
+<td>查询参数</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td><code>TableColumn[]</code></td>
+<td>列字段列表</td>
+</tr>
+<tr>
+<td><code>api</code></td>
+<td><code>BaseListApi</code></td>
+<td>api 对象</td>
+</tr>
+<tr>
+<td><code>[tableOptions]</code></td>
+<td><code>TableOptions</code></td>
+<td>一些其他选项</td>
+</tr>
+<tr>
+<td><code>[tableOperate]</code></td>
+<td><code>ListTableOperate</code></td>
+<td>一些其他操作</td>
+</tr>
+</tbody></table>
+<h3 id="ListFilter"><a href="#ListFilter" class="headerlink" title="ListFilter"></a>ListFilter</h3><table>
+<thead>
+<tr>
+<th><code>prop</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[initialValue]</code></td>
+<td><code>any</code></td>
+<td>查询参数</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>&#96;(FilterSelectType</td>
+<td>FilterTimeRangeType</td>
+</tr>
+<tr>
+<td><code>onChange</code></td>
+<td><code>(value: T) =&gt; void</code></td>
+<td>当过滤器的参数发生改变时</td>
+</tr>
+</tbody></table>
+<h3 id="ListTable"><a href="#ListTable" class="headerlink" title="ListTable"></a>ListTable</h3><table>
+<thead>
+<tr>
+<th><code>prop</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>columns</code></td>
+<td><code>TableColumn[]</code></td>
+<td>列字段列表</td>
+</tr>
+<tr>
+<td><code>api</code></td>
+<td><code>BaseListApi</code></td>
+<td>api 对象</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td><code>Params</code></td>
+<td>查询参数</td>
+</tr>
+<tr>
+<td><code>[tableOptions]</code></td>
+<td><code>TableOptions</code></td>
+<td>一些其他选项</td>
+</tr>
+<tr>
+<td><code>[tableOperate]</code></td>
+<td><code>ListTableOperate</code></td>
+<td>一些其他选项</td>
+</tr>
+</tbody></table>
+<h2 id="其他类型定义"><a href="#其他类型定义" class="headerlink" title="其他类型定义"></a>其他类型定义</h2><p>下面是类型定义，所有的类型定义都有对应的 <code>.d.ts</code> 文件，请使用 <code>C-N</code> 搜索 <code>class</code>。</p>
+<table>
+<thead>
+<tr>
+<th><code>HeaderNavItem</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>string</code></td>
+<td></td>
+<td>导航的名字</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>导航的名字</td>
+</tr>
+<tr>
+<td><code>[link]</code></td>
+<td><code>string</code></td>
+<td>如果是 route 的话必须有值</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>Header</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>list</code></td>
+<td><code>HeaderNavItem[]</code></td>
+<td>导航元素列表</td>
+</tr>
+<tr>
+<td><code>placeholder</code></td>
+<td><code>string</code></td>
+<td>搜索框的提示文本</td>
+</tr>
+</tbody></table>
+<h3 id="过滤器相关"><a href="#过滤器相关" class="headerlink" title="过滤器相关"></a>过滤器相关</h3><table>
+<thead>
+<tr>
+<th><code>FilterFieldTypeEnum</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Slot</code></td>
+<td><code>1</code></td>
+<td>自定义 slot</td>
+</tr>
+<tr>
+<td><code>Select</code></td>
+<td><code>2</code></td>
+<td>普通选择框</td>
+</tr>
+<tr>
+<td><code>TimeRange</code></td>
+<td><code>3</code></td>
+<td>日期区间选择器</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>FilterFieldBase</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>FilterFieldTypeEnum</code></td>
+<td>过滤器元素类型</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>string</code></td>
+<td>显示的标题</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>FilterSelectType</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>extends</code></td>
+<td><code>FilterFieldBase</code></td>
+<td>继承基本过滤器配置</td>
+</tr>
+<tr>
+<td><code>field</code></td>
+<td><code>string</code></td>
+<td>字段名</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>LabeledValue[]</code></td>
+<td>值列表</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>FilterTimeRangeType</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>extends</code></td>
+<td><code>FilterFieldBase</code></td>
+<td>继承基本过滤器配置</td>
+</tr>
+<tr>
+<td><code>field</code></td>
+<td><code>string</code></td>
+<td>字段名</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>FilterSlotType</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>extends</code></td>
+<td><code>FilterFieldBase</code></td>
+<td>继承基本过滤器配置</td>
+</tr>
+<tr>
+<td><code>field</code></td>
+<td><code>string</code></td>
+<td>字段名</td>
+</tr>
+<tr>
+<td><code>children</code></td>
+<td><code>ReactElement</code></td>
+<td><code>Form.Item</code> 的子元素</td>
+</tr>
+<tr>
+<td><code>[computed]</code></td>
+<td><code>(res: Record&lt;string, any&gt;, value: any) =&gt; Record&lt;string, any&gt;</code></td>
+<td>自定义计算方法</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>Params</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>keyword</code></td>
+<td><code>string</code></td>
+<td>查询关键字</td>
+</tr>
+<tr>
+<td><code>...args</code></td>
+<td><code>any[]</code></td>
+<td>其他查询参数</td>
+</tr>
+</tbody></table>
+<h3 id="表格相关"><a href="#表格相关" class="headerlink" title="表格相关"></a>表格相关</h3><table>
+<thead>
+<tr>
+<th><code>TableColumn</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>field</code></td>
+<td><code>string</code></td>
+<td>在数据项中对应的字段名</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td><code>string</code></td>
+<td>列标题</td>
+</tr>
+<tr>
+<td><code>[formatter]</code></td>
+<td><code>(v: any, record: any) =&gt; any</code></td>
+<td>自定义字段格式化函数</td>
+</tr>
+<tr>
+<td><code>[slot]</code></td>
+<td><code>(param: &#123; text: string; record: any; i: number &#125;) =&gt; ReactNode</code></td>
+<td>自定义 <code>slot</code></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>BaseListApi</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pageList</code></td>
+<td><code>(params: any) =&gt; Promise&lt;PageRes&lt;any&gt;&gt;</code></td>
+<td>所有 ListTable 中的 api 对象必须实现该类型</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>ListTableOperateParam</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>searchPage</code></td>
+<td><code>(page?: PageParam) =&gt; Promise&lt;void&gt;</code></td>
+<td>导航元素列表</td>
+</tr>
+<tr>
+<td><code>selectedRowKeys</code></td>
+<td><code>string[]</code></td>
+<td>当前选中行的主键</td>
+</tr>
+<tr>
+<td><code>setSelectedRowKeys</code></td>
+<td><code>(selectedRowKeys: string[]) =&gt; void</code></td>
+<td>设置当前选中行的主键</td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td><code>PageData&lt;any&gt;</code></td>
+<td>分页数据信息</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td><code>Params</code></td>
+<td>过滤器及搜索参数</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><code>TableOptions</code></th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[isSelect]</code></td>
+<td><code>boolean</code></td>
+<td>是否可选，默认为 false</td>
+</tr>
+<tr>
+<td><code>[rowKey]</code></td>
+<td><code>string</code></td>
+<td>行的唯一键，默认为 id</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>相比于之前吾辈 <a target="_blank" rel="noopener" href="https://blog.rxliuli.com/p/aa3fd9e1/">vue 的初版 List 封装</a>，嗯，差距非常明显！</p>
+
+      
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1287,126 +1837,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/05/28/java/%E7%BB%9F%E8%AE%A1/oracleCompareMysql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
-      <meta itemprop="name" content="ftq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="越努力，越幸运！">
-      <meta itemprop="description" content="有志者事竟成">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 越努力，越幸运！">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/05/28/java/%E7%BB%9F%E8%AE%A1/oracleCompareMysql/" class="post-title-link" itemprop="url">mybatis统计crud行数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-05-28 10:10:03" itemprop="dateCreated datePublished" datetime="2020-05-28T10:10:03+08:00">2020-05-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BB%9F%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">统计</span></a>
-        </span>
-    </span>
-
-
-  
-    <span id="/2020/05/28/java/%E7%BB%9F%E8%AE%A1/oracleCompareMysql/" class="post-meta-item leancloud_visitors" data-flag-title="mybatis统计crud行数" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Changyan：</span>
-    
-    <a title="mybatis统计crud行数" href="/2020/05/28/java/%E7%BB%9F%E8%AE%A1/oracleCompareMysql/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::ae122fbd058c23601d7530c2145aa842" class="cy_cmt_count" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>9.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Splitter;</span><br><span class="line"><span class="keyword">import</span> com.google.common.base.Supplier;</span><br><span class="line"><span class="keyword">import</span> com.google.common.collect.Lists;</span><br><span class="line"><span class="keyword">import</span> com.google.common.collect.Maps;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.ObjectUtils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Path;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.text.NumberFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CompletableFuture;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CopyOnWriteArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.LongAdder;</span><br><span class="line"><span class="keyword">import</span> java.util.function.*;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.IntStream;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Stream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.sun.xml.internal.xsom.impl.UName.comparator;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.util.stream.Collectors.*;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CheckTableRows</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> BiFunction&lt;String,Integer,CheckTable&gt; checkTable = CheckTable::<span class="keyword">new</span>;</span><br><span class="line">    <span class="comment">//确认已经移植成功的表,mysql的条目数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> List&lt;CheckTable&gt; markDoneTables = Arrays.asList(</span><br><span class="line">            checkTable.apply(<span class="string">&quot;xxx_FD_MESSAGE_T&quot;</span>,<span class="number">5951</span>)</span><br><span class="line">            ,checkTable.apply(<span class="string">&quot;xxx_LOOKUP_CLASSIFY_T&quot;</span>,<span class="number">2631</span>)</span><br><span class="line">            ,checkTable.apply(<span class="string">&quot;xxx_PERSONALIZED_SETTING_T&quot;</span>,<span class="number">623</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">//临时表，不涉及</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> List&lt;String&gt; tempTables =Arrays.asList(<span class="string">&quot;temp_test&quot;</span>,<span class="string">&quot;temp_test1&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@org</span>.junit.Test</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Test1</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Path</span> <span class="variable">pathOracle</span> <span class="operator">=</span> Paths.get(<span class="string">&quot;C:\\Users\\git\\SaveTheWorld\\soup\\src\\test\\java\\com\\cbg\\tools\\demo\\sql\\move&quot;</span>, <span class="string">&quot;all_tables_oracle_new.txt&quot;</span>);</span><br><span class="line">        <span class="type">Path</span> <span class="variable">pathMysql</span> <span class="operator">=</span> Paths.get(<span class="string">&quot;C:\\Users\\git\\SaveTheWorld\\soup\\src\\test\\java\\com\\cbg\\tools\\demo\\sql\\move&quot;</span>, <span class="string">&quot;all_tables_mysql.txt&quot;</span>);</span><br><span class="line">        Stream&lt;String&gt; linesOracle = Files.lines(pathOracle);</span><br><span class="line">        Stream&lt;String&gt; linesMysql = Files.lines(pathMysql);</span><br><span class="line">        <span class="comment">//源数据</span></span><br><span class="line">        List&lt;CheckTable&gt; collectOracle = getCheckTables(linesOracle);</span><br><span class="line">        List&lt;CheckTable&gt; collectMysql = getCheckTables(linesMysql);</span><br><span class="line"></span><br><span class="line">        collectOracle.removeIf(e-&gt;&#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">tableName</span> <span class="operator">=</span> e.getTableName();</span><br><span class="line">            <span class="keyword">return</span> markDoneTables.stream().filter(m-&gt;&#123;</span><br><span class="line">                <span class="keyword">return</span> (m.getTableName()).equalsIgnoreCase(tableName);</span><br><span class="line">            &#125;).findAny().isPresent()||tempTables.contains(tableName);</span><br><span class="line">        &#125;);</span><br><span class="line">        collectOracle.addAll(markDoneTables);</span><br><span class="line">        Map&lt;Boolean, List&lt;CheckTable&gt;&gt; collect1 = collectOracle.parallelStream().collect(partitioningBy(collectMysql::contains));</span><br><span class="line">        List&lt;CheckTable&gt; collectDone = collect1.get(<span class="literal">true</span>);</span><br><span class="line">        List&lt;CheckTable&gt; collectNotDone = collect1.get(<span class="literal">false</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;已完成：&quot;</span>+collectDone);</span><br><span class="line">        System.out.println(<span class="string">&quot;总共：&quot;</span>+collectOracle.size()+<span class="string">&quot;，已完成：&quot;</span>+collectDone.size()+<span class="string">&quot;条&quot;</span>+<span class="string">&quot;，未完成：&quot;</span>+collectNotDone.size()+<span class="string">&quot;条&quot;</span>);</span><br><span class="line">        <span class="type">NumberFormat</span> <span class="variable">instance</span> <span class="operator">=</span> NumberFormat.getInstance();</span><br><span class="line">        instance.setMaximumFractionDigits(<span class="number">2</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;完成进度：&quot;</span>+instance.format((<span class="type">float</span>)collectDone.size()/(<span class="type">float</span>)collectOracle.size()*<span class="number">100</span>)+<span class="string">&quot;%&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成：&quot;</span>+collectNotDone);</span><br><span class="line">        List&lt;String&gt; collectNotDone_noTable = collectNotDone.parallelStream().map(CheckTable::getTableName).filter(e -&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> !collectMysql.stream().map(CheckTable::getTableName).collect(toList()).contains(e);</span><br><span class="line">        &#125;).collect(toList());</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成（无表）：&quot;</span>+collectNotDone_noTable);</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成（无表）：&quot;</span>+collectNotDone_noTable.size()+<span class="string">&quot;条&quot;</span>);</span><br><span class="line">        List&lt;CheckTable&gt; collectNotDone_hasTable_WrongRows = collectNotDone.parallelStream().filter(e -&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> !collectNotDone_noTable.contains(e.getTableName());</span><br><span class="line">        &#125;).collect(toList());</span><br><span class="line">        List&lt;List&lt;CheckTable&gt;&gt; collect = collectNotDone_hasTable_WrongRows.parallelStream().map(e -&gt; &#123;</span><br><span class="line">            List&lt;CheckTable&gt; objects = Lists.newArrayList();</span><br><span class="line">            <span class="type">CheckTable</span> <span class="variable">checkTable</span> <span class="operator">=</span> collectMysql.stream().filter(m -&gt; m.getTableName().equalsIgnoreCase(e.getTableName())).findFirst().get();</span><br><span class="line">            objects.add(e);</span><br><span class="line">            objects.add(checkTable);</span><br><span class="line">            <span class="keyword">return</span> objects;</span><br><span class="line">        &#125;).collect(toList());</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成(oracle)（表相同，数据量不一致）：&quot;</span>+collectNotDone_hasTable_WrongRows);</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成(oracle)（表相同，数据量不一致）：&quot;</span>+collectNotDone_hasTable_WrongRows.size()+<span class="string">&quot;条&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成(oracle,mysql)（表相同，数据量不一致）：&quot;</span>+collect);</span><br><span class="line">        System.out.println(<span class="string">&quot;未完成(oracle,mysql)（表相同，数据量不一致）：&quot;</span>+collect.size()+<span class="string">&quot;条&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;CheckTable&gt; <span class="title function_">getCheckTables</span><span class="params">(Stream&lt;String&gt; linesOracle)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> linesOracle.parallel().map(org.apache.logging.log4j.util.Strings::trimToNull).filter(</span><br><span class="line">                ((Predicate&lt;String&gt;)ObjectUtils::isEmpty).negate()</span><br><span class="line">            ).map(e -&gt; &#123;</span><br><span class="line">            <span class="type">CheckTable</span> <span class="variable">checkTable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CheckTable</span>();</span><br><span class="line">            Splitter.on(<span class="string">&quot;&amp;&quot;</span>).trimResults()</span><br><span class="line">                        .withKeyValueSeparator(<span class="string">&quot;;&quot;</span>).split(e)</span><br><span class="line">                        .forEach((k, v) -&gt; &#123;</span><br><span class="line">                            checkTable.setTableName(k.toLowerCase());</span><br><span class="line">                            checkTable.setRows(Integer.parseInt(v));</span><br><span class="line">                        &#125;);</span><br><span class="line">                <span class="keyword">return</span> checkTable;</span><br><span class="line">            &#125;).collect(toList());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@org</span>.junit.Test</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">getOracleInsertData</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Path</span> <span class="variable">pathOracle</span> <span class="operator">=</span> Paths.get(<span class="string">&quot;D:\\sqlExport\\&quot;</span>);</span><br><span class="line">        Stream&lt;Path&gt; list = Files.list(pathOracle);</span><br><span class="line">        <span class="type">CopyOnWriteArrayList</span> <span class="variable">co</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CopyOnWriteArrayList</span>();</span><br><span class="line">        List&lt;CompletableFuture&gt; objects = Lists.newArrayList();</span><br><span class="line">        list.forEach(e-&gt;&#123;</span><br><span class="line">            CompletableFuture&lt;String&gt; voidCompletableFuture = CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Stream&lt;String&gt; linesOracle = Files.lines(e);</span><br><span class="line">                    <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> e.getFileName().toString();</span><br><span class="line">                    <span class="type">long</span> <span class="variable">count</span> <span class="operator">=</span> linesOracle.filter(lo -&gt; lo.contains(<span class="string">&quot;INSERT INTO&quot;</span>)).count();</span><br><span class="line">                    <span class="keyword">return</span> name.replace(<span class="string">&quot;.sql&quot;</span>,<span class="string">&quot;&quot;</span>) + <span class="string">&quot;;&quot;</span> + count;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e1) &#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> e.getFileName().toString();</span><br><span class="line"><span class="comment">//                    System.out.println(&quot;错误：&quot;+name);</span></span><br><span class="line"><span class="comment">//                    e1.printStackTrace();</span></span><br><span class="line">                    <span class="keyword">return</span> name.replace(<span class="string">&quot;.sql&quot;</span>,<span class="string">&quot;&quot;</span>) + <span class="string">&quot;;&quot;</span> + <span class="string">&quot;Exception&quot;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, Executors.newFixedThreadPool(<span class="number">100</span>));</span><br><span class="line">            voidCompletableFuture.thenAccept(co::add);</span><br><span class="line">            objects.add(voidCompletableFuture);</span><br><span class="line">        &#125;);</span><br><span class="line">        CompletableFuture.allOf((CompletableFuture[])objects.stream().toArray(size-&gt;<span class="keyword">new</span> <span class="title class_">CompletableFuture</span>[size])).join();</span><br><span class="line">        co.removeIf(ObjectUtils::isEmpty);</span><br><span class="line">        co.stream().sorted().forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@org</span>.junit.Test</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Test2</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">CheckTable</span> <span class="variable">checkTable1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CheckTable</span>();</span><br><span class="line">        <span class="type">CheckTable</span> <span class="variable">checkTable2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CheckTable</span>();</span><br><span class="line">        checkTable1.setTableName(<span class="string">&quot;gg&quot;</span>);</span><br><span class="line">        checkTable2.setTableName(<span class="string">&quot;gg&quot;</span>);</span><br><span class="line">        checkTable1.setRows(<span class="number">0</span>);</span><br><span class="line">        checkTable2.setRows(<span class="number">0</span>);</span><br><span class="line">        System.out.println(checkTable1 == checkTable2);</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> org.apache.logging.log4j.util.Strings.trimToNull(<span class="string">&quot;    &quot;</span>);</span><br><span class="line">        System.out.println(ObjectUtils.isEmpty(s));</span><br><span class="line">        HashMap&lt;Object, Object&gt; objectObjectHashMap = Maps.newHashMap();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@org</span>.junit.Test</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">TestRepeat</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CheckTable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String tableName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer rows;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTableName</span><span class="params">(String tableName)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.tableName = org.apache.logging.log4j.util.Strings.trimToNull(tableName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;tableName:&#x27;&quot;</span> + tableName + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, rows:&quot;</span> + rows +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">oracle过程：</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> &quot;FUT&quot;.&quot;GETALLTABLEROWS&quot; <span class="keyword">is</span>     <span class="comment">--仅供参考</span></span><br><span class="line">  allTables <span class="type">varchar</span>(<span class="number">32</span>);</span><br><span class="line">	count1 number(<span class="number">11</span>);</span><br><span class="line">	selectCountSql VARCHAR2(<span class="number">500</span>):<span class="operator">=</span><span class="string">&#x27;&#x27;</span>;</span><br><span class="line">	v_date VARCHAR2(<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">cursor</span> cur <span class="keyword">is</span> <span class="comment">--游标  给查询赋值</span></span><br><span class="line">  <span class="keyword">select</span> a.table_name allTables <span class="keyword">from</span> user_tables a <span class="keyword">ORDER</span> <span class="keyword">BY</span> table_name  ;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">execute</span> immediate <span class="string">&#x27;drop table temp_test&#x27;</span>;</span><br><span class="line">  <span class="keyword">execute</span> immediate <span class="string">&#x27;CREATE TABLE temp_test (</span></span><br><span class="line"><span class="string">  allTables VARCHAR(200)</span></span><br><span class="line"><span class="string">)&#x27;</span>;</span><br><span class="line"><span class="keyword">execute</span> immediate <span class="string">&#x27;drop table temp_test1&#x27;</span>;</span><br><span class="line">  <span class="keyword">execute</span> immediate <span class="string">&#x27;CREATE TABLE temp_test1 (</span></span><br><span class="line"><span class="string">  rows1 number(11)</span></span><br><span class="line"><span class="string">)&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> cur loop<span class="comment">--游标取值 循环</span></span><br><span class="line">      allTables :<span class="operator">=</span>x.allTables;</span><br><span class="line">			<span class="keyword">insert</span> <span class="keyword">into</span> temp_test (allTables) <span class="keyword">values</span>(allTables) ;</span><br><span class="line">			selectCountSql :<span class="operator">=</span> <span class="string">&#x27;insert into temp_test1 select count(1) from &#x27;</span><span class="operator">||</span>allTables<span class="operator">||</span><span class="string">&#x27;&#x27;</span>;</span><br><span class="line">			<span class="comment">-- dbms_output.put_line(selectCountSql);</span></span><br><span class="line">			<span class="keyword">execute</span> immediate selectCountSql;</span><br><span class="line">			</span><br><span class="line">     </span><br><span class="line">    <span class="comment">--自己的语句</span></span><br><span class="line">		<span class="comment">-- select i_jdid,i_ryid;</span></span><br><span class="line">      </span><br><span class="line">    <span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">--这可以给记录表插数据</span></span><br><span class="line"><span class="keyword">end</span> ;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">mysql:</span><br><span class="line"><span class="keyword">CREATE</span> DEFINER<span class="operator">=</span>`root`@`<span class="operator">%</span>` <span class="keyword">PROCEDURE</span> `getAllTableRows`(<span class="keyword">OUT</span> `test` text)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">DECLARE</span> allTables <span class="type">VARCHAR</span>(<span class="number">200</span>);</span><br><span class="line"><span class="keyword">DECLARE</span> tui <span class="type">VARCHAR</span>(<span class="number">200</span>);</span><br><span class="line">	<span class="keyword">DECLARE</span> count <span class="type">int</span>;</span><br><span class="line">	<span class="keyword">DECLARE</span> i <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">declare</span> report1 <span class="keyword">cursor</span> <span class="keyword">for</span> <span class="keyword">select</span> a.allTables <span class="keyword">from</span> temp_test a;</span><br><span class="line">	</span><br><span class="line"><span class="keyword">declare</span> continue handler <span class="keyword">for</span> <span class="keyword">not</span> found <span class="keyword">set</span> i <span class="operator">=</span><span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">EXISTS</span> temp_test;</span><br><span class="line">	<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `temp_test` (</span><br><span class="line">  `allTables` <span class="type">VARCHAR</span>(<span class="number">200</span>),</span><br><span class="line">  `rows1` <span class="type">int</span>(<span class="number">0</span>)</span><br><span class="line">);</span><br><span class="line">	<span class="keyword">insert</span> <span class="keyword">into</span> temp_test(allTables) </span><br><span class="line"><span class="keyword">select</span> table_name allTables <span class="keyword">from</span> information_schema.`TABLES` <span class="keyword">where</span> table_schema<span class="operator">=</span>&quot;fut_back_test&quot; <span class="keyword">and</span> table_type <span class="operator">=</span>&quot;BASE TABLE&quot; <span class="keyword">ORDER</span> <span class="keyword">BY</span> table_name;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span> report1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fetch</span> report1 <span class="keyword">into</span> tui;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">while i<span class="operator">&lt;&gt;</span><span class="number">1</span> do</span><br><span class="line">	<span class="keyword">set</span> <span class="variable">@sql</span><span class="operator">=</span>concat(<span class="string">&#x27;select count(*) into @count from &#x27;</span>, tui);</span><br><span class="line">	<span class="keyword">prepare</span> stmt <span class="keyword">from</span> <span class="variable">@sql</span>;</span><br><span class="line">	<span class="keyword">execute</span> stmt;</span><br><span class="line">	<span class="keyword">DEALLOCATE</span> <span class="keyword">PREPARE</span> stmt;</span><br><span class="line">	<span class="keyword">set</span> count <span class="operator">=</span><span class="variable">@count</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">insert</span> <span class="keyword">into</span>  temp_test(allTables,rows1) <span class="keyword">VALUES</span>(tui,count) ;</span><br><span class="line"><span class="keyword">fetch</span> report1 <span class="keyword">into</span> tui;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span> while;</span><br><span class="line"><span class="keyword">close</span> report1;</span><br><span class="line">	</span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> temp_test <span class="keyword">where</span> rows1 <span class="keyword">is</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1437,7 +1867,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">22:49</span>
+    <span title="站点阅读时长">22:50</span>
   </span>
 </div>
 <div class="busuanzi-count">
