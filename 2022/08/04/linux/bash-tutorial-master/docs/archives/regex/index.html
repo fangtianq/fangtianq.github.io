@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="正则表达式正则表达式是表达文本模式的方法。  .：匹配任何单个字符。 ?：上一项是可选的，最多匹配一次。 *：前一项将被匹配零次或多次。 +：前一项将被匹配一次或多次。 &amp;#123;N&amp;#125;：上一项完全匹配N次。 &amp;#123;N，&amp;#125;：前一项匹配N次或多次。 &amp;#123;N，M&amp;#125;：前一项至少匹配N次，但不超过M次。 --：表示范围，如果它不是列表中的第一个或最后一个，也不是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="越努力，越幸运！">
+<meta property="og:url" content="https://fangtianq.github.io/2022/08/04/linux/bash-tutorial-master/docs/archives/regex/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="正则表达式正则表达式是表达文本模式的方法。  .：匹配任何单个字符。 ?：上一项是可选的，最多匹配一次。 *：前一项将被匹配零次或多次。 +：前一项将被匹配一次或多次。 &amp;#123;N&amp;#125;：上一项完全匹配N次。 &amp;#123;N，&amp;#125;：前一项匹配N次或多次。 &amp;#123;N，M&amp;#125;：前一项至少匹配N次，但不超过M次。 --：表示范围，如果它不是列表中的第一个或最后一个，也不是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-04T07:42:50.558Z">
+<meta property="article:modified_time" content="2022-08-04T07:42:50.558Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2022/08/04/linux/bash-tutorial-master/docs/archives/regex/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2022/08/04/linux/bash-tutorial-master/docs/archives/regex/","path":"2022/08/04/linux/bash-tutorial-master/docs/archives/regex/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6"><span class="nav-number">1.1.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%8B%AC%E5%8F%B7"><span class="nav-number">1.2.</span> <span class="nav-text">方括号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AD%97%E7%AC%A6%E7%B1%BB"><span class="nav-number">1.3.</span> <span class="nav-text">预定义字符类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9"><span class="nav-number">1.4.</span> <span class="nav-text">选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E8%AF%8D%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">1.5.</span> <span class="nav-text">量词操作符</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2022/08/04/linux/bash-tutorial-master/docs/archives/regex/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-04 15:42:50" itemprop="dateCreated datePublished" datetime="2022-08-04T15:42:50+08:00">2022-08-04</time>
+    </span>
+
+
+  
+    <span id="/2022/08/04/linux/bash-tutorial-master/docs/archives/regex/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="" href="/2022/08/04/linux/bash-tutorial-master/docs/archives/regex/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::2b55643dee8f1d74b2a025fecc044167" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p><code>正则表达式</code>是表达文本模式的方法。</p>
+<ul>
+<li><code>.</code>：匹配任何单个字符。</li>
+<li><code>?</code>：上一项是可选的，最多匹配一次。</li>
+<li><code>*</code>：前一项将被匹配零次或多次。</li>
+<li><code>+</code>：前一项将被匹配一次或多次。</li>
+<li><code>&#123;N&#125;</code>：上一项完全匹配N次。</li>
+<li><code>&#123;N，&#125;</code>：前一项匹配N次或多次。</li>
+<li><code>&#123;N，M&#125;</code>：前一项至少匹配N次，但不超过M次。</li>
+<li><code>--</code>：表示范围，如果它不是列表中的第一个或最后一个，也不是列表中某个范围的终点。</li>
+<li><code>^</code>：匹配行首的空字符串；也代表不在列表范围内的字符。</li>
+<li><code>$</code>：匹配行尾的空字符串。</li>
+<li><code>\b</code>：匹配单词边缘的空字符串。</li>
+<li><code>\B</code>：匹配空字符串，前提是它不在单词的边缘。</li>
+<li><code>\&lt;</code>：匹配单词开头的空字符串。</li>
+<li><code>\&gt;</code>：匹配单词末尾的空字符串。</li>
+</ul>
+<h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><p><code>元字符</code>是表示特殊函数的字符，包括以下这些<code>^ $ . [ ] &#123; &#125; - ? * + ( ) | \\</code>。除了元字符，其他字符在正则表达式中，都表示原来的含义。</p>
+<ul>
+<li><code>.</code> 匹配任意字符，但不含空字符</li>
+<li><code>^</code> 匹配文本行开头</li>
+<li><code>$</code> 匹配文本行结尾</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;.zip&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令在文件中查找包含正则表达式“.zip”的文本行。注意，上面命令不会匹配<code>zip</code>程序，因为<code>zip</code>只有三个字符，而<code>.zip</code>要求四个字符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;^zip&#x27;</span> dirlist*.txt</span><br><span class="line">$ grep -h <span class="string">&#x27;zip$&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令分别在文件列表中搜索行首，行尾以及行首和行尾同时包含字符串“zip”（例如，zip 独占一行）的匹配行。 注意正则表达式‘^$’（行首和行尾之间没有字符）会匹配空行。</p>
+<h2 id="方括号"><a href="#方括号" class="headerlink" title="方括号"></a>方括号</h2><p>方括号之中的字符，表示可以任意匹配其中的一个。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;[bg]zip&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令匹配包含字符串“bzip”或者“gzip”的任意行。</p>
+<p>注意，元字符放入方括号之中，会失去其特殊含义。但有两种情况除外，<code>^</code>在方括号的开头，表示否定，否则只是一个普通字符，表示原义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;[^bg]zip&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令匹配不以<code>b</code>或<code>g</code>开头的<code>zip</code>字符串。注意，上面命令不会匹配<code>zip</code>，因为一个否定的字符集仍然要求存在一个字符。</p>
+<p><code>-</code>在方括号之中表示一个字符区域。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;^[A-Z]&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令匹配所有以大写字母开头的文本行。类似的，<code>^[A-Za-z0-9]</code>表示以大写字母、小写字母、数字开头的文本行。</p>
+<p>注意，连字号如果不构成一个字符区域，则表示其本来的含义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;[-AZ]&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令匹配包含一个连字符，或一个大写字母“A”，或一个大写字母“Z”的文件名。</p>
+<h2 id="预定义字符类"><a href="#预定义字符类" class="headerlink" title="预定义字符类"></a>预定义字符类</h2><p>由于<code>locale</code>设置不同，Shell展开正则表达式<code>[A-Z]</code>时，可能不是解释为所有大写字母，而是解释为包括所有字母的字典顺序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/sbin/[A-Z]*</span><br></pre></td></tr></table></figure>
+
+<p>上面命令在某些发行版里面，会返回所有大写字母或小写字母开头的文件。</p>
+<p>为了避免这个问题，可以使用正则表达式的预定义字符类。</p>
+<ul>
+<li><code>[:alnum:]</code>	字母数字字符。在 ASCII 中，等价于：<code>[A-Za-z0-9]</code></li>
+<li><code>[:word:]</code>	与<code>[:alnum:]</code>相同, 但增加了下划线字符。</li>
+<li><code>[:alpha:]</code>	字母字符。在 ASCII 中，等价于<code>[A-Za-z]</code></li>
+<li><code>[:blank:]</code>	包含空格和 tab 字符。</li>
+<li><code>[:cntrl:]</code>	ASCII 的控制码。包含了0到31，和127的 ASCII 字符。</li>
+<li><code>[:digit:]</code>	数字0到9</li>
+<li><code>[:graph:]</code>	可视字符。在 ASCII 中，它包含33到126的字符。</li>
+<li><code>[:lower:]</code>	小写字母。</li>
+<li><code>[:punct:]</code>	标点符号字符。</li>
+<li><code>[:print:]</code>	可打印的字符。等于<code>[:graph:]</code>中的所有字符，再加上空格字符。</li>
+<li><code>[:space:]</code>	空白字符，包括空格，tab，回车，换行，vertical tab, 和 form feed.在 ASCII 中， 等价于<code>[ \t\r\n\v\f]</code></li>
+<li><code>[:upper:]</code>	大写字母。</li>
+<li><code>[:xdigit:]</code>	用来表示十六进制数字的字符。在 ASCII 中，等价于<code>[0-9A-Fa-f]</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/sbin/[[:upper:]]*</span><br></pre></td></tr></table></figure>
+
+<p>上面命令返回所有大写字母开头的文件名。</p>
+<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p><code>|</code>表示匹配一系列字符串之中的一个。注意与方括号区分，方括号表示匹配一系列字符之中的一个。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;AAA&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB&#x27;</span></span><br><span class="line">AAA</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;BBB&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB&#x27;</span></span><br><span class="line">BBB</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;CCC&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB&#x27;</span></span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>AAA|BBB</code>表示匹配字符串<code>AAA</code>或者是字符串<code>BBB</code>。<code>grep</code>程序使用<code>-E</code>参数，表示按照正则表达式规则匹配。并且，这个正则表达式放在单引号之中，为的是阻止Shell把<code>|</code>解释为管道操作符。</p>
+<p><code>|</code>可以多个连用，也可以与其他正则规则结合使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;AAA&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB|CCC&#x27;</span></span><br><span class="line"></span><br><span class="line">$ grep -Eh <span class="string">&#x27;^(bz|gz|zip)&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="量词操作符"><a href="#量词操作符" class="headerlink" title="量词操作符"></a>量词操作符</h2><p>量词操作符表示一个元素被匹配的次数。</p>
+<ul>
+<li><code>?</code> 匹配前面的元素出现0次或1次</li>
+<li><code>*</code> 匹配前面的元素出现0次或多次</li>
+<li><code>+</code> 匹配前面的元素出现1次或多次</li>
+<li><code>&#123;n&#125;</code> 匹配前面的元素出现了<code>n</code>次</li>
+<li><code>&#123;n,m&#125;</code> 匹配前面的元素它至少出现了<code>n</code>次，但是不多于<code>m</code>次</li>
+<li><code>&#123;n,&#125;</code> 匹配前面的元素至少出现了<code>n</code>次</li>
+<li><code>&#123;,m&#125;</code> 匹配前面的元素，如果它出现的次数不多于 m 次。</li>
+</ul>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/04/linux/bash-tutorial-master/docs/archives/system/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/08/04/linux/bash-tutorial-master/docs/archives/redirection/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="2b55643dee8f1d74b2a025fecc044167"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:53</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//unpkg.com/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
