@@ -3725,6 +3725,10 @@ pre {
   background-color: #db7093;
   color: #fff;
 }
+code {
+  font-size: small;
+  font-weight: 600;
+}
 tbody tr:nth-of-type(odd) {
   background: var(--table-row-odd-bg-color);
 }
@@ -3799,8 +3803,16 @@ p {
 .highlight table {
   width: 98%;
 }
+table {
+  font-size: 0.775em;
+}
 body {
   background: #ffcece;
+  line-height: 1.6;
+}
+p {
+  white-space: pre-wrap;
+  text-indent: 2em;
 }
 @-moz-keyframes masked-animation {
   0% {
