@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="硬件操作dfdf命令查看硬盘信息。 12345$ dfFilesystem 1K-blocks Used Available Use% Mounted on&#x2F;dev&#x2F;sda2 15115452 5012392 9949716 34% &#x2F;&#x2F;dev&#x2F;sda5 59631908 26545424 30008432 47% &#x2F;home&#x2F;dev&#x2F;sda1 147764 17370 122765 13% &#x2F;b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="越努力，越幸运！">
+<meta property="og:url" content="https://fangtianq.github.io/2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="硬件操作dfdf命令查看硬盘信息。 12345$ dfFilesystem 1K-blocks Used Available Use% Mounted on&#x2F;dev&#x2F;sda2 15115452 5012392 9949716 34% &#x2F;&#x2F;dev&#x2F;sda5 59631908 26545424 30008432 47% &#x2F;home&#x2F;dev&#x2F;sda1 147764 17370 122765 13% &#x2F;b">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-11T10:00:58.038Z">
+<meta property="article:modified_time" content="2022-11-11T10:00:58.038Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/","path":"2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">321</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">硬件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#df"><span class="nav-number">1.1.</span> <span class="nav-text">df</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#free"><span class="nav-number">1.2.</span> <span class="nav-text">free</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E7%9B%98"><span class="nav-number">1.3.</span> <span class="nav-text">硬盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mount"><span class="nav-number">1.4.</span> <span class="nav-text">mount</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#umount"><span class="nav-number">1.5.</span> <span class="nav-text">umount</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fdisk"><span class="nav-number">1.6.</span> <span class="nav-text">fdisk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkfs"><span class="nav-number">1.7.</span> <span class="nav-text">mkfs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fsck"><span class="nav-number">1.8.</span> <span class="nav-text">fsck</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dd"><span class="nav-number">1.9.</span> <span class="nav-text">dd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dmidecode"><span class="nav-number">1.10.</span> <span class="nav-text">dmidecode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lspci"><span class="nav-number">1.11.</span> <span class="nav-text">lspci</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsusb"><span class="nav-number">1.12.</span> <span class="nav-text">lsusb</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-11 18:00:58" itemprop="dateCreated datePublished" datetime="2022-11-11T18:00:58+08:00">2022-11-11</time>
+    </span>
+
+
+  
+    <span id="/2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="" href="/2022/11/11/linux/bash-tutorial-master/docs/archives/hardware/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::2ba7c2af6e4c2532fe1b5ce39e44c62b" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="硬件操作"><a href="#硬件操作" class="headerlink" title="硬件操作"></a>硬件操作</h1><h2 id="df"><a href="#df" class="headerlink" title="df"></a>df</h2><p><code>df</code>命令查看硬盘信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">df</span></span><br><span class="line">Filesystem 1K-blocks Used Available Use% Mounted on</span><br><span class="line">/dev/sda2 15115452 5012392 9949716 34% /</span><br><span class="line">/dev/sda5 59631908 26545424 30008432 47% /home</span><br><span class="line">/dev/sda1 147764 17370 122765 13% /boot</span><br></pre></td></tr></table></figure>
+
+<h2 id="free"><a href="#free" class="headerlink" title="free"></a>free</h2><p><code>free</code>命令查看内存占用情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ free</span><br><span class="line"> total used free shared buffers cached</span><br><span class="line">Mem: 513712 503976 9736 0 5312 122916</span><br><span class="line">-/+ buffers/cache: 375748 137964</span><br><span class="line">Swap: 1052248 104712 947536</span><br></pre></td></tr></table></figure>
+
+<h2 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h2><p>文件<code>/etc/fstab</code>配置系统启动时要挂载的设备。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LABEL=/12               /               ext3        defaults        1   1</span><br><span class="line">LABEL=/home             /home           ext3        defaults        1   2</span><br><span class="line">LABEL=/boot             /boot           ext3        defaults        1   2</span><br></pre></td></tr></table></figure>
+
+<p>输出结果一共有6个字段，含义依次如下。</p>
+<ul>
+<li>设备名：与物理设备相关联的设备文件（或设备标签）的名字，比如说<code>/dev/hda1</code>（第一个 IDE 通道上第一个主设备分区）。</li>
+<li>挂载点：设备所连接到的文件系统树的目录。</li>
+<li>文件系统类型：Linux 允许挂载许多文件系统类型。</li>
+<li>选项：文件系统可以通过各种各样的选项来挂载。</li>
+<li>频率：一位数字，指定是否和在什么时间用 dump 命令来备份一个文件系统。</li>
+<li>次序：一位数字，指定 fsck 命令按照什么次序来检查文件系统。</li>
+</ul>
+<h2 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h2><p><code>mount</code>不带参数时，显示当前挂载的文件系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ mount</span><br><span class="line">/dev/sda2 on / <span class="built_in">type</span> ext3 (rw)</span><br><span class="line">proc on /proc <span class="built_in">type</span> proc (rw)</span><br><span class="line">sysfs on /sys <span class="built_in">type</span> sysfs (rw)</span><br><span class="line">devpts on /dev/pts <span class="built_in">type</span> devpts (rw,gid=5,mode=620)</span><br><span class="line">/dev/sda5 on /home <span class="built_in">type</span> ext3 (rw)</span><br></pre></td></tr></table></figure>
+
+<p>这个列表的格式是：设备 on 挂载点 type 文件系统类型（可选的）。</p>
+<p><code>mount</code>带参数时，用于将设备文件挂载到挂载点，<code>-t</code>参数用来指定文件系统类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mount -t iso9660 /dev/hdc /mnt/cdrom</span><br><span class="line"></span><br><span class="line"><span class="comment"># 挂载一个iso文件</span></span><br><span class="line">$ mount -t iso9660 -o loop image.iso /mnt/iso_image</span><br></pre></td></tr></table></figure>
+
+<h2 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h2><p><code>umount</code>命令用来卸载设备。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ umount [设备名]</span><br><span class="line"></span><br><span class="line">$ umount /dev/hdc</span><br></pre></td></tr></table></figure>
+
+<h2 id="fdisk"><a href="#fdisk" class="headerlink" title="fdisk"></a>fdisk</h2><p><code>fdisk</code>命令用于格式化磁盘。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo umount /dev/sdb1</span><br><span class="line">$ sudo fdisk /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<h2 id="mkfs"><a href="#mkfs" class="headerlink" title="mkfs"></a>mkfs</h2><p><code>mkfs</code>命令用于在一个设备上新建文件系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mkfs -t ext3 /dev/sdb1</span><br><span class="line">$ sudo mkfs -t vfat /dev/sdb1</span><br></pre></td></tr></table></figure>
+
+<h2 id="fsck"><a href="#fsck" class="headerlink" title="fsck"></a>fsck</h2><p><code>fsck</code>命令用于检查（修复）文件系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo fsck /dev/sdb1</span><br></pre></td></tr></table></figure>
+
+<h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p><code>dd</code>命令用于将大型数据块，从一个磁盘复制到另一个磁盘。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=input_file of=output_file [bs=block_size [count=blocks]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 /dev/sdb 的所有数据复制到 /dev/sdc</span></span><br><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb of=/dev/sdc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 /dev/sdb 的所有数据拷贝到一个镜像文件</span></span><br><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb of=flash_drive.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从cdrom制作一个iso文件</span></span><br><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/cdrom of=ubuntu.iso</span><br></pre></td></tr></table></figure>
+
+<h2 id="dmidecode"><a href="#dmidecode" class="headerlink" title="dmidecode"></a>dmidecode</h2><p><code>dmidecode</code>命令用于输出BIOS信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dmidecode</span><br></pre></td></tr></table></figure>
+
+<p>以上命令会输出全部BIOS信息。为了便于查看，往往需要指定所需信息的类别。</p>
+<ul>
+<li>0 BIOS</li>
+<li>1 System</li>
+<li>2 Base Board</li>
+<li>3 Chassis 4 Processor</li>
+<li>5 Memory Controller</li>
+<li>6 Memory Module</li>
+<li>7 Cache</li>
+<li>8 Port Connector</li>
+<li>9 System Slots</li>
+<li>10 On Board Devices</li>
+<li>11 OEM Strings</li>
+<li>12 System Configuration Options</li>
+<li>13 BIOS Language</li>
+<li>14 Group Associations</li>
+<li>15 System Event Log</li>
+<li>16 Physical Memory Array</li>
+<li>17 Memory Device</li>
+<li>18 32-bit Memory Error</li>
+<li>19 Memory Array Mapped Address</li>
+<li>20 Memory Device Mapped Address</li>
+<li>21 Built-in Pointing Device</li>
+<li>22 Portable Battery</li>
+<li>23 System Reset</li>
+<li>24 Hardware Security</li>
+<li>25 System Power Controls</li>
+<li>26 Voltage Probe</li>
+<li>27 Cooling Device</li>
+<li>28 Temperature Probe</li>
+<li>29 Electrical Current Probe</li>
+<li>30 Out-of-band Remote Access</li>
+<li>31 Boot Integrity Services</li>
+<li>32 System Boot</li>
+<li>33 64-bit Memory Error</li>
+<li>34 Management Device</li>
+<li>35 Management Device Component</li>
+<li>36 Management Device Threshold Data</li>
+<li>37 Memory Channel</li>
+<li>38 IPMI Device</li>
+<li>39 Power Supply</li>
+</ul>
+<p>查看内存信息的命令如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dmidecode -t 17</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ dmidecode --<span class="built_in">type</span> 17</span><br></pre></td></tr></table></figure>
+
+<p>以下是其他一些选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看BIOS信息</span></span><br><span class="line">$ sudo dmidecode –t 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看CPU信息</span></span><br><span class="line">$ sudo dmidecode -t 4</span><br></pre></td></tr></table></figure>
+
+<p><code>dmidecode</code>也支持关键词查看，关键词与类别的对应关系如下。</p>
+<ul>
+<li>bios 0, 13</li>
+<li>system 1, 12, 15, 23, 32</li>
+<li>baseboard 2, 10</li>
+<li>chassis 3</li>
+<li>processor 4</li>
+<li>memory 5, 6, 16, 17</li>
+<li>cache 7</li>
+<li>connector 8</li>
+<li>slot 9</li>
+</ul>
+<p>查看系统信息的命令如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dmidecode -t system</span><br></pre></td></tr></table></figure>
+
+<h2 id="lspci"><a href="#lspci" class="headerlink" title="lspci"></a>lspci</h2><p><code>lspci</code>命令列出本机的所有PCI设备。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lspci</span><br></pre></td></tr></table></figure>
+
+<p>该命令输出信息的格式如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">03:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS5209 PCI Express Card Reader (rev 01)</span><br></pre></td></tr></table></figure>
+
+<p>输出信息一共分成三个字段。</p>
+<ul>
+<li>Field 1：PCI bus slot 的编号</li>
+<li>Field 2：PCI slot的名字</li>
+<li>Field 3：设备名和厂商名</li>
+</ul>
+<p>如果想查看更详细信息，可以使用下面的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lspci -vmm</span><br></pre></td></tr></table></figure>
+
+<h2 id="lsusb"><a href="#lsusb" class="headerlink" title="lsusb"></a>lsusb</h2><p><code>lsusb</code>命令用于操作USB端口。</p>
+<p>下面命令列出本机所有USB端口。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb</span><br></pre></td></tr></table></figure>
+
+<p>它的输出格式如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bus 002 Device 003: ID 0781:5567 SanDisk Corp. Cruzer Blade</span><br></pre></td></tr></table></figure>
+
+<p>各个字段的含义如下。</p>
+<ul>
+<li>Bus 002 : bus编号</li>
+<li>Device 003：bus 002连接的第三个设备</li>
+<li>ID 0781:5567：当前设备的编号，冒号前是厂商编号，冒号后是设备编号</li>
+<li>SanDisk Corp. Cruzer Blade：厂商和设备名</li>
+</ul>
+<p>找出本机有多少个USB接口可用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ find /dev/bus/</span><br><span class="line">/dev/bus/</span><br><span class="line">/dev/bus/usb</span><br><span class="line">/dev/bus/usb/002</span><br><span class="line">/dev/bus/usb/002/006</span><br><span class="line">/dev/bus/usb/002/005</span><br><span class="line">/dev/bus/usb/002/004</span><br><span class="line">/dev/bus/usb/002/002</span><br><span class="line">/dev/bus/usb/002/001</span><br><span class="line">/dev/bus/usb/001</span><br><span class="line">/dev/bus/usb/001/007</span><br><span class="line">/dev/bus/usb/001/003</span><br><span class="line">/dev/bus/usb/001/002</span><br><span class="line">/dev/bus/usb/001/001</span><br></pre></td></tr></table></figure>
+
+<p>查看某个USB设备的详细情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb -D /dev/bus/usb/002/005</span><br></pre></td></tr></table></figure>
+
+<p>查看所有设备的详细情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb -v</span><br></pre></td></tr></table></figure>
+
+<p>查看USB端口的版本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb -v | grep -i bcdusb</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/11/linux/bash-tutorial-master/docs/archives/host/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/11/linux/bash-tutorial-master/docs/archives/file/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="2ba7c2af6e4c2532fe1b5ce39e44c62b"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:54</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//unpkg.com/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
