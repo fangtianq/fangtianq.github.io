@@ -1093,7 +1093,7 @@ pre code {
 }
 @media (min-width: 1600px) {
   .header-inner {
-    width: 78%;
+    width: 90%;
   }
 }
 .site-brand-container {
@@ -1540,7 +1540,7 @@ pre code {
 }
 @media (min-width: 1600px) {
   .footer-inner {
-    width: 78%;
+    width: 90%;
   }
 }
 .use-motion .footer {
@@ -2528,7 +2528,7 @@ mark.search-keyword {
 }
 @media (min-width: 1600px) {
   .main {
-    width: 78%;
+    width: 90%;
   }
 }
 @media (max-width: 991px) {
