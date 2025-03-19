@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2016 年里做前端是怎样一种体验 本文转载自 SegmentFault，英文原文在 How it feels to learn JavaScript in 2016吾辈觉得颇为有趣，便转载了一下（也算是前端开发的悲哀之处了吧）附：吾辈觉得至今为止，前端工具链仍然没有好太多，工具链过多导致配置复杂，入门难度极大。附：现在都 2018 了，然而吾辈的公司现在还是用 jQuery，虽然吾辈目前在内部强">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2016 年里做前端是怎样一种体验">
+<meta property="og:url" content="https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="2016 年里做前端是怎样一种体验 本文转载自 SegmentFault，英文原文在 How it feels to learn JavaScript in 2016吾辈觉得颇为有趣，便转载了一下（也算是前端开发的悲哀之处了吧）附：吾辈觉得至今为止，前端工具链仍然没有好太多，工具链过多导致配置复杂，入门难度极大。附：现在都 2018 了，然而吾辈的公司现在还是用 jQuery，虽然吾辈目前在内部强">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-16T14:36:42.000Z">
+<meta property="article:modified_time" content="2019-06-13T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/","path":"2019/03/16/others/rxliuliBlog/JavaScript/2016-年里做前端是怎样一种体验/","title":"2016 年里做前端是怎样一种体验"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2016 年里做前端是怎样一种体验 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C"><span class="nav-number">1.</span> <span class="nav-text">2016 年里做前端是怎样一种体验</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2016 年里做前端是怎样一种体验 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2016 年里做前端是怎样一种体验
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-16 22:36:42" itemprop="dateCreated datePublished" datetime="2019-03-16T22:36:42+08:00">2019-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-06-14 00:00:00" itemprop="dateModified" datetime="2019-06-14T00:00:00+08:00">2019-06-14</time>
+    </span>
+
+
+  
+    <span id="/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/" class="post-meta-item leancloud_visitors" data-flag-title="2016 年里做前端是怎样一种体验" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="2016 年里做前端是怎样一种体验" href="/2019/03/16/others/rxliuliBlog/JavaScript/2016-%E5%B9%B4%E9%87%8C%E5%81%9A%E5%89%8D%E7%AB%AF%E6%98%AF%E6%80%8E%E6%A0%B7%E4%B8%80%E7%A7%8D%E4%BD%93%E9%AA%8C/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::bd22fe157925b5a7ac5ecc1bf42c90c0" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="2016-年里做前端是怎样一种体验"><a href="#2016-年里做前端是怎样一种体验" class="headerlink" title="2016 年里做前端是怎样一种体验"></a>2016 年里做前端是怎样一种体验</h1><blockquote>
+<p>本文转载自 <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007083024">SegmentFault</a>，英文原文在 <a target="_blank" rel="noopener" href="https://hackernoon.com/how-it-feels-to-learn-JavaScript-in-2016-d3a717dd577f">How it feels to learn JavaScript in 2016</a><br>吾辈觉得颇为有趣，便转载了一下（也算是前端开发的悲哀之处了吧）<br>附：吾辈觉得至今为止，前端工具链仍然没有好太多，工具链过多导致配置复杂，入门难度极大。<br>附：现在都 2018 了，然而吾辈的公司现在还是用 <code>jQuery</code>，虽然吾辈目前在内部强推了 <code>VueJS</code> #笑哭<br>附：吾辈这里对内容添加了一些样式，便于阅读时不那么疲劳。</p>
+</blockquote>
+<p>问：最近我接手了一个新的 <code>Web</code> 项目，不过老实说我已经好久没碰过这方面的代码了。听说前端的技术栈已经发生了极大的变革，不知道你现在是不是仍然处于最前沿的开发者阵列？<br>答：准确来说，过去俗称的写网页的，现在应该叫做 <code>Front End Engineer</code>，我确实属于这所谓的前端工程师。并且我才从 <code>JSConf</code> 与 <code>ReactConf</code> 面基回来，因此我觉得我觉得我还是了解目前 <code>Web</code> 前端领域最新的面貌的。<br>问：不错不错，我的需求其实也不复杂，就是从后端提供的 <code>REST</code> 风格的 <code>EndPoint</code> 来获取用户活动数据并且将其展示在前端界面上。并且需要以列表形式展示，同时，列表要支持筛选排序等操作，对了，还要保证前端数据和服务端保持一致。按照我现在的理解，我打算用 <code>jQuery</code> 来抓取与展现数据，你觉得咋样？<br>答：不不不，现在估计已经没多少人使用 <code>jQuery</code> 了吧。你可以试试 <code>React</code>，毕竟这是 2016 年了啊。<br>问：额，好吧，那啥是 <code>React</code> 啊？<br>答：这是个非常不错的源自 <code>Facebook</code> 的前端库，它能够帮你便捷地响应界面事件，同时保证项目层级的可控性与还说得过去的性能。<br>问：不错不错，那我是不是就可以用 <code>React</code> 来展示数据了呢？<br>答：话是这么说没错，不过你需要添加 <code>React</code> 与 <code>React DOM</code> 依赖项到你的页面中去。<br>问：等等，<code>React</code> 不是一个库吗？为啥要添加两个依赖呢？<br>答：不要急，前者是 <code>React</code> 的核心库，后面呢算是 <code>Facebook</code> 操作的辅助库，这样就能让你用 <code>JSX</code> 来描述你的界面布局了。<br>问：<code>JSX</code>？啥是 <code>JSX</code>？<br>答：<code>JSX</code> 是一个类似于 <code>XML</code> 的 <code>JavaScript</code> 语法扩展，它是另一种描述 <code>Facebook</code> 的方式，可以认为是 <code>HTML</code> 的替代品。<br>问：等等，<code>HTML</code> 咋啦？<br>答：都 2016 了，直接用 <code>HTML</code> 早就过时了。<br>问：好吧，那是不是我把两个库添加到项目中我就可以使用 <code>React</code> 了？<br>答：额，还要一些小的工具，你需要添加 <code>Babel</code> 到你的项目中，这样你就能用了。<br>问：又是一个库？<code>Babel</code> 又是什么鬼？<br>答：你可以把 <code>Babel</code> 认为是一个转译工具，可以将某个特定版本的 <code>JavaScript</code> 转译为任意版本的 <code>JavaScript</code>。你可以选择不使用 <code>Babel</code>，不过那也就意味着你只能用烦人的 <code>ES5</code> 来编写你的项目了。不过既然都是 2016 了，我建议你还是使用最新的 <code>ES2016+</code> + 语法吧。<br>问：<code>ES5</code>？<code>ES2016+</code>+？我已经迷茫了，<code>ES5</code>，<code>ES2016+</code> + 又是啥？<br>答：<code>ES5</code> 是 <code>ECMAScript 2015</code> 的缩写，也是现在被绝大部分浏览器所支持的 <code>JavaScript</code> 语法。<br>问：<code>ECMAScript</code>？<br>答：是的，你应该知道 <code>JavaScript</code> 最早于 1995 年提出，而后在 1999 年第一个正式版本定稿。之后的十数年里 <code>JavaScript</code> 的发展一直很凌乱，不过经过七个版本之后已经逐步清晰了。<br>问：7 个版本？那么 <code>ES5</code> 与 <code>ES2016+</code> 又是第几个版本呢？<br>答：是的，分别指第五个版本与第七个版本。<br>问：等等，那第六个版本呢？<br>答：你说 <code>ES6</code>？估计我刚才没有讲明白，<code>ECMAScript</code> 的每个版本都是向前兼容的，当你使用 <code>ES2016+</code> + 的时候也就意味着你在使用之前所有版本的所有特性啦。<br>问：原来是这样啊，那为啥一定要用 <code>ES2016+</code> 而不是 <code>ES6</code> 呢？<br>答：是的，你可以使用 <code>ES6</code>，不过如果你要使用 <code>async</code> 与 <code>await</code> 这些特性，你就要去用 <code>ES2016+</code> 了。否则你就还不得不去使用 <code>ES6</code> 的 <code>Generator</code> 来编写异步代码了。<br>问：我现在彻底迷糊了，我只是想简单地从服务端加载些数据而已，之前只需要从 <code>CDN</code> 加载下 <code>jQuery</code> 的依赖库，然后用 <code>Ajax</code> 方法来获取数据即可，为啥我现在不能这么做呢？<br>答：别傻了，每个人都知道一味使用 <code>jQuery</code> 的后果就是让你的代码变得一团乱麻，这都 2016 了，没人再想去面对这种头疼的代码了。<br>问：你说的是有道理，那现在我是不是就把这三个库加载进来，然后用 <code>HTML</code> 的 <code>Table</code> 来展示这些数据？<br>答：嗯，你可以选择一个模块打包工具将这三个依赖库打包到一个文件中。<br>问：额，啥是模块打包工具啊？<br>答：这个名词在不同的环境下指代也不同，不过在 <code>Web</code> 开发中我们一般将支持 <code>AMD</code> 与 <code>CommonJS</code> 的工具称为模块打包工具。<br>问：<code>AMD</code> 与 <code>CommonJS</code> 又是？<br>答：它们是用于描述 <code>JavaScript</code> 库与类之间交互的接口标准，你有听过 exports 与 <code>requires</code> 吗？你可以根据 AMD 或者 CommonJS 的规范来定义多个 <code>JavaScript</code> 文件，然后用类似于 <code>Browserify</code> 的工具来打包它们。<br>问：原来是这样，那 <code>Browserify</code> 是啥呢？<br>答：<code>Browserify</code> 最早是为了避免人们把自己的依赖一股脑放到 <code>NPM Registry</code> 中构建的，它最主要的功能就是允许人们将遵循 <code>CommonJS</code> 规范的模块打包到一个文件中。<br>问：<code>NPM Registry</code>？<br>答：这是一个很大的在线仓库，允许人们将代码与依赖以模块方式打包发布。<br>问：就像 <code>CDN</code> 一样？<br>答：还是有很大差异的，它更像一个允许人们发布与下载依赖库的中心仓库。<br>问：哦，我懂了，就像 <code>Bower</code> 一样啊。<br>答：对哒，不过 2016 年了，同样没啥人用 <code>Bower</code> 了。<br>问：嗯嗯，那我这时候应该从 <code>npm</code> 库中下载依赖了是吧？<br>答：是的，譬如如果你要用 <code>React</code> 的话，你可以直接用 <code>Npm</code> 命令来安装 <code>React</code>，然后导入到你的项目中，现在绝大部分主流的 <code>JavaScript</code> 库都支持这种方式了。<br>问：嗯嗯，就像 <code>Angular</code> 一样啊。<br>答：不过 <code>Angular</code> 也是 2015 年的流行了，现在像 <code>VueJS</code> 或者 <code>RxJS</code> 这样的才是小鲜肉，你想去学习它们吗？<br>问：不急不急，我们还是先多聊聊 <code>React</code> 吧，贪多嚼不烂。我还想确定下，是不是我从 <code>npm</code> 下载了 <code>React</code> 然后用 <code>Browserify</code> 打包就可以了？<br>答：是的。<br>问：好的，不过每次都要下载一大堆依赖然后打包，看起来好麻烦啊。<br>答：是的，不过你可以使用像 <code>Grunt</code> 或者 <code>Gulp</code> 或者 <code>Broccoli</code> 这样的任务管理工具来自动运行 <code>Browserify</code>。对了，你还可以用 <code>Mimosa</code>。<br>问：<code>Grunt</code>？<code>Gulp</code>？<code>Broccoli</code>？<code>Mimosa</code>？我们到底在讨论啥？<br>答：不方，我们在讨论任务管理工具，不过同样的，这些工具也是属于 2015 年的弄潮儿。现在我们流行使用 <code>Webpack</code> 咯。<br>问：<code>Makefiles</code>? 听起来有点像是一个 <code>C</code> 或者 <code>C++</code> 项目啊。<br>答：没错，不过很明显 <code>Web</code> 的演变之路就是把所有事情弄复杂，然后再回归到最基础的方式。估计不出几年你就要在 <code>Web</code> 中写汇编代码了。<br>问：额，你刚才好像提到了 <code>Webpack</code>？<br>答：是的，这是一个兼顾了模块打包工具与任务运行器的打包工具，有点像 <code>Browserify</code> 的升级版本。<br>问：嗷嗷，这样啊，那你觉得哪个更好点呢？<br>答：这个因人而异了，不过我个人是更加偏好于 <code>Webpack</code>，毕竟它不仅仅支持 <code>CommonJS</code> 规范，还支持 <code>ES6</code> 的模块规范。<br>问：好吧，我已经被 <code>CommonJS/ES6</code> 这些东西彻底搞乱了。<br>答：很多人都是这样，多了，你可能还要去了解下 <code>SystemJS</code>。<br>问：天哪，又是一个新名词，啥是 <code>SystemJS</code> 呢？<br>答：不同于 <code>Browserify</code> 与 <code>Webpack 1.x</code>，<code>SystemJS</code> 是一个允许你将多个模块分封于多个文件的动态模块打包工具，而不是全部打包到一个大的文件中。<br>问：等等，不过我觉得按照网络优化规范我们应该将所有的库打包到一个文件中。<br>答：是的，不过 <code>HTTP/2</code> 快要来了，并发的 <code>HTTP</code> 请求已经不是梦。<br>问：额，那时候是不是就不需要添加 <code>React</code> 的依赖库了？<br>答：不一定，你可以将这些依赖库从 <code>CDN</code> 中加载进来，不过你还是需要引入 <code>Babel</code> 的吧。<br>问：额，我刚才好像说错了话。<br>答：是的，如果按照你所说的，你需要在生产环境下将所有的 <code>Babel-core</code> 引入，这样会无端端增加很多额外的性能消耗。<br>问：好吧，那我到底应该怎么做呢？<br>答：我个人建议是用 <code>TypeScript+Webpack+SystemJS+Babel</code> 这一个组合。<br>问：<code>TypeScript</code>？我一直以为我们在说的是 <code>JavaScript</code>！<br>答：是的，<code>TypeScript</code> 是 <code>JavaScript</code> 的超集，基于 ES6 版本的一些封装。你应该还没忘记 <code>ES6</code> 吧？<br>问：我以为我们刚才说到的 <code>ES2016+</code> + 就是 <code>ES6</code> 的超集了。为啥我们还需要 <code>TypeScript</code> 呢？<br>答：因为 <code>TypeScript</code> 允许我们以静态类型语言的方式编写 <code>JavaScript</code>，从而减少运行时错误。都 2016 了，添加些强类型不是坏事。<br>问：原来 <code>TypeScript</code> 是做这个的啊！<br>答：是的，还有一个就是 <code>Facebook</code> 出品的 <code>Flow</code>。<br>问：<code>Flow</code> 又是啥？<br>答：<code>Flow</code> 是 <code>Facebook</code> 出品的静态类型检测工具，基于函数式编程的 <code>OCaml</code> 构建。<br>问：<code>OCamel</code>？<code>函数式编程</code>？<br>答：你没听过吗？<code>函数式编程</code>？<code>高阶函数</code>？<code>Currying</code>? 纯函数？<br>问：我一无所知。<br>答：好吧，那你只需要记得函数式编程在某些方面是优于 <code>OOP</code> 的，并且我们在 2016 年应该多多使用呦。<br>问：等等，我在大学就学过了 <code>OOP</code>，我觉得挺好的啊。<br>答：是的，<code>OOP</code> 确实还有很多可圈可点的地方，不过大家已经认识到了可变的状态太容易引发未知问题了，因此慢慢的所有人都在转向不可变数据与函数式编程。在前端领域我们可以用 <code>Rambda</code> 这样的库来在 <code>JavaScript</code> 中使用函数式编程了。<br>问：你是不是专门一字排开名词来了？<code>Ramda</code> 又是啥？<br>答：当然不是啦，<code>Rambda</code> 是类似于 <code>Lambda</code> 的库，源自 <strong>David Chambers</strong>。<br>问：<strong>David Chambers</strong>？<br>答：<strong>David Chambers</strong> 是个很优秀的程序员，他是 <code>Rambda</code> 的核心贡献者之一。如果你要学习函数式编程的话，你还应该关注下 <strong>Erik Meijer</strong>。<br>问：<strong>Erik Meijer</strong>？<br>答：另一个函数式编程领域的大神与布道者。<br>问：好吧，还会让我们回到 <code>React</code> 的话题吧，我应该怎么使用 <code>React</code> 来抓取数据呢？<br>答：额，<code>React</code> 只是用于展示数据的，它并不能够帮你抓取数据。<br>问：我的天啊，那我怎么来抓取数据呢？<br>答：你应该使用 <code>fetch</code> 来从服务端获取数据。<br>问：<code>fetch</code>？<br>答：是的，<code>fetch</code> 是浏览器原生基于 <code>XMLHttpRequests</code> 的封装。<br>问：那就是 <code>AJAX</code> 咯？<br>答：<code>AJAX</code> 一般指仅仅使用 <code>XMLHttpRequests</code>，而 <code>fetch</code> 允许你基于 <code>Promise</code> 来使用 <code>AJAX</code>，这样就能够避免 <code>Callback hell</code> 了。<br>问：<code>Callback hell</code>?<br>答：是的，每次你向服务器发起某个异步请求的时候，你必须要添加一个异步回调函数来处理其响应，这样一层又一层地回调的嵌套就是所谓的 <code>Callback hell</code> 了。<br>问：好吧，那 <code>Promise</code> 就是专门处理这个哩？<br>答：没错，你可以用 <code>Promise</code> 来替换传统的基于回调的异步函数调用方式，从而编写出更容易理解与测试的代码。<br>问：那我现在是不是直接使用 <code>fetch</code> 就好了啊？<br>答：是啊，不过如果你想要在较老版本的浏览器中使用 <code>fetch</code>，你需要引入 <code>fetch</code> <code>Polyfill</code>，或者使用 <code>Request</code>、<code>Bluebird</code> 或者 <code>Axios</code>。<br>问：来啊，互相伤害吧，你还是直接告诉我我还需要了解多少个库吧！<br>答：这可是 <code>JavaScript</code> 啊，可是有成千上万个库的。而且不少库还很大呢，譬如那个嵌了一张 Guy Fieri 图片的库。<br>问：你是说 Guy Fieri? 我听说过，那 <code>Bluebird</code>、<code>Request</code>、<code>Axios</code> 又是啥呢？<br>答：它们可以帮你执行 <code>XMLHttpRequests</code> 然后返回 <code>Promise</code> 对象。<br>问：难道 <code>jQuery</code> 的 <code>AJAX</code> 方法不是返回 <code>Promise</code> 吗？<br>答：请忘掉 <code>jQuery</code> 吧，用 <code>fetch</code> 配合上 <code>Promise</code>，或者 <code>async/await</code> 能够帮你构造合适的控制流。<br>问：这是你第三次提到 <code>await</code> 了，这到底是个啥啊？<br>答：<code>await</code> 是 <code>ES7</code> 提供的关键字，能够帮你阻塞某个异步调用直到其返回，这样能够让你的控制流更加清晰，代码的可读性也能更上一层楼。你可以在 <code>Babel</code> 中添加 <code>stage-3 preset</code>，或者添加 <code>syntax-async-functions</code> 以及 <code>transform-async-to-generator</code> 这两个插件。<br>问：好麻烦啊。<br>答：是啊，不过更麻烦的是你必须先预编译 <code>TypeScript</code> 代码，然后用 <code>Babel</code> 来转译 <code>await</code>。<br>问：为啥？难道 <code>TypeScript</code> 中没有内置？<br>答：估计在下一个版本中会添加该支持，不过目前的 1.7 版本的 <code>TypeScript</code> 目标是 ES6，因此如果你还想在浏览器中使用 <code>await</code>，你必须要先把 <code>TypeScript</code> 编译为 ES6，然后使用 <code>Babel</code> 转译为 <code>ES5</code>。<br>问：我已经无话可说了。<br>答：好吧，其实你也不用想太多，首先你基于 <code>TypeScript</code> 进行编码，然后将所有使用 <code>fetch</code> 的模块转译为 <code>ES6</code>，然后再使用 <code>Babel</code> 的 <code>stage-3 preset</code> 来对 <code>await</code> 等进行 <code>Polyfill</code>，最后使用 <code>SystemJS</code> 来完成加载。如果你打算使用 <code>fetch</code> 的话，还可以使用 <code>Bluebird</code>、<code>Request</code> 或者 <code>Axios</code>。<br>问：好，这样说就清晰多了，是不是这样我就达到我的目标了？<br>答：额，你的应用需要处理任何的状态变更吗？<br>问：我觉得不要把，我只是想展示数据。<br>答：那还行，否则的话你还需要了解 <code>Flux</code>、<code>Redux</code> 等等一系列的东西。<br>问：我不想再纠结于这些名词了，再强调一遍，我只是想展示数据罢了。<br>答：好吧，其实如果你只是想展示数据的话，你并不需要 <code>React</code>，你只需要一个比较好的模板引擎罢了。<br>问：你在开玩笑？<br>答：不要着急，我只是告诉你你可以用到的东西。<br>问：停！<br>答：我的意思是，即使你仅仅打算用个模板引擎，还是建议使用下 <code>TypeScript</code>+<code>SystemJS</code>+<code>Babel</code>。<br>问：好吧，那你还是推荐一个模板引擎吧！<br>答：有很多啊，你有对哪种比较熟悉吗？<br>问：唔，好久之前用了，记不得了。<br>答：<code>jTemplates</code>?<code>jQote?PURE</code>?<br>问：没听过，还有吗？<br>答：<code>Transparency</code>？<code>JSRender</code>？<code>MarkupJS?KnockoutJS</code>?<br>问：还有吗？<br>答：<code>PlatesJS</code>?<code>jQuery-tmpl?Handlebars</code>?<br>问：好像最后一个有点印象。<br>答：<code>Mustache</code>?<code>underscore</code>？<br>问：好像更晚一点的。<br>答：<code>Jade</code>?<code>DustJS</code>?<br>问：不。<br>答：<code>DotJS</code>?<code>EJS</code>?<br>问：不。<br>答：<code>Nunjucks</code>?<code>ECT</code>?<br>问：不。<br>答：<code>Mah</code>?<code>Jade</code>?<br>问：额，还不是。<br>答？难道是 <code>ES6</code> 原生的字符串模板引擎。<br>问：我估计，这货也需要 <code>ES6</code> 吧。<br>答：是啊。<br>问：需要 <code>Babel</code>？<br>答：是啊。<br>问：是不是还要从 <code>npm</code> 下载核心模块？<br>答：是啊。<br>问：是不是还需要 <code>Browserify</code>、<code>Webpack</code> 或者类似于 <code>SystemJS</code> 这样的模块打包工具？<br>答：是啊。<br>问：除了 <code>Webpack</code>，还需要引入任务管理器。<br>答：是啊。<br>问：我是不是还需要某个函数式编程语言，或者强类型语言？<br>答：是啊。<br>问：然后如果用到 <code>await</code> 的话，还需要引入 <code>Babel</code>？<br>答：是啊。<br>问：然后就可以使用 <code>fetch</code>、<code>Promise</code> 了吧？<br>答：别忘了 <code>Polyfill</code> <code>fetch</code>，Safari 目前还不能原生支持 <code>fetch</code>。<br>问：是不是，学完这些，就 OK 了？<br>答：额，目前来看是的，不过估计过几年我们就需要用 <code>Elm</code> 或者 <code>WebAssembly</code> 咯～<br>问：我觉得，我还是乖乖去写后端的代码吧。<br>答：<code>Python</code> 大法好！</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/16/others/rxliuliBlog/Java/Java-%E4%B8%AD-String-%E8%BD%AC-LocalDateTime-%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF/" rel="prev" title="Java 中 String 转 LocalDateTime 出现错误">
+                  <i class="fa fa-chevron-left"></i> Java 中 String 转 LocalDateTime 出现错误
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/19/others/rxliuliBlog/JavaScript/2018-React-Redux-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" rel="next" title="2018 React Redux 入门教程">
+                  2018 React Redux 入门教程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="bd22fe157925b5a7ac5ecc1bf42c90c0"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在 Windows 上使用 FTP&#x2F;SFTP 服务端场景最近在做 WebService 项目时遇到了定时上传统计报表的需求。协议是 FTP&#x2F;SFTP，然而第三方服务暂时无法集成，所以只能在本地使用软件模拟出 FTP&#x2F;SFTP 服务端，然后在代码中进行测试。 前言吾辈并未使用 Windows 上大名鼎鼎的 FileZilla。谜之音：FileZilla 开源免费，而且 FTP&#x2F;SFTP&#x2F;F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 Windows 上使用 FTP&#x2F;SFTP 服务端">
+<meta property="og:url" content="https://fangtianq.github.io/2019/02/16/others/rxliuliBlog/Tool/Windows/%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-Ftp-Sftp-%E6%9C%8D%E5%8A%A1%E7%AB%AF/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="在 Windows 上使用 FTP&#x2F;SFTP 服务端场景最近在做 WebService 项目时遇到了定时上传统计报表的需求。协议是 FTP&#x2F;SFTP，然而第三方服务暂时无法集成，所以只能在本地使用软件模拟出 FTP&#x2F;SFTP 服务端，然后在代码中进行测试。 前言吾辈并未使用 Windows 上大名鼎鼎的 FileZilla。谜之音：FileZilla 开源免费，而且 FTP&#x2F;SFTP&#x2F;F">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190217213152.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217213700.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217214421.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217214719.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217214843.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217214951.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217220138.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217220648.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217220940.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217221138.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217221321.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217221633.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190217221801.png">
+<meta property="article:published_time" content="2019-02-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-02-18T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="FTP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190217213152.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/02/16/others/rxliuliBlog/Tool/Windows/%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-Ftp-Sftp-%E6%9C%8D%E5%8A%A1%E7%AB%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/02/16/others/rxliuliBlog/Tool/Windows/%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-Ftp-Sftp-%E6%9C%8D%E5%8A%A1%E7%AB%AF/","path":"2019/02/16/others/rxliuliBlog/Tool/Windows/在-Windows-上使用-Ftp-Sftp-服务端/","title":"在 Windows 上使用 FTP/SFTP 服务端"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在 Windows 上使用 FTP/SFTP 服务端 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-FTP-x2F-SFTP-%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">1.</span> <span class="nav-text">在 Windows 上使用 FTP&#x2F;SFTP 服务端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-freeFTPd"><span class="nav-number">1.3.</span> <span class="nav-text">使用 freeFTPd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95-FTP-x2F-SFTP"><span class="nav-number">1.4.</span> <span class="nav-text">测试 FTP&#x2F;SFTP</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/02/16/others/rxliuliBlog/Tool/Windows/%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-Ftp-Sftp-%E6%9C%8D%E5%8A%A1%E7%AB%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在 Windows 上使用 FTP/SFTP 服务端 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在 Windows 上使用 FTP/SFTP 服务端
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-17 00:00:00" itemprop="dateCreated datePublished" datetime="2019-02-17T00:00:00+08:00">2019-02-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-02-19 00:00:00" itemprop="dateModified" datetime="2019-02-19T00:00:00+08:00">2019-02-19</time>
+    </span>
+
+
+  
+    <span id="/2019/02/16/others/rxliuliBlog/Tool/Windows/%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-Ftp-Sftp-%E6%9C%8D%E5%8A%A1%E7%AB%AF/" class="post-meta-item leancloud_visitors" data-flag-title="在 Windows 上使用 FTP/SFTP 服务端" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="在 Windows 上使用 FTP/SFTP 服务端" href="/2019/02/16/others/rxliuliBlog/Tool/Windows/%E5%9C%A8-Windows-%E4%B8%8A%E4%BD%BF%E7%94%A8-Ftp-Sftp-%E6%9C%8D%E5%8A%A1%E7%AB%AF/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::cd7b7dad9ad57a395938bc4e201bb4cf" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>940</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="在-Windows-上使用-FTP-x2F-SFTP-服务端"><a href="#在-Windows-上使用-FTP-x2F-SFTP-服务端" class="headerlink" title="在 Windows 上使用 FTP&#x2F;SFTP 服务端"></a>在 Windows 上使用 FTP&#x2F;SFTP 服务端</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>最近在做 <code>WebService</code> 项目时遇到了定时上传统计报表的需求。协议是 <code>FTP/SFTP</code>，然而第三方服务暂时无法集成，所以只能在本地使用软件模拟出 <code>FTP/SFTP</code> 服务端，然后在代码中进行测试。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>吾辈并未使用 Windows 上大名鼎鼎的 <a target="_blank" rel="noopener" href="https://filezilla-project.org/">FileZilla</a>。<br>谜之音：<strong>FileZilla 开源免费，而且 <code>FTP/SFTP/FTPS</code> 都能支持岂不美滋滋？</strong><br>吾辈：然而安装完成直接启动就报错了<br>谜之音：<strong>报错就去查一下，这都觉得麻烦却是没办法了呢！</strong></p>
+<p>事实上这是很多开发者，尤其是 Linux 下的开发者，习惯了使用软件可能报错、可能有问题，对使用体验毫不在意。<br>所以吾辈滚了，滚去使用其他的软件了。</p>
+<h2 id="使用-freeFTPd"><a href="#使用-freeFTPd" class="headerlink" title="使用 freeFTPd"></a>使用 freeFTPd</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.freesshd.com/">freeFTPd 官网</a></p>
+</blockquote>
+<p>点击 <a target="_blank" rel="noopener" href="http://www.freesshd.com/freeFTPd.exe">下载链接</a> 下载 freeFTPd，然后点击安装。第一次运行时会询问你 <strong>是否创建&#x2F;使用私钥</strong> 和 <strong>是否运行系统服务</strong>，全部选择 <strong>是</strong> 即可。</p>
+<ol>
+<li>打开程序<br>可以看到默认在 <code>Status</code> 标签，显示者 FTP 和 SFTP 服务都是关闭状态。<br><img src="https://img.rxliuli.com/20190217213152.png" alt="首页"></li>
+<li>添加用户<br>首先，我们需要添加一个用户，可以连接 FTP&#x2F;SFTP 服务端的用户。<ol>
+<li>点击 Users 标签，然后点击 Add 添加用户<br><img src="https://img.rxliuli.com/20190217213700.png" alt="Users 标签"></li>
+<li>设置用户信息<br><img src="https://img.rxliuli.com/20190217214421.png" alt="添加用户信息"><br>依次<ol>
+<li>输入用户名</li>
+<li>选择使用密码认证</li>
+<li>输入密码</li>
+<li>选择用户的服务端根目录</li>
+<li>同时选择允许 FTP&#x2F;SFTP 连接（默认选中）</li>
+<li>点击 Apply 完成添加</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>启动 FTP 服务端<br><img src="https://img.rxliuli.com/20190217214719.png" alt="启动 FTP"></li>
+<li>启动 SFTP 服务端<br><img src="https://img.rxliuli.com/20190217214843.png" alt="启动 SFTP"></li>
+<li>查看 Status 状态页<br><img src="https://img.rxliuli.com/20190217214951.png" alt="Status 选项页"></li>
+</ol>
+<h2 id="测试-FTP-x2F-SFTP"><a href="#测试-FTP-x2F-SFTP" class="headerlink" title="测试 FTP&#x2F;SFTP"></a>测试 FTP&#x2F;SFTP</h2><p>如果仅仅是连接 FTP&#x2F;SFTP 的话，我们确实可以使用 <a target="_blank" rel="noopener" href="https://winscp.net/">WinSCP</a> 作为 FTP&#x2F;SFTP 客户端。然而，作为开发者，连接 Linux 服务器也是家常便饭，所以我们选择 <a target="_blank" rel="noopener" href="https://mobaxterm.mobatek.net/">MobaXterm</a>。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://mobaxterm.mobatek.net/download-home-edition.html">下载页面</a> 选择 <strong>MobaXterm Home Edition v11.1 (Portable edition)</strong> 下载免费便携版。下载完成得到一个压缩包，解压之，点击 <strong>MobaXterm_Personal_11.1.exe</strong> 运行程序。</p>
+<p>MobaXterm 首页<br><img src="https://img.rxliuli.com/20190217220138.png" alt="MobaXterm 首页"></p>
+<ol>
+<li>点击 <strong>Session</strong> 添加会话<br><img src="https://img.rxliuli.com/20190217220648.png" alt="连接 FTP"></li>
+<li>设置用户认证信息<br><img src="https://img.rxliuli.com/20190217220940.png" alt="设置用户认证信息"></li>
+<li>选择用户认证信息<br><img src="https://img.rxliuli.com/20190217221138.png" alt="选择用户认证信息"></li>
+<li>连接 FTP 成功<br><img src="https://img.rxliuli.com/20190217221321.png" alt="连接 FTP 成功"></li>
+<li>同理添加 SFTP 连接<br><img src="https://img.rxliuli.com/20190217221633.png" alt="同理添加 SFTP 连接"></li>
+<li>连接 SFTP 成功<br><img src="https://img.rxliuli.com/20190217221801.png" alt="连接 SFTP 成功"></li>
+</ol>
+<hr>
+<p>最后，虽然概率很低，但如果在你的 PC 上按照该教程搭建失败，可以在文章底部进行评论告诉吾辈哦 （ｖ＾＿＾）ｖ</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+              <a href="/tags/FTP/" rel="tag"># FTP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/15/others/rxliuliBlog/Java/Java8-%E5%87%BD%E6%95%B0%E5%BC%8F%E5%8A%9F%E8%83%BD%E9%80%9F%E6%9F%A5/" rel="prev" title="Java8 函数式功能速查">
+                  <i class="fa fa-chevron-left"></i> Java8 函数式功能速查
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/19/others/rxliuliBlog/Tool/Windows/Windows-%E4%B8%8A%E5%BC%BA%E5%88%B6%E7%B2%98%E8%B4%B4/" rel="next" title="Windows 上强制粘贴">
+                  Windows 上强制粘贴 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="cd7b7dad9ad57a395938bc4e201bb4cf"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

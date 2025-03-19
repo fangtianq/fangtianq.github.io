@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="VSCode 自定义模板代码片段场景VSCode 时常需要输入一些重复的代码片段，例如创建 vue 文件后总是要写一些类似于下面这样的文件。 1234567891011121314151617&lt;template&gt;&lt;&#x2F;template&gt;&lt;script&gt;export default &amp;#123;  data: () &#x3D;&gt; (&amp;#123;  &amp;#125;),">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode 自定义模板代码片段">
+<meta property="og:url" content="https://fangtianq.github.io/2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="VSCode 自定义模板代码片段场景VSCode 时常需要输入一些重复的代码片段，例如创建 vue 文件后总是要写一些类似于下面这样的文件。 1234567891011121314151617&lt;template&gt;&lt;&#x2F;template&gt;&lt;script&gt;export default &amp;#123;  data: () &#x3D;&gt; (&amp;#123;  &amp;#125;),">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-10-30T03:23:29.000Z">
+<meta property="article:modified_time" content="2018-10-30T03:23:29.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="VSCode">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/","path":"2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-自定义模板代码片段/","title":"VSCode 自定义模板代码片段"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VSCode 自定义模板代码片段 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">VSCode 自定义模板代码片段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="VSCode 自定义模板代码片段 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VSCode 自定义模板代码片段
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-30 11:23:29" itemprop="dateCreated datePublished" datetime="2018-10-30T11:23:29+08:00">2018-10-30</time>
+    </span>
+
+
+  
+    <span id="/2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/" class="post-meta-item leancloud_visitors" data-flag-title="VSCode 自定义模板代码片段" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="VSCode 自定义模板代码片段" href="/2018/10/30/others/rxliuliBlog/Tool/VSCode/VSCode-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::efd36676a8b0489afba3f2bb41da23a7" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="VSCode-自定义模板代码片段"><a href="#VSCode-自定义模板代码片段" class="headerlink" title="VSCode 自定义模板代码片段"></a>VSCode 自定义模板代码片段</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>VSCode 时常需要输入一些重复的代码片段，例如创建 vue 文件后总是要写一些类似于下面这样的文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">data</span>: <span class="function">() =&gt;</span> (&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;),</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="title function_">mounted</span> () &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>能不能有什么办法使用快捷键，或者提示将之快捷打出来呢？VSCode 已经想到了这些并提供了一个名为 <strong>Snippet</strong> 的功能。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>打开<strong>命令面板</strong>（_查看 &gt; 命令面板_，快捷键是 _CS-P_），输入 <strong>Snippet</strong> 找到 <strong>Preferences: Configure User Snippets（配置用户代码片段）</strong>，选择你所需要配置的代码片段生效的语言。</p>
+<p>这里以 <strong>Vue</strong> 为例，回车之后会打开一个名为 <em>vue.json</em> 的文件，初始配置大致如下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// Place your snippets for vue here. Each snippet is defined under a snippet name and has a prefix, body and</span></span><br><span class="line">  <span class="comment">// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:</span></span><br><span class="line">  <span class="comment">// $1, $2 for tab stops, $0 for the final cursor position, and $&#123;1:label&#125;, $&#123;2:another&#125; for placeholders. Placeholders with the</span></span><br><span class="line">  <span class="comment">// same ids are connected.</span></span><br><span class="line">  <span class="comment">// Example:</span></span><br><span class="line">  <span class="comment">// &quot;Print to console&quot;: &#123;</span></span><br><span class="line">  <span class="comment">// 	&quot;prefix&quot;: &quot;log&quot;,</span></span><br><span class="line">  <span class="comment">// 	&quot;body&quot;: [</span></span><br><span class="line">  <span class="comment">// 		&quot;console.log(&#x27;$1&#x27;);&quot;,</span></span><br><span class="line">  <span class="comment">// 		&quot;$2&quot;</span></span><br><span class="line">  <span class="comment">// 	],</span></span><br><span class="line">  <span class="comment">// 	&quot;description&quot;: &quot;Log output to console&quot;</span></span><br><span class="line">  <span class="comment">// &#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面那些注释其实就给出了一个配置的例子。放开注释我们研究一些每一行的作用</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// Place your snippets for vue here. Each snippet is defined under a snippet name and has a prefix, body and</span></span><br><span class="line">  <span class="comment">// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:</span></span><br><span class="line">  <span class="comment">// $1, $2 for tab stops, $0 for the final cursor position, and $&#123;1:label&#125;, $&#123;2:another&#125; for placeholders. Placeholders with the</span></span><br><span class="line">  <span class="comment">// same ids are connected.</span></span><br><span class="line">  <span class="comment">// Example:</span></span><br><span class="line">  <span class="comment">// 代码片段的名字</span></span><br><span class="line">  <span class="attr">&quot;Print to console&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;log&quot;</span><span class="punctuation">,</span> <span class="comment">// 前缀，在 vue 文件中输入这个前缀就会有代码提示</span></span><br><span class="line">    <span class="comment">// 输入前缀回车之后在文件中生成的内容，单行直接用字符串，否则使用数组</span></span><br><span class="line">    <span class="attr">&quot;body&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="comment">//下面是每一行的内容，$1 指的是第一个变量（光标会首先停在这里）</span></span><br><span class="line">      <span class="string">&quot;console.log(&#x27;$1&#x27;);&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="comment">// $2 是第二个变量，在输入完第一个变量后按 Tab 就能跳转到第二个变量所在的位置</span></span><br><span class="line">      <span class="string">&quot;$2&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="comment">// 关于这个代码片段的描述</span></span><br><span class="line">    <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Log output to console&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>好了，我们也来模仿写一个自己代码片段吧</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// 在最下方追加</span></span><br><span class="line">  <span class="attr">&quot;vue teamplte&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;prefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vueTemplate&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;body&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;&lt;template&gt;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  $1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&lt;/template&gt;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&lt;script&gt;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;export default &#123;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  data: () =&gt; (&#123;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  &#125;),&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  methods: &#123;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  &#125;,&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  mounted () &#123;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;  &#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;&lt;/script&gt;&quot;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue 的模板代码&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，在 <em>.vue</em> 文件中输入 <code>vueTemplate</code> 试试吧</p>
+<blockquote>
+<p>更多的详细信息（英文）可以参考 Microsoft 官方的 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/editor/userdefinedsnippets">VSCode 创建代码片段</a></p>
+</blockquote>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VSCode/" rel="tag"># VSCode</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/28/others/rxliuliBlog/JavaScript/Vue-%E6%89%93%E5%8C%85%E7%9A%84%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C/" rel="prev" title="Vue 打包的静态文件不能直接运行">
+                  <i class="fa fa-chevron-left"></i> Vue 打包的静态文件不能直接运行
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/30/others/rxliuliBlog/Tool/Windows/%E5%B7%A5%E5%85%B7%E7%B1%BB%E7%BD%91%E7%AB%99/" rel="next" title="工具类网站">
+                  工具类网站 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="efd36676a8b0489afba3f2bb41da23a7"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

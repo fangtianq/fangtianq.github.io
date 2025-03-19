@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="场景在业务需求中不希望用户保存图片，因为是一些供内部使用的图片。 思路 添加事件禁止选择、拖拽、右键（简单的禁止用户保存图片，但无法阻止用户打开控制台查看，或是直接抓包） 将之转换为 canvas（让浏览器认为不是图片以此禁止用户对之进行图片的操作，但无法阻止抓包） 禁止用户使用控制台查看源码（阻止浏览器打开控制台，但无法阻止抓包） 传输图片使用自定义格式（可以阻止抓包，但需要后台配合）   注：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 禁止用户保存图片">
+<meta property="og:url" content="https://fangtianq.github.io/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="场景在业务需求中不希望用户保存图片，因为是一些供内部使用的图片。 思路 添加事件禁止选择、拖拽、右键（简单的禁止用户保存图片，但无法阻止用户打开控制台查看，或是直接抓包） 将之转换为 canvas（让浏览器认为不是图片以此禁止用户对之进行图片的操作，但无法阻止抓包） 禁止用户使用控制台查看源码（阻止浏览器打开控制台，但无法阻止抓包） 传输图片使用自定义格式（可以阻止抓包，但需要后台配合）   注：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-27T15:41:38.000Z">
+<meta property="article:modified_time" content="2020-04-27T15:41:38.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="IDEA">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/","path":"2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-禁止用户保存图片/","title":"JavaScript 禁止用户保存图片"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaScript 禁止用户保存图片 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6%E7%A6%81%E6%AD%A2%E9%80%89%E6%8B%A9%E3%80%81%E6%8B%96%E6%8B%BD%E3%80%81%E5%8F%B3%E9%94%AE"><span class="nav-number">3.</span> <span class="nav-text">添加事件禁止选择、拖拽、右键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E4%B9%8B%E8%BD%AC%E6%8D%A2%E4%B8%BA-canvas"><span class="nav-number">4.</span> <span class="nav-text">将之转换为 canvas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%9F%A5%E7%9C%8B%E6%BA%90%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">禁止用户使用控制台查看源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%9B%BE%E7%89%87%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">传输图片使用自定义格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JavaScript 禁止用户保存图片 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript 禁止用户保存图片
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-27 23:41:38" itemprop="dateCreated datePublished" datetime="2020-04-27T23:41:38+08:00">2020-04-27</time>
+    </span>
+
+
+  
+    <span id="/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/" class="post-meta-item leancloud_visitors" data-flag-title="JavaScript 禁止用户保存图片" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="JavaScript 禁止用户保存图片" href="/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::f95e40a2ca8f5f0c3c7b89a2440a8018" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在业务需求中不希望用户保存图片，因为是一些供内部使用的图片。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>添加事件禁止选择、拖拽、右键（简单的禁止用户保存图片，但无法阻止用户打开控制台查看，或是直接抓包）</li>
+<li>将之转换为 canvas（让浏览器认为不是图片以此禁止用户对之进行图片的操作，但无法阻止抓包）</li>
+<li>禁止用户使用控制台查看源码（阻止浏览器打开控制台，但无法阻止抓包）</li>
+<li>传输图片使用自定义格式（可以阻止抓包，但需要后台配合）</li>
+</ul>
+<blockquote>
+<p>注：以下内容使用 react+ts 实现</p>
+</blockquote>
+<h2 id="添加事件禁止选择、拖拽、右键"><a href="#添加事件禁止选择、拖拽、右键" class="headerlink" title="添加事件禁止选择、拖拽、右键"></a>添加事件禁止选择、拖拽、右键</h2><p>简而言之，这是一种简单有效的方式，能够在用户不打开控制台的情况下阻止用户保存图片。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">preventDefaultListener</span>(<span class="params">e: any</span>) &#123;</span><br><span class="line">  e.<span class="title function_">preventDefault</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">;<span class="language-xml"><span class="tag">&lt;<span class="name">img</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">src</span>=<span class="string">&#123;props.url&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">alt</span>=<span class="string">&quot;&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">style</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    //<span class="attr">禁止用户选择</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">userSelect:</span> &#x27;<span class="attr">none</span>&#x27;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    //<span class="attr">禁止所有鼠标事件</span>，<span class="attr">过于强大</span>，<span class="attr">图片仅用于展示可用</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    // <span class="attr">pointerEvents:</span> &#x27;<span class="attr">none</span>&#x27;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">onTouchStart</span>=<span class="string">&#123;preventDefaultListener&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">onContextMenu</span>=<span class="string">&#123;preventDefaultListener&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">onDragStart</span>=<span class="string">&#123;preventDefaultListener&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">/&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dxzg/p/9930559.html">https://www.cnblogs.com/dxzg/p/9930559.html</a></p>
+</blockquote>
+<h2 id="将之转换为-canvas"><a href="#将之转换为-canvas" class="headerlink" title="将之转换为 canvas"></a>将之转换为 canvas</h2><p>另一种思路是将图片转换为 canvas 避免用户使用 <code>img</code> 相关的操作。</p>
+<ol>
+<li><p>将图片转成 canvas</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">imageToCanvas</span>(<span class="params"><span class="attr">url</span>: <span class="built_in">string</span>, <span class="attr">canvas</span>: <span class="title class_">HTMLCanvasElement</span></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//新建Image对象，引入当前目录下的图片</span></span><br><span class="line">    <span class="keyword">const</span> img = <span class="keyword">new</span> <span class="title class_">Image</span>()</span><br><span class="line">    img.<span class="property">src</span> = url</span><br><span class="line">    <span class="keyword">const</span> c = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;2d&#x27;</span>)!</span><br><span class="line"></span><br><span class="line">    <span class="comment">//图片初始化完成后调用</span></span><br><span class="line">    img.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">//将canvas的宽高设置为图像的宽高</span></span><br><span class="line">      canvas.<span class="property">width</span> = img.<span class="property">width</span></span><br><span class="line">      canvas.<span class="property">height</span> = img.<span class="property">height</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">//canvas画图片</span></span><br><span class="line">      c.<span class="title function_">drawImage</span>(img, <span class="number">0</span>, <span class="number">0</span>, img.<span class="property">width</span>, img.<span class="property">height</span>)</span><br><span class="line">      <span class="title function_">resolve</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    img.<span class="title function_">addEventListener</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">reject</span>(e)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>禁用 canvas 事件</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">throwFn</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(</span><br><span class="line">    <span class="string">&quot;Uncaught DOMException: Failed to execute &#x27;toDataURL&#x27; on &#x27;HTMLCanvasElement&#x27;: Tainted canvases may not be exported.&quot;</span>,</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> $canvasRef = useRef&lt;<span class="title class_">HTMLCanvasElement</span>&gt;(<span class="literal">null</span>)</span><br><span class="line"> <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">     ;(<span class="title function_">async</span> () =&gt; &#123;</span><br><span class="line">         <span class="keyword">await</span> <span class="title function_">imageToCanvas</span>(props.<span class="property">url</span>, $canvasRef.<span class="property">current</span>!)</span><br><span class="line">         $canvasRef.<span class="property">current</span>!.<span class="property">toBlob</span> = throwFn</span><br><span class="line">         $canvasRef.<span class="property">current</span>!.<span class="property">toDataURL</span> = throwFn</span><br><span class="line">     &#125;)()</span><br><span class="line"> &#125;, [])</span><br><span class="line"> <span class="keyword">return</span> (</span><br><span class="line">     <span class="language-xml"><span class="tag">&lt;<span class="name">canvas</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">         <span class="attr">ref</span>=<span class="string">&#123;$canvasRef&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">         <span class="attr">onTouchStart</span>=<span class="string">&#123;preventDefaultListener&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">         <span class="attr">onContextMenu</span>=<span class="string">&#123;preventDefaultListener&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">     /&gt;</span></span></span><br><span class="line"> )</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="禁止用户使用控制台查看源码"><a href="#禁止用户使用控制台查看源码" class="headerlink" title="禁止用户使用控制台查看源码"></a>禁止用户使用控制台查看源码</h2><p>如果能禁止用户操作控制台，那么自然能够避免用户查看源码了，下面是一个简单的实现。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 兼容异步函数的返回值</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> res 返回值</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> callback 同步/异步结果的回调函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@typeparam</span> T 处理参数的类型，如果是 Promise 类型，则取出其泛型类型</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@typeparam</span> Param 处理参数具体的类型，如果是 Promise 类型，则指定为原类型</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@typeparam</span> R 返回值具体的类型，如果是 Promise 类型，则指定为 Promise 类型，否则为原类型</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 处理后的结果，如果是同步的，则返回结果是同步的，否则为异步的</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> compatibleAsync&lt;T = <span class="built_in">any</span>, <span class="title class_">Param</span> = T | <span class="title class_">Promise</span>&lt;T&gt;, R = T&gt;(</span><br><span class="line">  <span class="attr">res</span>: <span class="title class_">Param</span>,</span><br><span class="line">  <span class="attr">callback</span>: <span class="function">(<span class="params"><span class="attr">r</span>: T</span>) =&gt;</span> R,</span><br><span class="line">): <span class="title class_">Param</span> <span class="keyword">extends</span> <span class="title class_">Promise</span>&lt;T&gt; ? <span class="title class_">Promise</span>&lt;R&gt; : R &#123;</span><br><span class="line">  <span class="keyword">return</span> (res <span class="keyword">instanceof</span> <span class="title class_">Promise</span></span><br><span class="line">    ? res.<span class="title function_">then</span>(callback)</span><br><span class="line">    : <span class="title function_">callback</span>(res <span class="keyword">as</span> <span class="built_in">any</span>)) <span class="keyword">as</span> <span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试函数的执行时间</span></span><br><span class="line"><span class="comment"> * 注：如果函数返回 Promise，则该函数也会返回 Promise，否则直接返回执行时间</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> fn 需要测试的函数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 执行的毫秒数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> timing&lt;R&gt;(</span><br><span class="line">  <span class="attr">fn</span>: <span class="function">(<span class="params">...<span class="attr">args</span>: <span class="built_in">any</span>[]</span>) =&gt;</span> R,</span><br><span class="line">  <span class="comment">// 函数返回类型是 Promise 的话，则返回 Promise&lt;number&gt;，否则返回 number</span></span><br><span class="line">): R <span class="keyword">extends</span> <span class="title class_">Promise</span>&lt;<span class="built_in">any</span>&gt; ? <span class="title class_">Promise</span>&lt;<span class="built_in">number</span>&gt; : <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> begin = performance.<span class="title function_">now</span>()</span><br><span class="line">  <span class="keyword">const</span> res = <span class="title function_">fn</span>()</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">compatibleAsync</span>(res, <span class="function">() =&gt;</span> performance.<span class="title function_">now</span>() - begin)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 禁止他人调试网站相关方法的集合对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AntiDebug</span> &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 不停循环 debugger 防止有人调试代码</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns</span> 取消函数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="title function_">cyclingDebugger</span>(): <span class="title class_">Function</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">debugger</span></span><br><span class="line">    &#125;, <span class="number">100</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="built_in">clearInterval</span>(res)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 检查是否正在 debugger 并调用回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> fn 回调函数，默认为重载页面</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@returns</span> 取消函数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="title function_">checkDebug</span>(</span><br><span class="line">    <span class="attr">fn</span>: <span class="title class_">Function</span> = <span class="function">() =&gt;</span> <span class="variable language_">window</span>.<span class="property">location</span>.<span class="title function_">reload</span>(),</span><br><span class="line">  ): <span class="title class_">Function</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> diff = <span class="title function_">timing</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">debugger</span></span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="keyword">if</span> (diff &gt; <span class="number">500</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(diff)</span><br><span class="line">        <span class="title function_">fn</span>()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="built_in">clearInterval</span>(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> cancel1 = <span class="title class_">AntiDebug</span>.<span class="title function_">cyclingDebugger</span>() <span class="keyword">as</span> any</span><br><span class="line">  <span class="keyword">const</span> cancel2 = <span class="title class_">AntiDebug</span>.<span class="title function_">checkDebug</span>(<span class="function">() =&gt;</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;请不要打开调试&#x27;</span>),</span><br><span class="line">  ) <span class="keyword">as</span> any</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">cancel1</span>()</span><br><span class="line">    <span class="title function_">cancel2</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, [])</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;url&#125;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="传输图片使用自定义格式"><a href="#传输图片使用自定义格式" class="headerlink" title="传输图片使用自定义格式"></a>传输图片使用自定义格式</h2><p>该功能需要服务端配合，故而此处赞不实现，可以参考 <a target="_blank" rel="noopener" href="https://weread.qq.com/">微信读书</a>，就是将文本转为 canvas，数据传输也进行了加密，可以在很大程度上防止普通用户想要复制&#x2F;下载的行为了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如同所有的前端限制用户的技术一样，这是一个没有终点的斗争。。。</p>
+<blockquote>
+<p>参考广告屏蔽和屏蔽复制粘贴的发展。。。</p>
+</blockquote>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+              <a href="/tags/IDEA/" rel="tag"># IDEA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/18/others/rxliuliBlog/JavaScript/%E5%9C%A8%E7%8E%B0%E4%BB%A3%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-Worker/" rel="prev" title="在现代前端项目中使用 Worker">
+                  <i class="fa fa-chevron-left"></i> 在现代前端项目中使用 Worker
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/" rel="next" title="偶遇 HTML 中的奇妙字符">
+                  偶遇 HTML 中的奇妙字符 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="f95e40a2ca8f5f0c3c7b89a2440a8018"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

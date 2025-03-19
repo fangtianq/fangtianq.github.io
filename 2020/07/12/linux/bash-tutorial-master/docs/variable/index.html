@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bash 变量">
+<meta property="og:url" content="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/variable/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="…">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:modified_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/variable/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/variable/","path":"2020/07/12/linux/bash-tutorial-master/docs/variable/","title":"Bash 变量"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Bash 变量 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Bash-%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">Bash 变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.</span> <span class="nav-text">创建变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.</span> <span class="nav-text">读取变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%8F%98%E9%87%8F"><span class="nav-number">1.4.</span> <span class="nav-text">删除变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E5%8F%98%E9%87%8F%EF%BC%8Cexport-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">输出变量，export 命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="nav-number">1.6.</span> <span class="nav-text">特殊变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="nav-number">1.7.</span> <span class="nav-text">变量的默认值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#declare-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.8.</span> <span class="nav-text">declare 命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#readonly-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.9.</span> <span class="nav-text">readonly 命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#let-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.10.</span> <span class="nav-text">let 命令</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Bash 变量 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bash 变量
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-12 22:16:00" itemprop="dateCreated datePublished" datetime="2020-07-12T22:16:00+08:00">2020-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/bash/" itemprop="url" rel="index"><span itemprop="name">bash</span></a>
+        </span>
+    </span>
+
+
+  
+    <span id="/2020/07/12/linux/bash-tutorial-master/docs/variable/" class="post-meta-item leancloud_visitors" data-flag-title="Bash 变量" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="Bash 变量" href="/2020/07/12/linux/bash-tutorial-master/docs/variable/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::7e197625fda06487d33fa6939753c177" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>…</p>
+<span id="more"></span>
+
+<h1 id="Bash-变量"><a href="#Bash-变量" class="headerlink" title="Bash 变量"></a>Bash 变量</h1><p>Bash 变量分成环境变量和自定义变量两类。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>环境变量是 Bash 环境自带的变量，进入 Shell 时已经定义好了，可以直接使用。它们通常是系统定义好的，也可以由用户从父 Shell 传入子 Shell。</p>
+<p><code>env</code>命令或<code>printenv</code>命令，可以显示所有环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">env</span></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ <span class="built_in">printenv</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是一些常见的环境变量。</p>
+<ul>
+<li><code>BASHPID</code>：Bash 进程的进程 ID。</li>
+<li><code>BASHOPTS</code>：当前 Shell 的参数，可以用<code>shopt</code>命令修改。</li>
+<li><code>DISPLAY</code>：图形环境的显示器名字，通常是<code>:0</code>，表示 X Server 的第一个显示器。</li>
+<li><code>EDITOR</code>：默认的文本编辑器。</li>
+<li><code>HOME</code>：用户的主目录。</li>
+<li><code>HOST</code>：当前主机的名称。</li>
+<li><code>IFS</code>：词与词之间的分隔符，默认为空格。</li>
+<li><code>LANG</code>：字符集以及语言编码，比如<code>zh_CN.UTF-8</code>。</li>
+<li><code>PATH</code>：由冒号分开的目录列表，当输入可执行程序名后，会搜索这个目录列表。</li>
+<li><code>PS1</code>：Shell 提示符。</li>
+<li><code>PS2</code>： 输入多行命令时，次要的 Shell 提示符。</li>
+<li><code>PWD</code>：当前工作目录。</li>
+<li><code>RANDOM</code>：返回一个0到32767之间的随机数。</li>
+<li><code>SHELL</code>：Shell 的名字。</li>
+<li><code>SHELLOPTS</code>：启动当前 Shell 的<code>set</code>命令的参数，参见《set 命令》一章。</li>
+<li><code>TERM</code>：终端类型名，即终端仿真器所用的协议。</li>
+<li><code>UID</code>：当前用户的 ID 编号。</li>
+<li><code>USER</code>：当前用户的用户名。</li>
+</ul>
+<p>很多环境变量很少发生变化，而且是只读的，可以视为常量。由于它们的变量名全部都是大写，所以传统上，如果用户要自己定义一个常量，也会使用全部大写的变量名。</p>
+<p>注意，Bash 变量名区分大小写，<code>HOME</code>和<code>home</code>是两个不同的变量。</p>
+<p>查看单个环境变量的值，可以使用<code>printenv</code>命令或<code>echo</code>命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">printenv</span> PATH</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>printenv</code>命令后面的变量名，不用加前缀<code>$</code>。</p>
+<p>自定义变量是用户在当前 Shell 里面自己定义的变量，必须先定义后使用，而且仅在当前 Shell 可用。一旦退出当前 Shell，该变量就不存在了。</p>
+<p><code>set</code>命令可以显示所有变量（包括环境变量和自定义变量），以及所有的 Bash 函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建变量"><a href="#创建变量" class="headerlink" title="创建变量"></a>创建变量</h2><p>用户创建变量的时候，变量名必须遵守下面的规则。</p>
+<ul>
+<li>字母、数字和下划线字符组成。</li>
+<li>第一个字符必须是一个字母或一个下划线，不能是数字。</li>
+<li>不允许出现空格和标点符号。</li>
+</ul>
+<p>变量声明的语法如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">variable=value</span><br></pre></td></tr></table></figure>
+
+<p>上面命令中，等号左边是变量名，右边是变量。注意，等号两边不能有空格。</p>
+<p>如果变量的值包含空格，则必须将值放在引号中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myvar=<span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Bash 没有数据类型的概念，所有的变量值都是字符串。</p>
+<p>下面是一些自定义变量的例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=z                     <span class="comment"># 变量 a 赋值为字符串 z</span></span><br><span class="line">b=<span class="string">&quot;a string&quot;</span>            <span class="comment"># 变量值包含空格，就必须放在引号里面</span></span><br><span class="line">c=<span class="string">&quot;a string and <span class="variable">$b</span>&quot;</span>     <span class="comment"># 变量值可以引用其他变量的值</span></span><br><span class="line">d=<span class="string">&quot;\t\ta string\n&quot;</span>      <span class="comment"># 变量值可以使用转义字符</span></span><br><span class="line">e=$(<span class="built_in">ls</span> -l foo.txt)      <span class="comment"># 变量值可以是命令的执行结果</span></span><br><span class="line">f=$((<span class="number">5</span> * <span class="number">7</span>))            <span class="comment"># 变量值可以是数学运算的结果</span></span><br></pre></td></tr></table></figure>
+
+<p>变量可以重复赋值，后面的赋值会覆盖前面的赋值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ foo=1</span><br><span class="line">$ foo=2</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$foo</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，变量<code>foo</code>的第二次赋值会覆盖第一次赋值。</p>
+<h2 id="读取变量"><a href="#读取变量" class="headerlink" title="读取变量"></a>读取变量</h2><p>读取变量的时候，直接在变量名前加上<code>$</code>就可以了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ foo=bar</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$foo</span></span><br><span class="line">bar</span><br></pre></td></tr></table></figure>
+
+<p>每当 Shell 看到以<code>$</code>开头的单词时，就会尝试读取这个变量名对应的值。</p>
+<p>如果变量不存在，Bash 不会报错，而会输出空字符。</p>
+<p>由于<code>$</code>在 Bash 中有特殊含义，把它当作美元符号使用时，一定要非常小心，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> The total is <span class="variable">$100</span>.00</span><br><span class="line">The total is 00.00</span><br></pre></td></tr></table></figure>
+
+<p>上面命令的原意是输入<code>$100</code>，但是 Bash 将<code>$1</code>解释成了变量，该变量为空，因此输入就变成了<code>00.00</code>。所以，如果要使用<code>$</code>的原义，需要在<code>$</code>前面放上反斜杠，进行转义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> The total is \<span class="variable">$100</span>.00</span><br><span class="line">The total is <span class="variable">$100</span>.00</span><br></pre></td></tr></table></figure>
+
+<p>读取变量的时候，变量名也可以使用花括号<code>&#123;&#125;</code>包围，比如<code>$a</code>也可以写成<code>$&#123;a&#125;</code>。这种写法可以用于变量名与其他字符连用的情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ a=foo</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$a_file</span></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;a&#125;</span>_file</span><br><span class="line">foo_file</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，变量名<code>a_file</code>不会有任何输出，因为 Bash 将其整个解释为变量，而这个变量是不存在的。只有用花括号区分<code>$a</code>，Bash 才能正确解读。</p>
+<p>事实上，读取变量的语法<code>$foo</code>，可以看作是<code>$&#123;foo&#125;</code>的简写形式。</p>
+<p>如果变量的值本身也是变量，可以使用<code>$&#123;!varname&#125;</code>的语法，读取最终的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ myvar=USER</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$&#123;!myvar&#125;</span></span><br><span class="line">ruanyf</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子中，变量<code>myvar</code>的值是<code>USER</code>，<code>$&#123;!myvar&#125;</code>的写法将其展开成最终的值。</p>
+<h2 id="删除变量"><a href="#删除变量" class="headerlink" title="删除变量"></a>删除变量</h2><p><code>unset</code>命令用来删除一个变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">unset</span> NAME</span><br></pre></td></tr></table></figure>
+
+<p>这个命令不是很有用。因为不存在的 Bash 变量一律等于空字符串，所以即使<code>unset</code>命令删除了变量，还是可以读取这个变量，值为空字符串。</p>
+<p>所以，删除一个变量，也可以将这个变量设成空字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ foo=<span class="string">&#x27;&#x27;</span></span><br><span class="line">$ foo=</span><br></pre></td></tr></table></figure>
+
+<p>上面两种写法，都是删除了变量<code>foo</code>。由于不存在的值默认为空字符串，所以后一种写法可以在等号右边不写任何值。</p>
+<h2 id="输出变量，export-命令"><a href="#输出变量，export-命令" class="headerlink" title="输出变量，export 命令"></a>输出变量，export 命令</h2><p>用户创建的变量仅可用于当前 Shell，子 Shell 默认读取不到父 Shell 定义的变量。为了把变量传递给子 Shell，需要使用<code>export</code>命令。这样输出的变量，对于子 Shell 来说就是环境变量。</p>
+<p><code>export</code>命令用来向子 Shell 输出变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NAME=foo</span><br><span class="line"><span class="built_in">export</span> NAME</span><br></pre></td></tr></table></figure>
+
+<p>上面命令输出了变量<code>NAME</code>。变量的赋值和输出也可以在一个步骤中完成。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NAME=value</span><br></pre></td></tr></table></figure>
+
+<p>上面命令执行后，当前 Shell 及随后新建的子 Shell，都可以读取变量<code>$NAME</code>。</p>
+<p>子 Shell 如果修改继承的变量，不会影响父 Shell。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出变量 $foo</span></span><br><span class="line">$ <span class="built_in">export</span> foo=bar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建子 Shell</span></span><br><span class="line">$ bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取 $foo</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$foo</span></span><br><span class="line">bar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改继承的变量</span></span><br><span class="line">$ foo=baz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出子 Shell</span></span><br><span class="line">$ <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取 $foo</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$foo</span></span><br><span class="line">bar</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，子 Shell 修改了继承的变量<code>$foo</code>，对父 Shell 没有影响。</p>
+<h2 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h2><p>Bash 提供一些特殊变量。这些变量的值由 Shell 提供，用户不能进行赋值。</p>
+<p>（1）<code>$?</code></p>
+<p><code>$?</code>为上一个命令的退出码，用来判断上一个命令是否执行成功。返回值是<code>0</code>，表示上一个命令执行成功；如果是非零，上一个命令执行失败。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> doesnotexist</span><br><span class="line"><span class="built_in">ls</span>: doesnotexist: No such file or directory</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，<code>ls</code>命令查看一个不存在的文件，导致报错。<code>$?</code>为1，表示上一个命令执行失败。</p>
+<p>（2）<code>$$</code></p>
+<p><code>$$</code>为当前 Shell 的进程 ID。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> $$</span><br><span class="line">10662</span><br></pre></td></tr></table></figure>
+
+<p>这个特殊变量可以用来命名临时文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOGFILE=/tmp/output_log.$$</span><br></pre></td></tr></table></figure>
+
+<p>（3）<code>$_</code></p>
+<p><code>$_</code>为上一个命令的最后一个参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ grep dictionary /usr/share/dict/words</span><br><span class="line">dictionary</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$_</span></span><br><span class="line">/usr/share/dict/words</span><br></pre></td></tr></table></figure>
+
+<p>（4）<code>$!</code></p>
+<p><code>$!</code>为最近一个后台执行的异步命令的进程 ID。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ firefox &amp;</span><br><span class="line">[1] 11064</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">echo</span> $!</span><br><span class="line">11064</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，<code>firefox</code>是后台运行的命令，<code>$!</code>返回该命令的进程 ID。</p>
+<p>（5）<code>$0</code></p>
+<p><code>$0</code>为当前 Shell 的名称（在命令行直接执行时）或者脚本名（在脚本中执行时）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$0</span></span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，<code>$0</code>返回当前运行的是 Bash。</p>
+<p>（6）<code>$-</code></p>
+<p><code>$-</code>为当前 Shell 的启动参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> $-</span><br><span class="line">himBHs</span><br></pre></td></tr></table></figure>
+
+<p>（7）<code>$@</code>和<code>$#</code></p>
+<p><code>$@</code>和<code>$#</code>表示脚本的参数数量，参见脚本一章。</p>
+<h2 id="变量的默认值"><a href="#变量的默认值" class="headerlink" title="变量的默认值"></a>变量的默认值</h2><p>Bash 提供四个特殊语法，跟变量的默认值有关，目的是保证变量不为空。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;varname:-word&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面语法的含义是，如果变量<code>varname</code>存在且不为空，则返回它的值，否则返回<code>word</code>。它的目的是返回一个默认值，比如<code>$&#123;count:-0&#125;</code>表示变量<code>count</code>不存在时返回<code>0</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;varname:=word&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面语法的含义是，如果变量<code>varname</code>存在且不为空，则返回它的值，否则将它设为<code>word</code>，并且返回<code>word</code>。它的目的是设置变量的默认值，比如<code>$&#123;count:=0&#125;</code>表示变量<code>count</code>不存在时返回<code>0</code>，且将<code>count</code>设为<code>0</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;varname:+word&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面语法的含义是，如果变量名存在且不为空，则返回<code>word</code>，否则返回空值。它的目的是测试变量是否存在，比如<code>$&#123;count:+1&#125;</code>表示变量<code>count</code>存在时返回<code>1</code>（表示<code>true</code>），否则返回空值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;varname:?message&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面语法的含义是，如果变量<code>varname</code>存在且不为空，则返回它的值，否则打印出<code>varname: message</code>，并中断脚本的执行。如果省略了<code>message</code>，则输出默认的信息“parameter null or not set.”。它的目的是防止变量未定义，比如<code>$&#123;count:?&quot;undefined!&quot;&#125;</code>表示变量<code>count</code>未定义时就中断执行，抛出错误，返回给定的报错信息<code>undefined!</code>。</p>
+<p>上面四种语法如果用在脚本中，变量名的部分可以用到数字<code>1</code>到<code>9</code>，表示脚本的参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename=<span class="variable">$&#123;1:?&quot;filename missing.&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码出现在脚本中，<code>1</code>表示脚本的第一个参数。如果该参数不存在，就退出脚本并报错。</p>
+<h2 id="declare-命令"><a href="#declare-命令" class="headerlink" title="declare 命令"></a>declare 命令</h2><p><code>declare</code>命令可以声明一些特殊类型的变量，为变量设置一些限制，比如声明只读类型的变量和整数类型的变量。</p>
+<p>它的语法形式如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">declare</span> OPTION VARIABLE=value</span><br></pre></td></tr></table></figure>
+
+<p><code>declare</code>命令的主要参数（OPTION）如下。</p>
+<ul>
+<li><code>-a</code>：声明数组变量。</li>
+<li><code>-f</code>：输出所有函数定义。</li>
+<li><code>-F</code>：输出所有函数名。</li>
+<li><code>-i</code>：声明整数变量。</li>
+<li><code>-l</code>：声明变量为小写字母。</li>
+<li><code>-p</code>：查看变量信息。</li>
+<li><code>-r</code>：声明只读变量。</li>
+<li><code>-u</code>：声明变量为大写字母。</li>
+<li><code>-x</code>：该变量输出为环境变量。</li>
+</ul>
+<p><code>declare</code>命令如果用在函数中，声明的变量只在函数内部有效，等同于<code>local</code>命令。</p>
+<p>不带任何参数时，<code>declare</code>命令输出当前环境的所有变量，包括函数在内，等同于不带有任何参数的<code>set</code>命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>（1）<code>-i</code>参数</strong></p>
+<p><code>-i</code>参数声明整数变量以后，可以直接进行数学运算。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -i val1=12 val2=5</span><br><span class="line">$ <span class="built_in">declare</span> -i result</span><br><span class="line">$ result=val1*val2</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$result</span></span><br><span class="line">60</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，如果变量<code>result</code>不声明为整数，<code>val1*val2</code>会被当作字面量，不会进行整数运算。另外，<code>val1</code>和<code>val2</code>其实不需要声明为整数，因为只要<code>result</code>声明为整数，它的赋值就会自动解释为整数运算。</p>
+<p>注意，一个变量声明为整数以后，依然可以被改写为字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -i var=12</span><br><span class="line">$ var=foo</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，变量<code>var</code>声明为整数，覆盖以后，Bash 不会报错，但会赋以不确定的值，上面的例子中可能输出0，也可能输出的是3。</p>
+<p><strong>（2）<code>-x</code>参数</strong></p>
+<p><code>-x</code>参数等同于<code>export</code>命令，可以输出一个变量为子 Shell 的环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -x foo</span><br><span class="line"><span class="comment"># 等同于</span></span><br><span class="line">$ <span class="built_in">export</span> foo</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）<code>-r</code>参数</strong></p>
+<p><code>-r</code>参数可以声明只读变量，无法改变变量值，也不能<code>unset</code>变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -r bar=1</span><br><span class="line"></span><br><span class="line">$ bar=2</span><br><span class="line">bash: bar：只读变量</span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">unset</span> bar</span><br><span class="line">bash: bar：只读变量</span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，后两个赋值语句都会报错，命令执行失败。</p>
+<p><strong>（4）<code>-u</code>参数</strong></p>
+<p><code>-u</code>参数声明变量为大写字母，可以自动把变量值转成大写字母。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -u foo</span><br><span class="line">$ foo=upper</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$foo</span></span><br><span class="line">UPPER</span><br></pre></td></tr></table></figure>
+
+<p><strong>（5）<code>-l</code>参数</strong></p>
+<p><code>-l</code>参数声明变量为小写字母，可以自动把变量值转成小写字母。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -l bar</span><br><span class="line">$ bar=LOWER</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$bar</span></span><br><span class="line">lower</span><br></pre></td></tr></table></figure>
+
+<p><strong>（6）<code>-p</code>参数</strong></p>
+<p><code>-p</code>参数输出变量信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ foo=hello</span><br><span class="line">$ <span class="built_in">declare</span> -p foo</span><br><span class="line"><span class="built_in">declare</span> -- foo=<span class="string">&quot;hello&quot;</span></span><br><span class="line">$ <span class="built_in">declare</span> -p bar</span><br><span class="line">bar：未找到</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，<code>declare -p</code>可以输出已定义变量的值，对于未定义的变量，会提示找不到。</p>
+<p>如果不提供变量名，<code>declare -p</code>输出所有变量的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -p</span><br></pre></td></tr></table></figure>
+
+<p><strong>（7）<code>-f</code>参数</strong></p>
+<p><code>-f</code>参数输出当前环境的所有函数，包括它的定义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -f</span><br></pre></td></tr></table></figure>
+
+<p><strong>（8）<code>-F</code>参数</strong></p>
+<p><code>-F</code>参数输出当前环境的所有函数名，不包含函数定义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">declare</span> -F</span><br></pre></td></tr></table></figure>
+
+<h2 id="readonly-命令"><a href="#readonly-命令" class="headerlink" title="readonly 命令"></a>readonly 命令</h2><p><code>readonly</code>命令等同于<code>declare -r</code>，用来声明只读变量，不能改变变量值，也不能<code>unset</code>变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">readonly</span> foo=1</span><br><span class="line">$ foo=2</span><br><span class="line">bash: foo：只读变量</span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，更改只读变量<code>foo</code>会报错，命令执行失败。</p>
+<p><code>readonly</code>命令有三个参数。</p>
+<ul>
+<li><code>-f</code>：声明的变量为函数名。</li>
+<li><code>-p</code>：打印出所有的只读变量。</li>
+<li><code>-a</code>：声明的变量为数组。</li>
+</ul>
+<h2 id="let-命令"><a href="#let-命令" class="headerlink" title="let 命令"></a>let 命令</h2><p><code>let</code>命令声明变量时，可以直接执行算术表达式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">let</span> foo=1+2</span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$foo</span></span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，<code>let</code>命令可以直接计算<code>1 + 2</code>。</p>
+<p><code>let</code>命令的参数表达式如果包含空格，就需要使用引号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">let</span> <span class="string">&quot;foo = 1 + 2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>let</code>可以同时对多个变量赋值，赋值表达式之间使用空格分隔。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">let</span> <span class="string">&quot;v1 = 1&quot;</span> <span class="string">&quot;v2 = v1++&quot;</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$v1</span>,<span class="variable">$v2</span></span><br><span class="line">2,1</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，<code>let</code>声明了两个变量<code>v1</code>和<code>v2</code>，其中<code>v2</code>等于<code>v1++</code>，表示先返回<code>v1</code>的值，然后<code>v1</code>自增。</p>
+<p>这种语法支持的运算符，参考《Bash 的算术运算》一章。</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/archives/deleted/stdio/" rel="prev" title="标准I/O">
+                  <i class="fa fa-chevron-left"></i> 标准I/O
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/string/" rel="next" title="字符串操作">
+                  字符串操作 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="7e197625fda06487d33fa6939753c177"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

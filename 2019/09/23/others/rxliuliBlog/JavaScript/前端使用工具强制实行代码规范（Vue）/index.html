@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前端使用工具强制实行代码规范（Vue）场景 GitHub Demo  非强制性的规范都不会成为真正的规范。在之前，我们也会在团队内编写一些开发规范文档，却总是不能真正有效的执行下去，原因何在？  其一，人是健忘的，就算真正看完了规范文档，也不可能记住每一条规范，并且在代码中正确实践。 其二，人是懒惰的，即便有着规范，但只要写代码的时候没有强制性，那总是不会在意的。  那么，使用自动化的工具是为首选">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端使用工具强制实行代码规范（Vue）">
+<meta property="og:url" content="https://fangtianq.github.io/2019/09/23/others/rxliuliBlog/JavaScript/%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="前端使用工具强制实行代码规范（Vue）场景 GitHub Demo  非强制性的规范都不会成为真正的规范。在之前，我们也会在团队内编写一些开发规范文档，却总是不能真正有效的执行下去，原因何在？  其一，人是健忘的，就算真正看完了规范文档，也不可能记住每一条规范，并且在代码中正确实践。 其二，人是懒惰的，即便有着规范，但只要写代码的时候没有强制性，那总是不会在意的。  那么，使用自动化的工具是为首选">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190926114439.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190926113520.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190926113953.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190926115309.png">
+<meta property="article:published_time" content="2019-09-23T09:30:31.000Z">
+<meta property="article:modified_time" content="2019-09-25T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190926114439.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/09/23/others/rxliuliBlog/JavaScript/%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/09/23/others/rxliuliBlog/JavaScript/%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89/","path":"2019/09/23/others/rxliuliBlog/JavaScript/前端使用工具强制实行代码规范（Vue）/","title":"前端使用工具强制实行代码规范（Vue）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>前端使用工具强制实行代码规范（Vue） | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">前端使用工具强制实行代码规范（Vue）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESLint"><span class="nav-number">1.2.</span> <span class="nav-text">ESLint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StyleLint"><span class="nav-number">1.3.</span> <span class="nav-text">StyleLint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prettier"><span class="nav-number">1.4.</span> <span class="nav-text">Prettier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#husky-%E4%B8%8E-lint-staged"><span class="nav-number">1.5.</span> <span class="nav-text">husky 与 lint-staged</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/09/23/others/rxliuliBlog/JavaScript/%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="前端使用工具强制实行代码规范（Vue） | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端使用工具强制实行代码规范（Vue）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-23 17:30:31" itemprop="dateCreated datePublished" datetime="2019-09-23T17:30:31+08:00">2019-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-09-26 00:00:00" itemprop="dateModified" datetime="2019-09-26T00:00:00+08:00">2019-09-26</time>
+    </span>
+
+
+  
+    <span id="/2019/09/23/others/rxliuliBlog/JavaScript/%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="前端使用工具强制实行代码规范（Vue）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="前端使用工具强制实行代码规范（Vue）" href="/2019/09/23/others/rxliuliBlog/JavaScript/%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BC%BA%E5%88%B6%E5%AE%9E%E8%A1%8C%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83%EF%BC%88Vue%EF%BC%89/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::eeecd4372ad435b3dbb62a7fa3e9c87b" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前端使用工具强制实行代码规范（Vue）"><a href="#前端使用工具强制实行代码规范（Vue）" class="headerlink" title="前端使用工具强制实行代码规范（Vue）"></a>前端使用工具强制实行代码规范（Vue）</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/rxliuli/example/tree/master/linter_vue_example">GitHub Demo</a></p>
+</blockquote>
+<p>非强制性的规范都不会成为真正的规范。在之前，我们也会在团队内编写一些开发规范文档，却总是不能真正有效的执行下去，原因何在？</p>
+<ul>
+<li>其一，人是健忘的，就算真正看完了规范文档，也不可能记住每一条规范，并且在代码中正确实践。</li>
+<li>其二，人是懒惰的，即便有着规范，但只要写代码的时候没有强制性，那总是不会在意的。</li>
+</ul>
+<p>那么，使用自动化的工具是为首选，而前端恰好有了一些可用的工具来帮助我们。</p>
+<h2 id="ESLint"><a href="#ESLint" class="headerlink" title="ESLint"></a>ESLint</h2><p>ESLint 是一个对 JS 低级错误进行修复的工具，甚至于，现在连 TypeScript 官方也抛弃 TSLint 转向这个工具了，因为它的生态更大，实现的规则数量远远多于 TSLint，能把 JS 中的大部分低级错误检测出来，并能自动修复其中一部分。</p>
+<p>安装依赖</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D eslint babel-eslint eslint-plugin-vue @vue/cli-plugin-eslint</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>依赖解释</p>
+<ul>
+<li><code>eslint</code>: 本体包</li>
+<li><code>babel-eslint</code>: eslint 与 babel 整合包</li>
+<li><code>eslint-plugin-vue @vue/cli-plugin-eslint</code>: eslint 与 vue 整合包</li>
+</ul>
+</blockquote>
+<p>进行配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .eslintrc.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">root</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="comment">//环境</span></span><br><span class="line">  <span class="attr">env</span>: &#123;</span><br><span class="line">    <span class="attr">browser</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">commonjs</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">es6</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">node</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">extends</span>: [</span><br><span class="line">    <span class="comment">//继承 vue 的标准特性</span></span><br><span class="line">    <span class="string">&#x27;plugin:vue/essential&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;eslint:recommended&#x27;</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">rules</span>: &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 禁止不需要的括号，例如 const i = (1 + 1)，但该规则存在的问题是会认为类两侧的圆括号也是不合法的</span></span><br><span class="line"><span class="comment">     * 例如: billId =&gt; (StringValidator.isBlank(billId) ? &#x27;否&#x27; : &#x27;是&#x27;)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// &#x27;no-extra-parens&#x27;: &#x27;error&#x27;,</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 禁止魔法值，该规则的主要问题是很多误报</span></span><br><span class="line"><span class="comment">     * 例如: offset / size + (offset % size === 0 ? 0 : 1)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="string">&#x27;no-magic-numbers&#x27;</span>: <span class="string">&#x27;off&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">//禁止使用 var，强制要求使用 const/let</span></span><br><span class="line">    <span class="string">&#x27;no-var&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//不使用未定义的变量</span></span><br><span class="line">    <span class="string">&#x27;no-use-before-define&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//不允许在循环中使用 await，请使用 Promise.all</span></span><br><span class="line">    <span class="string">&#x27;no-await-in-loop&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//不允许使用 return await，直接返回 Promise 就好</span></span><br><span class="line">    <span class="string">&#x27;no-return-await&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//不允许使用 console 对象，因为会打印到控制台上</span></span><br><span class="line">    <span class="string">&#x27;no-console&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//使用 class 中的方法必须使用 this. 前缀</span></span><br><span class="line">    <span class="comment">// &#x27;class-methods-use-this&#x27;: &#x27;error&#x27;,</span></span><br><span class="line">    <span class="comment">//禁止使用 alert, confirm, prompt，该 API 会阻断所有其他操作，但该规则存在的问题是有可能需要之后用上方便统一调用呢？</span></span><br><span class="line">    <span class="string">&#x27;no-alert&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止使用 eval，该操作是危险的</span></span><br><span class="line">    <span class="string">&#x27;no-eval&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;no-implied-eval&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止使用 new Function 创建函数</span></span><br><span class="line">    <span class="string">&#x27;no-new-func&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止使用包装类 String, Number, Boolean</span></span><br><span class="line">    <span class="string">&#x27;no-new-wrappers&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止把语句作为计算结果返回，请使用两条语句</span></span><br><span class="line">    <span class="string">&#x27;no-return-assign&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止使用不应该的 concat 连接，字符串请使用 + 连接，数组则可以使用 [...arr1, ...arr2]</span></span><br><span class="line">    <span class="string">&#x27;no-useless-concat&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止 yoda 比较，不要用 1 === i 而是用 i === 1 更加自然</span></span><br><span class="line">    <span class="attr">yoda</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止没有用的三元运算符，就算是 ⑨ 也知道这样做有问题 answer === 1 ? true : false</span></span><br><span class="line">    <span class="string">&#x27;no-unneeded-ternary&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//禁止无用的计算属性 const obj = &#123; [&#x27;1&#x27;]: 1 &#125;</span></span><br><span class="line">    <span class="string">&#x27;no-useless-computed-key&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//如果可以使用解构，那就进行警告，例如 const name = user.name 就应该被替换为 const &#123; name &#125; = user，避免了重复声明，也能进行默认赋值等操作</span></span><br><span class="line">    <span class="string">&#x27;prefer-destructuring&#x27;</span>: <span class="string">&#x27;warn&#x27;</span>,</span><br><span class="line">    <span class="comment">//使用 rest 不定参数代替全局变量 arguments</span></span><br><span class="line">    <span class="string">&#x27;prefer-rest-params&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//使用扩展运算符代替 apply 调用</span></span><br><span class="line">    <span class="string">&#x27;prefer-spread&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//使用 Symbol 必须使用描述说明它要做什么</span></span><br><span class="line">    <span class="string">&#x27;symbol-description&#x27;</span>: <span class="string">&#x27;error&#x27;</span>,</span><br><span class="line">    <span class="comment">//如果可以使用反射，那就是用反射调用，Reflect 代替 delete 关键字删除对象属性</span></span><br><span class="line">    <span class="string">&#x27;prefer-reflect&#x27;</span>: <span class="string">&#x27;warn&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">parserOptions</span>: &#123;</span><br><span class="line">    <span class="comment">//使用 babel 解析语法</span></span><br><span class="line">    <span class="attr">parser</span>: <span class="string">&#x27;babel-eslint&#x27;</span>,</span><br><span class="line">    <span class="comment">//使用 es2017 的语法</span></span><br><span class="line">    <span class="attr">ecmaVersion</span>: <span class="number">2017</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果有需要忽略的文件也可以在 <em>.eslintignore</em> 文件中进行配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// .eslintignore</span><br><span class="line">`// 忽略掉 TypeScript 类型定义文件</span><br><span class="line">*/**/*.d.ts`</span><br></pre></td></tr></table></figure>
+
+<p>添加脚本</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;lint:js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue-cli-service lint&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;fix:js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue-cli-service lint --fix&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>运行脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run lint:js</span><br></pre></td></tr></table></figure>
+
+<p>现在，你可以检测到代码中的问题，并修复它了。</p>
+<p>相关链接</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://eslint.org/">ESLint 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint">vue eslint 整合包</a></li>
+</ul>
+<blockquote>
+<p>WebStorm 配置 ESLint 即时检查:<br><img src="https://img.rxliuli.com/20190926114439.png" alt="WebStorm 使用 ESLint"><br>参考: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/28808857">https://stackoverflow.com/questions/28808857</a></p>
+</blockquote>
+<h2 id="StyleLint"><a href="#StyleLint" class="headerlink" title="StyleLint"></a>StyleLint</h2><p>StyleLint 是一个用来对 CSS 进行校验&#x2F;修复的工具，和 ESLint 类似，但却针对 CSS 方面。我们使用它用来避免一些不好的 CSS 写法，也能避免 code review 时被其他人吐槽。。。</p>
+<p>安装依赖</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D stylelint stylelint-config-standard stylelint-order stylelint-scss</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>依赖解释</p>
+<ul>
+<li><code>stylelint</code>: 本体包</li>
+<li><code>stylelint-config-standard</code>: stylelint 标准配置</li>
+<li><code>stylelint-scss</code>: stylelint scss 支持插件包</li>
+<li><code>stylelint-order</code>: stylelint 属性排序插件</li>
+</ul>
+</blockquote>
+<p>进行配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stylelint.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="string">&#x27;stylelint-scss&#x27;</span>, <span class="string">&#x27;stylelint-order&#x27;</span>],</span><br><span class="line">  <span class="attr">extends</span>: [<span class="string">&#x27;stylelint-config-standard&#x27;</span>],</span><br><span class="line">  <span class="attr">rules</span>: &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 关键问题在于是否要忽略空检查</span></span><br><span class="line"><span class="comment">     * 下面两种都会被判断为错误</span></span><br><span class="line"><span class="comment">     * &lt;style lang=&quot;scss&quot; scoped&gt;&lt;/style&gt;</span></span><br><span class="line"><span class="comment">     * a &#123;&#125;</span></span><br><span class="line"><span class="comment">     * 上面一种是很常见的</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// &#x27;no-empty-source&#x27;: null,</span></span><br><span class="line">    <span class="comment">//禁止注释两侧出现空白（IDEA 默认就没有空白）</span></span><br><span class="line">    <span class="string">&#x27;comment-whitespace-inside&#x27;</span>: <span class="string">&#x27;never&#x27;</span>,</span><br><span class="line">    <span class="comment">//scss 的特定符号将被 css 检查时忽略而在 scss 检查时才会生效</span></span><br><span class="line">    <span class="string">&#x27;at-rule-no-unknown&#x27;</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="string">&#x27;scss/at-rule-no-unknown&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">//CSS 声明定义顺序，自定义 class 放在默认元素上面</span></span><br><span class="line">    <span class="string">&#x27;order/order&#x27;</span>: [<span class="string">&#x27;custom-properties&#x27;</span>, <span class="string">&#x27;declarations&#x27;</span>],</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * CSS 属性顺序</span></span><br><span class="line"><span class="comment">     * 1. 控制外部属性</span></span><br><span class="line"><span class="comment">     * 2. 盒模型</span></span><br><span class="line"><span class="comment">     * 3. 视觉</span></span><br><span class="line"><span class="comment">     * 4. 其他</span></span><br><span class="line"><span class="comment">     * 5. 未定义</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="string">&#x27;order/properties-order&#x27;</span>: [</span><br><span class="line">      [</span><br><span class="line">        <span class="comment">//指令</span></span><br><span class="line">        <span class="string">&#x27;composes&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;@import&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;@extend&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;@mixin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;@at-root&#x27;</span>,</span><br><span class="line">        <span class="comment">//盒模型相关</span></span><br><span class="line">        <span class="string">&#x27;display&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex-basis&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex-direction&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex-flow&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex-grow&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex-shrink&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;flex-wrap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-area&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-auto-rows&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-auto-columns&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-auto-flow&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-gap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-row&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-row-start&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-row-end&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-row-gap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-column&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-column-start&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-column-end&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-column-gap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-template&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-template-areas&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-template-rows&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;grid-template-columns&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;gap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;align-content&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;align-items&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;align-self&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;justify-content&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;justify-items&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;justify-self&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;order&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;float&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;clear&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;box-sizing&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;min-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;max-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;height&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;min-height&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;max-height&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;margin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;margin-top&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;margin-right&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;margin-bottom&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;margin-left&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;padding&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;padding-top&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;padding-right&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;padding-bottom&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;padding-left&#x27;</span>,</span><br><span class="line">        <span class="comment">//定位相关</span></span><br><span class="line">        <span class="string">&#x27;position&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;top&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;right&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;bottom&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;left&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;z-index&#x27;</span>,</span><br><span class="line">        <span class="comment">//边框</span></span><br><span class="line">        <span class="string">&#x27;border&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-top&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-top-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-top-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-top-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-right&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-right-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-right-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-right-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-bottom&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-bottom-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-bottom-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-bottom-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-left&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-left-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-left-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-left-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-radius&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-top-left-radius&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-top-right-radius&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-bottom-right-radius&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-bottom-left-radius&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-image&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-image-source&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-image-slice&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-image-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-image-outset&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-image-repeat&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-collapse&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;border-spacing&#x27;</span>,</span><br><span class="line">        <span class="comment">//溢出</span></span><br><span class="line">        <span class="string">&#x27;object-fit&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;object-position&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;overflow&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;overflow-x&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;overflow-y&#x27;</span>,</span><br><span class="line">        <span class="comment">//版式</span></span><br><span class="line">        <span class="string">&#x27;color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-weight&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-size&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-family&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-variant&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-size-adjust&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-stretch&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-effect&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-emphasize&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-emphasize-position&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-emphasize-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;font-smooth&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;line-height&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;direction&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;letter-spacing&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;white-space&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-align&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-align-last&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-transform&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-decoration&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-emphasis&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-emphasis-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-emphasis-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-emphasis-position&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-indent&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-justify&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-outline&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-wrap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-overflow&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-overflow-ellipsis&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-overflow-mode&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-orientation&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;text-shadow&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;vertical-align&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;word-wrap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;word-break&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;word-spacing&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;overflow-wrap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tab-size&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;hyphens&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;unicode-bidi&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;columns&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-count&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-fill&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-gap&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-rule&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-rule-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-rule-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-rule-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-span&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;column-width&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;page-break-after&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;page-break-before&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;page-break-inside&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;src&#x27;</span>,</span><br><span class="line">        <span class="comment">//视觉</span></span><br><span class="line">        <span class="string">&#x27;list-style&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;list-style-position&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;list-style-type&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;list-style-image&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;table-layout&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;empty-cells&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;caption-side&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-color&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-image&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-repeat&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-position&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-position-x&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-position-y&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-size&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-clip&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-origin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-attachment&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;background-blend-mode&#x27;</span>,</span><br><span class="line">        <span class="comment">//动画</span></span><br><span class="line">        <span class="string">&#x27;transition&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;transition-delay&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;transition-timing-function&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;transition-duration&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;transition-property&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-name&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-duration&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-play-state&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-timing-function&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-delay&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-iteration-count&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-direction&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;animation-fill-mode&#x27;</span>,</span><br><span class="line">        <span class="comment">//其他</span></span><br><span class="line">        <span class="string">&#x27;appearance&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;content&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;clip&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;clip-path&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;counter-reset&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;counter-increment&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;resize&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;user-select&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nav-index&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nav-up&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nav-right&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nav-down&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;nav-left&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;pointer-events&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;quotes&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;touch-action&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;will-change&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;zoom&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;fill&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;fill-rule&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;clip-rule&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;stroke&#x27;</span>,</span><br><span class="line">      ],</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">unspecified</span>: <span class="string">&#x27;bottom&#x27;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">//CSS 属性值顺序</span></span><br><span class="line">    <span class="comment">// &#x27;order/properties-alphabetical-order&#x27;: [],</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加脚本</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;lint:css&quot;</span><span class="punctuation">:</span> <span class="string">&quot;stylelint src/**/*.&#123;vue,html,css,scss,sass&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;fix:css&quot;</span><span class="punctuation">:</span> <span class="string">&quot;stylelint --fix src/**/*.&#123;vue,html,css,scss,sass&#125;&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>运行脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run lint:css</span><br></pre></td></tr></table></figure>
+
+<p>相关链接</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stylelint.io/">StyleLint 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/54304313/stylelint-fix-in-webstorm">如何在 WebStorm 中使用 StyleLint 自动修复</a></li>
+</ul>
+<blockquote>
+<p>WebStorm 使用<br>WebStorm 配置 StyleLint 即时检查:<br><img src="https://img.rxliuli.com/20190926113520.png" alt="WebStorm 配置即时检查"><br>参考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/54304313/">https://stackoverflow.com/questions/54304313/</a></p>
+<p>添加外部工具以进行快速修复<br><img src="https://img.rxliuli.com/20190926113953.png" alt="添加外部工具以进行快速修复"><br>然后添加一个快捷键即可</p>
+</blockquote>
+<h2 id="Prettier"><a href="#Prettier" class="headerlink" title="Prettier"></a>Prettier</h2><p>Prettier 是一个代码格式化工具，但并非针对一种语言，对 <code>HTML/CSS/JavaScript/Vue/SCSS</code> 都有效果。可以通过配置文件在不同项目间统一代码格式化，以修正不同编辑器&#x2F;IDE 之间格式化不同的问题。</p>
+<p>安装依赖</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D prettier eslint-plugin-prettier eslint-config-prettier prettier-eslint-cli stylelint-config-prettier stylelint-prettier</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>依赖解释</p>
+<ul>
+<li><code>prettier</code>: 本体包</li>
+<li><code>eslint-plugin-prettier eslint-config-prettier prettier-eslint-cli</code>: prettier 与 eslint 整合包</li>
+<li><code>stylelint-config-prettier stylelint-prettier</code>: prettier 与 stylelint 整合包</li>
+</ul>
+</blockquote>
+<p>进行配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .prettierrc.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">// 缩进宽度</span></span><br><span class="line">  <span class="attr">tabWidth</span>: <span class="number">4</span>,</span><br><span class="line">  <span class="comment">// 单行最大宽度</span></span><br><span class="line">  <span class="attr">printWidth</span>: <span class="number">120</span>,</span><br><span class="line">  <span class="comment">// 去掉代码结尾的分号</span></span><br><span class="line">  <span class="attr">semi</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="comment">// 使用单引号替代双引号</span></span><br><span class="line">  <span class="attr">singleQuote</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="comment">// 尽量在所有地方都添加尾逗号</span></span><br><span class="line">  <span class="attr">trailingComma</span>: <span class="string">&#x27;all&#x27;</span>,</span><br><span class="line">  <span class="comment">// 换行符</span></span><br><span class="line">  <span class="attr">endOfLine</span>: <span class="string">&#x27;crlf&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还需要修改 eslint 与 stylelint 的一些配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .eslintrc.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">  <span class="attr">extends</span>: [</span><br><span class="line">    <span class="comment">//继承 vue 的标准特性</span></span><br><span class="line">    <span class="string">&#x27;plugin:vue/essential&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;eslint:recommended&#x27;</span>,</span><br><span class="line">    <span class="comment">//避免与 prettier 冲突</span></span><br><span class="line">    <span class="string">&#x27;plugin:prettier/recommended&#x27;</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stylelint.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">  <span class="attr">extends</span>: [<span class="string">&#x27;stylelint-config-standard&#x27;</span>, <span class="string">&#x27;stylelint-config-prettier&#x27;</span>],</span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加脚本</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;format&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier-eslint --write \&quot;src/**/*.&#123;js,vue,html,scss,css&#125;\&quot;&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="comment">// 其他配置。。。</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>运行脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run format</span><br></pre></td></tr></table></figure>
+
+<p>相关链接</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://prettier.io/">prettier 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/webstorm/prettier.html">WebStorm 使用 Prettier 官方文档</a></li>
+</ul>
+<blockquote>
+<p>WebStorm 配置使用 Prettier 快速格式化:<br><img src="https://img.rxliuli.com/20190926115309.png" alt="WebStorm 配置使用 Prettier 快速格式化"><br>建议修改为全局使用 Prettier 格式化，避免记忆两个格式化快捷键</p>
+</blockquote>
+<h2 id="husky-与-lint-staged"><a href="#husky-与-lint-staged" class="headerlink" title="husky 与 lint-staged"></a>husky 与 lint-staged</h2><p>强制使用 linter 检查代码，不通过检查则无法提交代码，以使 linter 真正得到有效执行。</p>
+<p>安装依赖</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D husky lint-staged</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>依赖解释</p>
+<ul>
+<li><code>husky</code>: 在项目中添加 git 钩子，在 git 各个生命周期（姑且这样称呼吧）中执行一些自定义操作。我们这里主要是用在 git 提交之前执行 linter 操作，不通过则提交无效。</li>
+<li><code>lint-staged</code>: 简而言之，就是只针对 git 提交的文件进行一些操作，而非整个项目的所有文件。我们这里主要是用在 git 提交之前进行 linter 时只针对提交的文件，以进行渐进式的重构。</li>
+</ul>
+</blockquote>
+<p>进行配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .huskyrc.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">hooks</span>: &#123;</span><br><span class="line">    <span class="comment">// git commit 前的钩子</span></span><br><span class="line">    <span class="string">&#x27;pre-commit&#x27;</span>: <span class="string">&#x27;lint-staged&#x27;</span>,</span><br><span class="line">    <span class="comment">// 修复 IDEA 的一些奇怪问题 &lt;https://youtrack.jetbrains.com/issue/IDEA-135454&gt;</span></span><br><span class="line">    <span class="string">&#x27;post-commit&#x27;</span>: <span class="string">&#x27;git update-index --again&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lint-staged.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="string">&#x27;src/**/*.&#123;js,vue&#125;&#x27;</span>: [<span class="string">&#x27;eslint --fix&#x27;</span>, <span class="string">&#x27;git add&#x27;</span>],</span><br><span class="line">  <span class="string">&#x27;src/**/*.&#123;vue,html,css,scss,sass&#125;&#x27;</span>: [<span class="string">&#x27;stylelint --fix&#x27;</span>, <span class="string">&#x27;git add&#x27;</span>],</span><br><span class="line">  <span class="string">&#x27;src/**/*.&#123;js,vue,html,css,scss,sass&#125;&#x27;</span>: [</span><br><span class="line">    <span class="string">&#x27;prettier-eslint --write&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;git add&#x27;</span>,</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>有人说 <strong>lint-staged</strong> 并行运行多个命令可能会有问题，因为 nodejs 本身在写入文件时不会加锁，导致多线程下可能存在问题（吾辈目前还没遇到过.JPG）</p>
+</blockquote>
+<p>之后，在我们使用 <code>git commit</code> 时就会触发 lint 操作了！</p>
+<p>相关链接</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/typicode/husky">husky GitHub</a></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>基本上，这些工具初次配置起来还是非常麻烦的，但这是一件一劳永逸的事情，所以还是值得花时间去做的。</p>
+<blockquote>
+<p>注:<br>目前还存在的问题是:<br>ESLint 检测出来的部分错误能使用 <strong>A-Enter</strong> 修复<br>Prettier 与 WebStorm 自身格式化不能共存（自动切换）<br>Prettier 在 WebStorm 中无法直接配置导致上面问题存在的必要性<br>StyleLint 不能使用 <strong>A-Enter</strong> 修复且不能与 WebStorm 共存<br>可能的解决方案是找一下是否有一种方式能够让 WebStorm 一个快捷键执行多条命令，或者，写一个可用的插件。</p>
+</blockquote>
+<blockquote>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5c67fcaae51d457fcb4078c9">eslint+husky+prettier+lint-staged 提升前端应用质量</a></li>
+</ul>
+</blockquote>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/15/others/rxliuliBlog/JavaScript/flexbox-%E5%B8%83%E5%B1%80%E5%85%A5%E9%97%A8/" rel="prev" title="flexbox 布局入门">
+                  <i class="fa fa-chevron-left"></i> flexbox 布局入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/26/others/rxliuliBlog/JavaScript/vue-%E4%BD%BF%E7%94%A8-git-rev-sync-%E7%A1%AE%E5%AE%9A%E7%BA%BF%E4%B8%8A%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC%E5%8F%B7/" rel="next" title="vue 使用 git-rev-sync 确定线上发布版本号">
+                  vue 使用 git-rev-sync 确定线上发布版本号 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="eeecd4372ad435b3dbb62a7fa3e9c87b"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

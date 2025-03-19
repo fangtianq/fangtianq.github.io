@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令提示符">
+<meta property="og:url" content="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/prompt/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="…">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:modified_time" content="2020-07-12T14:16:00.000Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/prompt/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/prompt/","path":"2020/07/12/linux/bash-tutorial-master/docs/prompt/","title":"命令提示符"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>命令提示符 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%8F%90%E7%A4%BA%E7%AC%A6"><span class="nav-number">1.</span> <span class="nav-text">命令提示符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-PS1"><span class="nav-number">1.1.</span> <span class="nav-text">环境变量 PS1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%9C%E8%89%B2"><span class="nav-number">1.2.</span> <span class="nav-text">颜色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-PS2%EF%BC%8CPS3%EF%BC%8CPS4"><span class="nav-number">1.3.</span> <span class="nav-text">环境变量 PS2，PS3，PS4</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/07/12/linux/bash-tutorial-master/docs/prompt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="命令提示符 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          命令提示符
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-12 22:16:00" itemprop="dateCreated datePublished" datetime="2020-07-12T22:16:00+08:00">2020-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/bash/" itemprop="url" rel="index"><span itemprop="name">bash</span></a>
+        </span>
+    </span>
+
+
+  
+    <span id="/2020/07/12/linux/bash-tutorial-master/docs/prompt/" class="post-meta-item leancloud_visitors" data-flag-title="命令提示符" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="命令提示符" href="/2020/07/12/linux/bash-tutorial-master/docs/prompt/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::6a64a54d4ae1f97611b700619fdf65f5" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>…</p>
+<span id="more"></span>
+
+<h1 id="命令提示符"><a href="#命令提示符" class="headerlink" title="命令提示符"></a>命令提示符</h1><p>用户进入 Bash 以后，Bash 会显示一个命令提示符，用来提示用户在该位置后面输入命令。</p>
+<h2 id="环境变量-PS1"><a href="#环境变量-PS1" class="headerlink" title="环境变量 PS1"></a>环境变量 PS1</h2><p>命令提示符通常是美元符号<code>$</code>，对于根用户则是井号<code>#</code>。这个符号是环境变量<code>PS1</code>决定的，执行下面的命令，可以看到当前命令提示符的定义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PS1</span></span><br></pre></td></tr></table></figure>
+
+<p>Bash 允许用户自定义命令提示符，只要改写这个变量即可。改写后的<code>PS1</code>，可以放在用户的 Bash 配置文件<code>.bashrc</code>里面，以后新建 Bash 对话时，新的提示符就会生效。要在当前窗口看到修改后的提示符，可以执行下面的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>命令提示符的定义，可以包含特殊的转义字符，表示特定内容。</p>
+<ul>
+<li><code>\a</code>：响铃，计算机发出一记声音。</li>
+<li><code>\d</code>：以星期、月、日格式表示当前日期，例如“Mon May 26”。</li>
+<li><code>\h</code>：本机的主机名。</li>
+<li><code>\H</code>：完整的主机名。</li>
+<li><code>\j</code>：运行在当前 Shell 会话的工作数。</li>
+<li><code>\l</code>：当前终端设备名。</li>
+<li><code>\n</code>：一个换行符。</li>
+<li><code>\r</code>：一个回车符。</li>
+<li><code>\s</code>：Shell 的名称。</li>
+<li><code>\t</code>：24小时制的<code>hours:minutes:seconds</code>格式表示当前时间。</li>
+<li><code>\T</code>：12小时制的当前时间。</li>
+<li><code>\@</code>：12小时制的<code>AM/PM</code>格式表示当前时间。</li>
+<li><code>\A</code>：24小时制的<code>hours:minutes</code>表示当前时间。</li>
+<li><code>\u</code>：当前用户名。</li>
+<li><code>\v</code>：Shell 的版本号。</li>
+<li><code>\V</code>：Shell 的版本号和发布号。</li>
+<li><code>\w</code>：当前的工作路径。</li>
+<li><code>\W</code>：当前目录名。</li>
+<li><code>\!</code>：当前命令在命令历史中的编号。</li>
+<li><code>\#</code>：当前 shell 会话中的命令数。</li>
+<li><code>\$</code>：普通用户显示为<code>$</code>字符，根用户显示为<code>#</code>字符。</li>
+<li><code>\[</code>：非打印字符序列的开始标志。</li>
+<li><code>\]</code>：非打印字符序列的结束标志。</li>
+</ul>
+<p>举例来说，<code>[\u@\h \W]\$</code>这个提示符定义，显示出来就是<code>[user@host ~]$</code>（具体的显示内容取决于你的系统）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[user@host ~]$ <span class="built_in">echo</span> <span class="variable">$PS1</span></span><br><span class="line">[\u@\h \W]\$</span><br></pre></td></tr></table></figure>
+
+<p>改写<code>PS1</code>变量，就可以改变这个命令提示符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ PS1=<span class="string">&quot;\A \h \$ &quot;</span></span><br><span class="line">17:33 host $</span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>$</code>后面最好跟一个空格，这样的话，用户的输入与提示符就不会连在一起。</p>
+<h2 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h2><p>默认情况下，命令提示符是显示终端预定义的颜色。Bash 允许自定义提示符颜色。</p>
+<p>使用下面的代码，可以设定其后文本的颜色。</p>
+<ul>
+<li><code>\033[0;30m</code>：黑色</li>
+<li><code>\033[1;30m</code>：深灰色</li>
+<li><code>\033[0;31m</code>：红色</li>
+<li><code>\033[1;31m</code>：浅红色</li>
+<li><code>\033[0;32m</code>：绿色</li>
+<li><code>\033[1;32m</code>：浅绿色</li>
+<li><code>\033[0;33m</code>：棕色</li>
+<li><code>\033[1;33m</code>：黄色</li>
+<li><code>\033[0;34m</code>：蓝色</li>
+<li><code>\033[1;34m</code>：浅蓝色</li>
+<li><code>\033[0;35m</code>：粉红</li>
+<li><code>\033[1;35m</code>：浅粉色</li>
+<li><code>\033[0;36m</code>：青色</li>
+<li><code>\033[1;36m</code>：浅青色</li>
+<li><code>\033[0;37m</code>：浅灰色</li>
+<li><code>\033[1;37m</code>：白色</li>
+</ul>
+<p>举例来说，如果要将提示符设为红色，可以将<code>PS1</code>设成下面的代码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">&#x27;\[\033[0;31m\]&lt;\u@\h \W&gt;\$&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，上面这样设置以后，用户在提示符后面输入的文本也是红色的。为了解决这个问题， 可以在结尾添加另一个特殊代码<code>\[\033[00m\]</code>，表示将其后的文本恢复到默认颜色。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">&#x27;\[\033[0;31m\]&lt;\u@\h \W&gt;\$\[\033[00m\]&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>除了设置前景颜色，Bash 还允许设置背景颜色。</p>
+<ul>
+<li><code>\033[0;40m</code>：蓝色</li>
+<li><code>\033[1;44m</code>：黑色</li>
+<li><code>\033[0;41m</code>：红色</li>
+<li><code>\033[1;45m</code>：粉红</li>
+<li><code>\033[0;42m</code>：绿色</li>
+<li><code>\033[1;46m</code>：青色</li>
+<li><code>\033[0;43m</code>：棕色</li>
+<li><code>\033[1;47m</code>：浅灰色</li>
+</ul>
+<p>下面是一个带有红色背景的提示符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS1=<span class="string">&#x27;\[\033[0;41m\]&lt;\u@\h \W&gt;\$\[\033[0m\] &#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="环境变量-PS2，PS3，PS4"><a href="#环境变量-PS2，PS3，PS4" class="headerlink" title="环境变量 PS2，PS3，PS4"></a>环境变量 PS2，PS3，PS4</h2><p>除了<code>PS1</code>，Bash 还提供了提示符相关的另外三个环境变量。</p>
+<p>环境变量<code>PS2</code>是命令行折行输入时系统的提示符，默认为<code>&gt; </code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;hello</span></span><br><span class="line"><span class="string">&gt; world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面命令中，输入<code>hello</code>以后按下回车键，系统会提示继续输入。这时，第二行显示的提示符就是<code>PS2</code>定义的<code>&gt; </code>。</p>
+<p>环境变量<code>PS3</code>是使用<code>select</code>命令时，系统输入菜单的提示符。</p>
+<p>环境变量<code>PS4</code>默认为<code>+ </code>。它是使用 Bash 的<code>-x</code>参数执行脚本时，每一行命令在执行前都会先打印出来，并且在行首出现的那个提示符。</p>
+<p>比如下面是脚本<code>test.sh</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>-x</code>参数执行这个脚本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ bash -x test.sh</span><br><span class="line">+ <span class="built_in">echo</span> <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，输出的第一行前面有一个<code>+ </code>，这就是变量<code>PS4</code>定义的。</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/quotation/" rel="prev" title="引号和转义">
+                  <i class="fa fa-chevron-left"></i> 引号和转义
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/12/linux/bash-tutorial-master/docs/mktemp/" rel="next" title="mktemp 命令，trap 命令">
+                  mktemp 命令，trap 命令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="6a64a54d4ae1f97611b700619fdf65f5"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

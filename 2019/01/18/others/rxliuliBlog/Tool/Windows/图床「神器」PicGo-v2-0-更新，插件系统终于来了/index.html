@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="图床「神器」PicGo v2.0 更新，插件系统终于来了 转自 https:&#x2F;&#x2F;molunerfinn.com&#x2F;picgo-v2.0-update，作为一个经常使用 Markdown 写作的人而言，一个好的图床工具是很重要的，所以吾辈才会转载这篇文章呢！  前言距离上次更新 (v1.6.2) 已经过去了 5 个月，很抱歉 2.0 版本来得这么晚。本来想着在 18 年 12 月（PicGo 一周年的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图床「神器」PicGo v2.0 更新，插件系统终于来了">
+<meta property="og:url" content="https://fangtianq.github.io/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="图床「神器」PicGo v2.0 更新，插件系统终于来了 转自 https:&#x2F;&#x2F;molunerfinn.com&#x2F;picgo-v2.0-update，作为一个经常使用 Markdown 写作的人而言，一个好的图床工具是很重要的，所以吾辈才会转载这篇文章呢！  前言距离上次更新 (v1.6.2) 已经过去了 5 个月，很抱歉 2.0 版本来得这么晚。本来想着在 18 年 12 月（PicGo 一周年的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20190118212302.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190118212453.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190118212549.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190118212808.gif">
+<meta property="og:image" content="https://img.rxliuli.com/20190118212628.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190118212954.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190118213134.png">
+<meta property="og:image" content="https://img.rxliuli.com/20190118213411.gif">
+<meta property="og:image" content="https://img.rxliuli.com/20190118213514.gif">
+<meta property="og:image" content="https://img.rxliuli.com/20190118213547.gif">
+<meta property="article:published_time" content="2019-01-18T13:20:14.000Z">
+<meta property="article:modified_time" content="2019-01-18T13:20:14.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="Tool">
+<meta property="article:tag" content="Markdown">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20190118212302.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/","path":"2019/01/18/others/rxliuliBlog/Tool/Windows/图床「神器」PicGo-v2-0-更新，插件系统终于来了/","title":"图床「神器」PicGo v2.0 更新，插件系统终于来了"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>图床「神器」PicGo v2.0 更新，插件系统终于来了 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86"><span class="nav-number">1.</span> <span class="nav-text">图床「神器」PicGo v2.0 更新，插件系统终于来了</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">插件系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-0-%E5%85%B6%E4%BB%96%E6%9B%B4%E6%96%B0%E5%86%85%E5%AE%B9"><span class="nav-number">1.2.</span> <span class="nav-text">2.0 其他更新内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bug-Fixed"><span class="nav-number">1.3.</span> <span class="nav-text">Bug Fixed</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCode-%E7%9A%84-PicGo-%E6%8F%92%E4%BB%B6-vs-picgo"><span class="nav-number">1.4.</span> <span class="nav-text">VSCode 的 PicGo 插件 vs-picgo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">1.5.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="图床「神器」PicGo v2.0 更新，插件系统终于来了 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          图床「神器」PicGo v2.0 更新，插件系统终于来了
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-18 21:20:14" itemprop="dateCreated datePublished" datetime="2019-01-18T21:20:14+08:00">2019-01-18</time>
+    </span>
+
+
+  
+    <span id="/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/" class="post-meta-item leancloud_visitors" data-flag-title="图床「神器」PicGo v2.0 更新，插件系统终于来了" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="图床「神器」PicGo v2.0 更新，插件系统终于来了" href="/2019/01/18/others/rxliuliBlog/Tool/Windows/%E5%9B%BE%E5%BA%8A%E3%80%8C%E7%A5%9E%E5%99%A8%E3%80%8DPicGo-v2-0-%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%88%E4%BA%8E%E6%9D%A5%E4%BA%86/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::0e79f9959f753690ede99a5803d0a947" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="图床「神器」PicGo-v2-0-更新，插件系统终于来了"><a href="#图床「神器」PicGo-v2-0-更新，插件系统终于来了" class="headerlink" title="图床「神器」PicGo v2.0 更新，插件系统终于来了"></a>图床「神器」PicGo v2.0 更新，插件系统终于来了</h1><blockquote>
+<p>转自 <a target="_blank" rel="noopener" href="https://molunerfinn.com/picgo-v2.0-update">https://molunerfinn.com/picgo-v2.0-update</a>，作为一个经常使用 Markdown 写作的人而言，一个好的图床工具是很重要的，所以吾辈才会转载这篇文章呢！</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>距离上次更新 (v1.6.2) 已经过去了 5 个月，很抱歉 2.0 版本来得这么晚。本来想着在 18 年 12 月（PicGo 一周年的时候）发布 2.0 版本，但是无奈正值研究生开题期间，需要花费不少时间（不然毕不了业了 T T），所以这个大版本姗姗来迟。不过从这个版本开始，正式支持插件系统，发挥你们的无限想象，PicGo 也能成为一个极致的效率工具。</p>
+<p>除了发布 PicGo 2.0 <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/releases/">本体</a>，一同发布的还有 <a target="_blank" rel="noopener" href="https://picgo.github.io/PicGo-Core-Doc/">PicGo-Core</a>（PicGo 2.0 的底层，支持 CLI 和 API 调用），以及 VSCode 的 PicGo 插件 <a target="_blank" rel="noopener" href="https://github.com/Spades-S/vs-picgo">vs-picgo</a> 等。</p>
+<h3 id="插件系统"><a href="#插件系统" class="headerlink" title="插件系统"></a>插件系统</h3><p>PicGo 的底层核心其实是 <code>PicGo-Core</code>。这个核心主要就是一个流程系统。(它支持在 Node.js 环境下全局安装，可以通过命令行上传图片文件、也可以接入 Node.js 项目中调用 api 实现上传。)</p>
+<p><code>PicGo-Core</code> 的上传流程如下：<br><img src="https://img.rxliuli.com/20190118212302.png" alt="PicGo-Core 上传流程"></p>
+<p><code>Input</code> 一般是文件路径，经过 <code>Transformer</code> 读取信息，传入 <code>Uploader</code> 进行上传，最后通过 <code>Output</code> 输出结果。而插件可以接入三个生命周期（<code>beforeTransform</code>、<code>beforeUpload</code>、<code>afterUpload</code>）以及两种部件（<code>Transformer</code> 和 <code>Uploader</code>）。</p>
+<p>换句话说，如果你书写了合适的 <code>Uploader</code>，那么可以上传到不同的图床。如果你书写了合适的 <code>Transformer</code>，你可以通过 URL 先行下载文件再通过 <code>Uploader</code> 上传等等。</p>
+<p>另外，如果你不想下载 PicGo 的 electron 版本，也可以通过 npm 安装 picgo 来实现命令行一键上传图片的快速体验。</p>
+<p>PicGo 除了 <code>PicGo-Core</code> 提供的核心功能之外，额外给 GUI 插件给予一些自主控制权。</p>
+<p>比如插件可以拥有自己的菜单项：<br><img src="https://img.rxliuli.com/20190118212453.png" alt="菜单"></p>
+<p>因此 GUI 插件除了能够接管 <code>PicGo-Core</code> 给予的上传流程，还可以通过 PicGo 提供的 guiApi 等接口，在插件页面实现一些以前单纯通过 <code>上传区</code> 实现不了的功能：</p>
+<p>比如可以通过打开一个 <code>InputBox</code> 获取用户的输入：<br><img src="https://img.rxliuli.com/20190118212549.png" alt="InputBox"></p>
+<p>可以通过打开一个路径来执行其他功能（而非只是上传文件）：<br><img src="https://img.rxliuli.com/20190118212808.gif" alt="打开一个路径来执行其他功能"></p>
+<p>甚至还可以直接在插件面板通过调用 api 实现上传。</p>
+<p>另外插件可以监听相册里图片删除的事件：<br><img src="https://img.rxliuli.com/20190118212628.png" alt="远端删除"></p>
+<p>这个功能就可以写一个插件来实现相册图片和远端存储里的同步删除了。</p>
+<p>通过如上介绍，我现在甚至就已经能想到插件系统能做出哪些有意思的插件了。</p>
+<p>比如：</p>
+<ol>
+<li>结合 GitHub 刚刚开放的免费私人仓库，可以通过插件实现 PicGo 的相册以及配置文件同步。</li>
+<li>结合 TinyPng 等工具实现上传前给图片瘦身。（不过可能挺影响上传速度的。）</li>
+<li>结合一些 Canvas 工具，可以在上传图片前给图片加水印。</li>
+<li>通过指定文件夹，将文件夹内部的 markdown 里的图片地址进行图床迁移。</li>
+<li>等等。。</li>
+</ol>
+<p>希望这个插件系统能够给 PicGo 带来更强大的威力，也希望它能够成为你的极致的效率工具。</p>
+<p><strong>需要注意的是，想要使用 PicGo 2.0 的插件系统，需要先行安装 <a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a> 环境，因为 PicGo 的插件安装依赖 <code>npm</code>。</strong></p>
+<h2 id="2-0-其他更新内容"><a href="#2-0-其他更新内容" class="headerlink" title="2.0 其他更新内容"></a>2.0 其他更新内容</h2><p>除了上面说的插件系统，PicGo 2.0 还更新了如下内容：</p>
+<ul>
+<li>底层重构了之后，某些图床上传不通过 <code>base64</code> 值的将会提升不少速度。比如 <code>SM.MS</code> 图床等。而原本就通过 <code>base64</code> 上传的图床速度不变。</li>
+<li>增加一些配置项，比如打开配置文件（包括了上传的图片列表）、mini 窗口置顶、代理设置等。<br><img src="https://img.rxliuli.com/20190118212954.png" alt="更多配置项"></li>
+<li>在相册页可以选择复制的链接格式，不用再跑去上传页改了。<br><img src="https://img.rxliuli.com/20190118213134.png" alt="相册允许复制链接格式"></li>
+<li>增加不同页面切换的淡入淡出动画。</li>
+<li>macOS 版本配色小幅更新。（Windows 版本配色更新 Fluent Design 效果预计在 2.1 版本上线）</li>
+<li>更新 electron 版本从 1.8-&gt;4.0，启动速度更快了，性能也更好了。</li>
+</ul>
+<h2 id="Bug-Fixed"><a href="#Bug-Fixed" class="headerlink" title="Bug Fixed"></a>Bug Fixed</h2><ul>
+<li>修复：macOS 多屏下打开详细窗口时位置错误的<a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/issues/128">问题</a>。</li>
+<li>修复：多图片上传重命名一致的<a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/issues/136">问题</a>。</li>
+<li>修复：拖拽图片到软件会自动在软件内部打开这张图片的 <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/issues/140">bug</a>。</li>
+<li>修复：重命名窗口只出现在屏幕中央而不是跟随主窗口的 <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/issues/145">bug</a>。</li>
+</ul>
+<h2 id="VSCode-的-PicGo-插件-vs-picgo"><a href="#VSCode-的-PicGo-插件-vs-picgo" class="headerlink" title="VSCode 的 PicGo 插件 vs-picgo"></a>VSCode 的 PicGo 插件 vs-picgo</h2><p>在 PicGo-Core 发布不久，就有人根据 PicGo-Core 的 API 编写了 VSCode 版的 PicGo 插件。使用起来也非常方便：</p>
+<ul>
+<li>截图上传<br><img src="https://img.rxliuli.com/20190118213411.gif" alt="截图上传"></li>
+<li>文件浏览器选择文件上传<br><img src="https://img.rxliuli.com/20190118213514.gif" alt="文件浏览器选择文件上传"></li>
+<li>输入文件路径上传<br><img src="https://img.rxliuli.com/20190118213547.gif" alt="输入文件路径上传"></li>
+</ul>
+<p>配置项与 PicGo 的图床的配置项基本保持一致。在 VSCode 插件栏搜索 PicGo 即可下载安装与体验！</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>PicGo 第一个稳定版本是在少数派上发布的，详见 <a target="_blank" rel="noopener" href="https://sspai.com/post/42310">PicGo：基于 Electron 的图片上传工具</a>。支持 macOS、Windows、Linux 三平台，开源免费，界面美观，也得到了很多朋友的认可。如果你对它有什么意见或者建议，也欢迎在 <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/issues">issues</a> 里指出。如果你喜欢它，不妨给它点个 star。如果对你真的很有帮助，不妨请我喝杯咖啡（PicGo 的 GitHub <a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo">首页</a>有赞助的二维码）？</p>
+<blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo/releases">https://github.com/Molunerfinn/PicGo/releases</a><br>Windows 用户请下载<code>.exe</code>文件，macOS 用户请下载<code>.dmg</code>文件，Linux 用户请下载<code>.AppImage</code>文件。</p>
+</blockquote>
+<p>Happy uploading！</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Tool/" rel="tag"># Tool</a>
+              <a href="/tags/Markdown/" rel="tag"># Markdown</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/17/others/rxliuliBlog/Java/SpringMVC-RequestParam-%E5%8F%82%E6%95%B0%E4%B8%8D%E8%83%BD%E8%87%AA%E5%8A%A8%E8%BD%AC%E6%8D%A2%E6%B3%9B%E5%9E%8B%E9%9B%86%E5%90%88/" rel="prev" title="SpringMVC @RequestParam 参数不能自动转换泛型集合">
+                  <i class="fa fa-chevron-left"></i> SpringMVC @RequestParam 参数不能自动转换泛型集合
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/23/others/rxliuliBlog/JavaScript/JavaScript-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E9%98%9F%E5%88%97-fetch/" rel="next" title="JavaScript 自定义限流队列 fetch">
+                  JavaScript 自定义限流队列 fetch <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="0e79f9959f753690ede99a5803d0a947"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

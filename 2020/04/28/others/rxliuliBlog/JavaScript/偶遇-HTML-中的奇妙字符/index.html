@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="虽然名字听起来就像是一本正经的胡说八道，但吾辈确实遇到了一个奇怪的问题，于此分享给大家。 事情的起始如下 下班回家 &#x3D;&gt; 想要看动画 &#x3D;&gt; 去动漫花园下载 BT 种子 &#x3D;&gt; 动漫花园一片空白 &#x3D;&gt; Why？  于是吾辈偷偷的的打开了控制台看了一下，发现是页面中的内容元素不见了。经过深思熟虑（好吧其实也就是稍微想了一下）首先把 uBlo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="偶遇 HTML 中的奇妙字符">
+<meta property="og:url" content="https://fangtianq.github.io/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="虽然名字听起来就像是一本正经的胡说八道，但吾辈确实遇到了一个奇怪的问题，于此分享给大家。 事情的起始如下 下班回家 &#x3D;&gt; 想要看动画 &#x3D;&gt; 去动漫花园下载 BT 种子 &#x3D;&gt; 动漫花园一片空白 &#x3D;&gt; Why？  于是吾辈偷偷的的打开了控制台看了一下，发现是页面中的内容元素不见了。经过深思熟虑（好吧其实也就是稍微想了一下）首先把 uBlo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/rxliuli/img-bed/master/20200429010151.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200429010420.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200429010547.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200429010717.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200429010811.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200429010852.png">
+<meta property="og:image" content="https://img.rxliuli.com/20200429011004.png">
+<meta property="article:published_time" content="2020-04-28T15:48:27.000Z">
+<meta property="article:modified_time" content="2020-05-04T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="HTML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/rxliuli/img-bed/master/20200429010151.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/","path":"2020/04/28/others/rxliuliBlog/JavaScript/偶遇-HTML-中的奇妙字符/","title":"偶遇 HTML 中的奇妙字符"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>偶遇 HTML 中的奇妙字符 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="偶遇 HTML 中的奇妙字符 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          偶遇 HTML 中的奇妙字符
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-28 23:48:27" itemprop="dateCreated datePublished" datetime="2020-04-28T23:48:27+08:00">2020-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-05-05 00:00:00" itemprop="dateModified" datetime="2020-05-05T00:00:00+08:00">2020-05-05</time>
+    </span>
+
+
+  
+    <span id="/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/" class="post-meta-item leancloud_visitors" data-flag-title="偶遇 HTML 中的奇妙字符" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="偶遇 HTML 中的奇妙字符" href="/2020/04/28/others/rxliuliBlog/JavaScript/%E5%81%B6%E9%81%87-HTML-%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E5%AD%97%E7%AC%A6/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::8c080e808f1b34cc6ae4fc6578076341" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>虽然名字听起来就像是<strong>一本正经的胡说八道</strong>，但吾辈确实遇到了一个奇怪的问题，于此分享给大家。</p>
+<p>事情的起始如下</p>
+<p><em>下班回家 &#x3D;&gt; 想要看动画 &#x3D;&gt; 去动漫花园下载 BT 种子 &#x3D;&gt; 动漫花园一片空白 &#x3D;&gt; Why？</em></p>
+<p><img src="https://raw.githubusercontent.com/rxliuli/img-bed/master/20200429010151.png" alt="默认 uBlock 屏蔽页面"></p>
+<p>于是吾辈<strong>偷偷的</strong>的打开了控制台看了一下，发现是页面中的内容元素不见了。经过深思熟虑（好吧其实也就是稍微想了一下）首先把 uBlock 禁用，毕竟这个最容易被网站检测出来并且<strong>对抗</strong>嘛！果不其然，页面恢复了正常，但。。。同时广告也出现在了页面上。</p>
+<p><img src="https://img.rxliuli.com/20200429010420.png" alt="默认 uBlock 不屏蔽页面"></p>
+<p>这可不行，重新启用了 uBlock 看了一下分析，很显然，内容不存在大概率是被 uBlock 的<strong>元素过滤</strong>功能隐藏掉了，查看被隐藏的内容元素，发现 id 为 <code>1280_adv</code>，但同时又包含了广告与主体内容，所以只要关掉 uBlock 的<strong>元素过滤</strong>就可以避免正常内容被误杀了。</p>
+<blockquote>
+<p>之所以不在该网站整个禁用掉 uBlock 的原因在于 uBlock 并不只有<strong>元素过滤</strong>，它还阻止了一些广告资源的加载，仅在动漫花园就包括但不限于 _baidu.com, bebi.com, histats.com_。显而易见，禁用它们还能提高加载速度。</p>
+</blockquote>
+<p><img src="https://img.rxliuli.com/20200429010547.png" alt="uBlock 屏蔽的脚本"></p>
+<p>既然无法使用 uBlock 的元素屏蔽了，那么吾辈便需要使用一个新的方式去阻止广告了，幸运的是吾辈安装了 Stylus 和 Tampermonkey 插件。</p>
+<blockquote>
+<p>Stylus 能够使用被称为 <code>user.css</code> 的技术，能够在本地修改任意网站的样式 – 即自定义 UI 显示。<br>而 Tampermonkey 则更强大，支持 <code>user.js</code> – 可以在本地打开任意网站时载入自定义的 JavaScript 脚本，不再局限于修改 UI，几乎与插件无异（事实上它也确实被认为是更轻量的插件）。</p>
+</blockquote>
+<p>原以为就几句 css 的事情，找到了广告的 id，于是吾辈写下了下面这些 css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*屏蔽动漫花园的广告*/</span></span><br><span class="line"><span class="selector-class">.ad</span>,</span><br><span class="line"><span class="selector-id">#1280_adv</span>,</span><br><span class="line"><span class="selector-id">#1280_ad</span> &gt; <span class="selector-tag">a</span>,</span><br><span class="line"><span class="selector-id">#bebiv3_ad</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但结果却是。。。只生效了一半！</p>
+<p><img src="https://img.rxliuli.com/20200429010717.png" alt="屏蔽一半"></p>
+<p>可以看到，上面两个广告确实被隐藏了，但下面一个却并没有，而且吾辈在控制台直接使用 <code>document.querySelector(&#39;#1280_adv&#39;)</code> 也获取 dom 会抛出错误 <code>SyntaxError: Document.querySelector: &#39;#1280_adv&#39; is not a valid selector</code>。吾辈是直接复制的 id，<strong>理论上</strong>来说不会有错才是。</p>
+<p>仔细想想，吾辈或许是漏掉了什么。。。于是，吾辈使用 <strong>Copy &#x3D;&gt; Copy Selector</strong> 功能，有趣的东西出现了，复制出来的内容竟然是 <code>&#39;\31 280_adv&#39;</code>，wtf？</p>
+<p>嗯，或许吾辈需要冷静一下，尝试使用 <code>document.querySelector(&quot;#\\31 280_adv&quot;)</code> 获取一下</p>
+<blockquote>
+<p>注意：这里 JS 里面去查询 DOM Selector 的字符串又进行了转义。</p>
+</blockquote>
+<p><img src="https://img.rxliuli.com/20200429010811.png" alt="Console 获取"></p>
+<p>OK，确实能够正常拿到。由于这些奇怪的字符在 css 中存在语法错误，那么接下来便用 <code>user.js</code> 去屏蔽掉它们吧！</p>
+<p>基本实现如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">;[</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#\\31 280_adv&#x27;</span>),</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.ad&#x27;</span>),</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#\\31 280_ad &gt; a&#x27;</span>),</span><br><span class="line">].<span class="title function_">forEach</span>(<span class="function">(<span class="params">ad</span>) =&gt;</span> ad.<span class="title function_">remove</span>())</span><br></pre></td></tr></table></figure>
+
+<p>甚至吾辈都发到了 <a target="_blank" rel="noopener" href="https://github.com/rxliuli/userjs/tree/master/src/dmhy">GitHub</a> 与 <a target="_blank" rel="noopener" href="https://greasyfork.org/zh-CN/scripts/402206">GreasyFork</a> 上了。</p>
+<p>然后，有个（万能的）网友就提出，可以转换思路，既然 <code>#\\31 280_adv</code> 在 css 中存在语法错误，那么使用属性选择器过滤 id 将值包裹在 <code>&#39;&#39;</code> 之中不就好了么？此话真是九言劝醒迷途仕，一语惊醒梦中人，吾辈瞬间 GET 到了这个点。</p>
+<p>于是吾辈编写出了下面这段 <code>user.css</code> 样式</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*屏蔽动漫花园的广告*/</span></span><br><span class="line"><span class="selector-class">.ad</span>,</span><br><span class="line"><span class="selector-tag">div</span><span class="selector-attr">[id=<span class="string">&#x27;\31 280_adv&#x27;</span>]</span>,</span><br><span class="line"><span class="selector-tag">div</span><span class="selector-attr">[id=<span class="string">&#x27;\31 280_ad&#x27;</span>]</span> &gt; <span class="selector-tag">a</span>,</span><br><span class="line"><span class="selector-tag">div</span><span class="selector-attr">[id=<span class="string">&#x27;bebiv3_ad&#x27;</span>]</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用后效果如下</p>
+<p><img src="https://img.rxliuli.com/20200429010852.png" alt="屏蔽后干净的网页"></p>
+<p>现在，初始目的达成了，吾辈开始有点好奇它是怎么实现这个功能，于是下载了它的源码，id 那里并未发现什么奇怪的东西，但吾辈却也无法复现一个 demo！</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;test&quot;</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;#test&#x27;</span>).<span class="title function_">setAttribute</span>(<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;\\31 280_adv&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      &#125;)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>demo 效果</p>
+<p><img src="https://img.rxliuli.com/20200429011004.png" alt="demo 效果"></p>
+<p>如果有人知道原因的话，请务必不吝赐教！</p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/ASCII">ASCII Wiki</a></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>后续，万能的网友 <a target="_blank" rel="noopener" href="https://disqus.com/by/niamori/">NiaMori</a> 又来说明啦，实际上是 id 以数字开头的原因，具体问题参考：<br>是 id 以数字开头的原因，简单的 <code>&lt;div id=&quot;1&quot;&gt;test&lt;div&gt;</code> 就能复现这个效果。<br><code>document.getElementById(&#39;1&#39;)</code> 能够选中，但 <code>document.querySelector(&#39;#1&#39;)</code> 不能，因为 HTML5 允许 id 以数字开头而 CSS 不允许<br>0x31 是 ‘1’ 的 Unicode 编码值，Copy selector 的时候 Chrome 做了一个智能的 escape<br>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://disq.us/url?url=https://stackoverflow.com/questions/20306204/using-queryselector-with-ids-that-are-numbers:ywx_Ldt8DYLp36vWCEZDC-CT6pM&cuid=5534903">Using querySelector with IDs that are numbers</a></li>
+<li><a target="_blank" rel="noopener" href="https://disq.us/url?url=https://www.w3.org/TR/CSS21/syndata.html%23characters:YR69gjoR28vxgXneZXGYH3k8gFM&cuid=5534903">Css Spec</a></li>
+<li><a target="_blank" rel="noopener" href="https://disq.us/url?url=https://developer.mozilla.org/en-US/docs/Web/API/CSS/escape:5uLuEmiEmKi4BAwjvTU8OFFY6OQ&cuid=5534903">CSS.escape</a></li>
+</ul>
+</blockquote>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
+              <a href="/tags/HTML/" rel="tag"># HTML</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/27/others/rxliuliBlog/JavaScript/JavaScript-%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/" rel="prev" title="JavaScript 禁止用户保存图片">
+                  <i class="fa fa-chevron-left"></i> JavaScript 禁止用户保存图片
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/01/others/rxliuliBlog/Tool/Android/Android-%E4%B8%8A%E6%9C%80%E5%A5%BD%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8-Kiwi-browser/" rel="next" title="Android 上最好的浏览器 Kiwi browser">
+                  Android 上最好的浏览器 Kiwi browser <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="8c080e808f1b34cc6ae4fc6578076341"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

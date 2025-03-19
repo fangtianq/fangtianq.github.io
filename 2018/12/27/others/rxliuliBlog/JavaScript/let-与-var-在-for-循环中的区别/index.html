@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="let 与 var 在 for 循环中的区别场景今天遇到的一个很有趣的问题，下面两段 js 代码执行的结果是什么？ 123for (let i &#x3D; 0; i &lt; 3; i++) &amp;#123;  setTimeout(() &#x3D;&gt; console.log(i), 0)&amp;#125;  和 123for (var i &#x3D; 0; i &lt; 3; i++) &amp;#123;  setTimeout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="let 与 var 在 for 循环中的区别">
+<meta property="og:url" content="https://fangtianq.github.io/2018/12/27/others/rxliuliBlog/JavaScript/let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="let 与 var 在 for 循环中的区别场景今天遇到的一个很有趣的问题，下面两段 js 代码执行的结果是什么？ 123for (let i &#x3D; 0; i &lt; 3; i++) &amp;#123;  setTimeout(() &#x3D;&gt; console.log(i), 0)&amp;#125;  和 123for (var i &#x3D; 0; i &lt; 3; i++) &amp;#123;  setTimeout">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.rxliuli.com/20181227214410.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181227212650.png">
+<meta property="og:image" content="https://img.rxliuli.com/20181227213014.png">
+<meta property="article:published_time" content="2018-12-27T09:32:38.000Z">
+<meta property="article:modified_time" content="2018-12-27T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.rxliuli.com/20181227214410.png">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/12/27/others/rxliuliBlog/JavaScript/let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2018/12/27/others/rxliuliBlog/JavaScript/let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB/","path":"2018/12/27/others/rxliuliBlog/JavaScript/let-与-var-在-for-循环中的区别/","title":"let 与 var 在 for 循环中的区别"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>let 与 var 在 for 循环中的区别 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">let 与 var 在 for 循环中的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94"><span class="nav-number">1.3.</span> <span class="nav-text">解答</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%B8%80%EF%BC%9Ajs-%E9%87%8C-setTimeout-%E5%A6%82%E6%9E%9C%E5%BB%B6%E8%BF%9F%E6%97%B6%E9%97%B4%E4%B8%BA-0-%E5%BA%94%E8%AF%A5%E4%BC%9A%E7%AB%8B%E5%88%BB%E6%89%A7%E8%A1%8C"><span class="nav-number">1.3.1.</span> <span class="nav-text">其一：js 里 setTimeout 如果延迟时间为 0 应该会立刻执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BA%8C%EF%BC%9Ajs-%E9%87%8C%E7%9A%84-for-%E5%BE%AA%E7%8E%AF%E5%92%8C-java-%E5%BA%94%E8%AF%A5%E5%B7%AE%E4%B8%8D%E5%A4%9A%EF%BC%8Cfor-%E5%BE%AA%E7%8E%AF%E5%86%85%E9%83%A8%E6%98%AF%E5%8D%95%E7%8B%AC%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">1.3.2.</span> <span class="nav-text">其二：js 里的 for 循环和 java 应该差不多，for 循环内部是单独的作用域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">1.4.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#let-for"><span class="nav-number">1.4.1.</span> <span class="nav-text">let + for</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#var-for"><span class="nav-number">1.4.2.</span> <span class="nav-text">var + for</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/12/27/others/rxliuliBlog/JavaScript/let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="let 与 var 在 for 循环中的区别 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          let 与 var 在 for 循环中的区别
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-27 17:32:38" itemprop="dateCreated datePublished" datetime="2018-12-27T17:32:38+08:00">2018-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2018-12-28 00:00:00" itemprop="dateModified" datetime="2018-12-28T00:00:00+08:00">2018-12-28</time>
+    </span>
+
+
+  
+    <span id="/2018/12/27/others/rxliuliBlog/JavaScript/let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-meta-item leancloud_visitors" data-flag-title="let 与 var 在 for 循环中的区别" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="let 与 var 在 for 循环中的区别" href="/2018/12/27/others/rxliuliBlog/JavaScript/let-%E4%B8%8E-var-%E5%9C%A8-for-%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%8C%BA%E5%88%AB/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::6a107ff811694b9a080438ea1b173cc8" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="let-与-var-在-for-循环中的区别"><a href="#let-与-var-在-for-循环中的区别" class="headerlink" title="let 与 var 在 for 循环中的区别"></a>let 与 var 在 for 循环中的区别</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>今天遇到的一个很有趣的问题，下面两段 js 代码执行的结果是什么？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(i), <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(i), <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>嗯，乍看之下好像没什么区别，只有声明方式 <code>let</code> 和 <code>var</code> 不一样而已。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>这里先说一下吾辈两个关于 js 的认知</p>
+<ol>
+<li>js 里 <code>setTimeout</code> 如果延迟时间为 0 应该会立刻执行</li>
+<li>js 里的 for 循环和 java 应该差不多，for 循环内部是单独的作用域</li>
+</ol>
+<p>图解如下</p>
+<p><img src="https://img.rxliuli.com/20181227214410.png" alt="js for 循环和 setTimeout 理解"></p>
+<p>那么答案只有一个，两段代码执行的结果应该都是 <code>0 1 2</code> 才对！Ｏ(≧▽≦)Ｏ</p>
+<p>然而当吾辈执行后的结果却是</p>
+<ul>
+<li><code>let</code>: <code>0 1 2</code></li>
+<li><code>var</code>: <code>3 3 3</code></li>
+</ul>
+<p>发生了什么？吾辈表示很无语。。。┐(￣ヮ￣)┌</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>然而，上面的两个认知全错了！</p>
+<h3 id="其一：js-里-setTimeout-如果延迟时间为-0-应该会立刻执行"><a href="#其一：js-里-setTimeout-如果延迟时间为-0-应该会立刻执行" class="headerlink" title="其一：js 里 setTimeout 如果延迟时间为 0 应该会立刻执行"></a>其一：js 里 <code>setTimeout</code> 如果延迟时间为 0 应该会立刻执行</h3><p>好吧，异步没有 <em>立刻执行</em> 这个说法，js 中异步函数实际上是被 <strong>事件队列</strong> 所管理的。当使用 <code>setTimeout</code> 函数时，即便延迟为 0，函数 <code>() =&gt; console.log(i)</code> 也不会立刻执行，而是会被放到 <strong>事件队列</strong> 中去，然后等待浏览器空闲之后执行。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop#%E9%9B%B6%E5%BB%B6%E8%BF%9F">MDN</a> 上有一段关于零延迟的描述</p>
+<blockquote>
+<p>零延迟</p>
+<p>零延迟并不意味着回调会立即执行。以 0 为第二参数调用 <code>setTimeout</code> 并不表示在 <code>0</code> 毫秒后就立即调用回调函数。<br>其等待的时间取决于队列里待处理的消息数量。在下面的例子中，”this is just a message” 将会在回调获得处理之前输出到控制台，这是因为延迟参数是运行时处理请求所需的最小等待时间，但并不保证是准确的等待时间。<br>基本上，<code>setTimeout</code> 需要等待当前队列中所有的消息都处理完毕之后才能执行，即使已经超出了由第二参数所指定的时间。</p>
+</blockquote>
+<p>所以 <code>setTimeout</code> 实际上并没有立刻执行，而是等到整个 <code>for</code> 循环结束之后才执行的。</p>
+<h3 id="其二：js-里的-for-循环和-java-应该差不多，for-循环内部是单独的作用域"><a href="#其二：js-里的-for-循环和-java-应该差不多，for-循环内部是单独的作用域" class="headerlink" title="其二：js 里的 for 循环和 java 应该差不多，for 循环内部是单独的作用域"></a>其二：js 里的 for 循环和 java 应该差不多，for 循环内部是单独的作用域</h3><p>好吧，这个认知更是错的一塌糊涂，for 循环居然没有块级作用域？i 和 k 都是可以直接访问的，犹如直接声明到 for 循环外一样。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  <span class="keyword">var</span> k = <span class="number">10</span> - i</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`i: <span class="subst">$&#123;i&#125;</span>, k: <span class="subst">$&#123;k&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结果：</span></span><br><span class="line"><span class="comment">// i: 3, k: 8</span></span><br></pre></td></tr></table></figure>
+
+<p>相当于</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i = <span class="number">0</span></span><br><span class="line"><span class="keyword">var</span> k</span><br><span class="line"><span class="keyword">for</span> (; i &lt; <span class="number">3</span>; ) &#123;</span><br><span class="line">  k = <span class="number">10</span> - i</span><br><span class="line">  i++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果换成 let 则两者都无法访问</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  <span class="keyword">let</span> k = <span class="number">10</span> - i</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`i: <span class="subst">$&#123;i&#125;</span>, k: <span class="subst">$&#123;k&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结果：</span></span><br><span class="line"><span class="comment">// Uncaught ReferenceError: i is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p>甚至还有一个更有趣的情况，在 for 的表达式和块中可以声明相同的变量，这只说明了一件事，let 声明的变量和循环内部声明的变量不在同一个作用域中！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;in for expression&#x27;</span>, i), i++) &#123;</span><br><span class="line">  <span class="keyword">let</span> i</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;in for block&#x27;</span>, i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结果：</span></span><br><span class="line"><span class="comment">// in for block undefined</span></span><br><span class="line"><span class="comment">// in for expression 0</span></span><br><span class="line"><span class="comment">// in for block undefined</span></span><br><span class="line"><span class="comment">// in for expression 1</span></span><br><span class="line"><span class="comment">// in for block undefined</span></span><br><span class="line"><span class="comment">// in for expression 2</span></span><br></pre></td></tr></table></figure>
+
+<p>或许，i 只是加了新的作用域，就像下面这样，如此，循环外面就访问不到内部的值，循环内部和 for 的表达式也同样不在一个作用域了，每次循环结束就更新这个值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  ;(<span class="function"><span class="params">_i</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(_i), <span class="number">0</span>)</span><br><span class="line">    i = _i</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>附：这里吾辈是根据 babel 编译的结果修改而来。而且 babel 真的很聪明，当迭代变量 i 没有更新时，就不会使用 <code>_i</code> 进行区分呢！</p>
+</blockquote>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>重新建立了自己的认知之后，可以再对 <code>let/var</code> 在 for 循环进行分析了。</p>
+<p>首先是 <code>let + for</code></p>
+<h3 id="let-for"><a href="#let-for" class="headerlink" title="let + for"></a>let + for</h3><p>再看下面这段代码，可以对其进行分解</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(i), <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>创建 for 循环，表达式中存在 let 变量，for 将会创建一个块级作用域（ES6 let 专用）</li>
+<li>每次迭代时，会创建一个子块级作用域，迭代变量 i 也会重新生成</li>
+<li>对 i 的任何操作，都会被记住并赋值给下一次的迭代</li>
+</ol>
+<blockquote>
+<p>块级作用域只对 let 有效，var 声明的变量仍然能在 for 循环外使用，证明 for 循环并不是像函数作用域那样是连 var 都能封闭的作用域。</p>
+</blockquote>
+<p>图解如下</p>
+<p><img src="https://img.rxliuli.com/20181227212650.png" alt="let + for 图解"></p>
+<h3 id="var-for"><a href="#var-for" class="headerlink" title="var + for"></a>var + for</h3><p>分析一下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(i), <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>进入 for 循环</li>
+<li>在这里创建了迭代变量 i，因为是函数作用域变量所以在 for 循环外可以访问，被提升到了函数作用域顶部声明</li>
+<li>setTimeout 函数执行，闭包绑定函数作用域外部变量 i，在循环结束输出 i 的值 3</li>
+<li>继续迭代</li>
+</ol>
+<p><img src="https://img.rxliuli.com/20181227213014.png" alt="var + for 图解"></p>
+<hr>
+<p>所以以后如果可能，还是要拥抱这些新特性呢！那么，关于 <code>let/var</code> 在 <code>for</code> 循环中的区别就到这里啦</p>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%B0%E5%BD%95/" rel="tag"># 记录</a>
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/24/others/rxliuliBlog/Tool/Windows/%E4%BD%9C%E4%B8%BA%E4%B8%80%E5%90%8D-developer-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E5%9C%B0%E4%BD%BF%E7%94%A8-Chrome/" rel="prev" title="作为一名 developer 如何正确地使用 Chrome">
+                  <i class="fa fa-chevron-left"></i> 作为一名 developer 如何正确地使用 Chrome
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/04/others/rxliuliBlog/JavaScript/%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E4%BA%86-Form-%E8%A1%A8%E5%8D%95/" rel="next" title="点击按钮自动提交了 Form 表单">
+                  点击按钮自动提交了 Form 表单 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="6a107ff811694b9a080438ea1b173cc8"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

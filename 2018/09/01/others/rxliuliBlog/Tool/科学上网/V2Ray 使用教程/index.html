@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="V2Ray 使用教程介绍 官网, GitHub, 非官方指南  Project V 提供了单一的内核和多种界面操作方式。内核（V2Ray）用于实际的网络交互、路由等针对网络数据的处理，而外围的用户界面程序提供了方便直接的操作流程。 V2Ray 的主要作用是根据用户的配置，对于传入的网络连接进行一定处理，然后发往指定的服务器。它是一个命令行程序，可以接受一个 JSON 格式的配置文件。 服务端 首先">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V2Ray 使用教程">
+<meta property="og:url" content="https://fangtianq.github.io/2018/09/01/others/rxliuliBlog/Tool/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/V2Ray%20%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="V2Ray 使用教程介绍 官网, GitHub, 非官方指南  Project V 提供了单一的内核和多种界面操作方式。内核（V2Ray）用于实际的网络交互、路由等针对网络数据的处理，而外围的用户界面程序提供了方便直接的操作流程。 V2Ray 的主要作用是根据用户的配置，对于传入的网络连接进行一定处理，然后发往指定的服务器。它是一个命令行程序，可以接受一个 JSON 格式的配置文件。 服务端 首先">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-01-03T16:00:00.000Z">
+<meta property="article:author" content="ftq">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="FreeNetwork">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2018/09/01/others/rxliuliBlog/Tool/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/V2Ray%20%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2018/09/01/others/rxliuliBlog/Tool/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/V2Ray%20%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/","path":"2018/09/01/others/rxliuliBlog/Tool/科学上网/V2Ray 使用教程/","title":"V2Ray 使用教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>V2Ray 使用教程 | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#V2Ray-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">V2Ray 使用教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">1.2.</span> <span class="nav-text">服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.3.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">可视化</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2018/09/01/others/rxliuliBlog/Tool/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/V2Ray%20%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="V2Ray 使用教程 | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          V2Ray 使用教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-02 00:00:00" itemprop="dateCreated datePublished" datetime="2018-09-02T00:00:00+08:00">2018-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-04 00:00:00" itemprop="dateModified" datetime="2019-01-04T00:00:00+08:00">2019-01-04</time>
+    </span>
+
+
+  
+    <span id="/2018/09/01/others/rxliuliBlog/Tool/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/V2Ray%20%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="V2Ray 使用教程" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="V2Ray 使用教程" href="/2018/09/01/others/rxliuliBlog/Tool/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/V2Ray%20%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::4acb5b5c7317d906c4a84045d0111d77" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="V2Ray-使用教程"><a href="#V2Ray-使用教程" class="headerlink" title="V2Ray 使用教程"></a>V2Ray 使用教程</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.v2ray.com/">官网</a>, <a target="_blank" rel="noopener" href="https://github.com/v2ray/v2ray-core">GitHub</a>, <a target="_blank" rel="noopener" href="https://toutyrater.github.io/">非官方指南</a></p>
+</blockquote>
+<p>Project V 提供了单一的内核和多种界面操作方式。内核（V2Ray）用于实际的网络交互、路由等针对网络数据的处理，而外围的用户界面程序提供了方便直接的操作流程。</p>
+<p>V2Ray 的主要作用是根据用户的配置，对于传入的网络连接进行一定处理，然后发往指定的服务器。它是一个命令行程序，可以接受一个 JSON 格式的配置文件。</p>
+<h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><blockquote>
+<p>首先，你要有一台可以正常访问的国外服务器，例如 <a target="_blank" rel="noopener" href="https://www.vultr.com/?ref=7239719">Vultr</a>，最便宜的大概 $3.5&#x2F;month。</p>
+</blockquote>
+<p>看到官网教程中那么庞大的文档，一般人都会表示瞬间不想玩了吧！</p>
+<p>然而现在我们也可以使用 V2Ray 的傻瓜式一键部署脚本了，下面是 GitHub 的项目地址</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/tracyone/v2ray.fun">GitHub</a></p>
+</blockquote>
+<p>基本上如 GitHub 所述，是为了简化 V2Ray 的部署</p>
+<ol>
+<li><p>安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://git.io/vpOeN)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果脚本链接失效了请复制以下命令到 <code>.sh</code> 文件并执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">export</span> PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否为Root</span></span><br><span class="line">[ $(<span class="built_in">id</span> -u) != <span class="string">&quot;0&quot;</span> ] &amp;&amp; &#123; <span class="built_in">echo</span> <span class="string">&quot;Error: You must be root to run this script&quot;</span>; <span class="built_in">exit</span> 1; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查系统信息</span></span><br><span class="line"><span class="keyword">if</span> [ -f /etc/redhat-release ];<span class="keyword">then</span></span><br><span class="line">        OS=<span class="string">&#x27;CentOS&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> [ ! -z <span class="string">&quot;`cat /etc/issue | grep bian`&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">        OS=<span class="string">&#x27;Debian&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> [ ! -z <span class="string">&quot;`cat /etc/issue | grep Ubuntu`&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">        OS=<span class="string">&#x27;Ubuntu&#x27;</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;Not support OS, Please reinstall OS and retry!&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用SELinux</span></span><br><span class="line"><span class="keyword">if</span> [ -s /etc/selinux/config ] &amp;&amp; grep <span class="string">&#x27;SELINUX=enforcing&#x27;</span> /etc/selinux/config; <span class="keyword">then</span></span><br><span class="line">    sed -i <span class="string">&#x27;s/SELINUX=enforcing/SELINUX=disabled/g&#x27;</span> /etc/selinux/config</span><br><span class="line">    setenforce 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$&#123;OS&#125;</span> == <span class="string">&#x27;CentOS&#x27;</span> ]];<span class="keyword">then</span></span><br><span class="line">    curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -</span><br><span class="line">    yum install curl wget unzip git ntp ntpdate lrzsz python socat nodejs -y</span><br><span class="line">    npm install -g qrcode</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    curl -sL https://deb.nodesource.com/setup_8.x | bash -</span><br><span class="line">    apt-get update</span><br><span class="line">    apt-get install curl unzip git ntp wget ntpdate python socat lrzsz nodejs -y</span><br><span class="line">    npm install -g qrcode</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 acme.sh 以自动获取SSL证书</span></span><br><span class="line">curl  https://get.acme.sh | sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆V2ray.fun项目</span></span><br><span class="line"><span class="built_in">cd</span> /usr/local/</span><br><span class="line"><span class="built_in">rm</span> -R v2ray.fun</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/tracyone/v2ray.fun</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装V2ray主程序</span></span><br><span class="line">bash &lt;(curl -L -s https://install.direct/go.sh)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置V2ray初始环境</span></span><br><span class="line"><span class="built_in">ln</span> -sf /usr/local/v2ray.fun/v2ray /usr/local/bin</span><br><span class="line"><span class="built_in">chmod</span> +x /usr/bin/v2ray</span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/bin/v2ray</span><br><span class="line"><span class="built_in">rm</span> -rf /etc/v2ray/config.json</span><br><span class="line"><span class="built_in">cp</span> /usr/local/v2ray.fun/json_template/server.json /etc/v2ray/config.json</span><br><span class="line"><span class="built_in">let</span> PORT=<span class="variable">$RANDOM</span>+10000</span><br><span class="line">UUID=$(<span class="built_in">cat</span> /proc/sys/kernel/random/uuid)</span><br><span class="line">sed -i <span class="string">&quot;s/cc4f8d5b-967b-4557-a4b6-bde92965bc27/<span class="variable">$&#123;UUID&#125;</span>/g&quot;</span> /etc/v2ray/config.json</span><br><span class="line">sed -i <span class="string">&quot;s/12345/<span class="variable">$&#123;PORT&#125;</span>/g&quot;</span> <span class="string">&quot;/etc/v2ray/config.json&quot;</span></span><br><span class="line">python /usr/local/v2ray.fun/genclient.py</span><br><span class="line">python /usr/local/v2ray.fun/openport.py</span><br><span class="line">service v2ray restart</span><br><span class="line"></span><br><span class="line"><span class="comment"># auto open port after start</span></span><br><span class="line"><span class="comment"># append a new line</span></span><br><span class="line"><span class="built_in">cat</span> /etc/rc.local | grep openport.py</span><br><span class="line"><span class="keyword">if</span> [[ $? -ne 0 ]]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">cat</span>&gt;&gt;/etc/rc.local&lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">python /usr/local/v2ray.fun/openport.py</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"><span class="built_in">chmod</span> a+x /etc/rc.local</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">clear</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;V2ray.fun 安装成功！&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;输入 v2ray 回车即可使用&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v2ray</span><br></pre></td></tr></table></figure>
+
+<p>输出如下选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">欢迎使用 V2ray.fun 管理程序</span><br><span class="line"></span><br><span class="line">1.服务管理</span><br><span class="line">2.更改配置</span><br><span class="line">3.查看服务端信息</span><br><span class="line">4.下载客户端配置文件</span><br><span class="line">5.更新v2ray和v2ray.fun</span><br><span class="line">请输入数字选择功能(按回车键退出)：</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改一下端口</p>
+<blockquote>
+<p>注：此步骤可跳过，但最好修改端口为 <code>80/443</code>(<code>HTTP/HTTPS</code> 默认端口)</p>
+</blockquote>
+<p>选择 <strong>2.更改配置 &gt; 2.更改主端口</strong>，输入新的端口，然后在 <strong>1.服务管理</strong> 中重启服务即可</p>
+</li>
+<li><p>下载客户端配置文件</p>
+<p>选择 <strong>4.下载客户端配置文件</strong>，应该会提示 **保存成功！(&#x2F;root&#x2F;config.json)**。下载这个文件到本地，一会还有用。</p>
+</li>
+</ol>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>首先去 <a target="_blank" rel="noopener" href="https://github.com/v2ray/v2ray-core/releases">GitHub</a> 下载合适的客户端，这里以 Windows 平台为例。</p>
+<ol>
+<li><p>首先解压出来，将上面下载的那个文件替换掉解压文件 <code>config.json</code>，然后双击 <code>v2ray.exe</code> 就启动了</p>
+</li>
+<li><p>设置浏览器的本地代理<br>代理配置为 <code>socks 127.0.0.1:1080</code> 即可</p>
+</li>
+</ol>
+<ul>
+<li>Chrome 参考 <a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/e52e3615a3ef8e40c60c510f.html">Google Chrome 浏览器代理 proxy 设置方法</a></li>
+<li>FireFox 参考 <a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/375c8e199ca72525f2a229b8.html">代理设置 火狐 Firefox 如何设置修改代理</a><blockquote>
+<p>吾辈强烈推荐插件 <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif">Proxy SwitchyOmega</a>，不仅配置方便而且跨浏览器使用（FireFox&#x2F;Chrome）</p>
+</blockquote>
+</li>
+</ul>
+<p>好了，现在浏览器应该可以正常访问 <a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com/</a> 了</p>
+<h2 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h2><p>虽然能够使用了，但每次都是命令行启动着是麻烦了点。说到底，还是需要一个可视化的客户端呢</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://v2ray.com/ui_client/">Project V 客户端</a></p>
+</blockquote>
+<ol>
+<li>Windows 客户端<br><a target="_blank" rel="noopener" href="https://github.com/Cenmrev/V2RayW">V2RayW</a> 算是比较方便的了，将程序复制到解压目录下面就能用了</li>
+<li>安卓客户端<br><a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.github.dawndiy.bifrostv">BifrostV</a> 或 <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.v2ray.ang">v2rayNG</a></li>
+</ol>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%99%E7%A8%8B/" rel="tag"># 教程</a>
+              <a href="/tags/FreeNetwork/" rel="tag"># FreeNetwork</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/24/others/rxliuliBlog/Tool/Git/Git%20Push%20%E6%8F%90%E7%A4%BA%E4%B8%8D%E6%94%AF%E6%8C%81%E5%85%B7%E6%9C%89%20Socks5%20%E6%96%B9%E6%A1%88%E7%9A%84%E4%BB%A3%E7%90%86/" rel="prev" title="Git Push 提示不支持具有 Socks5 方案的代理">
+                  <i class="fa fa-chevron-left"></i> Git Push 提示不支持具有 Socks5 方案的代理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/02/others/rxliuliBlog/Java/SpringBoot%20%E9%9B%86%E6%88%90%20WebSocket/" rel="next" title="SpringBoot 集成 WebSocket">
+                  SpringBoot 集成 WebSocket <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="4acb5b5c7317d906c4a84045d0111d77"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
