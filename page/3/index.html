@@ -232,7 +232,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/03/19/linux/bash-tutorial-master/docs/archives/process/">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/03/19/linux/bash-tutorial-master/docs/archives/regex/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
@@ -250,7 +250,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/19/linux/bash-tutorial-master/docs/archives/process/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2025/03/19/linux/bash-tutorial-master/docs/archives/regex/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -261,12 +261,12 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2025-03-19 08:59:05" itemprop="dateCreated datePublished" datetime="2025-03-19T08:59:05+08:00">2025-03-19</time>
+      <time title="创建时间：2025-03-19 09:02:50" itemprop="dateCreated datePublished" datetime="2025-03-19T09:02:50+08:00">2025-03-19</time>
     </span>
 
 
   
-    <span id="/2025/03/19/linux/bash-tutorial-master/docs/archives/process/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+    <span id="/2025/03/19/linux/bash-tutorial-master/docs/archives/regex/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -281,8 +281,8 @@
       </span>
       <span class="post-meta-item-text">Changyan：</span>
     
-    <a title="" href="/2025/03/19/linux/bash-tutorial-master/docs/archives/process/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::5fe0341299859f68efb8cbf202809b5d" class="cy_cmt_count" itemprop="commentCount"></span>
+    <a title="" href="/2025/03/19/linux/bash-tutorial-master/docs/archives/regex/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::5a092848d15fa200ed3c4fbcd0b87252" class="cy_cmt_count" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -293,7 +293,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -311,83 +311,90 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p><code>ps</code>命令用来列出进程信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ps</span><br><span class="line">PID TTY           TIME CMD</span><br><span class="line">5198 pts/1    00:00:00 bash</span><br><span class="line">10129 pts/1   00:00:00 ps</span><br></pre></td></tr></table></figure>
-
-<p>不带任何参数时，<code>ps</code>只列出与当前Session相关的进程。输出结果中，<code>PID</code>是进程ID、<code>TTY</code>是进程的终端号（如果显示<code>?</code>，则表示进程没有终端），<code>TIME</code>是消耗的CPU时间，<code>CMD</code>是触发进程的命令。</p>
-<p><code>x</code>参数列出所有进程的详细信息，包括不在当前Session的信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ps x</span><br><span class="line">PID TTY   STAT   TIME COMMAND</span><br><span class="line">2799 ?    Ssl    0:00 /usr/libexec/bonobo-activation-server –ac</span><br><span class="line">2820 ?    Sl     0:01 /usr/libexec/evolution-data-server-1.10 --</span><br></pre></td></tr></table></figure>
-
-<p>这时的输出结果，会多出<code>STAT</code>一栏，表示状态。它的各种值如下。</p>
+          <h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p><code>正则表达式</code>是表达文本模式的方法。</p>
 <ul>
-<li><code>R</code> 正在运行或准备运行</li>
-<li><code>S</code> 正在睡眠，即没有运行，正在等待一个事件唤醒</li>
-<li><code>D</code> 不可中断睡眠。进程正在等待 I&#x2F;O，比如磁盘驱动器的I&#x2F;O</li>
-<li><code>T</code> 已停止，即进程停止运行</li>
-<li><code>Z</code> “僵尸”进程。即这是一个已经终止的子进程，但父进程还没有清空它（没有把子进程从进程表中删除）</li>
-<li><code>&lt;</code> 高优先级进程。这可能会授予一个进程更多重要的资源，给它更多的 CPU 时间。</li>
-<li><code>N</code> 低优先级进程。一个低优先级进程（一个“好”进程）只有当其它高优先级进程执行之后，才会得到处理器时间。</li>
+<li><code>.</code>：匹配任何单个字符。</li>
+<li><code>?</code>：上一项是可选的，最多匹配一次。</li>
+<li><code>*</code>：前一项将被匹配零次或多次。</li>
+<li><code>+</code>：前一项将被匹配一次或多次。</li>
+<li><code>&#123;N&#125;</code>：上一项完全匹配N次。</li>
+<li><code>&#123;N，&#125;</code>：前一项匹配N次或多次。</li>
+<li><code>&#123;N，M&#125;</code>：前一项至少匹配N次，但不超过M次。</li>
+<li><code>--</code>：表示范围，如果它不是列表中的第一个或最后一个，也不是列表中某个范围的终点。</li>
+<li><code>^</code>：匹配行首的空字符串；也代表不在列表范围内的字符。</li>
+<li><code>$</code>：匹配行尾的空字符串。</li>
+<li><code>\b</code>：匹配单词边缘的空字符串。</li>
+<li><code>\B</code>：匹配空字符串，前提是它不在单词的边缘。</li>
+<li><code>\&lt;</code>：匹配单词开头的空字符串。</li>
+<li><code>\&gt;</code>：匹配单词末尾的空字符串。</li>
 </ul>
-<p><code>aux</code>参数可以显示更多信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ps aux</span><br><span class="line">USER   PID  %CPU  %MEM     VSZ    RSS  TTY   STAT   START   TIME  COMMAND</span><br><span class="line">root     1   0.0   0.0    2136    644  ?     Ss     Mar05   0:31  init</span><br><span class="line">root     2   0.0   0.0       0      0  ?     S&amp;lt;     Mar05   0:00  [kt]</span><br></pre></td></tr></table></figure>
-
-<p>输出结果包含的列的含义如下。</p>
+<h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><p><code>元字符</code>是表示特殊函数的字符，包括以下这些<code>^ $ . [ ] &#123; &#125; - ? * + ( ) | \\</code>。除了元字符，其他字符在正则表达式中，都表示原来的含义。</p>
 <ul>
-<li><code>USER</code> 用户ID，表示进程的所有者</li>
-<li><code>%CPU</code> 百分比表示的 CPU 使用率</li>
-<li><code>%MEM</code> 百分比表示的内存使用率</li>
-<li><code>VSZ</code> 虚拟内存大小</li>
-<li><code>RSS</code> 进程占用的物理内存的大小，以千字节为单位。</li>
-<li><code>START</code> 进程运行的起始时间。若超过24小时，则用天表示。</li>
+<li><code>.</code> 匹配任意字符，但不含空字符</li>
+<li><code>^</code> 匹配文本行开头</li>
+<li><code>$</code> 匹配文本行结尾</li>
 </ul>
-<h2 id="top"><a href="#top" class="headerlink" title="top"></a>top</h2><p><code>top</code>命令可以查看机器的当前状态。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ top</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;.zip&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
 
-<p>它的输出结果分为两部分，最上面是系统概要，下面是进程列表，以 CPU 的使用率排序。</p>
-<p>输出结果是动态更新的，默认每三分钟更新一次。</p>
-<h2 id="jobs"><a href="#jobs" class="headerlink" title="jobs"></a>jobs</h2><p><code>jobs</code>命令用来查看后台任务。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">jobs</span></span><br><span class="line">[1]+ Running            xlogo &amp;</span><br></pre></td></tr></table></figure>
+<p>上面命令在文件中查找包含正则表达式“.zip”的文本行。注意，上面命令不会匹配<code>zip</code>程序，因为<code>zip</code>只有三个字符，而<code>.zip</code>要求四个字符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;^zip&#x27;</span> dirlist*.txt</span><br><span class="line">$ grep -h <span class="string">&#x27;zip$&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
 
-<p>输出结果之中，每个后台任务会有一个编号。上面结果中，<code>xlogo</code>的编号是<code>1</code>，<code>+</code>表示正在运行。</p>
-<h2 id="fg"><a href="#fg" class="headerlink" title="fg"></a>fg</h2><p><code>fg</code>命令用于将后台任务切换到前台。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">fg</span> %1</span><br></pre></td></tr></table></figure>
+<p>上面命令分别在文件列表中搜索行首，行尾以及行首和行尾同时包含字符串“zip”（例如，zip 独占一行）的匹配行。 注意正则表达式‘^$’（行首和行尾之间没有字符）会匹配空行。</p>
+<h2 id="方括号"><a href="#方括号" class="headerlink" title="方括号"></a>方括号</h2><p>方括号之中的字符，表示可以任意匹配其中的一个。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;[bg]zip&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
 
-<p><code>fg</code>命令之后，跟随着一个百分号和工作序号，用来指定切换哪一个后台任务。如果只有一个后台任务，那么<code>fg</code>命令可以不带参数。</p>
-<h2 id="bg"><a href="#bg" class="headerlink" title="bg"></a>bg</h2><p><code>bg</code>命令用于将一个暂停的前台任务，转移到后台。只有暂停的任务，才能使用<code>bg</code>命令，因为正在运行的任务，命令行是无法输入的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">bg</span> %1</span><br></pre></td></tr></table></figure>
+<p>上面命令匹配包含字符串“bzip”或者“gzip”的任意行。</p>
+<p>注意，元字符放入方括号之中，会失去其特殊含义。但有两种情况除外，<code>^</code>在方括号的开头，表示否定，否则只是一个普通字符，表示原义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;[^bg]zip&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
 
-<p><code>Ctrl + z</code>可以暂停正在运行的前台任务。</p>
-<h2 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h2><p><code>kill</code>命令用于杀死进程。它的参数是进程ID。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">kill</span> 28401</span><br></pre></td></tr></table></figure>
+<p>上面命令匹配不以<code>b</code>或<code>g</code>开头的<code>zip</code>字符串。注意，上面命令不会匹配<code>zip</code>，因为一个否定的字符集仍然要求存在一个字符。</p>
+<p><code>-</code>在方括号之中表示一个字符区域。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;^[A-Z]&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
 
-<p><code>kill</code>命令的实质是操作系统向进程发送信号。在使用 Ctrl-c 的情况下，会发送一个叫做 INT（中断）的信号；当使用 Ctrl-z 时，则发送一个叫做 TSTP（终端停止）的信号。</p>
-<p><code>kill</code>命令可以用来向进程发送指定信号。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">kill</span> [-signal] PID</span><br></pre></td></tr></table></figure>
+<p>上面命令匹配所有以大写字母开头的文本行。类似的，<code>^[A-Za-z0-9]</code>表示以大写字母、小写字母、数字开头的文本行。</p>
+<p>注意，连字号如果不构成一个字符区域，则表示其本来的含义。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -h <span class="string">&#x27;[-AZ]&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
 
-<p>下面是常见信号。</p>
+<p>上面命令匹配包含一个连字符，或一个大写字母“A”，或一个大写字母“Z”的文件名。</p>
+<h2 id="预定义字符类"><a href="#预定义字符类" class="headerlink" title="预定义字符类"></a>预定义字符类</h2><p>由于<code>locale</code>设置不同，Shell展开正则表达式<code>[A-Z]</code>时，可能不是解释为所有大写字母，而是解释为包括所有字母的字典顺序。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/sbin/[A-Z]*</span><br></pre></td></tr></table></figure>
+
+<p>上面命令在某些发行版里面，会返回所有大写字母或小写字母开头的文件。</p>
+<p>为了避免这个问题，可以使用正则表达式的预定义字符类。</p>
 <ul>
-<li>HUP：编号1，表示挂起。发送这个信号到前台程序，程序会终止。许多守护进程也使用这个信号，来重新初始化。这意味着，当发送这个信号到一个守护进程后， 这个进程会重新启动，并且重新读取它的配置文件。Apache 网络服务器守护进程就是一个例子。</li>
-<li>INT：编号2，中断。实现和<code>Ctrl-c</code>一样的功能，由终端发送。通常，它会终止一个程序。</li>
-<li>KILL：编号9，杀死。进程可能选择忽略这个信号。所以，操作系统不发送该信号到目标进程，而是内核立即终止这个进程。当一个进程以这种方式终止的时候，它没有机会去做些“清理”工作，或者是保存劳动成果。因为这个原因，把 KILL 信号看作杀手锏，当其它终止信号失败后，再使用它。</li>
-<li>TERM：编号15，终止。这是 kill 命令发送的默认信号。如果程序仍然“活着”，可以接受信号，那么这个信号终止。</li>
-<li>CONT：编号18，继续。在停止一段时间后，进程恢复运行。</li>
-<li>STOP：编号19，停止。这个信号导致进程停止运行，而没有终止。像 KILL 信号，它不被 发送到目标进程，因此它不能被忽略。</li>
-<li>QUIT：编号3，退出</li>
-<li>SEGV：编号11，段错误。如果一个程序非法使用内存，就会发送这个信号。也就是说，程序试图写入内存，而这个内存空间是不允许此程序写入的。</li>
-<li>TSTP：编号20，终端停止。当按下 Ctrl-z 组合键后，终端发送这个信号。不像 STOP 信号， TSTP 信号由目标进程接收，且可能被忽略。</li>
-<li>WINCH：编号28，改变窗口大小。当改变窗口大小时，系统会发送这个信号。 一些程序，像 top 和 less 程序会响应这个信号，按照新窗口的尺寸，刷新显示的内容。</li>
+<li><code>[:alnum:]</code>	字母数字字符。在 ASCII 中，等价于：<code>[A-Za-z0-9]</code></li>
+<li><code>[:word:]</code>	与<code>[:alnum:]</code>相同, 但增加了下划线字符。</li>
+<li><code>[:alpha:]</code>	字母字符。在 ASCII 中，等价于<code>[A-Za-z]</code></li>
+<li><code>[:blank:]</code>	包含空格和 tab 字符。</li>
+<li><code>[:cntrl:]</code>	ASCII 的控制码。包含了0到31，和127的 ASCII 字符。</li>
+<li><code>[:digit:]</code>	数字0到9</li>
+<li><code>[:graph:]</code>	可视字符。在 ASCII 中，它包含33到126的字符。</li>
+<li><code>[:lower:]</code>	小写字母。</li>
+<li><code>[:punct:]</code>	标点符号字符。</li>
+<li><code>[:print:]</code>	可打印的字符。等于<code>[:graph:]</code>中的所有字符，再加上空格字符。</li>
+<li><code>[:space:]</code>	空白字符，包括空格，tab，回车，换行，vertical tab, 和 form feed.在 ASCII 中， 等价于<code>[ \t\r\n\v\f]</code></li>
+<li><code>[:upper:]</code>	大写字母。</li>
+<li><code>[:xdigit:]</code>	用来表示十六进制数字的字符。在 ASCII 中，等价于<code>[0-9A-Fa-f]</code></li>
 </ul>
-<p><code>-l</code>参数可以列出所有信号。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">kill</span> -l</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/sbin/[[:upper:]]*</span><br></pre></td></tr></table></figure>
 
-<h2 id="killall"><a href="#killall" class="headerlink" title="killall"></a>killall</h2><p><code>killall</code>命令用于向指定的程序或用户发送信号。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ killall [-u user] [-signal] name</span><br></pre></td></tr></table></figure>
+<p>上面命令返回所有大写字母开头的文件名。</p>
+<h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p><code>|</code>表示匹配一系列字符串之中的一个。注意与方括号区分，方括号表示匹配一系列字符之中的一个。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;AAA&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB&#x27;</span></span><br><span class="line">AAA</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;BBB&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB&#x27;</span></span><br><span class="line">BBB</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;CCC&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB&#x27;</span></span><br><span class="line">$</span><br></pre></td></tr></table></figure>
 
-<h2 id="其他进程相关命令"><a href="#其他进程相关命令" class="headerlink" title="其他进程相关命令"></a>其他进程相关命令</h2><ul>
-<li><code>pstree</code> 输出树型结构的进程列表，这个列表展示了进程间父&#x2F;子关系。</li>
-<li><code>vmstat</code> 输出一个系统资源使用快照，包括内存，交换分区和磁盘 I&#x2F;O。 为了看到连续的显示结果，则在命令名后加上延时的时间（以秒为单位）。例如，“vmstat 5”。 终止输出，按下 Ctrl-c 组合键。</li>
-<li><code>xload</code> 一个图形界面程序，可以画出系统负载的图形。</li>
-<li><code>tload</code> 与<code>xload</code>程序相似，但是在终端中画出图形。使用 Ctrl-c，来终止输出。</li>
+<p>上面代码中，<code>AAA|BBB</code>表示匹配字符串<code>AAA</code>或者是字符串<code>BBB</code>。<code>grep</code>程序使用<code>-E</code>参数，表示按照正则表达式规则匹配。并且，这个正则表达式放在单引号之中，为的是阻止Shell把<code>|</code>解释为管道操作符。</p>
+<p><code>|</code>可以多个连用，也可以与其他正则规则结合使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;AAA&quot;</span> | grep -E <span class="string">&#x27;AAA|BBB|CCC&#x27;</span></span><br><span class="line"></span><br><span class="line">$ grep -Eh <span class="string">&#x27;^(bz|gz|zip)&#x27;</span> dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="量词操作符"><a href="#量词操作符" class="headerlink" title="量词操作符"></a>量词操作符</h2><p>量词操作符表示一个元素被匹配的次数。</p>
+<ul>
+<li><code>?</code> 匹配前面的元素出现0次或1次</li>
+<li><code>*</code> 匹配前面的元素出现0次或多次</li>
+<li><code>+</code> 匹配前面的元素出现1次或多次</li>
+<li><code>&#123;n&#125;</code> 匹配前面的元素出现了<code>n</code>次</li>
+<li><code>&#123;n,m&#125;</code> 匹配前面的元素它至少出现了<code>n</code>次，但是不多于<code>m</code>次</li>
+<li><code>&#123;n,&#125;</code> 匹配前面的元素至少出现了<code>n</code>次</li>
+<li><code>&#123;,m&#125;</code> 匹配前面的元素，如果它出现的次数不多于 m 次。</li>
 </ul>
 
       
@@ -416,7 +423,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/03/19/linux/bash-tutorial-master/docs/archives/redirection/">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/03/19/linux/bash-tutorial-master/docs/archives/system/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
@@ -434,7 +441,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/19/linux/bash-tutorial-master/docs/archives/redirection/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2025/03/19/linux/bash-tutorial-master/docs/archives/system/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -445,12 +452,12 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2025-03-19 08:59:05" itemprop="dateCreated datePublished" datetime="2025-03-19T08:59:05+08:00">2025-03-19</time>
+      <time title="创建时间：2025-03-19 09:02:50" itemprop="dateCreated datePublished" datetime="2025-03-19T09:02:50+08:00">2025-03-19</time>
     </span>
 
 
   
-    <span id="/2025/03/19/linux/bash-tutorial-master/docs/archives/redirection/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+    <span id="/2025/03/19/linux/bash-tutorial-master/docs/archives/system/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -465,8 +472,8 @@
       </span>
       <span class="post-meta-item-text">Changyan：</span>
     
-    <a title="" href="/2025/03/19/linux/bash-tutorial-master/docs/archives/redirection/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::c1c6abe146283e0c0df4723da096087d" class="cy_cmt_count" itemprop="commentCount"></span>
+    <a title="" href="/2025/03/19/linux/bash-tutorial-master/docs/archives/system/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::560e1fb4a885cc250fe654d9afbac60b" class="cy_cmt_count" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -477,178 +484,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h1><p>重定向指的是将命令行输出写入指定位置。</p>
-<ul>
-<li><code>cmd1 | cmd2</code>：Pipe; take standard output of cmd1 as standard input to cmd2.</li>
-<li><code>&gt; file</code>：Direct standard output to file.</li>
-<li><code>&lt; file</code>：Take standard input from file.</li>
-<li><code>&gt;&gt; file</code>：Direct standard output to file; append to file if it already exists.</li>
-<li><code>&gt;| file</code>：Force standard output to file even if noclobber is set.</li>
-<li><code>n&gt;| file</code>：Force output to file from file descriptor n even if noclobber is set.</li>
-<li><code>&lt;&gt; file</code>：Use file as both standard input and standard output.</li>
-<li><code>n&lt;&gt; file</code>：Use file as both input and output for file descriptor n.</li>
-<li><code>&lt;&lt; label</code>：Here-document; see text.</li>
-<li><code>n &gt; file</code>：Direct file descriptor n to file.</li>
-<li><code>n &lt; file</code>：Take file descriptor n from file.</li>
-<li><code>n &gt;&gt; file</code>：Direct file descriptor n to file; append to file if it already exists.</li>
-<li><code>n&gt;&amp;</code>：Duplicate standard output to file descriptor n.</li>
-<li><code>n&lt;&amp;</code>：Duplicate standard input from file descriptor n.</li>
-<li><code>n&gt;&amp;m</code>：File descriptor  n is made to be a copy of the output file descriptor.</li>
-<li><code>n&lt;&amp;m</code>：File descriptor  n is made to be a copy of the input file descriptor.</li>
-<li><code>&amp;&gt;file</code>：Directs standard output and standard error to file.</li>
-<li><code>&lt;&amp;-</code>：Close the standard input.</li>
-<li><code>&gt;&amp;-</code>：Close the standard output.</li>
-<li><code>n&gt;&amp;-</code>：Close the output from file descriptor  n.</li>
-<li><code>n&lt;&amp;-</code>：Close the input from file descriptor  n.</li>
-<li><code>n&gt;&amp;word</code>：If  n is not specified, the standard output (file descriptor 1) is used. If the digits in word do not specify a file descriptor open for output, a redirection error occurs. As a special case, if n is omitted, and word does not expand to one or more digits, the standard output and standard error are redirected as described previously.</li>
-<li><code>n&lt;&amp;word</code>：If word expands to one or more digits, the file descriptor denoted by  n is made to be a copy of that file descriptor. If the digits in word do not specify a file descriptor open for input, a redirection error occurs. If word evaluates to -, file descriptor n is closed. If n is not specified, the standard input (file descriptor 0) is used.</li>
-<li><code>n&gt;&amp;digit-</code>：Moves the file descriptor digit to file descriptor  n, or the standard output (file descriptor 1) if n is not specified.</li>
-<li><code>n&lt;&amp;digit-</code>：Moves the file descriptor digit to file descriptor  n, or the standard input (file descriptor 0) if n is not specified. digit is closed after being duplicated to n.</li>
-</ul>
-<p><code>&gt;</code>用来将标准输出重定向到指定文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l /usr/bin &gt; ls-output.txt</span><br></pre></td></tr></table></figure>
-
-<p>如果重定向后的指定文件已经存在，就会被覆盖，不会有任何提示。</p>
-<p>如果命令没有任何输出，那么重定向之后，得到的是一个长度为<code>0</code>的文件。因此，<code>&gt;</code>具有创建新文件或改写现存文件、将其改为长度<code>0</code>的作用。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ &gt; ls-output.txt</span><br></pre></td></tr></table></figure>
-
-<p><code>&gt;&gt;</code>用来将标准输出重定向追加到指定文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l /usr/bin &gt;&gt; ls-output.txt</span><br></pre></td></tr></table></figure>
-
-<p><code>2&gt;</code>用来将标准错误重定向到指定文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l /bin/usr 2&gt; ls-error.txt</span><br></pre></td></tr></table></figure>
-
-<p>标准输出和标准错误，可以重定向到同一个文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l /bin/usr &gt; ls-output.txt 2&gt;&amp;1</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ <span class="built_in">ls</span> -l /bin/usr &amp;&gt; ls-output.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 追加到同一个文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -l /bin/usr &amp;&gt;&gt; ls-output.txt</span><br></pre></td></tr></table></figure>
-
-<p>如果不希望输出错误信息，可以将它重定向到一个特殊文件<code>/dev/null</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l /bin/usr 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
-
-<p><code>|</code>用于将一个命令的标准输出，重定向到另一个命令的标准输入。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l /usr/bin | less</span><br></pre></td></tr></table></figure>
-
-<p>不要将<code>&gt;</code>与<code>|</code>混淆。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> &gt; less</span><br></pre></td></tr></table></figure>
-
-<p>上面命令会在当前目录，生成一个名为<code>less</code>的文本文件。</p>
-<p>下面是标准错误重定向的一个例子。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">invalid_input</span></span> () &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Invalid input &#x27;<span class="variable">$REPLY</span>&#x27;&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">read</span> -p <span class="string">&quot;Enter a single item &gt; &quot;</span></span><br><span class="line">[[ -z <span class="variable">$REPLY</span> ]] &amp;&amp; invalid_input</span><br></pre></td></tr></table></figure>
-
-<h2 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h2><p><code>tee</code>命令用于同时将标准输出重定向到文件，以及另一个命令的标准输入。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/bin | <span class="built_in">tee</span> ls.txt | grep zip</span><br></pre></td></tr></table></figure>
-
-<h2 id="命令替换"><a href="#命令替换" class="headerlink" title="命令替换"></a>命令替换</h2><p>命令替换（command substitution）指的是将一个命令的输出，替换进入另一个命令。<code>$(command)</code>表示命令替换，另一种写法是使用反引号。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> $(<span class="built_in">ls</span>)</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ <span class="built_in">echo</span> `<span class="built_in">ls</span>`</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">ls</span> -l $(<span class="built_in">which</span> <span class="built_in">cp</span>)</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ <span class="built_in">ls</span> -l `<span class="built_in">which</span> <span class="built_in">cp</span>`</span><br></pre></td></tr></table></figure>
-
-<h2 id="basename"><a href="#basename" class="headerlink" title="basename"></a>basename</h2><p><code>basename</code>命令清除 一个路径名的开头部分，只留下一个文件的基本名称。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># file_info: simple file information program</span></span><br><span class="line">PROGNAME=$(<span class="built_in">basename</span> <span class="variable">$0</span>)</span><br><span class="line"><span class="keyword">if</span> [[ -e <span class="variable">$1</span> ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;\nFile Type:&quot;</span></span><br><span class="line">    file <span class="variable">$1</span></span><br><span class="line">    <span class="built_in">echo</span> -e <span class="string">&quot;\nFile Status:&quot;</span></span><br><span class="line">    <span class="built_in">stat</span> <span class="variable">$1</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$PROGNAME</span>: usage: <span class="variable">$PROGNAME</span> file&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/03/19/linux/bash-tutorial-master/docs/archives/async/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
-      <meta itemprop="name" content="ftq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="越努力，越幸运！">
-      <meta itemprop="description" content="有志者事竟成">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 越努力，越幸运！">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/19/linux/bash-tutorial-master/docs/archives/async/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-03-19 08:59:05" itemprop="dateCreated datePublished" datetime="2025-03-19T08:59:05+08:00">2025-03-19</time>
-    </span>
-
-
-  
-    <span id="/2025/03/19/linux/bash-tutorial-master/docs/archives/async/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Changyan：</span>
-    
-    <a title="" href="/2025/03/19/linux/bash-tutorial-master/docs/archives/async/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::628369a86eb499b9d754dd2bbb74688a" class="cy_cmt_count" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>272</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -666,18 +502,244 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h1><p>Bash脚本有时候需要同时执行多个任务。通常这涉及到启动一个脚本，依次，启动一个或多个子脚本来执行额外的任务，而父脚本继续运行。然而，当一系列脚本 以这种方式运行时，要保持父子脚本之间协调工作，会有一些问题。也就是说，若父脚本或子脚本依赖于另一方，并且 一个脚本必须等待另一个脚本结束任务之后，才能完成它自己的任务，这应该怎么办？</p>
-<p>bash 有一个内置命令，能帮助管理诸如此类的异步执行的任务。wait 命令导致一个父脚本暂停运行，直到一个 特定的进程（例如，子脚本）运行结束。</p>
-<p>首先我们将演示一下 wait 命令的用法。为此，我们需要两个脚本，一个父脚本：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># async-parent : Asynchronous execution demo (parent)</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: starting...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: launching child script...&quot;</span></span><br><span class="line">async-child &amp;</span><br><span class="line">pid=$!</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: child (PID= <span class="variable">$pid</span>) launched.&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: continuing...&quot;</span></span><br><span class="line"><span class="built_in">sleep</span> 2</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: pausing to wait for child to finish...&quot;</span></span><br><span class="line"><span class="built_in">wait</span> <span class="variable">$pid</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: child is finished. Continuing...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Parent: parent is done. Exiting.&quot;</span></span><br></pre></td></tr></table></figure>
+          <h1 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h1><h2 id="uname"><a href="#uname" class="headerlink" title="uname"></a>uname</h2><p><code>uname</code>命令返回当前机器的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内核的版本</span></span><br><span class="line">$ <span class="built_in">uname</span> -r</span><br><span class="line">3.2.0-24-virtual</span><br><span class="line"></span><br><span class="line"><span class="comment"># CPU 架构</span></span><br><span class="line">$ <span class="built_in">uname</span> -m</span><br><span class="line">x86_64</span><br></pre></td></tr></table></figure>
 
-<p>和一个子脚本：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># async-child : Asynchronous execution demo (child)</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Child: child is running...&quot;</span></span><br><span class="line"><span class="built_in">sleep</span> 5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Child: child is done. Exiting.&quot;</span></span><br></pre></td></tr></table></figure>
+<p>如果要了解操作系统的版本，可以查看<code>/etc/issue</code>文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> /etc/issue</span><br><span class="line">Debian GNU/Linux 9 \n \l</span><br></pre></td></tr></table></figure>
 
-<p>在这个例子中，我们看到该子脚本是非常简单的。真正的操作通过父脚本完成。在父脚本中，子脚本被启动， 并被放置到后台运行。子脚本的进程 ID 记录在 pid 变量中，这个变量的值是 $! shell 参数的值，它总是 包含放到后台执行的最后一个任务的进程 ID 号。</p>
-<p>父脚本继续，然后执行一个以子进程 PID 为参数的 wait 命令。这就导致父脚本暂停运行，直到子脚本退出， 意味着父脚本结束。</p>
-<p>当执行后，父子脚本产生如下输出：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ async-parent</span><br><span class="line">Parent: starting...</span><br><span class="line">Parent: launching child script...</span><br><span class="line">Parent: child (PID= 6741) launched.</span><br><span class="line">Parent: continuing...</span><br><span class="line">Child: child is running...</span><br><span class="line">Parent: pausing to <span class="built_in">wait</span> <span class="keyword">for</span> child to finish...</span><br><span class="line">Child: child is <span class="keyword">done</span>. Exiting.</span><br><span class="line">Parent: child is finished. Continuing...</span><br><span class="line">Parent: parent is <span class="keyword">done</span>. Exiting.</span><br></pre></td></tr></table></figure>
+<h2 id="service"><a href="#service" class="headerlink" title="service"></a>service</h2><p><code>service</code>命令可以查看当前正在运行的服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ service --status-all</span><br><span class="line"> [ + ]  apache2</span><br><span class="line"> [ ? ]  atd</span><br><span class="line"> [ - ]  bootlogd</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>+</code>表示正在运行，<code>-</code>表示已经停止，<code>?</code>表示<code>service</code>命令不了解相关信息。</p>
+
+      
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/03/19/linux/bash-tutorial-master/docs/archives/text/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/19/linux/bash-tutorial-master/docs/archives/text/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-19 09:02:50" itemprop="dateCreated datePublished" datetime="2025-03-19T09:02:50+08:00">2025-03-19</time>
+    </span>
+
+
+  
+    <span id="/2025/03/19/linux/bash-tutorial-master/docs/archives/text/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="" href="/2025/03/19/linux/bash-tutorial-master/docs/archives/text/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::4e597d86e1018b2275529c2efcbf2fc5" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="文本处理"><a href="#文本处理" class="headerlink" title="文本处理"></a>文本处理</h1><h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><p><code>cat</code>可以文件的内容，显示在标准输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> text1</span><br><span class="line">1 apple</span><br><span class="line">2 pear</span><br><span class="line">3 banana</span><br></pre></td></tr></table></figure>
+
+<p>它也可以同时输出多个文件内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> text1 text2</span><br></pre></td></tr></table></figure>
+
+<p>它与重定向结合，就可以合并多个文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合并文本文件</span></span><br><span class="line">$ <span class="built_in">cat</span> text* &gt; text.all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并二进制文件</span></span><br><span class="line">$ <span class="built_in">cat</span> movie.mpeg.0* &gt; movie.mpeg</span><br></pre></td></tr></table></figure>
+
+<p>如果调用<code>cat</code>命令时没有任何参数，它将读取标准输入，然后显示到标准输出。按下<code>Ctrl + d</code>，将会结束<code>cat</code>读取标准输入。利用这一点，可以将键盘输入写入指定文件，按下<code>Ctrl + d</code>结束输入。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> &gt; lazy_dog.txt</span><br></pre></td></tr></table></figure>
+
+<p>它的参数如下。</p>
+<ul>
+<li><code>-n</code> 输出结果显示行号</li>
+<li><code>-s</code> 将多个连续的空白行，输出为一行</li>
+<li><code>-A</code> 输出结果中显示控制符，比如Tab键显示为<code>^I</code>，行尾显示<code>$</code></li>
+</ul>
+<p><code>cat</code>支持Here document，显示多行文本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">_EOF_</span></span><br><span class="line"><span class="string">&lt;HTML&gt;</span></span><br><span class="line"><span class="string">         &lt;HEAD&gt;</span></span><br><span class="line"><span class="string">                &lt;TITLE&gt;$TITLE&lt;/TITLE&gt;</span></span><br><span class="line"><span class="string">         &lt;/HEAD&gt;</span></span><br><span class="line"><span class="string">         &lt;BODY&gt;</span></span><br><span class="line"><span class="string">                &lt;H1&gt;$TITLE&lt;/H1&gt;</span></span><br><span class="line"><span class="string">                &lt;P&gt;$TIME_STAMP&lt;/P&gt;</span></span><br><span class="line"><span class="string">         &lt;/BODY&gt;</span></span><br><span class="line"><span class="string">&lt;/HTML&gt;</span></span><br><span class="line"><span class="string">_EOF_</span></span><br></pre></td></tr></table></figure>
+
+<p>Here document 常在脚本当中作为输入的手段。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sort</span> -k2 &lt;&lt;<span class="string">END</span></span><br><span class="line"><span class="string">&gt; 1 apple</span></span><br><span class="line"><span class="string">&gt; 2 pear</span></span><br><span class="line"><span class="string">&gt; 3 banana</span></span><br><span class="line"><span class="string">&gt; END</span></span><br><span class="line">1 apple</span><br><span class="line">3 banana</span><br><span class="line">2 pear</span><br></pre></td></tr></table></figure>
+
+<p>如果使用<code>&lt;&lt;-</code>代替<code>&lt;&lt;</code>，行首的tab键将被剥离。</p>
+<h2 id="nl"><a href="#nl" class="headerlink" title="nl"></a>nl</h2><p><code>nl</code>命令为文本文件添加行号，显示在标准输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">nl</span> example.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><p><code>sort</code>命令将文本文件的所有行排序后输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sort</span> file1.txt file2.txt file3.txt &gt; final_sorted_list.txt</span><br></pre></td></tr></table></figure>
+
+<p>它的参数如下。</p>
+<ul>
+<li><code>-b</code> <code>--ignore-leading-blanks</code> 默认情况下，排序用的是每行的第一个字符。这个参数忽略每行开头的空格，从第一个非空白字符开始排序。</li>
+<li><code>-f</code> <code>--ignore-case</code> 让排序不区分大小写。</li>
+<li><code>-n</code> <code>--numeric-sort</code> 按照数值排序，而不是字符值，用于行首是数值的情况。</li>
+<li><code>-r</code> <code>--reverse</code> 按相反顺序排序。结果按照降序排列，而不是升序。</li>
+<li><code>-k</code> <code>--key=field1[,field2]</code> 指定按照每行的第几个字段（从1开始）排序，而不是按照行首字符排序。该属性可以多个连用，用于指定多重排序标准，还可以指定每个字段指定排序标准，这些值与全局属性一致，比如b（忽略开头的空格），n（数值排序），r（逆向排序）等等。</li>
+<li><code>-m</code> <code>--merge</code> 把每个参数看作是一个预先排好序的文件。把多个文件合并成一个排好序的文件，而没有执行额外的排序。</li>
+<li><code>-o</code> <code>--output=file</code> 把排好序的输出结果发送到文件，而不是标准输出。</li>
+<li><code>-t</code> <code>--field-separator=char</code> 定义字段分隔字符。默认情况下，字段由空格或制表符分隔。</li>
+<li><code>-u</code> 输出结果中删除重复行</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sort</span> --key=1,1 --key=2n distros.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令中，第一个<code>--key</code>指定第一排序标准是只用第一字段（<code>1,1</code>），也可以指定使用第一字段第一个字符（<code>1.1</code>）；第二排序标准是第二字段，按数值排序。</p>
+<h2 id="uniq"><a href="#uniq" class="headerlink" title="uniq"></a>uniq</h2><p><code>uniq</code>命令在排序后的行中，删除所有重复的行，保证所有输出没有重复。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /bin /usr/bin | <span class="built_in">sort</span> | <span class="built_in">uniq</span></span><br></pre></td></tr></table></figure>
+
+<p>它的参数如下。</p>
+<ul>
+<li><code>-c</code>	输出所有的重复行，并且每行开头显示重复的次数。</li>
+<li><code>-d</code>	只输出重复行，而不是不重复的文本行。</li>
+<li><code>-f n</code>	忽略每行开头的 n 个字段，字段之间由空格分隔，正如 sort 程序中的空格分隔符；然而， 不同于 sort 程序，uniq 没有选项来设置备用的字段分隔符。</li>
+<li><code>-i</code>	在比较文本行的时候忽略大小写。</li>
+<li><code>-s n</code>	跳过（忽略）每行开头的 n 个字符。</li>
+<li><code>-u</code>	只是输出独有的文本行。这是默认的。</li>
+<li><code>-V</code> 按照版本号排序。</li>
+</ul>
+<p><code>-V</code>参数可以按版本号排列（从小到大）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sort</span> -V input.txt</span><br><span class="line">1.0.15</span><br><span class="line">1.3.0</span><br><span class="line">2.1.2</span><br><span class="line">3.0.0</span><br></pre></td></tr></table></figure>
+
+<p><code>-rV</code>参数可以按版本号逆序排列。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sort</span> -rV input.txt</span><br><span class="line">3.0.0</span><br><span class="line">2.1.2</span><br><span class="line">1.3.0</span><br><span class="line">1.0.15</span><br></pre></td></tr></table></figure>
+
+<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><p><code>cut</code>程序用来从文本行中抽取文本，并把其输出到标准输出。它能够接受多个文件参数或者标准输入。</p>
+<p>它的参数如下。</p>
+<ul>
+<li><code>-c char_list</code> 抽取指定范围的文本</li>
+<li><code>-f field_list</code> 抽取指定字段，字段之间可以tab分隔也可以逗号分隔</li>
+<li><code>-d delim_char</code> 指定字段分隔符，默认是tab键</li>
+<li><code>--complement</code>	抽取整个文本行，除了那些由-c 和／或-f 选项指定的文本。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 抽取每行的第三个字段</span></span><br><span class="line">$ <span class="built_in">cut</span> -f 3 distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 抽取每行的第7到第10个字符</span></span><br><span class="line">$ <span class="built_in">cut</span> -c 7-10 distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 抽取每行的第23个到结尾的字符1</span></span><br><span class="line">$ <span class="built_in">cut</span> -c 23- distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定字段分隔符为冒号</span></span><br><span class="line">$ <span class="built_in">cut</span> -d <span class="string">&#x27;:&#x27;</span> -f 1 /etc/passwd</span><br></pre></td></tr></table></figure>
+
+<h2 id="paste"><a href="#paste" class="headerlink" title="paste"></a>paste</h2><p><code>paste</code>程序将多个文本文件按行合并，即每一行都由原来文本文件的每一行组成，显示在标准输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">paste</span> distros-dates.txt distros-versions.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="wc"><a href="#wc" class="headerlink" title="wc"></a>wc</h2><p><code>wc</code>命令输出一个文本文件的统计信息（word count），一共有三个值，分别为行数、词数和字节数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">wc</span> ls-output.txt</span><br><span class="line"> 7902 64566 503634 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p>如果使用<code>-l</code>参数，则只输出行数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /bin /usr/bin | <span class="built_in">sort</span> | <span class="built_in">uniq</span> | <span class="built_in">wc</span> -l</span><br><span class="line"> 2728</span><br></pre></td></tr></table></figure>
+
+<h2 id="head"><a href="#head" class="headerlink" title="head"></a>head</h2><p><code>head</code>命令返回文本文件的头部，默认显示10行。</p>
+<p><code>-n</code>参数指定显示的行数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">head</span> -n 5 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h2><p><code>tail</code>命令返回文本文件的尾部，默认显示10行。</p>
+<p><code>-n</code>参数指定显示的行数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">tail</span> -n 5 ls-output.txt</span><br></pre></td></tr></table></figure>
+
+<p><code>-f</code>会实时追加显示新增的内容，常用于实时监控日志，按<code>Ctrl + c</code>停止。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">tail</span> -f /var/log/messages</span><br></pre></td></tr></table></figure>
+
+<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><p><code>grep</code>程序用于在指定文件之中，搜索符合某个模式的行，并把搜索结果输出到标准输出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep keyword foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令输出<code>foo.txt</code>之中匹配<code>keyword</code>的行。</p>
+<p><code>grep</code>程序可以同时搜索多个文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep keyword f*.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令输出多个文件中匹配<code>keyword</code>的行。</p>
+<p><code>-l</code>参数输出匹配的文件名，而不是文件行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -l bzip dirlist*.txt</span><br></pre></td></tr></table></figure>
+
+<p>如果想搜索文件名，而不是文件内容，可以使用重定向。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/bin | grep zip</span><br></pre></td></tr></table></figure>
+
+<p>上面命令会输出<code>/usr/bin</code>目录中，文件名中包含子字符串<code>zip</code>的所有文件。</p>
+<p>参数的含义。</p>
+<ul>
+<li><code>-c</code>或<code>--count</code> 输出匹配的数量，而不是匹配的文本行。如果使用了<code>-v</code>，则输出不匹配的数量。</li>
+<li><code>-h</code>或<code>--no-filename</code> 应用于多文件搜索，不在每行匹配的文本前，输出文件名</li>
+<li><code>-i</code>或<code>--ignore-case</code> 忽略大小写</li>
+<li><code>-l</code>或<code>--files-with-matches</code> 输出包含匹配项的文件名，而不是文本行本身</li>
+<li><code>-L</code>或<code>--files-without-match</code> 类似于<code>-l</code>，但输出不包含匹配项的文件名</li>
+<li><code>-n</code>或<code>--line-number</code> 每个匹配行之前输出其对应的行号</li>
+<li><code>-v</code>或<code>--invert-match</code> 只返回不符合模式的行</li>
+</ul>
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p><code>sed</code>是一个强大的文本编辑工具。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出前5行</span></span><br><span class="line">$ sed -n <span class="string">&#x27;1,5p&#x27;</span> distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出包含指定内容的行</span></span><br><span class="line">$ sed -n <span class="string">&#x27;/SUSE/p&#x27;</span> distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出不包含指定内容的行</span></span><br><span class="line">$ sed -n <span class="string">&#x27;/SUSE/!p&#x27;</span> distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换内容（只替换第一个）</span></span><br><span class="line">$ sed <span class="string">&#x27;s/regexp/replacement/&#x27;</span> distros.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换内容（全局替换）</span></span><br><span class="line">$ sed <span class="string">&#x27;s/regexp/replacement/g&#x27;</span> distros.txt</span><br></pre></td></tr></table></figure>
 
       
     </div>
