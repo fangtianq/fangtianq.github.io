@@ -438,7 +438,7 @@
 
 <p>上面代码中，<code>Symbol.for(&#39;bar&#39;)</code>是函数内部运行的，但是生成的 Symbol 值是登记在全局环境的。所以，第二次运行<code>Symbol.for(&#39;bar&#39;)</code>可以取到这个 Symbol 值。</p>
 <p><code>Symbol.for()</code>的这个全局登记特性，可以用在不同的 iframe 或 service worker 中取到同一个值。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iframe = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;iframe&#x27;</span>);</span><br><span class="line">iframe.<span class="property">src</span> = <span class="title class_">String</span>(<span class="variable language_">window</span>.<span class="property">location</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(iframe);</span><br><span class="line"></span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="property">Symbol</span>.<span class="title function_">for</span>(<span class="string">&#x27;foo&#x27;</span>) === <span class="title class_">Symbol</span>.<span class="title function_">for</span>(<span class="string">&#x27;foo&#x27;</span>)</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iframe = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;iframe&#x27;</span>);</span><br><span class="line">iframe.<span class="property">src</span> = <span class="title class_">String</span>(<span class="variable language_">window</span>.<span class="property">location</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(iframe);</span><br><span class="line"></span><br><span class="line">iframe.<span class="property">contentWindow</span>.<span class="property">Symbol</span>.<span class="keyword">for</span>(<span class="string">&#x27;foo&#x27;</span>) === <span class="title class_">Symbol</span>.<span class="keyword">for</span>(<span class="string">&#x27;foo&#x27;</span>)</span><br><span class="line"><span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
 <p>上面代码中，iframe 窗口生成的 Symbol 值，可以在主页面得到。</p>
 <h2 id="实例：模块的-Singleton-模式"><a href="#实例：模块的-Singleton-模式" class="headerlink" title="实例：模块的 Singleton 模式"></a>实例：模块的 Singleton 模式</h2><p>Singleton 模式指的是调用一个类，任何时候返回的都是同一个实例。</p>
@@ -582,13 +582,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/07/12/javascript/es6-tutorial-master/docs/style/" rel="prev" title="编程风格">
-                  <i class="fa fa-chevron-left"></i> 编程风格
+                <a href="/2020/07/12/javascript/es6-tutorial-master/docs/regex/" rel="prev" title="正则的扩展">
+                  <i class="fa fa-chevron-left"></i> 正则的扩展
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/07/12/javascript/es6-tutorial-master/docs/number/" rel="next" title="数值的扩展">
-                  数值的扩展 <i class="fa fa-chevron-right"></i>
+                <a href="/2020/07/12/javascript/es6-tutorial-master/docs/style/" rel="next" title="编程风格">
+                  编程风格 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

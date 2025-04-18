@@ -232,7 +232,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/17/linux/bash-tutorial-master/docs/archives/file/">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/command/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
@@ -250,7 +250,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/17/linux/bash-tutorial-master/docs/archives/file/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2025/04/18/linux/bash-tutorial-master/docs/archives/command/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta-container">
@@ -261,12 +261,12 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2025-04-17 11:32:51" itemprop="dateCreated datePublished" datetime="2025-04-17T11:32:51+08:00">2025-04-17</time>
+      <time title="创建时间：2025-04-18 16:27:37" itemprop="dateCreated datePublished" datetime="2025-04-18T16:27:37+08:00">2025-04-18</time>
     </span>
 
 
   
-    <span id="/2025/04/17/linux/bash-tutorial-master/docs/archives/file/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+    <span id="/2025/04/18/linux/bash-tutorial-master/docs/archives/command/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -281,8 +281,337 @@
       </span>
       <span class="post-meta-item-text">Changyan：</span>
     
-    <a title="" href="/2025/04/17/linux/bash-tutorial-master/docs/archives/file/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::3abe8baa15dcd61394af4d428adf69d1" class="cy_cmt_count" itemprop="commentCount"></span>
+    <a title="" href="/2025/04/18/linux/bash-tutorial-master/docs/archives/command/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::c76b2a45efba3f057b3da245485eee2c" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Shell-的命令"><a href="#Shell-的命令" class="headerlink" title="Shell 的命令"></a>Shell 的命令</h1><h2 id="命令的类别"><a href="#命令的类别" class="headerlink" title="命令的类别"></a>命令的类别</h2><p>Bash可以使用的命令分成四类。</p>
+<ul>
+<li>可执行程序</li>
+<li>Shell 提供的命令</li>
+<li>Shell 函数</li>
+<li>前三类命令的别名</li>
+</ul>
+<h2 id="type-whatis"><a href="#type-whatis" class="headerlink" title="type, whatis"></a>type, whatis</h2><p><code>type</code>命令可以显示命令类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">type</span> <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是几个例子。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">type</span> <span class="built_in">type</span></span><br><span class="line"><span class="built_in">type</span> is a shell <span class="built_in">builtin</span></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">type</span> <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span> is aliased to `<span class="built_in">ls</span> --color=<span class="built_in">tty</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$ type cp</span></span><br><span class="line"><span class="string">cp is /bin/cp</span></span><br></pre></td></tr></table></figure>
+
+<p><code>whatis</code>命令显示指定命令的描述。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ whatis <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span> (1) - list directory contents</span><br></pre></td></tr></table></figure>
+
+<h2 id="apropos"><a href="#apropos" class="headerlink" title="apropos"></a>apropos</h2><p><code>apropos</code>命令返回符合搜索条件的命令列表。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ apropos floppy</span><br><span class="line">create_floppy_devices (8) - udev callout to create all possible</span><br><span class="line">fdformat (8) - Low-level formats a floppy disk</span><br><span class="line">floppy (8) - format floppy disks</span><br><span class="line">gfloppy (1) - a simple floppy formatter <span class="keyword">for</span> the GNOME</span><br><span class="line">mbadblocks (1) - tests a floppy disk, and marks the bad</span><br><span class="line">mformat (1) - add an MSDOS filesystem to a low-level</span><br></pre></td></tr></table></figure>
+
+<h2 id="alias-unalias"><a href="#alias-unalias" class="headerlink" title="alias, unalias"></a>alias, unalias</h2><p><code>alias</code>命令用来为命令起别名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">alias</span> foo=<span class="string">&#x27;cd /usr; ls; cd -&#x27;</span></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">type</span> foo</span><br><span class="line">foo is aliased to `<span class="built_in">cd</span> /usr; <span class="built_in">ls</span> ; <span class="built_in">cd</span> -<span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面命令指定<code>foo</code>为三个命令的别名。以后，执行<code>foo</code>就相当于一起执行这三条命令。</p>
+<p>注意，默认情况下，别名只在当前Session有效。当前Session结束时，这些别名就会消失。</p>
+<p><code>alias</code>命令不加参数时，显示所有有效的别名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">alias</span></span><br><span class="line"><span class="built_in">alias</span> l.=<span class="string">&#x27;ls -d .* --color=tty&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> ll=<span class="string">&#x27;ls -l --color=tty&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> <span class="built_in">ls</span>=<span class="string">&#x27;ls --color=tty&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>unalias</code>命令用来取消别名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">unalias</span> foo</span><br><span class="line">$ <span class="built_in">type</span> foo</span><br><span class="line">bash: <span class="built_in">type</span>: foo: not found</span><br></pre></td></tr></table></figure>
+
+<h2 id="which"><a href="#which" class="headerlink" title="which"></a>which</h2><p><code>which</code>命令显示可执行程序的路径。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">which</span> <span class="built_in">ls</span></span><br><span class="line">/bin/ls</span><br></pre></td></tr></table></figure>
+
+<p><code>which</code>命令用于Shell内置命令时（比如<code>cd</code>），将没有任何输出。</p>
+<h2 id="help，man"><a href="#help，man" class="headerlink" title="help，man"></a>help，man</h2><p><code>help</code>命令用于查看Shell内置命令的帮助信息，<code>man</code>命令用于查看可执行命令的帮助信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">help</span> <span class="built_in">cd</span></span><br><span class="line">$ man <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p><code>man</code>里面的文档一共有8类，如果同一个命令，匹配多个文档，<code>man</code>命令总是返回第一个匹配。如果想看指定类型的文档，命令可以采用下面的形式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man 5 passwd</span><br></pre></td></tr></table></figure>
+
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p><code>script</code>命令会将输入的命令和它的输出，都保存进一个文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ script [file]</span><br></pre></td></tr></table></figure>
+
+<p>如果没有指定文件名，则所有结果会保存进当前目录下<code>typescript</code>文件。结束录制的时候，可以按下<code>Ctrl + d</code>。</p>
+<h2 id="export"><a href="#export" class="headerlink" title="export"></a>export</h2><p><code>export</code>命令用于将当前进程的变量，输出到所有子进程。</p>
+<h2 id="命令的连续执行"><a href="#命令的连续执行" class="headerlink" title="命令的连续执行"></a>命令的连续执行</h2><p>多个命令可以写在一起。</p>
+<p>Bash 提供三种方式，定义它们如何执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一个命令执行完，执行第二个命令</span></span><br><span class="line">command1; command2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有第一个命令成功执行完（退出码0），才会执行第二个命令</span></span><br><span class="line">command1 &amp;&amp; command2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只有第一个命令执行失败（退出码非0），才会执行第二个命令</span></span><br><span class="line">command1 || command2</span><br></pre></td></tr></table></figure>
+
+<p>上面三种执行方法的退出码，都是最后一条执行的命令的退出码。</p>
+<p>bash 允许把命令组合在一起。可以通过两种方式完成；要么用一个 group 命令，要么用一个子 shell。 这里是每种方式的语法示例：</p>
+<p>组命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; command1; command2; [command3; ...] &#125;</span><br></pre></td></tr></table></figure>
+
+<p>子 shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(command1; command2; [command3;...])</span><br></pre></td></tr></table></figure>
+
+<p>这两种形式的不同之处在于，组命令用花括号把它的命令包裹起来，而子 shell 用括号。值得注意的是，鉴于 bash 实现组命令的方式， 花括号与命令之间必须有一个空格，并且最后一个命令必须用一个分号或者一个换行符终止。</p>
+<p>那么组命令和子 shell 命令对什么有好处呢？ 它们都是用来管理重定向的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="built_in">ls</span> -l; <span class="built_in">echo</span> <span class="string">&quot;Listing of foo.txt&quot;</span>; <span class="built_in">cat</span> foo.txt; &#125; &gt; output.txt</span><br></pre></td></tr></table></figure>
+
+<p>使用一个子 shell 是相似的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">ls</span> -l; <span class="built_in">echo</span> <span class="string">&quot;Listing of foo.txt&quot;</span>; <span class="built_in">cat</span> foo.txt) &gt; output.txt</span><br></pre></td></tr></table></figure>
+
+<p>组命令和子 shell 真正闪光的地方是与管道线相结合。 当构建一个管道线命令的时候，通常把几个命令的输出结果合并成一个流是很有用的。 组命令和子 shell 使这种操作变得很简单。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="built_in">ls</span> -l; <span class="built_in">echo</span> <span class="string">&quot;Listing of foo.txt&quot;</span>; <span class="built_in">cat</span> foo.txt; &#125; | lpr</span><br></pre></td></tr></table></figure>
+
+<p>这里我们已经把我们的三个命令的输出结果合并在一起，并把它们用管道输送给命令 lpr 的输入，以便产生一个打印报告。</p>
+<p>虽然组命令和子 shell 看起来相似，并且它们都能用来在重定向中合并流，但是两者之间有一个很重要的不同。 然而，一个组命令在当前 shell 中执行它的所有命令，而一个子 shell（顾名思义）在当前 shell 的一个 子副本中执行它的命令。这意味着运行环境被复制给了一个新的 shell 实例。当这个子 shell 退出时，环境副本会消失， 所以在子 shell 环境（包括变量赋值）中的任何更改也会消失。因此，在大多数情况下，除非脚本要求一个子 shell， 组命令比子 shell 更受欢迎。组命令运行很快并且占用的内存也少。</p>
+<p>当我们发现管道线中的一个 read 命令 不按我们所期望的那样工作的时候。为了重现问题，我们构建一个像这样的管道线：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;foo&quot;</span> | <span class="built_in">read</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$REPLY</span></span><br></pre></td></tr></table></figure>
+
+<p>该 REPLY 变量的内容总是为空，是因为这个 read 命令在一个子 shell 中执行，所以它的 REPLY 副本会被毁掉， 当该子 shell 终止的时候。因为管道线中的命令总是在子 shell 中执行，任何给变量赋值的命令都会遭遇这样的问题。 幸运地是，shell 提供了一种奇异的展开方式，叫做进程替换，它可以用来解决这种麻烦。进程替换有两种表达方式：</p>
+<p>一种适用于产生标准输出的进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;(list)</span><br></pre></td></tr></table></figure>
+
+<p>另一种适用于接受标准输入的进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;(list)</span><br></pre></td></tr></table></figure>
+
+<p>这里的 list 是一串命令列表：</p>
+<p>为了解决我们的 read 命令问题，我们可以雇佣进程替换，像这样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> &lt; &lt;(<span class="built_in">echo</span> <span class="string">&quot;foo&quot;</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$REPLY</span></span><br></pre></td></tr></table></figure>
+
+<p>进程替换允许我们把一个子 shell 的输出结果当作一个用于重定向的普通文件。事实上，因为它是一种展开形式，我们可以检验它的真实值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[me@linuxbox ~]$ <span class="built_in">echo</span> &lt;(<span class="built_in">echo</span> <span class="string">&quot;foo&quot;</span>)</span><br><span class="line">/dev/fd/63</span><br></pre></td></tr></table></figure>
+
+<p>通过使用 echo 命令，查看展开结果，我们看到子 shell 的输出结果，由一个名为 &#x2F;dev&#x2F;fd&#x2F;63 的文件提供。</p>
+
+      
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/file-operation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file-operation/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-18 16:27:37" itemprop="dateCreated datePublished" datetime="2025-04-18T16:27:37+08:00">2025-04-18</time>
+    </span>
+
+
+  
+    <span id="/2025/04/18/linux/bash-tutorial-master/docs/archives/file-operation/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="" href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file-operation/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::3535ea8c8462b5e87a3b51f18e8ea626" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>661</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><p><code>cp</code>命令用于将文件（或目录）拷贝到目的地。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拷贝单个文件</span></span><br><span class="line">$ <span class="built_in">cp</span> <span class="built_in">source</span> dest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝多个文件</span></span><br><span class="line">$ <span class="built_in">cp</span> source1 source2 source3 dest</span><br><span class="line"></span><br><span class="line"><span class="comment"># -i 目的地有同名文件时会提示确认</span></span><br><span class="line">$ <span class="built_in">cp</span> -i file1 file2</span><br><span class="line"></span><br><span class="line"><span class="comment"># -r 递归拷贝，将dir1拷贝到dir2，完成后dir2生成一个子目录dir1</span></span><br><span class="line"><span class="comment"># dir2如果不存在，将被创建</span></span><br><span class="line"><span class="comment"># 拷贝目录时，该参数是必需的</span></span><br><span class="line">$ <span class="built_in">cp</span> -r dir1 dir2</span><br><span class="line"></span><br><span class="line"><span class="comment"># -u --update 只拷贝目的地没有的文件，或者比目的地同名文件更新的文件</span></span><br><span class="line">$ <span class="built_in">cp</span> -u *.html destination</span><br></pre></td></tr></table></figure>
+
+<p>其他参数</p>
+<ul>
+<li><code>-a</code> 拷贝时保留所有属性，包括所有者与权限</li>
+<li><code>-v</code> 显示拷贝的详细信息</li>
+</ul>
+<h2 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h2><p><code>mkdir</code>命令用于新建目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建多个目录</span></span><br><span class="line">$ <span class="built_in">mkdir</span> dir1 dir2 dir3</span><br></pre></td></tr></table></figure>
+
+<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><p><code>mv</code>命令用于将源文件移动到目的地。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 移动单个文件</span></span><br><span class="line">$ <span class="built_in">mv</span> item1 item2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动多个文件</span></span><br><span class="line">$ <span class="built_in">mv</span> file1 file2 dir1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将dir1拷贝进入dir2，完成后dir2将多出一个子目录dir1</span></span><br><span class="line"><span class="comment"># 如果dir2不存在，将会被创建</span></span><br><span class="line">$ <span class="built_in">mv</span> dir1 dir2</span><br></pre></td></tr></table></figure>
+
+<p>参数</p>
+<ul>
+<li><code>-i</code> 覆盖已经存在的文件时，会提示确认</li>
+<li><code>-u</code> 只移动目的地不存在的文件，或比目的地更新的文件</li>
+</ul>
+<h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><p><code>rm</code>命令用于删除文件。</p>
+<p>参数。</p>
+<ul>
+<li><code>-i</code> 文件存在时，会提示确认。</li>
+<li><code>-r</code> 递归删除一个子目录</li>
+<li><code>-f</code> 如果删除不存在的文件，不报错</li>
+<li><code>-v</code> 删除时展示详细信息</li>
+</ul>
+<h2 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h2><p><code>ln</code>命令用于建立链接文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建硬链接</span></span><br><span class="line">$ <span class="built_in">ln</span> file <span class="built_in">link</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建软链接</span></span><br><span class="line">$ <span class="built_in">ln</span> -s item <span class="built_in">link</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-18 16:27:37" itemprop="dateCreated datePublished" datetime="2025-04-18T16:27:37+08:00">2025-04-18</time>
+    </span>
+
+
+  
+    <span id="/2025/04/18/linux/bash-tutorial-master/docs/archives/file/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="" href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::c793a99f6295e08e796c33921974d0a4" class="cy_cmt_count" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -547,452 +876,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/17/linux/bash-tutorial-master/docs/archives/hardware/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
-      <meta itemprop="name" content="ftq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="越努力，越幸运！">
-      <meta itemprop="description" content="有志者事竟成">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 越努力，越幸运！">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/17/linux/bash-tutorial-master/docs/archives/hardware/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-04-17 11:32:51" itemprop="dateCreated datePublished" datetime="2025-04-17T11:32:51+08:00">2025-04-17</time>
-    </span>
-
-
-  
-    <span id="/2025/04/17/linux/bash-tutorial-master/docs/archives/hardware/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Changyan：</span>
-    
-    <a title="" href="/2025/04/17/linux/bash-tutorial-master/docs/archives/hardware/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::0cf898514bccd8ca8de0a3df87e4b2a7" class="cy_cmt_count" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="硬件操作"><a href="#硬件操作" class="headerlink" title="硬件操作"></a>硬件操作</h1><h2 id="df"><a href="#df" class="headerlink" title="df"></a>df</h2><p><code>df</code>命令查看硬盘信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">df</span></span><br><span class="line">Filesystem 1K-blocks Used Available Use% Mounted on</span><br><span class="line">/dev/sda2 15115452 5012392 9949716 34% /</span><br><span class="line">/dev/sda5 59631908 26545424 30008432 47% /home</span><br><span class="line">/dev/sda1 147764 17370 122765 13% /boot</span><br></pre></td></tr></table></figure>
-
-<h2 id="free"><a href="#free" class="headerlink" title="free"></a>free</h2><p><code>free</code>命令查看内存占用情况。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ free</span><br><span class="line"> total used free shared buffers cached</span><br><span class="line">Mem: 513712 503976 9736 0 5312 122916</span><br><span class="line">-/+ buffers/cache: 375748 137964</span><br><span class="line">Swap: 1052248 104712 947536</span><br></pre></td></tr></table></figure>
-
-<h2 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h2><p>文件<code>/etc/fstab</code>配置系统启动时要挂载的设备。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LABEL=/12               /               ext3        defaults        1   1</span><br><span class="line">LABEL=/home             /home           ext3        defaults        1   2</span><br><span class="line">LABEL=/boot             /boot           ext3        defaults        1   2</span><br></pre></td></tr></table></figure>
-
-<p>输出结果一共有6个字段，含义依次如下。</p>
-<ul>
-<li>设备名：与物理设备相关联的设备文件（或设备标签）的名字，比如说<code>/dev/hda1</code>（第一个 IDE 通道上第一个主设备分区）。</li>
-<li>挂载点：设备所连接到的文件系统树的目录。</li>
-<li>文件系统类型：Linux 允许挂载许多文件系统类型。</li>
-<li>选项：文件系统可以通过各种各样的选项来挂载。</li>
-<li>频率：一位数字，指定是否和在什么时间用 dump 命令来备份一个文件系统。</li>
-<li>次序：一位数字，指定 fsck 命令按照什么次序来检查文件系统。</li>
-</ul>
-<h2 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h2><p><code>mount</code>不带参数时，显示当前挂载的文件系统。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ mount</span><br><span class="line">/dev/sda2 on / <span class="built_in">type</span> ext3 (rw)</span><br><span class="line">proc on /proc <span class="built_in">type</span> proc (rw)</span><br><span class="line">sysfs on /sys <span class="built_in">type</span> sysfs (rw)</span><br><span class="line">devpts on /dev/pts <span class="built_in">type</span> devpts (rw,gid=5,mode=620)</span><br><span class="line">/dev/sda5 on /home <span class="built_in">type</span> ext3 (rw)</span><br></pre></td></tr></table></figure>
-
-<p>这个列表的格式是：设备 on 挂载点 type 文件系统类型（可选的）。</p>
-<p><code>mount</code>带参数时，用于将设备文件挂载到挂载点，<code>-t</code>参数用来指定文件系统类型。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mount -t iso9660 /dev/hdc /mnt/cdrom</span><br><span class="line"></span><br><span class="line"><span class="comment"># 挂载一个iso文件</span></span><br><span class="line">$ mount -t iso9660 -o loop image.iso /mnt/iso_image</span><br></pre></td></tr></table></figure>
-
-<h2 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h2><p><code>umount</code>命令用来卸载设备。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ umount [设备名]</span><br><span class="line"></span><br><span class="line">$ umount /dev/hdc</span><br></pre></td></tr></table></figure>
-
-<h2 id="fdisk"><a href="#fdisk" class="headerlink" title="fdisk"></a>fdisk</h2><p><code>fdisk</code>命令用于格式化磁盘。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> umount /dev/sdb1</span><br><span class="line">$ <span class="built_in">sudo</span> fdisk /dev/sdb</span><br></pre></td></tr></table></figure>
-
-<h2 id="mkfs"><a href="#mkfs" class="headerlink" title="mkfs"></a>mkfs</h2><p><code>mkfs</code>命令用于在一个设备上新建文件系统。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> mkfs -t ext3 /dev/sdb1</span><br><span class="line">$ <span class="built_in">sudo</span> mkfs -t vfat /dev/sdb1</span><br></pre></td></tr></table></figure>
-
-<h2 id="fsck"><a href="#fsck" class="headerlink" title="fsck"></a>fsck</h2><p><code>fsck</code>命令用于检查（修复）文件系统。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> fsck /dev/sdb1</span><br></pre></td></tr></table></figure>
-
-<h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p><code>dd</code>命令用于将大型数据块，从一个磁盘复制到另一个磁盘。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=input_file of=output_file [bs=block_size [count=blocks]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 /dev/sdb 的所有数据复制到 /dev/sdc</span></span><br><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb of=/dev/sdc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 /dev/sdb 的所有数据拷贝到一个镜像文件</span></span><br><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/sdb of=flash_drive.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从cdrom制作一个iso文件</span></span><br><span class="line">$ <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/cdrom of=ubuntu.iso</span><br></pre></td></tr></table></figure>
-
-<h2 id="dmidecode"><a href="#dmidecode" class="headerlink" title="dmidecode"></a>dmidecode</h2><p><code>dmidecode</code>命令用于输出BIOS信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dmidecode</span><br></pre></td></tr></table></figure>
-
-<p>以上命令会输出全部BIOS信息。为了便于查看，往往需要指定所需信息的类别。</p>
-<ul>
-<li>0 BIOS</li>
-<li>1 System</li>
-<li>2 Base Board</li>
-<li>3 Chassis 4 Processor</li>
-<li>5 Memory Controller</li>
-<li>6 Memory Module</li>
-<li>7 Cache</li>
-<li>8 Port Connector</li>
-<li>9 System Slots</li>
-<li>10 On Board Devices</li>
-<li>11 OEM Strings</li>
-<li>12 System Configuration Options</li>
-<li>13 BIOS Language</li>
-<li>14 Group Associations</li>
-<li>15 System Event Log</li>
-<li>16 Physical Memory Array</li>
-<li>17 Memory Device</li>
-<li>18 32-bit Memory Error</li>
-<li>19 Memory Array Mapped Address</li>
-<li>20 Memory Device Mapped Address</li>
-<li>21 Built-in Pointing Device</li>
-<li>22 Portable Battery</li>
-<li>23 System Reset</li>
-<li>24 Hardware Security</li>
-<li>25 System Power Controls</li>
-<li>26 Voltage Probe</li>
-<li>27 Cooling Device</li>
-<li>28 Temperature Probe</li>
-<li>29 Electrical Current Probe</li>
-<li>30 Out-of-band Remote Access</li>
-<li>31 Boot Integrity Services</li>
-<li>32 System Boot</li>
-<li>33 64-bit Memory Error</li>
-<li>34 Management Device</li>
-<li>35 Management Device Component</li>
-<li>36 Management Device Threshold Data</li>
-<li>37 Memory Channel</li>
-<li>38 IPMI Device</li>
-<li>39 Power Supply</li>
-</ul>
-<p>查看内存信息的命令如下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dmidecode -t 17</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ dmidecode --<span class="built_in">type</span> 17</span><br></pre></td></tr></table></figure>
-
-<p>以下是其他一些选项。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看BIOS信息</span></span><br><span class="line">$ <span class="built_in">sudo</span> dmidecode –t 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看CPU信息</span></span><br><span class="line">$ <span class="built_in">sudo</span> dmidecode -t 4</span><br></pre></td></tr></table></figure>
-
-<p><code>dmidecode</code>也支持关键词查看，关键词与类别的对应关系如下。</p>
-<ul>
-<li>bios 0, 13</li>
-<li>system 1, 12, 15, 23, 32</li>
-<li>baseboard 2, 10</li>
-<li>chassis 3</li>
-<li>processor 4</li>
-<li>memory 5, 6, 16, 17</li>
-<li>cache 7</li>
-<li>connector 8</li>
-<li>slot 9</li>
-</ul>
-<p>查看系统信息的命令如下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dmidecode -t system</span><br></pre></td></tr></table></figure>
-
-<h2 id="lspci"><a href="#lspci" class="headerlink" title="lspci"></a>lspci</h2><p><code>lspci</code>命令列出本机的所有PCI设备。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lspci</span><br></pre></td></tr></table></figure>
-
-<p>该命令输出信息的格式如下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">03:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS5209 PCI Express Card Reader (rev 01)</span><br></pre></td></tr></table></figure>
-
-<p>输出信息一共分成三个字段。</p>
-<ul>
-<li>Field 1：PCI bus slot 的编号</li>
-<li>Field 2：PCI slot的名字</li>
-<li>Field 3：设备名和厂商名</li>
-</ul>
-<p>如果想查看更详细信息，可以使用下面的命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lspci -vmm</span><br></pre></td></tr></table></figure>
-
-<h2 id="lsusb"><a href="#lsusb" class="headerlink" title="lsusb"></a>lsusb</h2><p><code>lsusb</code>命令用于操作USB端口。</p>
-<p>下面命令列出本机所有USB端口。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb</span><br></pre></td></tr></table></figure>
-
-<p>它的输出格式如下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Bus 002 Device 003: ID 0781:5567 SanDisk Corp. Cruzer Blade</span><br></pre></td></tr></table></figure>
-
-<p>各个字段的含义如下。</p>
-<ul>
-<li>Bus 002 : bus编号</li>
-<li>Device 003：bus 002连接的第三个设备</li>
-<li>ID 0781:5567：当前设备的编号，冒号前是厂商编号，冒号后是设备编号</li>
-<li>SanDisk Corp. Cruzer Blade：厂商和设备名</li>
-</ul>
-<p>找出本机有多少个USB接口可用。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ find /dev/bus/</span><br><span class="line">/dev/bus/</span><br><span class="line">/dev/bus/usb</span><br><span class="line">/dev/bus/usb/002</span><br><span class="line">/dev/bus/usb/002/006</span><br><span class="line">/dev/bus/usb/002/005</span><br><span class="line">/dev/bus/usb/002/004</span><br><span class="line">/dev/bus/usb/002/002</span><br><span class="line">/dev/bus/usb/002/001</span><br><span class="line">/dev/bus/usb/001</span><br><span class="line">/dev/bus/usb/001/007</span><br><span class="line">/dev/bus/usb/001/003</span><br><span class="line">/dev/bus/usb/001/002</span><br><span class="line">/dev/bus/usb/001/001</span><br></pre></td></tr></table></figure>
-
-<p>查看某个USB设备的详细情况。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb -D /dev/bus/usb/002/005</span><br></pre></td></tr></table></figure>
-
-<p>查看所有设备的详细情况。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb -v</span><br></pre></td></tr></table></figure>
-
-<p>查看USB端口的版本。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsusb -v | grep -i bcdusb</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/17/linux/bash-tutorial-master/docs/archives/archiving/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
-      <meta itemprop="name" content="ftq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="越努力，越幸运！">
-      <meta itemprop="description" content="有志者事竟成">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 越努力，越幸运！">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/17/linux/bash-tutorial-master/docs/archives/archiving/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-04-17 11:32:51" itemprop="dateCreated datePublished" datetime="2025-04-17T11:32:51+08:00">2025-04-17</time>
-    </span>
-
-
-  
-    <span id="/2025/04/17/linux/bash-tutorial-master/docs/archives/archiving/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Changyan：</span>
-    
-    <a title="" href="/2025/04/17/linux/bash-tutorial-master/docs/archives/archiving/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::ed05d002c4f88d338df42000e1e6ab56" class="cy_cmt_count" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="归档和备份"><a href="#归档和备份" class="headerlink" title="归档和备份"></a>归档和备份</h1><h2 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h2><p>gzip 程序用来压缩文件，原文件的压缩版（添加<code>gz</code>后缀名）会替代原文件。gunzip 程序用来还原压缩版本。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gzip foo.txt</span><br><span class="line">$ gunzip foo.txt.gz</span><br></pre></td></tr></table></figure>
-
-<p><code>gzip</code>的参数如下。</p>
-<ul>
-<li>-c	把输出写入到标准输出，并且保留原始文件。也有可能用–stdout 和–to-stdout 选项来指定。</li>
-<li>-d	解压缩。正如 gunzip 命令一样。也可以用–decompress 或者–uncompress 选项来指定.</li>
-<li>-f	强制压缩，即使原始文件的压缩文件已经存在了，也要执行。也可以用–force 选项来指定。</li>
-<li>-h	显示用法信息。也可用–help 选项来指定。</li>
-<li>-l	列出每个被压缩文件的压缩数据。也可用–list 选项。</li>
-<li>-r	若命令的一个或多个参数是目录，则递归地压缩目录中的文件。也可用–recursive 选项来指定。</li>
-<li>-t	测试压缩文件的完整性。也可用–test 选项来指定。</li>
-<li>-v	显示压缩过程中的信息。也可用–verbose 选项来指定。</li>
-<li>-number	设置压缩指数。number 是一个在1（最快，最小压缩）到9（最慢，最大压缩）之间的整数。 数值1和9也可以各自用–fast 和–best 选项来表示。默认值是整数6。</li>
-</ul>
-<p>下面是一些例子。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看解压缩后的内容</span></span><br><span class="line">$ gunzip -c foo.txt | less</span><br></pre></td></tr></table></figure>
-
-<p><code>zcat</code>程序等同于带有-c 选项的 gunzip 命令。它可以像<code>cat</code>命令那样，用来查看<code>gzip</code>压缩文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zcat foo.txt.gz | less</span><br></pre></td></tr></table></figure>
-
-<h2 id="bzip2"><a href="#bzip2" class="headerlink" title="bzip2"></a>bzip2</h2><p><code>bzip2</code>程序与<code>gzip</code>程序相似，但是使用了不同的压缩算法，舍弃了压缩速度，实现了更高的压缩级别。在大多数情况下，它的工作模式等同于<code>gzip</code>。 由<code>bzip2</code>压缩的文件，用扩展名<code>.bz2</code>表示。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ bzip2 foo.txt</span><br><span class="line">$ bunzip2 foo.txt.bz2</span><br></pre></td></tr></table></figure>
-
-<p>gzip程序的所有选项（除了<code>-r</code>），bzip2 程序同样也支持。同样有 bunzip2 和 bzcat 程序来解压缩文件。bzip2 文件也带有 bzip2recover 程序，其会 试图恢复受损的 .bz2 文件。</p>
-<h2 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h2><p><code>zip</code>程序既是压缩工具，也是一个打包工具，读取和写入.zip文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip options zipfile file...</span><br></pre></td></tr></table></figure>
-
-<p>它的用法如下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将指定目录压缩成zip文件</span></span><br><span class="line">$ zip -r playground.zip playground</span><br></pre></td></tr></table></figure>
-
-<p><code>zip</code>与<code>tar</code>命令有一个相反之处。如果压缩文件已存在，其将被更新而不是被替代。这意味着会保留此文件包，但是会添加新文件，同时替换匹配的文件。</p>
-<p>解压使用<code>unzip</code>命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unzip ../playground.zip</span><br></pre></td></tr></table></figure>
-
-<p><code>unzip</code>命令的参数如下。</p>
-<ul>
-<li><code>-l</code> 列出文件包中的内容而不解压</li>
-<li><code>-v</code> 显示冗余信息</li>
-<li><code>-p</code> 输出发送到标准输出</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unzip -p ls-etc.zip | less</span><br></pre></td></tr></table></figure>
-
-<h2 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h2><p><code>tar</code>是tape archive的简称，原来是一款制作磁带备份的工具，现在主要用于打包。一个 tar 包可以由一组独立的文件，一个或者多个目录，或者两者混合体组成。</p>
-<p><code>tar</code>程序的语法如下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar mode[options] pathname...</span><br></pre></td></tr></table></figure>
-
-<p>tar支持以下模式。</p>
-<ul>
-<li>c 表示create，为文件和／或目录列表创建归档文件。</li>
-<li>x 抽取归档文件。</li>
-<li>r 追加具体的路径到归档文件的末尾。</li>
-<li>t 列出归档文件的内容。</li>
-</ul>
-<p>支持的参数如下。</p>
-<ul>
-<li>f 表示file，用来指定生成的文件。</li>
-</ul>
-<p>模式和参数可以写在一起，而且不需要开头的短横线。注意，必须首先指定模式，然后才是其它的选项。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建子目录的tar包</span></span><br><span class="line">$ tar cf playground.tar playground</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看tar包内容</span></span><br><span class="line">$ tar tf playground.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看更详细的列表信息</span></span><br><span class="line">$ tar tvf playground.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原归档文件</span></span><br><span class="line">$ tar xf playground.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原单个文件</span></span><br><span class="line">$ tar xf archive.tar pathname</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原文件到指定目录</span></span><br><span class="line">$ tar xvf archive.tar -C /home/me/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 追加文件</span></span><br><span class="line">$ tar rf archive.tar file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证归档文件内容是否正确</span></span><br><span class="line">$ tar tvfW archive.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 支持通配符</span></span><br><span class="line">$ tar xf ../playground2.tar --wildcards <span class="string">&#x27;home/me/playground/\*.txt&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意，<code>tar</code>命令还原的时候，总是还原为相对路径。如果归档的时候，保存的是绝对路径，那么还原的时候，这个绝对路径会整个变成相对路径。</p>
-<p><code>find</code>命令可以与<code>tar</code>命令配合使用。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find playground -name <span class="string">&#x27;file.txt&#x27;</span> -<span class="built_in">exec</span> tar rf playground.tar <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;+&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>上面的命令先用<code>find</code>程序找到所有名为<code>file.txt</code>的文件，然后使用追加模式（<code>r</code>）的<code>tar</code>命令，把匹配的文件添加到归档文件<code>playground.tar</code>里面。</p>
-<p>这种<code>tar</code>和<code>find</code>的配合使用，可以创建逐渐增加的目录树或者整个系统的备份。通过<code>find</code>命令匹配新于某个时间戳的文件，我们就能够创建一个归档文件，其只包含新于上一个 tar 包的文件。</p>
-<p>tar支持压缩功能。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打成gzip压缩包</span></span><br><span class="line">$ tar czvf assets.tar.gz dist</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打成bz2压缩包</span></span><br><span class="line">$ tar cvfj assets.tar.bz2 dist</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压 tar.gz 文件</span></span><br><span class="line">$ tar xzv archive.tar.gz</span><br><span class="line">$ tar xvf archive.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压bz2压缩包</span></span><br><span class="line">$ tar xvf archive.tar.bz2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示gzip压缩包内容</span></span><br><span class="line">$ tar tvf archive.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示bz2压缩包内容</span></span><br><span class="line">$ tar tvf archive.tar.bz2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从gzip压缩包取出单个文件</span></span><br><span class="line">$ tar zxvf archive.tar.gz file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从bz2压缩包取出单个文件</span></span><br><span class="line">$ tar jxvf archive.tar.bz2 file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按通配符取出文件</span></span><br><span class="line">$ tar zxvf archive.tar.gz --wildcards <span class="string">&#x27;*.php&#x27;</span></span><br><span class="line">$ tar jxvf archive.tar.bz2 --wildcards <span class="string">&#x27;*.php&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 追加文件到压缩包</span></span><br><span class="line">$ tar rvf archive.tar.gz xyz.txt</span><br><span class="line">$ tar rvf archive.tar.bz2 xyz.txt</span><br></pre></td></tr></table></figure>
-
-<h2 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h2><p><code>rsync</code>命令用于在多个目录之间、或者本地与远程目录之间同步。字母<code>r</code>表示<code>remote</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rsync options <span class="built_in">source</span> destination</span><br></pre></td></tr></table></figure>
-
-<p>source 和 destination 是下列选项之一：</p>
-<ul>
-<li>一个本地文件或目录</li>
-<li>一个远端文件或目录，以<code>[user@]host:path</code>的形式存在</li>
-<li>一个远端 rsync 服务器，由<code>rsync://[user@]host[:port]/path</code>指定</li>
-</ul>
-<p>注意 source 和 destination 两者之一必须是本地文件。rsync 不支持远端到远端的复制。</p>
-<p><code>rsync</code>命令的参数如下。</p>
-<ul>
-<li><code>-a</code> 递归和保护文件属性</li>
-<li><code>-v</code> 冗余输出</li>
-<li><code>--delete</code> 删除可能在备份设备中已经存在但却不再存在于源设备中的文件</li>
-<li><code>--rsh=ssh</code> 使用 ssh 程序作为远程 shell，目的地必须标注主机名。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同步两个本地目录</span></span><br><span class="line">$ rsync -av playground foo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除源设备不存在的文件</span></span><br><span class="line">$ <span class="built_in">sudo</span> rsync -av --delete /etc /home /usr/local /media/BigDisk/backup</span><br><span class="line"></span><br><span class="line"><span class="comment"># 远程同步</span></span><br><span class="line">$ <span class="built_in">sudo</span> rsync -av --delete --rsh=ssh /etc /home /usr/local remote-sys:/backup</span><br><span class="line"></span><br><span class="line"><span class="comment"># 与远程rsync主机同步</span></span><br><span class="line">$ rsync -av -delete rsync://rsync.gtlib.gatech.edu/path/to/oss fedora-devel</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2022/12/06/mysql/%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E5%AF%B9%E6%AF%94/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1063,7 +946,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">

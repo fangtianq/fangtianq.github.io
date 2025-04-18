@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fangtianq.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"changyan","storage":false,"lazyload":false,"nav":null,"activeClass":"changyan"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="文件系统pwdpwd命令显示列出当前所在的目录。 1$ pwd  cdcd命令用来改变用户所在的目录。 12345678# 进入用户的主目录$ cd# 进入前一个工作目录$ cd -# 进入指定用户的主目录$ cd ~user_name  lsls目录可以显示指定目录的内容。不加参数时，显示当前目录的内容。 1$ ls  上面命令显示当前目录的内容。 ls命令也可以显示指定文件是否存在。 12$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="越努力，越幸运！">
+<meta property="og:url" content="https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/file/index.html">
+<meta property="og:site_name" content="越努力，越幸运！">
+<meta property="og:description" content="文件系统pwdpwd命令显示列出当前所在的目录。 1$ pwd  cdcd命令用来改变用户所在的目录。 12345678# 进入用户的主目录$ cd# 进入前一个工作目录$ cd -# 进入指定用户的主目录$ cd ~user_name  lsls目录可以显示指定目录的内容。不加参数时，显示当前目录的内容。 1$ ls  上面命令显示当前目录的内容。 ls命令也可以显示指定文件是否存在。 12$">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-18T08:27:37.302Z">
+<meta property="article:modified_time" content="2025-04-18T08:27:37.302Z">
+<meta property="article:author" content="ftq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/file/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/file/","path":"2025/04/18/linux/bash-tutorial-master/docs/archives/file/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 越努力，越幸运！</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">越努力，越幸运！</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Where there is a will, there is a way!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">21</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">322</span></a></li><li class="menu-item menu-item-留言版"><a href="/guestbook/" rel="section"><i class="comments fa-fw"></i>留言版</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-friendlink"><a href="/friendlink/" rel="section"><i class="link fa-fw"></i>友链</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pwd"><span class="nav-number">1.1.</span> <span class="nav-text">pwd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd"><span class="nav-number">1.2.</span> <span class="nav-text">cd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ls"><span class="nav-number">1.3.</span> <span class="nav-text">ls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stat"><span class="nav-number">1.4.</span> <span class="nav-text">stat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch"><span class="nav-number">1.5.</span> <span class="nav-text">touch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file"><span class="nav-number">1.6.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chmod"><span class="nav-number">1.7.</span> <span class="nav-text">chmod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#umask"><span class="nav-number">1.8.</span> <span class="nav-text">umask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#du"><span class="nav-number">1.9.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5sum"><span class="nav-number">1.10.</span> <span class="nav-text">md5sum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#locate"><span class="nav-number">1.11.</span> <span class="nav-text">locate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">1.12.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xargs"><span class="nav-number">1.13.</span> <span class="nav-text">xargs</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ftq"
+      src="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+  <p class="site-author-name" itemprop="name">ftq</p>
+  <div class="site-description" itemprop="description">有志者事竟成</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">322</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fangtianq" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/fangtianq" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;fangtianq" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.github.io/" title="GitHub.io → https:&#x2F;&#x2F;fangtianq.github.io&#x2F;"><i class="github fa-fw"></i>GitHub.io</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://fangtianq.gitee.io/" title="Gitee.io → https:&#x2F;&#x2F;fangtianq.gitee.io&#x2F;" rel="noopener" target="_blank"><i class="github fa-fw"></i>Gitee.io</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://leetcode-cn.com/" title="https:&#x2F;&#x2F;leetcode-cn.com&#x2F;" rel="noopener" target="_blank">力扣网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://rap2.taobao.org/" title="http:&#x2F;&#x2F;rap2.taobao.org&#x2F;" rel="noopener" target="_blank">RAP2接口管理平台</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fangtianq.github.io/2025/04/18/linux/bash-tutorial-master/docs/archives/file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/12722882?s=460&u=60d32bd6a1b3d81f0e2dcfc9390b86c797573fbe&v=4">
+      <meta itemprop="name" content="ftq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力，越幸运！">
+      <meta itemprop="description" content="有志者事竟成">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 越努力，越幸运！">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-18 16:27:37" itemprop="dateCreated datePublished" datetime="2025-04-18T16:27:37+08:00">2025-04-18</time>
+    </span>
+
+
+  
+    <span id="/2025/04/18/linux/bash-tutorial-master/docs/archives/file/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="" href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::c793a99f6295e08e796c33921974d0a4" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h2 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h2><p><code>pwd</code>命令显示列出当前所在的目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><p><code>cd</code>命令用来改变用户所在的目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入用户的主目录</span></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入前一个工作目录</span></span><br><span class="line">$ <span class="built_in">cd</span> -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入指定用户的主目录</span></span><br><span class="line">$ <span class="built_in">cd</span> ~user_name</span><br></pre></td></tr></table></figure>
+
+<h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><p><code>ls</code>目录可以显示指定目录的内容。不加参数时，显示当前目录的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p>上面命令显示当前目录的内容。</p>
+<p><code>ls</code>命令也可以显示指定文件是否存在。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> foo.txt</span><br><span class="line">foo.txt</span><br></pre></td></tr></table></figure>
+
+<p><code>-l</code>参数可以显示文件的详细信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l foo.txt</span><br><span class="line">-rw-rw-r-- 1 me   me   0 2016-03-06 14:52 foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令输出结果的第一栏，是文件的类型和权限。</p>
+<p>文件类型分为以下几种。</p>
+<ul>
+<li><code>-</code> 普通文件</li>
+<li><code>d</code> 目录</li>
+<li><code>l</code> 符号链接。注意，对于符号链接文件，剩余的文件属性总是”rwxrwxrwx”。</li>
+<li><code>c</code> 字符设备文件，指按照字节流处理数据的设备，比如调制解调器。</li>
+<li><code>b</code> 块设备文件，指按照数据块处理数据的设备，比如硬盘。</li>
+</ul>
+<p>其他参数的用法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示多个目录的内容</span></span><br><span class="line">$ <span class="built_in">ls</span> ~ /usr</span><br><span class="line"></span><br><span class="line"><span class="comment"># -a --all 显示隐藏文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># -A 与-a类似，但是不显示当前目录和上一级目录两个点文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -A</span><br><span class="line"></span><br><span class="line"><span class="comment"># -l 显示详细信息</span></span><br><span class="line">$ <span class="built_in">ls</span> -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># -1 单列显示，每行只显示一个文件</span></span><br><span class="line">$ <span class="built_in">ls</span> -1</span><br><span class="line"></span><br><span class="line"><span class="comment"># -d 显示当前目录本身，而不是它的内容</span></span><br><span class="line"><span class="comment"># 通常与-l配合使用，列出一个目录本身的详细信息</span></span><br><span class="line">$ <span class="built_in">ls</span> -dl</span><br><span class="line"></span><br><span class="line"><span class="comment"># -F 目录名之后添加斜杠，可执行文件后面添加星号</span></span><br><span class="line">$ <span class="built_in">ls</span> -F</span><br><span class="line"></span><br><span class="line"><span class="comment"># -h 与-l配合使用，将文件大小显示为人类可读的格式</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -t 按文件修改时间排序，修改晚的排在前面</span></span><br><span class="line">$ <span class="built_in">ls</span> -t</span><br><span class="line"></span><br><span class="line"><span class="comment"># -s 按文件大小排序，</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># --reverse 显示结果倒序排列</span></span><br><span class="line">$ <span class="built_in">ls</span> -lt --reverse</span><br></pre></td></tr></table></figure>
+
+<p>如果只显示一个目录里面的子目录，不显示文件，可以使用下面这些命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只显示常规目录</span></span><br><span class="line">$ <span class="built_in">ls</span> -d */</span><br><span class="line">$ <span class="built_in">ls</span> -F | grep /</span><br><span class="line">$ <span class="built_in">ls</span> -l | grep ^d</span><br><span class="line">$ tree -dL 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只显示隐藏目录</span></span><br><span class="line">$ <span class="built_in">ls</span> -d .*/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 隐藏目录和非隐藏目录都显示</span></span><br><span class="line">$ find -maxdepth 1 -<span class="built_in">type</span> d</span><br></pre></td></tr></table></figure>
+
+<p>另一个简便方法是利用自动补全功能，先键入<code>cd</code>命令，然后连按两下<code>tab</code>键。</p>
+<h2 id="stat"><a href="#stat" class="headerlink" title="stat"></a>stat</h2><p><code>stat</code>命令是加强版的<code>ls</code>命令，可以显示一个文件的详细信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">stat</span> timestamp</span><br><span class="line">File: <span class="string">&#x27;timestamp&#x27;</span></span><br><span class="line">Size: 0 Blocks: 0 IO Block: 4096 regular empty file</span><br><span class="line">Device: 803h/2051d Inode: 14265061 Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--) Uid: ( 1001/ me) Gid: ( 1001/ me)</span><br><span class="line">Access: 2008-10-08 15:15:39.000000000 -0400</span><br><span class="line">Modify: 2008-10-08 15:15:39.000000000 -0400</span><br><span class="line">Change: 2008-10-08 15:15:39.000000000 -0400</span><br></pre></td></tr></table></figure>
+
+<h2 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h2><p><code>touch</code>用来设置或更新文件的访问，更改，和修改时间。然而，如果一个文件名参数是一个 不存在的文件，则会创建一个空文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">touch</span> timestamp</span><br></pre></td></tr></table></figure>
+
+<p>上面命令创建了一个名为<code>timestamp</code>空文件。如果该文件已经存在，就会把它的修改时间设置为当前时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> -p playground/dir-&#123;00&#123;1..9&#125;,0&#123;10..99&#125;,100&#125;</span><br><span class="line">$ <span class="built_in">touch</span> playground/dir-&#123;00&#123;1..9&#125;,0&#123;10..99&#125;,100&#125;/file-&#123;A..Z&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令创建了一个包含一百个子目录，每个子目录中包含了26个空文件。</p>
+<h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><p><code>file</code>命令显示指定文件的类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file picture.jpg</span><br><span class="line">picture.jpg: JPEG image data, JFIF standard 1.01</span><br></pre></td></tr></table></figure>
+
+<h2 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h2><p><code>chmod</code>命令用于更改文件的权限，是“change mode”的缩写。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">chmod</span> 600 foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面命令将<code>foo.txt</code>的权限改成了600。</p>
+<p><code>chmod</code>还可以接受四个缩写，为不同的对象单独设置权限。</p>
+<ul>
+<li><code>u</code> 所有者“user”的简写</li>
+<li><code>g</code> 用户组“group”的缩写</li>
+<li><code>o</code> 其他所有人“others”的简写</li>
+<li><code>a</code> 所有人“all”的简写</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为所有者添加可执行权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> u+x foo.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除所有者的可执行权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> u-x foo.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为所有人添加可执行权限，等价于 a+x</span></span><br><span class="line">$ <span class="built_in">chmod</span> +x foo.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除其他人的读权限和写权限。</span></span><br><span class="line">$ <span class="built_in">chmod</span> o-rw foo.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设定用户组和其他人的权限是读权限和写权限</span></span><br><span class="line">$ <span class="built_in">chmod</span> go=rw foo.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为所有者添加执行权限，设定用户组和其他人为读权限和写权限，多种设定用逗号分隔</span></span><br><span class="line">$ <span class="built_in">chmod</span> u+x,go=rw foo.txt</span><br></pre></td></tr></table></figure>
+
+<p>添加权限。</p>
+<ul>
+<li>+x 添加执行权限</li>
+<li>+r 设置读权限</li>
+<li>+w 设置写权限</li>
+<li>+rwx 设置所有读、写和执行权限。</li>
+</ul>
+<p>删除权限只需将<code>+</code>更改为<code>-</code>，就可以删除任何已设置的指定权限。可以使用<code>-R</code>（或<code>--recursive</code>）选项来递归地操作目录和文件。</p>
+<p>设置精确权限，可以使用<code>=</code>代替<code>+</code>或<code>-</code>来实现此操作。如果想为用户、组或其他用户设置不同的权限，可以使用逗号将不同表达式分开（例如<code>ug=rwx,o=rx</code>）。</p>
+<p>由于一共有3种可能的权限。也可以使用八进制数代替符号来设置权限。通过这种方式设置的权限最多使用3个八进制数。第1个数定义用户权限，第2个数定义组权限，第3个数定义其他权限。这3个数中的每一个都通过添加想要的权限设置来构造：读 (4)、写 (2) 和执行 (1)。</p>
+<ul>
+<li>rwx	7</li>
+<li>rw-	6</li>
+<li>r-x	5</li>
+<li>r–	4</li>
+<li>-wx	3</li>
+<li>-w-	2</li>
+<li>–x	1</li>
+<li>—	0</li>
+</ul>
+<h2 id="umask"><a href="#umask" class="headerlink" title="umask"></a>umask</h2><p><code>umask</code>用来查看和设置权限掩码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">umask</span></span><br><span class="line">0022</span><br></pre></td></tr></table></figure>
+
+<p>上面命令显示当前系统之中，默认的文件掩码是<code>0022</code>，转为二进制就是<code>000 000 010 010</code>。</p>
+<p>可以看到，这个掩码是一个12位的二进制数，后面的9位分别代表文件三种使用对象的三类权限。只要对应位置上是<code>1</code>，就表示关闭该项权限，所以<code>010</code>就表示关闭读权限。</p>
+<p>新建文件时，通常不会带有执行权限，也就是说，新建文件的默认权限是<code>rw-rw-rw-</code>。如果文件掩码是<code>0022</code>，那么用户组和其他人的写权限也会被拿掉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">touch</span> new.txt</span><br><span class="line">$ <span class="built_in">ls</span> -l new.txt</span><br><span class="line">-rw-r--r-- 1 me   me   0 2016-03-06 14:52 new.txt</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>new.txt</code>的用户组和其他人的写权限就没了。</p>
+<p><code>umask</code>后面跟着参数，就表示设置权限掩码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">umask</span> 0000</span><br></pre></td></tr></table></figure>
+
+<p>上面命令将权限掩码设为<code>0000</code>，实际上就是关闭了权限掩码。</p>
+<p><code>umask</code>命令设置的掩码值只能在当前Shell会话中生效，若当前Shell会话结束后，则必须重新设置。</p>
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p><code>du</code>命令用于查看指定目录的大小。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">du</span> -hs /path/to/directory</span><br></pre></td></tr></table></figure>
+
+<p>显示第一层子目录的大小。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">du</span> -h --max-depth=1 /path/to/folder</span><br></pre></td></tr></table></figure>
+
+<p>参数的含义。</p>
+<ul>
+<li><code>-h</code> 表示人类可读的格式</li>
+<li><code>-s</code> 表示总结信息，否则会显示该目录内所有文件和子目录的信息。</li>
+</ul>
+<p><code>tree</code>命令也可以显示子目录大小。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tree --<span class="built_in">du</span> -h /path/to/directory</span><br></pre></td></tr></table></figure>
+
+<h2 id="md5sum"><a href="#md5sum" class="headerlink" title="md5sum"></a>md5sum</h2><p><code>md5sum</code>命令用来显示一个文件的md5校验码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">md5sum</span> image.iso</span><br><span class="line">34e354760f9bb7fbf85c96f6a3f94ece    image.iso</span><br></pre></td></tr></table></figure>
+
+<h2 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h2><p><code>locate</code>程序快速搜索本机的路径名数据库，并且输出每个与给定字符串相匹配的文件名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ locate bin/zip</span><br><span class="line">/usr/bin/zip</span><br><span class="line">/usr/bin/zipcloak</span><br><span class="line">/usr/bin/zipgrep</span><br><span class="line">/usr/bin/zipinfo</span><br><span class="line">/usr/bin/zipnote</span><br><span class="line">/usr/bin/zipsplit</span><br></pre></td></tr></table></figure>
+
+<p><code>locate</code>数据库由另一个叫做<code>updatedb</code>的程序创建。大多数装有 locate 的系统会每隔一天运行一回 updatedb 程序。因为数据库不能被持续地更新，所以当使用 locate 时，你会发现 目前最新的文件不会出现。为了克服这个问题，可以手动运行 updatedb 程序， 更改为超级用户身份，在提示符下运行 updatedb 命令。</p>
+<p><code>locate</code>支持正则查找。<code>--regexp</code>参数支持基本的正则表达式，<code>--regex</code>参数支持扩展的正则表达式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ locate --regex <span class="string">&#x27;bin/(bz|gz|zip)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p><code>locate</code>程序只能依据文件名来查找文件，而<code>find</code>程序能基于各种各样的属性，搜索一个给定目录（以及它的子目录），来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出当前目录的所有子目录和文件（含子目录）</span></span><br><span class="line">$ find</span><br><span class="line">$ find .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示当前目录的文件总数</span></span><br><span class="line">$ find . | <span class="built_in">wc</span> -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前目录的子目录总数</span></span><br><span class="line">$ find . -<span class="built_in">type</span> d | <span class="built_in">wc</span> -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前目录的文件总数（不含子目录）</span></span><br><span class="line">$ find . -<span class="built_in">type</span> f | <span class="built_in">wc</span> -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前目录的文件名匹配“*.JPG”且大于1M的文件总数</span></span><br><span class="line">$ find . -<span class="built_in">type</span> f -name <span class="string">&quot;\*.JPG&quot;</span> -size +1M | <span class="built_in">wc</span> -l</span><br></pre></td></tr></table></figure>
+
+<p><code>-type</code>参数支持的文件类型。</p>
+<ul>
+<li><code>b</code>	块设备文件</li>
+<li><code>c</code>	字符设备文件</li>
+<li><code>d</code>	目录</li>
+<li><code>f</code>	普通文件</li>
+<li><code>l</code>	符号链接</li>
+</ul>
+<p><code>-size</code>参数支持的文件大小类型。</p>
+<ul>
+<li>b	512 个字节块。如果没有指定单位，则这是默认值。</li>
+<li>c	字节</li>
+<li>w	两个字节的字</li>
+<li>k	千字节</li>
+<li>M	兆字节</li>
+<li>G	千兆字节</li>
+</ul>
+<p><code>find</code>程序支持的查询参数。</p>
+<ul>
+<li>-cmin n	匹配的文件和目录的内容或属性最后修改时间正好在 n 分钟之前。 指定少于 n 分钟之前，使用 -n，指定多于 n 分钟之前，使用 +n。</li>
+<li>-cnewer file	匹配的文件和目录的内容或属性最后修改时间早于那些文件。</li>
+<li>-ctime n	匹配的文件和目录的内容和属性最后修改时间在 n*24小时之前。</li>
+<li>-empty	匹配空文件和目录。</li>
+<li>-group name	匹配的文件和目录属于一个组。组可以用组名或组 ID 来表示。</li>
+<li>-iname pattern	就像-name 测试条件，但是不区分大小写。</li>
+<li>-inum n	匹配的文件的 inode 号是 n。这对于找到某个特殊 inode 的所有硬链接很有帮助。</li>
+<li>-mmin n	匹配的文件或目录的内容被修改于 n 分钟之前。</li>
+<li>-mtime n	匹配的文件或目录的内容被修改于 n*24小时之前。</li>
+<li>-name pattern	用指定的通配符模式匹配的文件和目录。</li>
+<li>-newer file	匹配的文件和目录的内容早于指定的文件。当编写 shell 脚本，做文件备份时，非常有帮助。 每次你制作一个备份，更新文件（比如说日志），然后使用 find 命令来决定自从上次更新，哪一个文件已经更改了。</li>
+<li>-nouser	匹配的文件和目录不属于一个有效用户。这可以用来查找 属于删除帐户的文件或监测攻击行为。</li>
+<li>-nogroup	匹配的文件和目录不属于一个有效的组。</li>
+<li>-perm mode	匹配的文件和目录的权限已经设置为指定的 mode。mode 可以用 八进制或符号表示法。</li>
+<li>-samefile name	相似于-inum 测试条件。匹配和文件 name 享有同样 inode 号的文件。</li>
+<li>-size n	匹配的文件大小为 n。</li>
+<li>-type c	匹配的文件类型是 c。</li>
+<li>-user name	匹配的文件或目录属于某个用户。这个用户可以通过用户名或用户 ID 来表示。</li>
+<li>-depth	指导 find 程序先处理目录中的文件，再处理目录自身。当指定-delete 行为时，会自动 应用这个选项。</li>
+<li>-maxdepth levels	当执行测试条件和行为的时候，设置 find 程序陷入目录树的最大级别数</li>
+<li>-mindepth levels	在应用测试条件和行为之前，设置 find 程序陷入目录数的最小级别数。</li>
+<li>-mount	指导 find 程序不要搜索挂载到其它文件系统上的目录。</li>
+<li>-regex 指定正则表达式</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找出包括空格或其它不规范字符的文件名或路径名</span></span><br><span class="line">$ find . -regex <span class="string">&#x27;.*[^-\_./0-9a-zA-Z].*&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>find</code>程序还支持逻辑操作符。</p>
+<ul>
+<li><code>-and</code>	如果操作符两边的测试条件都是真，则匹配。可以简写为 -a。 注意若没有使用操作符，则默认使用 -and。</li>
+<li><code>-or</code>	若操作符两边的任一个测试条件为真，则匹配。可以简写为 -o。</li>
+<li><code>-not</code>	若操作符后面的测试条件是真，则匹配。可以简写为一个感叹号（!）。</li>
+<li><code>()</code>	把测试条件和操作符组合起来形成更大的表达式。这用来控制逻辑计算的优先级。注意 因为圆括号字符对于 shell 来说有特殊含义，所以在命令行中使用它们的时候，它们必须 用引号引起来，才能作为实参传递给 find 命令。通常反斜杠字符被用来转义圆括号字符。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 或关系</span></span><br><span class="line">( expression 1 ) -or ( expression 2 )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出不是600权限的文件，或者不是700权限的目录</span></span><br><span class="line">$ find ~ \( -<span class="built_in">type</span> f -not -perm 0600 \) -or \( -<span class="built_in">type</span> d -not -perm 0700 \)</span><br></pre></td></tr></table></figure>
+
+<p><code>find</code>程序的逻辑表达式，具有“短路运算”的特点，即对于<code>expr1 -operator expr2</code>这个表达式，<code>expr2</code>不一定执行。这是为了提高运行速度。</p>
+<ul>
+<li>expr1 为真，且操作符为<code>-and</code>，expr2 总是执行</li>
+<li>expr1 为假，且操作符为<code>-and</code>，expr2 从不执行</li>
+<li>expr1 为真，且操作符为<code>-or</code>，expr2 从不执行</li>
+<li>expr1 为假，且操作符为<code>-or</code>，expr2 总是执行</li>
+</ul>
+<p>为了方便执行一些常见操作，<code>find</code>程序定义了一些预定义操作。</p>
+<ul>
+<li>-delete	删除当前匹配的文件。</li>
+<li>-ls	对匹配的文件执行等同的 ls -dils 命令。并将结果发送到标准输出。</li>
+<li>-print	把匹配文件的全路径名输送到标准输出。如果没有指定其它操作，这是 默认操作。</li>
+<li>-quit	一旦找到一个匹配，退出。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到匹配的文件，并显示在标准输出</span></span><br><span class="line"><span class="comment"># -print 是默认操作，可以省略</span></span><br><span class="line">$ find . -<span class="built_in">print</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除后缀名为BAK的文件</span></span><br><span class="line"><span class="comment"># 执行 delete 操作前，最好先执行 print 操作，确认要删除哪些文件</span></span><br><span class="line">$ find . -<span class="built_in">type</span> f -name <span class="string">&#x27;*.BAK&#x27;</span> -delete</span><br></pre></td></tr></table></figure>
+
+<p>预定义操作可以与逻辑表达式，结合使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find ~ -<span class="built_in">type</span> f -and -name <span class="string">&#x27;*.BAK&#x27;</span> -and -<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+
+<p>除了预定义操作以外，用户还可以使用<code>-exec</code>参数自定义操作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-<span class="built_in">exec</span> <span class="built_in">command</span> &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令中，<code>command</code>是一个命令行命令，<code>&#123;&#125;</code>用来指代当前路径，分号表示命令结束。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 预定义的 -delete 操作，等同于下面的操作</span></span><br><span class="line">-<span class="built_in">exec</span> <span class="built_in">rm</span> <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>-exec</code>使用时，每次找到一个匹配的文件，会启动一个新的指定命令的实例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find ~ -<span class="built_in">type</span> f -name <span class="string">&#x27;foo*&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l <span class="string">&#x27;&#123;&#125;&#x27;</span> <span class="string">&#x27;;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行上面的命令，<code>ls</code>程序可能会被调用多次。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l file1</span><br><span class="line">$ <span class="built_in">ls</span> -l file2</span><br></pre></td></tr></table></figure>
+
+<p>如果想改成<code>ls</code>程序只调用一次，要把<code>find</code>命令里面的分号，改成加号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -l file1 file2</span><br><span class="line"><span class="comment"># 相当于</span></span><br><span class="line">$ find ~ -<span class="built_in">type</span> f -name <span class="string">&#x27;foo*&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">ls</span> -l <span class="string">&#x27;&#123;&#125;&#x27;</span> +</span><br></pre></td></tr></table></figure>
+
+<h2 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h2><p><code>xargs</code>命令从标准输入接受输入，并把输入转换为一个特定命令的参数列表。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ find ~ -<span class="built_in">type</span> f -name <span class="string">&#x27;foo\*&#x27;</span> -<span class="built_in">print</span> | xargs <span class="built_in">ls</span> -l</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/06/mysql/%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E5%AF%B9%E6%AF%94/" rel="prev" title="不同数据库操作对比">
+                  <i class="fa fa-chevron-left"></i> 不同数据库操作对比
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file-operation/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="c793a99f6295e08e796c33921974d0a4"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ftq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.5m</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">22:56</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+<script src="/js/third-party/sakuraPlus.js"></script>
+<script src="/js/third-party/fireworks.js"></script>
+<script src="/js/third-party/mouse_slide.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"6NuBzi5VSiFfQE2sYbymtv9t-gzGzoHsz","app_key":"stH9SzRt55d1wnwQD7LcoaQR","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw21b1ST","appkey":"045a89927c13c0e33a82c736b468fe51"}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

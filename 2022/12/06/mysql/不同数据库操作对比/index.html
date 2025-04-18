@@ -313,7 +313,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -356,7 +356,7 @@
 
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql</span><br><span class="line"><span class="keyword">CREATE TABLE</span> [IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] table_name(</span><br><span class="line"></span><br><span class="line">column1 datatype ,</span><br><span class="line"></span><br><span class="line">column2 datatype ,</span><br><span class="line"></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
-<h2 id="表重命名"><a href="#表重命名" class="headerlink" title="表重命名"></a>表重命名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE SynConfigSheetKey1 RENAME TO SynConfigSheetKey;</span><br></pre></td></tr></table></figure>
+<h2 id="表重命名"><a href="#表重命名" class="headerlink" title="表重命名"></a>表重命名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">  IF NOT EXISTS (</span><br><span class="line">    SELECT 1 FROM USER_TABLES WHERE TABLE_NAME = &#x27;SynConfigSheetKey&#x27;</span><br><span class="line">  ) THEN</span><br><span class="line">    EXECUTE IMMEDIATE &#x27;ALTER TABLE SynConfigSheetKey RENAME TO SYN_CONFIG_SHEET_KEY&#x27;;</span><br><span class="line">  END IF;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
 
 <h2 id="表备份"><a href="#表备份" class="headerlink" title="表备份"></a>表备份</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE JYPX02_bak_20241214 AS SELECT * FROM JYPX02;</span><br></pre></td></tr></table></figure>
 
@@ -378,7 +378,7 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/04/17/linux/bash-tutorial-master/docs/archives/archiving/" rel="next" title="">
+                <a href="/2025/04/18/linux/bash-tutorial-master/docs/archives/file/" rel="next" title="">
                    <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
