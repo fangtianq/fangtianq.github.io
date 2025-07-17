@@ -1,1 +1,1 @@
-(function(){const t=document.querySelector(".sidebar-button button");if(t){t.addEventListener("click",(()=>{tidioChatApi.open()}))}})();
+(function(){const t=document.querySelector(".sidebar-button button");if(t){t.addEventListener("click",()=>{tidioChatApi.open()})}})();

@@ -1,1 +1,1 @@
-Pace.options.restartOnPushState=false;document.addEventListener("pjax:send",(()=>{Pace.restart()}));
+Pace.options.restartOnPushState=false;document.addEventListener("pjax:send",()=>{Pace.restart()});
